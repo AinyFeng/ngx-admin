@@ -1,0 +1,17 @@
+<nb-card size="large" class="nb-card-container-sm">
+  <nb-card-header class="nb-card-header-qb">
+    补充档案资料 -- {{ profile.name }}
+    <span class="float-right mr-4 cursor-pointer" title="关闭" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="h5">档案创建成功，是否继续补充以下资料：</div>
+    <div class="row">
+      <div class="col-6 text-center p-3" *ngFor="let b of btnOptions">
+        <a class="link-underline" [title]="b.label" href="javascript:" (click)="openDialog(b.value)">{{ b.label }}</a>
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer class="text-center">
+    <button nbButton status="info" (click)="onClose()">关闭</button>
+  </nb-card-footer>
+</nb-card>

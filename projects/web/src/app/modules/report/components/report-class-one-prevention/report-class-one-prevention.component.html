@@ -1,0 +1,72 @@
+<nb-card accent="info">
+
+  <nb-card-header>
+    一类疫苗预防儿童明细
+    <div>
+      <button nbButton status="success">查询</button>
+      <button nbButton status="primary">导出</button>
+      <button nbButton status="default">返回</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form class="searchForm">
+      <div class="row group-search">
+
+        <div class="form-group col-md-4 row ">
+          <label class="col-md-4">接种时间：</label>
+          <div class="col-md-8 ">
+            <input nbInput fieldSize="small" placeholder="请选择建卡时间" [nbDatepicker]="birthDatePicker">
+            <nb-rangepicker #birthDatePicker format="yyyy/MM/dd"></nb-rangepicker>
+            <!--<nb-datepicker #reserveDatePicker></nb-datepicker>-->
+          </div>
+
+        </div>
+        <div class="form-group col-md-3 row">
+          <label class="cil-md-4">接种类型：</label>
+          <div class="col-md-8 ">
+            <nb-select placeholder="请选择居住类型" size="xsmall">
+              <nb-option value="1">常规</nb-option>
+              <nb-option value="2">群体</nb-option>
+              <nb-option value="3">应急</nb-option>
+              <nb-option value="4">其他</nb-option>
+              <nb-option value="5">加强</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <!-- <div class="form-group col-md-6">
+          <button nbButton status="success" >查询</button>
+          <button nbButton status="primary" >导出</button>
+          <button nbButton status="default" >返回</button>
+        </div> -->
+
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center">
+
+  <nb-card-body>
+    <nz-table #groupingTable [nzData]="listOfDisplayData" nzBordered nzSize="small" nzSimple="false">
+      <thead>
+        <tr>
+          <th>儿童编码</th>
+          <th>儿童姓名</th>
+          <th>儿童性别</th>
+          <th>出生日期</th>
+          <th>证件号码（母）</th>
+          <th>联系电话</th>
+          <th>家庭住址</th>
+          <th>现管单位</th>
+          <!-- <th>备注</th> -->
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of groupingTable.data">
+
+        </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

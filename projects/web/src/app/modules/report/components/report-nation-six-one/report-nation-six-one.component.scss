@@ -1,0 +1,22 @@
+@import '../../../../@uea/theme/global_theme.scss';
+
+@include nb-install-component() {
+
+  .waitTollCard {
+    text-align: center;
+    min-height: 550px;
+  }
+
+  .group-tools {
+    div {
+      margin-right: 15px;
+
+      input {
+        margin-right: 15px;
+      }
+    }
+  }
+  /*::ng-deep .ant-calendar-month-panel-cell .ant-calendar-month-panel-selected-cell .ng-star-inserted .ant-calendar-month-panel-month {
+    height: 32px!important;
+  }*/
+}

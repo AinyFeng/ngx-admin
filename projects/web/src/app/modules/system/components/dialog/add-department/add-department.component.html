@@ -1,0 +1,136 @@
+<nb-card class="nb-card-container-sm">
+  <nb-card-header>
+    {{updateData ? '修改科室' : '新增科室'}}
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form nz-form>
+      <nz-form-item>
+        <nz-form-label [nzLg]="4" [nzMd]="4" [nzXs]="24" nzRequired nzFor="type">业务职能</nz-form-label>
+        <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24" nzErrorTip="此项为必填项">
+          <nz-select
+            class="full-width"
+            nzPlaceHolder="请选择业务职能"
+            nzSize="large"
+            [nzDisabled]="type"
+            [(ngModel)]="business" name="business"
+          >
+            <nz-option *ngFor="let option of departTypeCodes"
+                       [nzLabel]="option.label"
+                       [nzValue]="option.value"></nz-option>
+          </nz-select>
+          <span style="color: #f5222d;" *ngIf="business == '1'">新增接种台之后要去配置可接种疫苗,否则无法进行接种叫号!</span>
+        </nz-form-control>
+      </nz-form-item>
+      <!--<nz-form-item>
+        <nz-form-label [nzLg]="4" [nzMd]="4" [nzXs]="24" nzRequired nzFor="vaccineSubclassCode">部门编码</nz-form-label>
+        <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24" nzErrorTip="此项为必填项">
+          <nz-select
+            class="full-width"
+            id="departmentCode"
+            nzPlaceHolder="请选择部门编码"
+            nzSize="large"
+            formControlName="departmentCode">
+            <nz-option *ngFor="let option of departmentCodeOption"
+                       [nzLabel]="option"
+                       [nzValue]="option"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>-->
+      <nz-form-item>
+        <nz-form-label [nzLg]="4" [nzMd]="4" [nzXs]="24" nzFor="vaccinateCount">科室简称</nz-form-label>
+        <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24">
+          <input type="text" nzSize="large" [(ngModel)]="departmentName" nz-input name="departmentName">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzLg]="4" [nzMd]="4" [nzXs]="24" nzFor="vaccinateCount">科室全称</nz-form-label>
+        <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24">
+          <input type="text" nzSize="large"
+                 [(ngModel)]="departmentAlias" nz-input name="departmentAlias">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzLg]="4" [nzMd]="4" [nzXs]="24" nzFor="vaccinateDepartmentCode">备注</nz-form-label>
+        <nz-form-control [nzLg]="18" [nzMd]="18" [nzXs]="24">
+          <textarea [(ngModel)]="memo" placeholder="请输入备注信息" name="memo" nz-input></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+    <!--<form [formGroup]="departForm">
+      <div class="form-group row">
+        <label class="col-form-label col-md-4 text-right">
+          <span class="star-required">*</span>业务职能：</label>
+        <div class="col-md-4">
+          <nb-select class="mb-3" multiple placeholder="请选择业务职能" fullWidth outline
+                     [status]="departForm.get('type').invalid && departForm.get('type').touched ? 'danger' : ''"
+                     formControlName="type"
+                     id="type">
+            <nb-option [value]="option.value"
+                       *ngFor="let option of departTypeCodes">{{option.label}}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="departForm.get('type')"></uea-show-form-errors>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-form-label col-md-4 text-right">
+          <span class="star-required">*</span>部门编码：</label>
+        <div class="col-md-4">
+          <nb-select class="mb-3" multiple placeholder="请选择部门编码" fullWidth outline
+                     [status]="departForm.get('departmentCode').invalid && departForm.get('departmentCode').touched ? 'danger' : ''"
+                     formControlName="departmentCode"
+                     id="departmentCode">
+            <nb-option [value]="option.departTypeCode"
+                       *ngFor="let option of departTypeCodes">{{option.departTypeName}}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="departForm.get('departmentCode')"></uea-show-form-errors>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-form-label col-md-4 text-right">
+          科室简称：</label>
+        <div class="col-md-4">
+          <input type="text" nbInput outline fullWidth
+                 formControlName="departmentName" id="departmentName"/>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-form-label col-md-4 text-right">
+          科室全称：</label>
+        <div class="col-md-4">
+          <input type="text" nbInput outline fullWidth
+                 formControlName="departmentAlias" id="departmentAlias"/>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-form-label col-md-4 text-right">备注：</label>
+        <div class="col-md-4">
+          <textarea nbInput formControlName="memo" id="memo" fullWidth placeholder="请输入......"></textarea>
+        </div>
+      </div>
+    </form>-->
+    <div class="text-center">
+      <button nbButton status="info" (click)="saveDepartmentInfo()" [disabled]="loading" [nbSpinner]="loading">保存
+      </button>
+    </div>
+  </nb-card-body>
+</nb-card>
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card>
+    <!-- [ngStyle]="{'width': '400px', 'height': '300px'}"-->
+    <nb-card-header>{{data}}</nb-card-header>
+    <!--<nb-card-body [ngStyle]="{'text-align': 'center'}">
+      <nb-select placeholder="选择接种科室" [(ngModel)]="selectedDepartCode"
+                 [ngStyle]="{'position': 'relative', 'width': '200px', 'top': '30%'}">
+        <nb-option *ngFor="let department of departmentOption" [value]="department?department.departmentCode:''">
+          {{ department ? department.departmentName : '' }}
+        </nb-option>
+      </nb-select>
+    </nb-card-body>-->
+    <nb-card-footer [ngStyle]="{'text-align': 'center'}">
+      <button nbButton (click)="saveManage(ref)" class="mr-4">现在配置</button>
+      <button nbButton (click)="close(ref)">稍后配置</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+

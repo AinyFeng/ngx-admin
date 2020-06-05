@@ -1,0 +1,42 @@
+<nb-card size="large">
+  <nb-card-header class="header-flex-center">
+    {{departmentData.departmentName}}
+    <div>
+      <button nbButton status="info" class="mr-2" (click)="addVaccine(departmentData.departmentCode)"
+              [nbSpinner]="loading">保存
+      </button>
+      <!--      <button nbButton status="info" (click)="getVacc()">获取疫苗</button>-->
+      <button nbButton status="info" (click)="useExitConfig(departmentData.departmentCode)">使用已有配置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body style="overflow-y: scroll;">
+    <div class="row">
+      <nz-tree
+        [nzData]="nodes"
+        nzCheckable
+        [nzCheckedKeys]="treeSelectedNodes"
+        (nzCheckBoxChange)="onClickTree($event)"
+      >
+      </nz-tree>
+    </div>
+  </nb-card-body>
+</nb-card>
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card [ngStyle]="{'width': '400px', 'height': '300px'}">
+    <nb-card-header>{{data}}</nb-card-header>
+    <nb-card-body [ngStyle]="{'text-align': 'center'}">
+      <nb-select placeholder="选择接种科室" [(ngModel)]="selectedDepartCode"
+                 [ngStyle]="{'position': 'relative', 'width': '200px', 'top': '30%'}">
+        <nb-option *ngFor="let department of departmentOption" [value]="department?department.departmentCode:''">
+          {{ department ? department.departmentName : '' }}
+        </nb-option>
+      </nb-select>
+    </nb-card-body>
+    <nb-card-footer [ngStyle]="{'text-align': 'center'}">
+      <button nbButton (click)="saveManage(ref)" class="mr-4">保存</button>
+      <button nbButton (click)="ref.close()">关闭</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+

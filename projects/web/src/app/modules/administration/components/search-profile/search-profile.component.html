@@ -1,0 +1,216 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    档案查询
+    <div>
+      <button nbButton status="info" (click)="profileSearch()" [nbSpinner]="loading">查询
+      </button>
+      <button nbButton status="info" class="ml-2 mr-2" [nbSpinner]="loading"  (click)="export()">导出报表</button>
+      <button nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [@drawer]="hideQueryCondition ? 'hide' : 'show'" [formGroup]="searchCondition">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">档案编号:</label>
+          <div class="col-8">
+            <input type="text" class="ml-1" nbInput fullWidth placeholder="请输入受种人编号" formControlName="profileCode"
+                   id="profileCode">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">姓名:</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth
+                   formControlName="name" id="name" placeholder="请输入受种人姓名">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">接种证号码:</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入受种人条码" formControlName="birthCardNo" id="birthCardNo">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">出生日期(起):</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择生日" [nbDatepicker]="birthDatePicker"
+                   formControlName="birthStart" id="birthStart">
+            <nb-datepicker #birthDatePicker format="YYYY/MM/DD" [filter]="filterBirthStartDate"></nb-datepicker>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">出生日期(止):</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择生日" [nbDatepicker]="birthEndPicker"
+                   formControlName="birthEnd" id="birthEnd">
+            <nb-datepicker #birthEndPicker format="YYYY/MM/DD" [filter]="filterBirthEndDate"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">证件号码:</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入受种者证件号码" formControlName="idCardNo" id="idCardNo">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">性别:</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择性别" fullWidth minlength="100" outline status="info" id="gender"
+                       formControlName="gender">
+              <nb-option [value]="item.value" *ngFor="let item of genderOptions">
+                {{item.label}}
+              </nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">母亲姓名:</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入受种人母亲姓名" formControlName="motherName"
+                   id="motherName">
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">母亲电话:</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入母亲电话" formControlName="motherContactPhone"
+                   id="motherContactPhone">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">父亲姓名:</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入父亲姓名" formControlName="fatherName" id="fatherName">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">父亲电话:</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入父亲电话" formControlName="fatherContactPhone"
+                   id="fatherContactPhone">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">建档日期(起):</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="选择建档日期" [nbDatepicker]="createStartDatePicker"
+                   formControlName="createStart" id="createStart">
+            <nb-datepicker #createStartDatePicker format="YYYY/MM/DD" [filter]="filterCreateStartDate"></nb-datepicker>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">建档日期(止):</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="选择建档日期" [nbDatepicker]="createEndDatePicker"
+                   formControlName="createEnd" id="createEnd">
+            <nb-datepicker #createEndDatePicker format="YYYY/MM/DD" [filter]="filterCreateEndDate"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">居住类别:</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择居住类别" formControlName="residentialTypeCode"
+                               [options]="residentialTypeData"></uea-nb-select-all>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">所属地块:</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择区域划分" formControlName="community"
+                               [valueText]="'communityCode'"
+                               [labelText]="'communityName'"
+                               [options]="belongDistrictData"></uea-nb-select-all>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">户口类别:</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择户口类别" formControlName="idTypeCode"
+                               [options]="idTypeData"></uea-nb-select-all>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">在册类别:</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择在册类别" formControlName="profileStatusCode"
+                               [options]="residentStatusOpt"></uea-nb-select-all>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="text-center">
+      <span class="ml-3 toggle-icon cursor-pointer hover-highlight" (click)="hideQueryCondition = !hideQueryCondition">
+        <nb-icon *ngIf="hideQueryCondition" icon="chevron-circle-down"></nb-icon>
+        <nb-icon *ngIf="!hideQueryCondition" icon="chevron-circle-up"></nb-icon>
+        {{ hideQueryCondition ? '展开条件' : '收起条件' }}
+      </span>
+    </div>
+  </nb-card-body>
+</nb-card>
+<nb-card>
+  <nb-card-body>
+    <nz-table #msgTable [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false" [nzLoading]="loading"
+              [nzFrontPagination]="false"
+              [nzTotal]="total"
+              [(nzPageIndex)]="pageIndex"
+              [nzShowTotal]="totalTemplate"
+              (nzPageIndexChange)="profileSearch($event)">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">儿童编码</th>
+        <th [nzAlign]="'center'">出生证号</th>
+        <th [nzAlign]="'center'">儿童姓名</th>
+        <th [nzAlign]="'center'">性别</th>
+        <th [nzAlign]="'center'">户籍类别</th>
+        <th [nzAlign]="'center'">生日</th>
+        <th [nzAlign]="'center'">出生体重(克)</th>
+        <th [nzAlign]="'center'">母亲姓名(电话)</th>
+        <th [nzAlign]="'center'">母亲证件号码</th>
+<!--        <th [nzAlign]="'center'">母亲手机</th>-->
+        <th [nzAlign]="'center'">父亲姓名(电话)</th>
+<!--        <th [nzAlign]="'center'">父亲手机</th>-->
+        <th [nzAlign]="'center'">父亲证件号码</th>
+        <th [nzAlign]="'center'">家庭住址</th>
+        <th [nzAlign]="'center'">建档日期</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index;">
+        <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+        <td [nzAlign]="'center'">{{data.profileCode}}</td>
+        <td [nzAlign]="'center'">{{data.birthCardNo}}</td>
+        <td [nzAlign]="'center'">{{data.name}}</td>
+        <td [nzAlign]="'center'">{{data.gender | dicPipe: 'genderCode'}}</td>
+        <td [nzAlign]="'center'">{{data.idTypeCode | dicPipe:'idType'}}</td>
+        <td [nzAlign]="'center'">{{data.birthDate | date:'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">{{data.birthWeight}}</td>
+        <td [nzAlign]="'center'">{{data.motherName}}<br>{{data.motherContactPhone}}</td>
+        <td [nzAlign]="'center'">{{data.motherIdCardNo}}</td>
+<!--        <td [nzAlign]="'center'">{{data.motherContactPhone}}</td>-->
+        <td [nzAlign]="'center'">{{data.fatherName}}<br>{{data.fatherContactPhone}}</td>
+<!--        <td [nzAlign]="'center'">{{data.fatherContactPhone}}</td>-->
+        <td [nzAlign]="'center'">{{data.fatherIdCardNo}}</td>
+        <td [nzAlign]="'center'">
+          {{ data.idCardProvCode | administrativePipe | async }}{{ data.idCardCityCode | administrativePipe | async}}{{ data.idCardDistrictCode | administrativePipe | async }}
+          <br>{{ data.idCardDetail | administrativePipe | async }}
+        </td>
+        <td [nzAlign]="'center'">{{data.createDate | date:'yyyy-MM-dd'}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #totalTemplate>
+  共{{ total }}条数据，当前第{{ pageIndex }}页
+</ng-template>

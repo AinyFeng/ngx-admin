@@ -1,0 +1,26 @@
+<nb-card accent="info">
+  <nb-card-header>
+    <div>
+      操作记录
+      <small>通过查看操作类型、登录时间、登录地点和设备可以判断账号是否正常</small>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <nz-table #operateTable [nzData]="listOfData" nzSize="small" nzSimple="false">
+      <thead>
+        <tr>
+          <th [nzAlign]="'center'">类型</th>
+          <th [nzAlign]="'center'">登录时间</th>
+          <th [nzAlign]="'center'">城市</th>
+          <th [nzAlign]="'center'">IP</th>
+          <th [nzAlign]="'center'">登录设备</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of operateTable.data">
+
+        </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

@@ -1,0 +1,48 @@
+<nb-card size="large" class="nb-card-container">
+  <nb-card-header class="nb-card-header-qb">
+    添加模板
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body style="height: 500px; overflow-y: scroll;">
+    <form>
+      <div class="form-group">
+        <label class="col-form-label label-required">模板名称:</label>
+        <input type="text" nbInput fullWidth [(ngModel)]="templateName"
+               (ngModelChange)="changeName()"
+               inputNoSpace
+               maxlength="15" name="templateName">
+      </div>
+      <!-- <div class="form-group">
+         <label class="col-form-label">模板编号:</label>
+         <input nbInput fullWidth>
+       </div>-->
+      <div class="form-group">
+        <label class="col-form-label label-required">模板内容:</label>
+        <textarea rows="3" maxlength="1000" [(ngModel)]="templateContent.content" fullWidth nbInput inputNoSpace
+                  name="templateContent.content" (ngModelChange)="changeContent()"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="col-form-label">短信模板支持以下参数,您可以点击参数进行添加</label>
+        <div class="row">
+          <div *ngFor="let item of customParam" class="col-4">
+            <div class="row mb-2">
+              <label class="col-8 col-form-label">{{item.tempDictValue}}</label>
+              <input class="d-inline-block" name="item.tempDictKey" type="button" nbButton status="info" value="+"
+                     (click)="addSmsParam(item)">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-form-label">模板预览</label>
+        <textarea rows="3" maxlength="1000" [(ngModel)]="templatePreview.content" fullWidth nbInput readonly
+                  name="templatePreview.content"></textarea>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer class="d-flex">
+    <button nbButton status="info" (click)="onSubmit()" [disabled]="loading">保存</button>
+    <button nbButton status="info" class="ml-3" (click)="onClose()">返回</button>
+  </nb-card-footer>
+</nb-card>
+

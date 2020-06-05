@@ -1,0 +1,83 @@
+<nz-card style="width:100%;" nzTitle="监测仪器">
+  <form nz-form [formGroup]="queryForm" class="ant-advanced-search-form">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="deviceName">监测设备</nz-form-label>
+          <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <input
+              nz-input
+              nzSize="default"
+              placeholder="请输入设备名称"
+              formControlName="deviceName"
+              id="deviceName"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div class="mb-2">
+        <button class="mr-2" nz-button [nzType]="'primary'" (click)="searchData(1)">查询</button>
+        <button class="mr-2" nz-button [nzType]="'primary'" (click)="add()">新增</button>
+        <button class="mr-2" nz-button [nzType]="'primary'" (click)="edit()">修改</button>
+        <button nz-button [nzType]="'primary'" (click)="delete()">删除</button>
+      </div>
+
+    </div>
+
+  <!--  <div nz-row>
+      <div nz-col [nzSpan]="24" class="search-area">
+        <button nz-button [nzType]="'primary'" (click)="searchData()">查询</button>
+        <button nz-button [nzType]="'primary'" (click)="add()">新增</button>
+        <button nz-button [nzType]="'primary'" (click)="edit()">修改</button>
+        <button nz-button [nzType]="'primary'" (click)="delete()">删除</button>
+      </div>
+    </div>-->
+  </form>
+</nz-card>
+<nz-card style="margin-top: 20px;">
+  <nz-table #msgTable [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false" [nzLoading]="loading"
+            [nzFrontPagination]="false"
+            [nzTotal]="total"
+            [(nzPageIndex)]="pageIndex"
+            [nzShowTotal]="totalTemplate"
+            (nzPageIndexChange)="searchData($event)">
+    <thead>
+    <tr>
+      <th
+        nzShowCheckbox
+        [(nzChecked)]="isAllDisplayDataChecked"
+        [nzIndeterminate]="isIndeterminate"
+        (nzCheckedChange)="checkAll($event)"
+      ></th>
+      <th [nzAlign]="'center'">网关编号</th>
+      <th [nzAlign]="'center'">名称</th>
+      <th [nzAlign]="'center'">用途</th>
+      <th [nzAlign]="'center'">服务器IP</th>
+      <th [nzAlign]="'center'">启用日期</th>
+      <th [nzAlign]="'center'">保修期（月）</th>
+      <th [nzAlign]="'center'">状态</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of msgTable.data">
+      <td
+        nzShowCheckbox
+        [(nzChecked)]="mapOfCheckedId[data.id]"
+        (nzCheckedChange)="refreshStatus()"
+      ></td>
+      <td>{{data.gw_mac}}</td>
+      <td>{{data.name}}</td>
+      <td>{{data.purpose}}</td>
+      <td>{{data.sever_ip}}</td>
+      <td>{{data.startuse_date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>{{data.warranty_period}}</td>
+      <td>{{data.status}}</td>
+    </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+
+<ng-template #totalTemplate>
+  共  {{ total }}  条数据，当前第  {{ pageIndex }}  页
+</ng-template>

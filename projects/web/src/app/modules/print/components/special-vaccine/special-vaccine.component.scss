@@ -1,0 +1,31 @@
+@import '../../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+  ::ng-deep nb-accordion-item {
+    margin-left: 0 !important;
+  }
+  .item-body {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem;
+  }
+  .basic-table {
+    & > tr > th {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    & > tr > td {
+      word-break: break-all;
+    }
+  }
+
+  nb-tabset > nb-tab {
+    padding: 0.25rem;
+  }
+
+  ::ng-deep .special-header {
+    padding: 0.75rem;
+  }
+}

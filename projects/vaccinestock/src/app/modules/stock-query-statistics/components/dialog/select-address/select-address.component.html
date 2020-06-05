@@ -1,0 +1,24 @@
+<nz-card nzBordered="false">
+  <div class="text-right">
+    <div class="keywords" *ngIf="searchInput">
+      <label>关键字:</label>
+      <input
+        style="width: 50%;"
+        nz-input [(ngModel)]="searchName"/>
+      <button nz-button class="ml-1">搜索</button>
+    </div>
+    <span class="searchIcon" (click)="hidden()">
+    <i nz-icon nzType="search"></i><strong *ngIf="!searchInput">搜索</strong>
+  </span>
+  </div>
+  <nz-tree [nzData]="administrativeTreeData" nzShowIcon [nzExpandedIcon]="expandedIconTpl" nzShowLine
+           (nzClick)="onClickTree($event)">
+    <ng-template #expandedIconTpl let-node>
+      <!--      <i nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" ></i>-->
+      <nb-icon *ngIf="!node.isExpanded" class="far fa-folder"></nb-icon>
+      <nb-icon *ngIf="node.isExpanded" class="far fa-folder-open"></nb-icon>
+    </ng-template>
+  </nz-tree>
+</nz-card>
+
+

@@ -1,0 +1,15 @@
+<div class="form-group row text-left" *ngFor="let tags of tagGroup">
+  <label class="custom-control custom-radio" *ngFor="let tag of tags; index as i">
+    <!--        <input type="radio" class="custom-control-input" name="optionAll" (click)="selectVac(tag.tag)">-->
+    <input type="radio" name="optionAll" (click)="selectVac($event, tag.tag)">
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description">{{tag.name}}</span>
+  </label>
+</div>
+<hr>
+<div class="row form-group">
+  <div class="col-md-3" *ngFor="let pd of pickerData">
+    <nb-checkbox [value]="pd.vacCode" [(ngModel)]="pd.selected"
+                 (ngModelChange)="changeModel()">{{pd.vacName}}</nb-checkbox>
+  </div>
+</div>

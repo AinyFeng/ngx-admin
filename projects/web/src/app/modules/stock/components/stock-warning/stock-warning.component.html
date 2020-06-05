@@ -1,0 +1,71 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    预售查询
+    <div>
+      <button class="mr-2" nbButton status="info" [disabled]="loading" (click)="toSearch()">查询</button>
+      <button class="mr-2" nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗名称：</label>
+          <div class="col-8">
+            <uea-nb-select-all [placeholderText]="'请选择'" [options]="vacSubClassData"  formControlName="vaccineSubclassCode"  id="vaccineSubclassCode">
+            </uea-nb-select-all>
+          </div>
+        </div>
+
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗批次编号：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入编号" formControlName="prodBatchCode" id="prodBatchCode">
+          </div>
+        </div>
+
+      </div>
+
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow-x: scroll;">
+    <nb-card-body>
+      <nz-table #msgTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false" [nzData]="listOfData"
+                [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex"
+                (nzPageIndexChange)="toSearch($event)" >
+        <thead>
+        <tr>
+          <th [nzAlign]="'center'">序号</th>
+          <th [nzAlign]="'center'">疫苗名称</th>
+          <th [nzAlign]="'center'">疫苗编号</th>
+          <th [nzAlign]="'center'">生产企业名称</th>
+          <th [nzAlign]="'center'">批号</th>
+          <th [nzAlign]="'center'">疫苗类型</th>
+          <th [nzAlign]="'center'">库存(支)</th>
+          <th [nzAlign]="'center'">预售量(支)</th>
+          <th [nzAlign]="'center'">价格</th>
+          <th [nzAlign]="'center'">状态</th>
+
+        </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index;">
+          <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+          <td [nzAlign]="'center'">{{data.vaccineProductName}}</td>
+          <td [nzAlign]="'center'">{{data.vaccineProductCode}}</td>
+          <td [nzAlign]="'center'">{{data.manufacturer}}</td>
+          <td [nzAlign]="'center'">{{data.prodBatchCode}}</td>
+          <td [nzAlign]="'center'">{{data.vaccineSpecification}}</td>
+          <td [nzAlign]="'center'">{{data.stockCount }}</td>
+          <td [nzAlign]="'center'">{{data.orderCount }}</td>
+          <!--<td [nzAlign]="'center'">{{data.stockCount}}</td>
+          <td [nzAlign]="'center'">{{data.orderCount}}</td>-->
+          <td [nzAlign]="'center'">{{data.povVaccPrice}}</td>
+          <td [nzAlign]="'center'">{{data.status==0?'正常':'超出预警'}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

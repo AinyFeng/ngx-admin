@@ -1,0 +1,57 @@
+<nb-card size="xlarge" class="nb-card-container-sm">
+  <nb-card-header class="nb-card-header-qb">
+    添加成人登记疫苗-- {{ profile ? profile.name : '' }}
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body [nbSpinner]="loading" nbSpinnerStatus="info">
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <label for="programCode" class="col-form-label col-3 text-right label-required">疫苗大类</label>
+        <div class="col-3">
+          <nb-select placeholder="选择疫苗大类"
+                     (ngModelChange)="vaccineBroadHeadingChange($event)"
+                     fullWidth id="programCode" formControlName="programCode">
+            <nb-option *ngFor="let o of adultVaccineOptions"
+                       [value]="o.value">{{ o.label }}</nb-option>
+          </nb-select>
+          <!--          <uea-show-form-errors [control]="form.get('programCode')"></uea-show-form-errors>-->
+        </div>
+        <label for="registDate" class="col-form-label col-2 text-right label-required">登记时间</label>
+        <div class="col-3">
+          <nz-date-picker
+            nzShowTime
+            nzSize="large"
+            class="full-width"
+            id="registDate"
+            [nzDisabledDate]="filterDate"
+            nzFormat="yyyy-MM-dd HH:mm:ss"
+            nzPlaceHolder="选择登记时间"
+            formControlName="registDate"
+          ></nz-date-picker>
+          <!--[ngClass]="{'active': form.get('registDate').invalid && form.get('registDate').value.touched }"-->
+          <uea-show-form-errors [control]="form.get('registDate')"></uea-show-form-errors>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="active">
+        <label for="level" class="col-3 col-form-label text-right label-required">抗体水平</label>
+        <div class="col-3">
+          <nb-radio-group id="level" formControlName="level">
+            <nb-radio *ngFor="let o of antibodyLevel" [value]="o.value">
+              {{ o.label }}
+            </nb-radio>
+          </nb-radio-group>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="memo" class="col-form-label col-3 text-right">说明</label>
+        <div class="col-8">
+          <textarea type="text" id="memo" nbInput fullWidth formControlName="memo"></textarea>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer class="text-center" [nbSpinner]="loading" nbSpinnerStatus="info">
+    <button (click)="onSubmit()" nbButton status="info">保存</button>
+  </nb-card-footer>
+</nb-card>
+

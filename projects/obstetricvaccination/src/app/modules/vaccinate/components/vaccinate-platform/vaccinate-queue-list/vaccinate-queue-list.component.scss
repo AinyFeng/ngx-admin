@@ -1,0 +1,36 @@
+::ng-deep {
+  .ant-table-tbody > tr > td, .ant-table-thead > tr > th {
+    text-align: center;
+  }
+
+  nb-tabset {
+    ul {
+      justify-content: space-evenly;
+    }
+
+    .tab-link {
+      padding: 1rem 1.5rem !important;
+    }
+
+    nb-tab {
+      padding: 0 !important;
+    }
+  }
+
+  nb-action {
+    border-left: none !important;
+  }
+
+  nb-toggle {
+    label {
+      margin: 0;
+    }
+  }
+
+  .ant-form-inline .ant-form-item {
+    display: block;
+    margin-right: 16px;
+    margin-bottom: 0;
+    text-align: center;
+  }
+}

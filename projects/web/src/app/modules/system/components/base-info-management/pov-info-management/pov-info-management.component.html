@@ -1,0 +1,61 @@
+<nb-card accent="info">
+  <nb-card-header>
+    门诊信息管理
+    <div>
+      <button nbButton status="info" (click)="search()" [disabled]="loading">查询</button>
+      <button nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <div class="col-md-4 row">
+          <label class="col-4 col-form-label text-right">门诊编码：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth formControlName="povCode" id="povCode">
+          </div>
+        </div>
+        <div class="col-md-4 row">
+          <label class="col-4 col-form-label text-right">门诊简称：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth formControlName="name" id="name">
+          </div>
+        </div>
+        <!-- <div class="col-md-4">
+          <button nbButton status="info"  (click)="search()" [disabled]="loading">查询</button>
+          <button nbButton status="warning" (click)="reset()">重置</button>
+        </div> -->
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+<nb-card>
+  <nb-card-body>
+    <nz-table #povInfo [nzData]="povData" nzBordered nzSize="small" nzSimple="false" [nzLoading]="loading"
+              [nzTotal]="total"
+              [nzFrontPagination]="false"
+              (nzPageIndexChange)="search($event)">
+      <thead>
+        <tr>
+          <th [nzAlign]="'center'">门诊编码</th>
+          <th [nzAlign]="'center'">门诊简称</th>
+          <th [nzAlign]="'center'">门诊全称</th>
+          <th [nzAlign]="'center'">备注</th>
+          <th [nzAlign]="'center'">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of povInfo.data">
+          <td [nzAlign]="'center'">{{d.povCode}}</td>
+          <td [nzAlign]="'center'">{{d.name}}</td>
+          <td [nzAlign]="'center'">{{d.fullName}}</td>
+          <td [nzAlign]="'center'">{{d.memo}}</td>
+          <td [nzAlign]="'center'">
+            <!-- <a href="javascript:" class="link-a mr-1" (click)="changeInfo(d)">修改</a>
+             <a href="javascript:" class="link-a" (click)="deleteInfo(d)">删除</a>-->
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

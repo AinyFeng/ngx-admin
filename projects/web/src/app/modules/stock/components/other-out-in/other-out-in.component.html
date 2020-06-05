@@ -1,0 +1,150 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    其它出入库
+    <div>
+      <button class="mr-2" nbButton status="info"  [disabled]="loading" (click)="toSearch()">查询</button>
+      <button class="mr-2" nbButton status="info" (click)="inStock()">入库</button>
+      <button class="mr-2" nbButton status="info">导出</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body *ngIf="!showInStock">
+    <form [formGroup]="outStockform">
+      <div class="row group-search form-inline mb-3 ml-3">
+        <label class="">日期(起)：</label>
+        <input nbInput class="mr-4" formControlName="startTime" placeholder="请选择开始日期" [nbDatepicker]="startTime">
+        <nb-datepicker #startTime format="YYYY/MM/DD"></nb-datepicker>
+
+        <label class="">日期(止)：</label>
+        <input nbInput class="mr-4" formControlName="endTime" placeholder="请选择结束日期" [nbDatepicker]="endTime">
+        <nb-datepicker #endTime format="YYYY/MM/DD"></nb-datepicker>
+
+        <label class="">疫苗种类：</label>
+        <nb-select outline status="info" placeholder="疫苗种类" class="mr-4"
+          (ngModelChange)="vaccineBroadHeadingChange($event)">
+          <nb-option *ngFor="let c of vacTypeList" [value]="c.broadHeadingCode">{{c.broadHeadingFullName}}
+          </nb-option>
+        </nb-select>
+
+        <label class="col-form-label">疫苗小类：</label>
+        <nb-select placeholder="疫苗小类" outline status="info" >
+          <nb-option *ngFor="let c of vacSubClassOptions" [value]="c.value">{{c.label}}</nb-option>
+        </nb-select>
+      </div>
+
+      <div class="row group-search form-inline mb-3 ml-3">
+        <label class="col-form-label">疫苗批次：</label>
+        <input type="text" nbInput formControlName="batchCode" placeholder="请输入疫苗批次">
+
+        <label class="ml-4">冷藏设备：</label>
+        <nb-select placeholder="请选择冷藏设备" status="info" formControlName= "facilityCode" >
+          <nb-option value="1">冷藏设备1</nb-option>
+          <nb-option value="2">冷藏设备2</nb-option>
+        </nb-select>
+
+        <label class="ml-4">出库人：</label>
+        <nb-select placeholder="全部" status="info" formControlName="stockBy">
+          <nb-option value="2">出库人1</nb-option>
+          <nb-option value="3">出库人2</nb-option>
+        </nb-select>
+      </div>
+
+      <!-- <div class="row">
+        <div class="col-12">
+          <button nbButton status="info"  (click)="toSearch()">查询</button>
+          <button nbButton status="info"  (click)="inStock()">入库</button>
+          <button nbButton status="info" >导出</button>
+        </div>
+      </div> -->
+    </form>
+  </nb-card-body>
+
+  <nb-card-body *ngIf="showInStock" [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerMessage="正在添加。。。">
+    <form [formGroup]="inStockForm">
+      <div class="row group-search form-inline mb-4">
+        <label class="ml-4">疫苗种类：</label>
+        <nb-select outline status="info" placeholder="疫苗种类" formControlName="vacType"
+          (ngModelChange)="vaccineBroadHeadingChange($event)">
+          <nb-option *ngFor="let c of vacTypeList" [value]="c.broadHeadingCode">{{c.broadHeadingFullName}}
+          </nb-option>
+        </nb-select>
+
+        <label class="ml-4">疫苗小类：</label>
+        <nb-select placeholder="疫苗小类" outline status="info" formControlName="vacSubClassCode">
+          <nb-option *ngFor="let c of vacSubClassOptions" [value]="c.value">{{c.label}}</nb-option>
+        </nb-select>
+
+        <label class="ml-4">疫苗批次：</label>
+        <input type="text" nbInput formControlName="prodBatchCode" placeholder="请输入疫苗批次">
+
+        <label class="ml-4">出库冷藏设备：</label>
+        <nb-select placeholder="选择入库冷藏设备" status="info" formControlName="facilityCode">
+          <nb-option value="1">出库冷藏设备1</nb-option>
+          <nb-option value="2">出库冷藏设备2</nb-option>
+          <nb-option value="3">出库冷藏设备3</nb-option>
+        </nb-select>
+
+        <label class="ml-4">入库数量：</label>
+        <input type="text" nbInput formControlName="count" placeholder="请输入数量">
+      </div>
+
+      <div class="row group-search form-inline mb-4">
+        <label class="ml-4">入库时间：</label>
+        <input nbInput fieldSize="small" formControlName="stockTime" placeholder="请选择入库时间" [nbDatepicker]="stockTime">
+        <nb-datepicker #stockTime format="yyyy/MM/dd"></nb-datepicker>
+
+        <label class="ml-4">入库人：</label>
+        <nb-select placeholder="请选择入库人" status="info" formControlName="stockBy">
+          <nb-option value="1">入库人1</nb-option>
+          <nb-option value="2">入库人2</nb-option>
+        </nb-select>
+
+        <label class="ml-4">备注：</label>
+        <input type="text" nbInput formControlName="memo" placeholder="备注">
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <!--<button nbButton status="info"  (click)="add()">添加</button>-->
+          <button nbButton status="info" (click)="save()">保存
+          </button>
+          <button nbButton status="info">重置</button>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow:scroll;" *ngIf="!showInStock">
+  <nz-table #msgTable [nzLoading]="loading" [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false">
+    <thead>
+      <tr>
+        <th [nzAlign]="'center'">入库流水号</th>
+        <th [nzAlign]="'center'">部门编码</th>
+        <th [nzAlign]="'center'">设备编码</th>
+        <th [nzAlign]="'center'">疫苗产品编码</th>
+        <th [nzAlign]="'center'">疫苗批号</th>
+        <th [nzAlign]="'center'">出库数量</th>
+        <th [nzAlign]="'center'">原因</th>
+        <th [nzAlign]="'center'">时间</th>
+        <th [nzAlign]="'center'">上报人编码</th>
+        <th [nzAlign]="'center'">备注</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of msgTable.data">
+        <td [nzAlign]="'center'">{{data.st_other_serial}}</td>
+        <td [nzAlign]="'center'">{{data.department_code}}</td>
+        <td [nzAlign]="'center'">{{data.facility_code}}</td>
+        <td [nzAlign]="'center'">{{data.vacc_product_code}}</td>
+        <td [nzAlign]="'center'">{{data.prod_batch_code}}</td>
+        <td [nzAlign]="'center'">{{data.count}}</td>
+        <td [nzAlign]="'center'">{{data.reason}}</td>
+        <td [nzAlign]="'center'">{{data.stock_time | date: 'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">{{data.stock_by}}</td>
+        <td [nzAlign]="'center'">{{data.name}}</td>
+        <td [nzAlign]="'center'">{{data.memo}}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nb-card>

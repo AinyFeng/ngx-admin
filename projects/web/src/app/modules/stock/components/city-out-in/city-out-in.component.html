@@ -1,0 +1,91 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    市平台入库
+    <div>
+      <button nbButton class="mr-2" status="info" [disabled]="loading" (click)="toSearch()">查询</button>
+      <!--<button nbButton status="info" (click)="stockedBack()">退回</button>-->
+      <button nbButton class="mr-2" status="info" (click)="export()" >导出</button>
+      <button nbButton class="mr-2" status="warning" (click)="reset()">重置</button>
+      <button nbButton class="mr-2" status="primary" (click)="refreshOrder()">刷新订单</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="searchForm">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">订单拉取日期(起)：</label>
+          <div class="col-8">
+            <input nbInput formControlName="pullDateStart" placeholder="请选择开始日期" [nbDatepicker]="beginTime" >
+            <nb-datepicker [filter]="filterStartDate" #beginTime format="YYYY-MM-DD"></nb-datepicker>
+        </div>
+        </div>
+
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">订单拉取日期(止)：</label>
+          <div class="col-8">
+            <input nbInput formControlName="pullDateEnd" placeholder="请选择结束日期" [nbDatepicker]="endTime" >
+            <nb-datepicker [filter]="filterEndDate" #endTime format="YYYY-MM-DD"></nb-datepicker>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow:scroll;">
+  <nb-card-body>
+    <nz-table #msgTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false" [nzData]="listOfData"
+              [nzLoading]="loading" [nzTotal]="total"
+              (nzPageIndexChange)="toSearch($event)" >
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+       <!-- <th [nzAlign]="'center'">入库行为流水号</th>-->
+        <th [nzAlign]="'center'">入库登记流水号</th>
+        <th [nzAlign]="'center'">运输检测流水号</th>
+        <th [nzAlign]="'center'">操作人</th>
+        <th [nzAlign]="'center'">操作时间</th>
+        <th [nzAlign]="'center'">平台拉取时间</th>
+        <th [nzAlign]="'center'">接受状态</th>
+        <th [nzAlign]="'center'">操作</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index;">
+        <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+    <!--    <td [nzAlign]="'center'">{{data.stockInSerial}}</td>-->
+        <td [nzAlign]="'center'">{{data.acceptanceSerial}}</td>
+        <td [nzAlign]="'center'">{{data.transportCheckSerial}}</td>
+        <td [nzAlign]="'center'">{{data.stockInBy | povStaffNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{data.stockInTime | date: 'yyyy-MM-dd hh:mm:ss'}}</td>
+        <td [nzAlign]="'center'">{{data.pullDate | date: 'yyyy-MM-dd hh:mm:ss'}}</td>
+        <td [nzAlign]="'center'">{{data.isAccept | dicPipe: 'isAccept'}}</td>
+        <td [nzAlign]="'center'">
+          <!--要修改逻辑-->
+          <div *ngIf="data.isAccept==2">
+            <a  href="javascript:" class="link-a mr-1" (click)="inStock(data)">入库</a>
+            <a href="javascript:" class="link-a" (click)="refuse( data)">拒收</a>
+          </div>
+          <div *ngIf="data.isAccept==1">
+            已入库
+            <a href="javascript:" class="link-a mr-1" (click)="stockedBack(data)" >退回</a>
+          </div>
+          <div *ngIf="data.isAccept==0">
+            拒收
+          </div>
+          <div *ngIf="data.isAccept==3">
+            已退回
+          </div>
+          <a href="javascript:" class="link-a" (click)="showDetail( data)">疫苗详情</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  </nb-card-body>
+</nb-card>
+
+
+

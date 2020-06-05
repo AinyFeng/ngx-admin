@@ -1,0 +1,111 @@
+<nz-card style="width:100%;" nzTitle="二类苗调价">
+  <form nz-form [formGroup]="queryForm">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="8">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="8" nzFor="vaccineSubclassCode">疫苗名称</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" id="vaccineSubclassCode"
+                       formControlName="vaccineSubclassCode">
+              <nz-option [nzLabel]="item.label" [nzValue]="item.value" *ngFor="let item of vacSubClassData"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="8" nzFor="manufactureCode">生产企业</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-select nzShowSearch nzAllowClear formControlName="manufactureCode" nzPlaceHolder="请选择">
+              <nz-option *ngFor="let m of manufactureOptions" [nzLabel]="m.name" [nzValue]="m.code"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="8" nzFor="batchNo">疫苗批号</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input type="text" nz-input id="batchNo"
+                   formControlName="batchNo">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+  <div class="mb-2">
+    <button class="mr-2" nz-button [nzType]="'primary'" [nzLoading]="loading" (click)="queryData()">查询</button>
+    <button class="mr-2" nz-button [nzType]="'primary'" (click)="reset()">重置</button>
+    <button nz-button nzType="primary" [nzLoading]="loading" (click)="updatePrice()">保存调价结果</button>
+  </div>
+  <nz-table nzBordered #batch
+            [nzFrontPagination]="false"
+            [nzTotal]="total"
+            [(nzPageIndex)]="pageIndex"
+            [nzLoading]="loading"
+            [nzShowTotal]="totalTemplate"
+            (nzPageIndexChange)="queryData($event)"
+            [nzData]="stockData" nzSize="small">
+    <thead>
+    <tr>
+      <th [nzAlign]="'center'">编号</th>
+      <th [nzAlign]="'center'">名称</th>
+      <th [nzAlign]="'center'">属性</th>
+      <th [nzAlign]="'center'">生产企业</th>
+      <th [nzAlign]="'center'">批号</th>
+      <th [nzAlign]="'center'">规格(剂/支或粒)</th>
+      <th [nzAlign]="'center'">剂量</th>
+      <th [nzAlign]="'center'">剂型</th>
+      <th [nzAlign]="'center'">有效期</th>
+      <th [nzAlign]="'center'">成本价</th>
+      <th [nzAlign]="'center'">出售价</th>
+      <th [nzAlign]="'center'">价格调整</th>
+      <th [nzAlign]="'center'">实际库存</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of batch.data;index as i">
+      <td>{{ i + 1 }}</td>
+      <td>{{ data.vaccName}}</td>
+      <td>{{ data.vaccineType | dicPipe: 'vaccineType'}}</td>
+      <td>{{ data.manufactureName }}</td>
+      <td>{{ data.batchNo }}</td>
+      <td>{{ data.spec }}</td>
+      <td>{{ data.dose }}</td>
+      <td>{{ data.doseType  | dicPipe: 'dosageForm'}}</td>
+      <td>{{ data.outBoundDate | date: 'yyyy-MM-dd' }}</td>
+      <td>{{ data.orignPrice  | currency: '￥' }}</td>
+      <td>
+        <div *ngIf="editId !== (data.inventorySerialCode + 'sellPrice') else sellPriceTpl">
+          <div class="cursor-pointer font-weight-bolder"
+               (click)="startEdit(data.inventorySerialCode + 'sellPrice',data.sellPrice,data.temp2, $event)">
+            <span class="text-blue">{{ data.sellPrice | currency: '￥' }}</span>
+          </div>
+        </div>
+        <ng-template #sellPriceTpl>
+          <input class="m-0"
+                 #sellPriceTplInput
+                 (blur)="stopEdit(data)"
+                 (mouseover)="setFocus(sellPriceTplInput)"
+                 type="number"
+                 numberTransfer
+                 [min]="0"
+                 nz-input
+                 [(ngModel)]="data.sellPrice"/>
+        </ng-template>
+      </td>
+      <td><span *ngIf="data.temp2">{{ data.temp2}}</span>
+        <span *ngIf="data.temp2 && data.temp2 > 0" style="color: #00d68f">(上调)</span>
+        <span *ngIf="data.temp2 && data.temp2 < 0" style="color: #f5222d">(下调)</span>
+      </td>
+      <td>{{ data.storeNum }}</td>
+    </tr>
+    </tbody>
+  </nz-table>
+  <ng-template #totalTemplate>
+    共{{ total }}条数据，当前第{{ pageIndex }}页
+  </ng-template>
+</nz-card>
+
+
+

@@ -1,0 +1,18 @@
+<nb-card size="xlarge" class="nb-card-container-sm">
+  <nb-card-header class="nb-card-header-qb">
+    选择一条接种记录 -- {{ profile?.name ? profile.name : '' }}
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body [nbSpinner]="loading" nbSpinnerSize="large" nbSpinnerStatus="primary">
+    <nb-alert [outline]="isError ? 'danger' :'info'"
+              class="flex-row"
+              closable
+              *ngIf="isError || data.length == 0" (close)="getVaccRecord()">
+      <div class="h6 text-center">
+        <span *ngIf="isError">请求出错，请<a href="javascript:" (click)="getVaccRecord()">重试</a></span>
+        <span *ngIf="!isError && data.length == 0">没查到数据，请<a href="javascript:" (click)="getVaccRecord()">重试</a></span>
+      </div>
+    </nb-alert>
+  </nb-card-body>
+</nb-card>
+

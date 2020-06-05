@@ -1,0 +1,19 @@
+<div class="title-container">
+  <div class="main-title">
+    智慧接种
+  </div>
+  <div class="title-nav">
+    <div class="title">
+      <span routerLink="/bigscreen/vaccinationdisplay">接种情况展示</span>
+      <span routerLink="/bigscreen/vaccinationtrace">疫苗追溯</span>
+    </div>
+    <div class="title-time mr-3">
+      {{ date }} {{ time }}<br>
+      {{ day }}
+    </div>
+    <div class="cursor-pointer" title="回到入库页面" routerLink="/modules/stockapplication/in">
+      退出
+      <span><i class="fas fa-sign-out-alt"></i></span>
+    </div>
+  </div>
+</div>

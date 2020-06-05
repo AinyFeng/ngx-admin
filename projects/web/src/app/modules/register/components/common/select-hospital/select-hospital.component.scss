@@ -1,0 +1,13 @@
+@import '../../../../../@uea/theme/global_theme';
+// @import '../../../../common/global-theme/global_theme';
+@include nb-install-component() {
+	.search-input {
+		display: flex;
+		& > label {
+			flex-basis: 4rem;
+		}
+		& > input {
+			flex: 1;
+		}
+	}
+}

@@ -1,0 +1,32 @@
+@import '../../big.screen';
+
+.sub-title {
+  color: white;
+}
+
+.chart-container {
+  border-radius: 4px;
+  position: relative;
+}
+
+.chart-container ~ .chart-container {
+  margin-top: 16px;
+}
+
+.display-col {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.main-col {
+  flex: 3;
+}
+
+.sub-col {
+  flex: 2;
+}
+
+.background-gray {
+  background-color: #25344d;
+}

@@ -1,0 +1,83 @@
+<nb-card accent="info">
+  <nb-card-header>
+    新增节假日
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="holidayForm" novalidate>
+      <div class="form-group row">
+      <label for="year" class="col-form-label col-4 text-right">年份：</label>
+      <div class="col-4">
+        <input type="text" nbInput fullWidth id="year" placeholder="请输入年份" formControlName="year">
+      </div>
+      <label class="col-form-label col-4 text-left">
+        默认当前年份
+      </label>
+    </div>
+      <div class="form-group row">
+        <label for="holidayName" class="col-form-label col-4 text-right">节日名称：</label>
+        <div class="col-4">
+          <input type="text" nbInput fullWidth id="holidayName" placeholder="请输入节日名称" formControlName="holidayName">
+        </div>
+        <label class="col-form-label col-4 text-left">
+          比如：国庆节
+        </label>
+      </div>
+
+      <div class="form-group row">
+        <label for="holidayDate" class="col-4 label-required col-form-label text-right">具体日期：</label>
+        <div class="col-4">
+          <input nbInput fullWidth readonly placeholder="请选择日期" [nbDatepicker]="injectDatePicker"
+                 formControlName="holidayDate" id="holidayDate">
+          <nb-datepicker #injectDatePicker format="YYYY-MM-DD"></nb-datepicker>
+        </div>
+        <label class="col-form-label col-4">节日的日期</label>
+      </div>
+
+      <div class="form-group row">
+        <label for="holidayType" class="col-form-label col-4 text-right">节假日类型：</label>
+        <div class="col-4">
+          <!--<nb-radio-group id="holidayType" class="d-flex" formControlName="holidayType">
+            <nb-radio *ngFor="let u of holidayTypeOptions" [value]="u.value">{{ u.label }}</nb-radio>
+          </nb-radio-group>-->
+          <nb-select placeholder="请选择" fullWidth outline status="info" formControlName="holidayType"
+                     id="holidayType">
+            <nb-option [value]="v.value" *ngFor="let v of holidayTypeOptions">{{v.label}}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+<!--
+      <div class="form-group row">
+        <label for="useAble" class="col-form-label col-4 text-right">是否可用：</label>
+        <div class="col-4">
+          <nb-radio-group id="useAble" class="d-flex" formControlName="useAble">
+            <nb-radio *ngFor="let u of useAbleOptions" [value]="u.value">{{ u.label }}</nb-radio>
+          </nb-radio-group>
+
+        </div>
+        <label class="col-form-label col-4 text-left">
+          是否可用，默认为可用状态
+        </label>
+      </div>-->
+
+      <div class="form-group row">
+        <label for="legal" class="col-form-label col-4 text-right">是否法定节假日：</label>
+        <div class="col-4">
+          <nb-radio-group id="legal" class="d-flex" formControlName="legal">
+            <nb-radio *ngFor="let l of legalOptions" [value]="l.value">{{ l.label }}</nb-radio>
+          </nb-radio-group>
+        </div>
+        <label class="col-form-label col-4 text-left">
+          是否法定节假日，默认法定节假日
+        </label>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerMessage="" nbButton status="info" class="mr-5"
+              (click)="onSubmit()">保存
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>

@@ -1,0 +1,93 @@
+<nb-card accent="info">
+  <nb-card-header>
+    入库
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="instockFrom" novalidate>
+
+      <div class="form-group row">
+        <label for="sheetComparison" class="col-sm-2 col-form-label text-right label-required">与出库单、运输单比较：</label>
+        <div class="col-sm-4">
+          <nb-select placeholder="请选择" status="info" formControlName="sheetComparison" id="sheetComparison">
+            <nb-option value="1">符合</nb-option>
+            <nb-option value="0">不符合</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="instockFrom.get('sheetComparison')"></uea-show-form-errors>
+        </div>
+        <label for="numberComparision" class="col-sm-2 col-form-label text-right label-required">批号数量检查：</label>
+        <div class="col-sm-4">
+          <nb-select placeholder="请选择" status="info" formControlName="numberComparision" id="numberComparision">
+            <nb-option value="1">符合</nb-option>
+            <nb-option value="0">不符合</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="instockFrom.get('numberComparision')"></uea-show-form-errors>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="temperatureRecord" class="col-sm-2 col-form-label text-right label-required">冷链运输温度记录：</label>
+        <div class="col-sm-4">
+          <nb-select placeholder="请选择" status="info" formControlName="temperatureRecord" id="temperatureRecord">
+            <nb-option value="1">正常</nb-option>
+            <nb-option value="0">不正常</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="instockFrom.get('temperatureRecord')"></uea-show-form-errors>
+        </div>
+        <label for="auditor" class="col-sm-2 col-form-label text-right label-required">审核人：</label>
+        <div class="col-sm-4">
+          <nb-select placeholder="请选择" status="info" fullWidth formControlName= "auditor" id = "auditor" >
+            <nb-option [value]="v.number" *ngFor="let v of staffOptionSelected">{{v.realName}}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="instockFrom.get('auditor')"></uea-show-form-errors>
+        </div>
+      </div>
+
+
+      <div class="form-group row">
+        <label for="temperatureRecord" class="col-sm-2 col-form-label text-right label-required">药械室：</label>
+        <div class="col-sm-4">
+          <nb-select placeholder="请选择" (ngModelChange)="departmentChange($event)" status="info" fullWidth formControlName= "departmentCode" id = "departmentCode" >
+            <nb-option [value]="v.departmentCode" *ngFor="let v of departmentSelect">{{v.departmentName}}</nb-option>
+          </nb-select>
+          <!--<nz-select (ngModelChange)="departmentChange($event)" formControlName="departmentCode" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+            <nz-option *ngFor="let v of departmentSelect"  [nzLabel]="v.departmentName" [nzValue]="v.departmentCode"></nz-option>
+          </nz-select>-->
+          <uea-show-form-errors [control]="instockFrom.get('departmentCode')"></uea-show-form-errors>
+        </div>
+
+        <label for="auditor" class="col-sm-2 col-form-label text-right label-required">冷藏设备：</label>
+        <div class="col-sm-4">
+          <nb-select placeholder="请选择"  status="info" fullWidth formControlName= "facilityCode" id = "facilityCode" >
+            <nb-option [value]="v.value" *ngFor="let v of facilityOptions">{{v.label}}</nb-option>
+          </nb-select>
+         <!-- <nz-select  formControlName="facilityCode" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+            <nz-option *ngFor="let v of facilityOptions"  [nzLabel]="v.label" [nzValue]="v.value"></nz-option>
+          </nz-select>-->
+          <uea-show-form-errors [control]="instockFrom.get('facilityCode')"></uea-show-form-errors>
+        </div>
+      </div>
+
+
+
+      <div class="form-group row">
+        <label for="receiver" class="col-sm-2 col-form-label text-right label-required">收料人：</label>
+        <div class="col-sm-4">
+          <nb-select placeholder="请选择" status="info" fullWidth formControlName= "receiver" id = "receiver" >
+            <nb-option [value]="v.number" *ngFor="let v of staffOptionSelected">{{v.realName}}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="instockFrom.get('receiver')"></uea-show-form-errors>
+        </div>
+
+      </div>
+
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerMessage="" nbButton status="info" class="mr-5"
+              (click)="onSubmit()">确认
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>

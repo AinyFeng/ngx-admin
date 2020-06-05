@@ -1,0 +1,121 @@
+<nb-accordion>
+  <nb-accordion-item *ngFor="let r of specialVaccineInfo">
+    <nb-accordion-item-header class="special-header">{{r.registDate | date:'yyyy-MM-dd'}}
+      <nz-tag *ngIf="r.broadHeadingCode === '28' || r.broadHeadingCode === '43' || r.broadHeadingCode === '44'"
+              class="ml-2" [nzColor]="'#f50'">犬伤
+      </nz-tag>
+      <nz-tag *ngIf="r.broadHeadingCode === '02'" class="ml-2" [nzColor]="'#87d068'">乙肝</nz-tag>
+      <nz-tag *ngIf="r.broadHeadingCode === '21'" class="ml-2" [nzColor]="'#87d068'">流感</nz-tag>
+      <nz-tag *ngIf="r.broadHeadingCode === '22'" class="ml-2" [nzColor]="'#87d068'">水痘</nz-tag>
+      <nz-tag *ngIf="r.broadHeadingCode === '25'" class="ml-2" [nzColor]="'#87d068'">23价肺炎</nz-tag>
+      <nz-tag *ngIf="r.broadHeadingCode === '08'" class="ml-2" [nzColor]="'#87d068'">破伤风</nz-tag>
+      <nz-tag *ngIf="r.broadHeadingCode === '12'" class="ml-2" [nzColor]="'#87d068'">麻腮风</nz-tag>
+      <nz-tag *ngIf="r.broadHeadingCode === '55'" class="ml-2" [nzColor]="'#87d068'">HPV</nz-tag>
+    </nb-accordion-item-header>
+    <nb-accordion-item-body>
+      <div class="item-body"
+           *ngIf="r.broadHeadingCode === '28' || r.broadHeadingCode === '43' || r.broadHeadingCode === '44'">
+        <!--        <button nbButton status="info" [size]="btnSize" (click)="rabiesAgreement(r)">狂犬告知书</button>-->
+        <button nbButton status="info" [size]="btnSize" class="m-2" (click)="printProve(r)">打印证明</button>
+        <button nbButton status="info" [size]="btnSize" (click)="injectionSingle(r)">注射单</button>
+      </div>
+      <table class="table-borderless"
+             *ngIf="r.broadHeadingCode === '28' || r.broadHeadingCode === '43' || r.broadHeadingCode === '44'">
+        <tbody class="basic-table">
+        <tr>
+          <th>登记时间：</th>
+          <td>{{ r.createDate | date:'yyyy-MM-dd'}}
+          </td>
+        </tr>
+        <!--<tr>
+          <th>犬伤编码：</th>
+          <td>{{ r.rabiesCode}}</td>
+        </tr>-->
+        <tr>
+          <th>受伤时间：</th>
+          <td>{{ r.injuryDate | date:'yyyy-MM-dd'}}</td>
+        </tr>
+        <tr>
+          <th>受伤部位：</th>
+          <td>{{ r.injurySite | dicPipe: 'injurySite'}}</td>
+        </tr>
+        <tr>
+          <th>动物名称：</th>
+          <td>{{ r.animal | dicPipe: 'animal'}}</td>
+        </tr>
+        <tr>
+          <th>处理时间：</th>
+          <td>{{ r.handleDate | date:'yyyy-MM-dd'}}</td>
+        </tr>
+        <tr>
+          <th>处理地点：</th>
+          <td>{{ r.handlePlace | dicPipe: 'handlePlace'}}</td>
+        </tr>
+<!--        <tr>-->
+<!--          <th>免疫类型：</th>-->
+<!--          <td>{{ r.vaccinatedType}}</td>-->
+<!--        </tr>-->
+        <tr>
+          <th>暴露级别：</th>
+          <td>{{ r.exposureLevel}}</td>
+        </tr>
+        <tr>
+          <th>免疫球蛋白：</th>
+          <td>{{ r.hriVaccinated === '1' ? '是' : '否'}}</td>
+        </tr>
+        <tr>
+          <th>超过48小时：</th>
+          <td>{{ r.over48H === '1' ? '是' : '否'}}</td>
+        </tr>
+        </tbody>
+      </table>
+      <table class="table-borderless"
+             *ngIf="r.broadHeadingCode !== '28' && r.broadHeadingCode !== '43' && r.broadHeadingCode !== '44'">
+        <tbody class="basic-table">
+        <tr>
+          <th>登记时间：</th>
+          <td>{{ r.registDate | date:'yyyy-MM-dd'}}
+            <button nbButton status="info" class="ml-4" [size]="btnSize" (click)="injectionSingle(r)">
+              注射单
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <th>疫苗类型：</th>
+          <td>{{r.broadHeadingCode | vacBroadHeadingPipe}}</td>
+        </tr>
+        <tr *ngIf="r.broadHeadingCode === '02'">
+          <th>抗体水平：</th>
+          <td>{{ r.level | dicPipe: 'hepbAntibodyLevel' }}</td>
+        </tr>
+        <tr>
+          <th>说明备注：</th>
+          <td>{{ r.memo}}</td>
+        </tr>
+        <tr>
+          <th>创建人：</th>
+          <td>{{ r.createBy | povStaffNamePipe | async }}</td>
+        </tr>
+        </tbody>
+      </table>
+      <!--<div class="info-content">
+        <div class="info-item">
+          <p>
+            <span>登记时间：</span>{{ r.createDate | date:'yyyy-MM-dd'}}
+            <button nbButton status="info" class="float-right" [size]="btnSize" (click)="injectionSingle(r)">注射单</button>
+          </p>
+          <p><span>犬伤编码：</span>{{ r.rabiesCode }}</p>
+          <p><span>受伤时间：</span>{{ r.injuryDate | date:'yyyy-MM-dd'}}</p>
+          <p><span>受伤部位：</span>{{ r.injurySite }}</p>
+          <p><span>动物名称：</span>{{ r.animal }}</p>
+          <p><span>处理时间：</span>{{ r.handleDate | date:'yyyy-MM-dd'}}</p>
+          <p><span>处理地点：</span>{{ r.handlePlace }}</p>
+          <p><span>免疫类型：</span>{{ r.vaccinatedType }}</p>
+          <p><span>暴露级别：</span>{{ r.exposureLevel }}</p>
+          <p><span>免疫球蛋白：</span>{{ r.hriVaccinated }}</p>
+          <p><span>超过48小时：</span>{{ r.over48H }}</p>
+        </div>
+      </div>-->
+    </nb-accordion-item-body>
+  </nb-accordion-item>
+</nb-accordion>

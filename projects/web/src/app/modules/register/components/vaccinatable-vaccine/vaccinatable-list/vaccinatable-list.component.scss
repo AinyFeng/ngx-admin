@@ -1,0 +1,22 @@
+// @import '../../../../../@uea/theme/global_theme';
+// // @import '../../../../common/global-theme/global_theme';
+
+@import '../../../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+	nb-card {
+		width: 100%;
+		// max-height: 32rem;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	::ng-deep nz-tag {
+		display: flex;
+		flex-direction: column;
+	}
+
+	::ng-deep nz-tag ~ nz-tag {
+		margin-top: 0.1rem;
+	}
+}

@@ -1,0 +1,98 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    重卡查询
+    <div>
+      <button nbButton status="info" (click)="searchData()" [nbSpinner]="loading" nbSpinnerStatus="danger">查询</button>
+      <button nbButton status="info" class="ml-2 mr-2" (click)="export()"  [nbSpinner]="loading">导出报表</button>
+      <button nbButton status="warning" [nbSpinner]="loading" nbSpinnerStatus="danger" (click)="replacement()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="queryForm">
+      <div class="form-group row">
+        <div class="col-4 row">
+          <label class="col-form-label col-4 text-right">受种者状态:</label>
+          <div class="col-8">
+            <nb-select placeholder="受种者状态" fullWidth outline status="info" formControlName="profileStatusCode"
+                       id="profileStatusMap">
+              <nb-option *ngFor="let item of profileStatusData" [value]="item.value">{{item.label}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-4 row">
+          <label class="col-form-label col-4 text-right">现管理单位:</label>
+          <div class="col-8">
+            <!--  <nb-select placeholder="现管理单位" fullWidth outline status="info" formControlName="loginUser" id="loginUser">
+                <nb-option value="{{loginUser}}">{{loginUser}}</nb-option>
+              </nb-select>-->
+            <input type="text" readonly nbInput fullWidth
+                   [value]="loginUser | povNamePipe | async ">
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-12">
+          <nb-checkbox style="padding-left: 20px;" formControlName="name">受种者姓名</nb-checkbox>
+          <nb-checkbox style="padding-left: 20px;" formControlName="birthDate">出生日期</nb-checkbox>
+          <nb-checkbox style="padding-left: 20px;" formControlName="gender">性别</nb-checkbox>
+          <nb-checkbox style="padding-left: 20px;" formControlName="fatherName">父亲姓名</nb-checkbox>
+          <nb-checkbox style="padding-left: 20px;" formControlName="motherName">母亲姓名</nb-checkbox>
+          <nb-checkbox style="padding-left: 20px;" formControlName="contactPhone">联系电话</nb-checkbox>
+          <nb-checkbox style="padding-left: 20px;" formControlName="idCardDetail">户籍地址</nb-checkbox>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow: scroll;">
+  <nb-card-body>
+    <nz-table #msgTable [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false" [nzLoading]="loading"
+              [nzFrontPagination]="false"
+              [nzTotal]="total"
+              [nzPageIndex]="pageIndex"
+              [nzShowTotal]="totalTemplate"
+              (nzPageIndexChange)="searchData($event)">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">状态</th>
+        <th [nzAlign]="'center'">姓名</th>
+        <th [nzAlign]="'center'">年龄</th>
+        <th [nzAlign]="'center'">性别</th>
+        <th [nzAlign]="'center'">出生证</th>
+        <th [nzAlign]="'center'">证件号码</th>
+        <th [nzAlign]="'center'">手机</th>
+        <th [nzAlign]="'center'">父亲姓名</th>
+        <th [nzAlign]="'center'">母亲姓名</th>
+        <th [nzAlign]="'center'">地址</th>
+        <th [nzAlign]="'center'">出生日期</th>
+        <th [nzAlign]="'center'">户籍类别</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index;">
+        <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+        <td [nzAlign]="'left'">{{ data.profileStatus | dicPipe:'profileStatus'}}</td>
+        <td [nzAlign]="'left'">{{data.name}}</td>
+        <td [nzAlign]="'left'">
+          {{data.ageYear > 0 ? data.ageYear + '岁' : '' }}{{data.ageYear < 16 ? data.ageMonth + '月龄' : ''}}
+        </td>
+        <td [nzAlign]="'left'">{{data.gender | dicPipe:'genderCode'}}</td>
+        <td [nzAlign]="'left'">{{data.birthCardNo}}</td>
+        <td [nzAlign]="'left'">{{data.idCardNo}}</td>
+        <td [nzAlign]="'left'" class="contactPhone">{{ data.contactPhone }}</td>
+        <td [nzAlign]="'left'">{{data.fatherName}}</td>
+        <td [nzAlign]="'left'">{{data.motherName}}</td>
+        <td [nzAlign]="'left'">{{data.liveDetail}}</td>
+        <td [nzAlign]="'left'">{{data.birthDate | date:'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'left'">{{data.idTypeCode | dicPipe: 'idType'}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #totalTemplate>
+  共{{ total }}条数据，当前第{{ pageIndex }}页
+</ng-template>

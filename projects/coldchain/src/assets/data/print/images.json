@@ -1,0 +1,434 @@
+{
+  "ahNation": {
+    "bgImgWidth": 794,
+    "bgImgHeight": 1072,
+    "baseLine1": [
+      100,
+      165,
+      100,
+      20
+    ],
+    "baseLine2": [
+      100,
+      255,
+      100,
+      20
+    ],
+    "baseLine3": [
+      100,
+      366,
+      75,
+      20
+    ],
+    "baseLine4": [
+      100,
+      448,
+      64,
+      20
+    ],
+    "baseLine5": [
+      100,
+      520,
+      54,
+      20
+    ],
+    "baseLine6": [
+      100,
+      585,
+      100,
+      20
+    ],
+    "baseLine7": [
+      100,
+      695,
+      100,
+      20
+    ],
+    "baseLine8": [
+      100,
+      75,
+      60,
+      20
+    ],
+    "baseLine9": [
+      100,
+      129,
+      23,
+      20
+    ],
+    "isoChromatic": 40,
+    "marginTop": 543,
+    "src": [
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ahNation/ahNation0003接种记录.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ahNation/ahNation0004接种记录.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ahNation/ahNation0005接种记录.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ahNation/ahNation0006接种记录.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ahNation/ahNation0007接种记录.jpg'>"
+      }
+    ]
+  },
+  "ah2017": {
+    "bgImgWidth": 529,
+    "bgImgHeight": 778,
+
+    "baseLine1": [
+      72,
+      98,
+      80,
+      20
+    ],
+    "baseLine2": [
+      72,
+      157,
+      60,
+      20
+    ],
+    "baseLine3": [
+      72,
+      208,
+      100,
+      20
+    ],
+    "baseLine4": [
+      72,
+      287,
+      80,
+      20
+    ],
+    "baseLine5": [
+      72,
+      342,
+      75,
+      20
+    ],
+    "baseLine6": [
+      72,
+      380,
+      100,
+      20
+    ],
+    "baseLine7": [
+      72,
+      434,
+      100,
+      20
+    ],
+    "baseLine8": [
+      72,
+      42,
+      50,
+      20
+    ],
+    "baseLine9": [
+      72,
+      90,
+      21,
+      20
+    ],
+    "isoChromatic": 18,
+    "marginTop": 399,
+    "src": [
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ah2017/ah20170002接种记录.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ah2017/ah20170003接种记录.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ah2017/ah20170004接种记录.jpg'>"
+      }
+    ]
+  },
+  "ah2016": {
+    "bgImgWidth": 529,
+    "bgImgHeight": 755,
+    "baseLine1": [76,113,70,20],
+    "baseLine2": [76,174,49,20],
+    "baseLine3": [76,227,73,20],
+    "baseLine4": [76,321,47,20],
+    "baseLine5": [76,370,59,20],
+    "baseLine6": [76,438,54,20],
+    "baseLine7": [76,45,62,20],
+    "baseLine8": [76,102,22,20],
+    "isoChromatic": 17,
+    "marginTop": 379,
+    "src": [
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ah2016/ah20160002接种记录.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ah2016/ah20160003接种记录.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ah2016/ah20160004接种记录.jpg'>"
+      }
+    ]
+  },
+  "ah2019Small": {
+    "bgImgWidth": 529,
+    "bgImgHeight": 786,
+    "baseLine1": [
+      79,
+      109,
+      51,
+      20
+    ],
+    "baseLine2": [
+      79,
+      163,
+      80,
+      20
+    ],
+    "baseLine3": [
+      79,
+      245,
+      47,
+      20
+    ],
+    "baseLine4": [
+      79,
+      295,
+      48,
+      20
+    ],
+    "baseLine5": [
+      79,
+      345,
+      42,
+      20
+    ],
+    "baseLine6": [
+      79,
+      389,
+      75,
+      20
+    ],
+    "baseLine7": [
+      79,
+      464,
+      50,
+      20
+    ],
+    "baseLine8": [
+      79,
+      51,
+      39,
+      20
+    ],
+    "baseLine9": [
+      79,
+      92,
+      18,
+      20
+    ],
+    "isoChromatic": 30,
+    "marginTop": 398,
+    "src": [
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ah2019Small/ah2019(小)接种记录002.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ah2019Small/ah2019(小)接种记录003.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ah2019Small/ah2019(小)接种记录004.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ah2019Small/ah2019(小)接种记录005.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ah2019Small/ah2019(小)接种记录006.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ah2019Small/ah2019(小)接种记录007.jpg'>"
+      }
+    ]
+  },
+  "ah2019bhMade": {
+    "bgImgWidth": 790,
+    "bgImgHeight": 1086,
+    "baseLine1": [
+      125,
+      182,
+      75,
+      20
+    ],
+    "baseLine2": [
+      125,
+      255,
+      105,
+      20
+    ],
+    "baseLine3": [
+      125,
+      366,
+      65,
+      20
+    ],
+    "baseLine4": [
+      125,
+      431,
+      65,
+      20
+    ],
+    "baseLine5": [
+      125,
+      501,
+      64,
+      20
+    ],
+    "baseLine6": [
+      125,
+      566,
+      90,
+      20
+    ],
+    "baseLine7": [
+      125,
+      661,
+      70,
+      20
+    ],
+    "baseLine8": [
+      125,
+      94,
+      68,
+      20
+    ],
+    "baseLine9": [
+      125,
+      163,
+      18,
+      20
+    ],
+    "isoChromatic": 40,
+    "marginTop": 545,
+    "src": [
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ah2019baoheMade/ah2019包河制002接种记录.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ah2019baoheMade/ah2019包河制003接种记录.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ah2019baoheMade/ah2019包河制004接种记录.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ah2019baoheMade/ah2019包河制005接种记录.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/ah2019baoheMade/ah2019包河制006接种记录.jpg'>"
+      }
+    ]
+  },
+  "sh2018": {
+    "bgImgWidth": 756,
+    "bgImgHeight": 1033,
+    "baseLine1": [
+      110,
+      670,
+      100,
+      20
+    ],
+    "baseLine2": [
+      190,
+      670,
+      84,
+      20
+    ],
+    "baseLine3": [
+      257,
+      670,
+      85,
+      20
+    ],
+    "baseLine4": [
+      343,
+      670,
+      53,
+      20
+    ],
+    "baseLine5": [
+      383,
+      670,
+      83,
+      20
+    ],
+    "baseLine6": [
+      434,
+      670,
+      68,
+      20
+    ],
+    "baseLine7": [
+      550,
+      670,
+      84,
+      20
+    ],
+    "baseLine8": [
+      615,
+      670,
+      27,
+      20
+    ],
+    "baseLine9": [
+      635,
+      670,
+      80,
+      20
+    ],
+    "baseLine10": [
+      712,
+      670,
+      80,
+      20
+    ],
+    "baseLine11": [
+      779,
+      670,
+      100,
+      20
+    ],
+    "baseLine12": [
+      860,
+      670,
+      43,
+      20
+    ],
+    "baseLine13": [
+      894,
+      670,
+      80,
+      20
+    ],
+    "baseLine14": [
+      955,
+      670,
+      80,
+      20
+    ],
+    "isoChromatic": 27,
+    "marginTop": 180,
+    "src": [
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/sh2018/sh20180003接种记录.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/sh2018/sh20180004接种记录.jpg'>"
+      },
+      {
+        "bgImgSrc": "<img border='0' src='../../../../../assets/images/vaccinationRecord/sh2018/sh20180004接种记录.jpg'>"
+      }
+    ]
+  }
+}

@@ -1,0 +1,134 @@
+<nb-card accent="info" style="width: 870px;">
+  <nb-card-header>
+    <span *ngIf="isModify">编辑设备类型信息</span>
+    <span *ngIf="!isModify">新增设备类型</span>
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="modifyOrAddFrom" novalidate>
+      <div class="form-group row">
+        <label for="typeNumber" class="col-sm-2 col-form-label text-right label-required">设备类型编码：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large"  type="text" placeholder="请输入" formControlName="typeNumber" id="typeNumber" >
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('typeNumber')"></uea-show-form-errors>
+        </div>
+
+        <label for="name" class="col-sm-2 col-form-label text-right label-required">设备名称：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="text" placeholder="请输入" formControlName="name" id="name" >
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('name')"></uea-show-form-errors>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label text-right label-required">生产厂商：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="text" placeholder="请输入" formControlName="manufacturer" id="manufacturer" >
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('manufacturer')"></uea-show-form-errors>
+        </div>
+
+        <label class="col-sm-2 col-form-label text-right label-required">设备型号：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="text" placeholder="请输入" formControlName="model" id="model" >
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('model')"></uea-show-form-errors>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label text-right label-required">设备品牌：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="text" placeholder="请输入" formControlName="brand" id="brand" >
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('brand')"></uea-show-form-errors>
+        </div>
+
+        <label class="col-sm-2 col-form-label text-right label-required">冷藏包数量：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+                 formControlName="storageCapacityPackage" id="storageCapacityPackage" placeholder="请输入">
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('storageCapacityPackage')"></uea-show-form-errors>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label text-right label-required">冷藏容量：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+                 formControlName="storageCapacity" id="storageCapacity" placeholder="请输入">
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('storageCapacity')"></uea-show-form-errors>
+        </div>
+
+        <label class="col-sm-2 col-form-label text-right label-required">冷藏容量单位：</label>
+        <div class="col-sm-4">
+          <nz-select formControlName="storageCapacityUnit" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+            <nz-option *ngFor="let v of unitOptions"  [nzLabel]="v.label" [nzValue]="v.value"></nz-option>
+          </nz-select>
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('storageCapacityUnit')"></uea-show-form-errors>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label text-right label-required">冷冻容量：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+                 formControlName="freezeCapacity" id="freezeCapacity" placeholder="请输入">
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('freezeCapacity')"></uea-show-form-errors>
+        </div>
+
+        <label class="col-sm-2 col-form-label text-right label-required">冷冻容量单位：</label>
+        <div class="col-sm-4">
+          <nz-select formControlName="freezeCapacityUnit" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+            <nz-option *ngFor="let v of unitOptions"  [nzLabel]="v.label" [nzValue]="v.value"></nz-option>
+          </nz-select>
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('freezeCapacityUnit')"></uea-show-form-errors>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label  class="col-sm-2 col-form-label text-right">长(m)：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+                 formControlName="length" id="length" placeholder="请输入">
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('length')"></uea-show-form-errors>
+        </div>
+        <label  class="col-sm-2 col-form-label text-right">宽(m)：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+                 formControlName="width" id="width" placeholder="请输入">
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('width')"></uea-show-form-errors>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label  class="col-sm-2 col-form-label text-right ">高(m)：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+                 formControlName="height" id="height" placeholder="请输入">
+
+        </div>
+        <label  class="col-sm-2 col-form-label text-right ">重量(kg)：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+                 formControlName="weight" id="weight" placeholder="请输入">
+
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label  class="col-sm-2 col-form-label text-right ">备注：</label>
+          <div class="col-sm-10">
+         <textarea nzSize="large" [nzAutosize]="{ minRows: 2, maxRows: 6 }" nz-input placeholder="请输入..." formControlName="memo"></textarea>
+        </div>
+      </div>
+
+
+    </form>
+
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerMessage="" nbButton status="info" class="mr-5"
+              (click)="save()">保存
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>

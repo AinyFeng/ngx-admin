@@ -1,0 +1,177 @@
+<nz-card style="width:100%;" nzTitle="出入库信息列表">
+  <form nz-form [nzLayout]="'inline'" [formGroup]="queryForm">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="inOutType" [nzLg]="7" [nzMd]="5" [nzXs]="24">出入库类型</nz-form-label>
+          <nz-form-control nzErrorTip="" [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" id="inOutType"
+                       formControlName="inOutType">
+              <nz-option [nzLabel]="item.label" [nzValue]="item.value" *ngFor="let item of inOutType"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="paymentStatus" [nzLg]="7" [nzMd]="5" [nzXs]="24">付款状态</nz-form-label>
+          <nz-form-control nzErrorTip="" [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="---请选择---"
+                       style="width: 175px"
+                       formControlName="paymentStatus">
+              <nz-option nzLabel="已付款" nzValue="1">已付款</nz-option>
+              <nz-option nzLabel="未付款" nzValue="0">未付款</nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="vaccineType" [nzLg]="7" [nzMd]="5" [nzXs]="24">疫苗类型</nz-form-label>
+          <nz-form-control nzErrorTip="" [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="---请选择---"
+                       style="width: 175px"
+                       formControlName="vaccineType">
+              <nz-option nzLabel="一类" nzValue="0">一类</nz-option>
+              <nz-option nzLabel="二类" nzValue="1">二类</nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="vaccineBatchNo" [nzLg]="7" [nzMd]="5" [nzXs]="24">疫苗批号</nz-form-label>
+          <nz-form-control nzErrorTip="" [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <input nz-input formControlName="vaccineBatchNo"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="address" [nzLg]="7" [nzMd]="5" [nzXs]="24">地区</nz-form-label>
+          <nz-form-control nzErrorTip="" [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+              <input id="address"
+                     [value]="queryForm.get('address').value"
+                     readonly formControlName="address" type="text" nz-input placeholder="请选择"/>
+            </nz-input-group>
+            <ng-template #suffixIconButton>
+              <button nz-button (click)="selectAddress()" nzType="primary" nzSearch><i nz-icon nzType="search"></i>
+              </button>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="inAndOutStart" [nzLg]="7" [nzMd]="5" [nzXs]="24">出入库开始日期</nz-form-label>
+          <nz-form-control nzErrorTip="此项必填" [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <nz-date-picker [nzDisabledDate]="disableInAndOutStart" formControlName="inAndOutStart"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="inAndOutEnd" [nzLg]="7" [nzMd]="5" [nzXs]="24">出入库截至日期</nz-form-label>
+          <nz-form-control nzErrorTip="此项必填" [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <nz-date-picker [nzDisabledDate]="disableInAndOutEnd" formControlName="inAndOutEnd"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="inOutNumber" [nzLg]="7" [nzMd]="5" [nzXs]="24">出入库单号</nz-form-label>
+          <nz-form-control nzErrorTip="" [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <input nz-input formControlName="inOutNumber"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="queryScope" [nzLg]="7" [nzMd]="5" [nzXs]="24">查询范围</nz-form-label>
+          <nz-form-control nzErrorTip="" [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <nz-checkbox-group formControlName="queryScope" [(ngModel)]="checkOptionsOne">
+            </nz-checkbox-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="inOutStatus" [nzLg]="7" [nzMd]="5" [nzXs]="24">出入库状态</nz-form-label>
+          <nz-form-control nzErrorTip="" [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <nz-select
+              style="width: 175px"
+              [nzMaxTagCount]="20"
+              [nzMaxTagPlaceholder]="tagPlaceHolder"
+              nzMode="multiple"
+              nzPlaceHolder="请选择"
+              formControlName="inOutStatus"
+            >
+              <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label"
+                         [nzValue]="option.value"></nz-option>
+            </nz-select>
+            <ng-template #tagPlaceHolder let-selectedList> and {{ selectedList.length }} more selected
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button nzType="primary" (click)="queryData()" [disabled]="loading">查询</button>
+        <button nz-button nzType="primary" (click)="resetForm()">重置</button>
+        <button nz-button nzType="primary" >导出</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+    <div nz-row>
+      <nz-table #borderedTable nzBordered [nzPageIndex]="pageIndex" [nzTotal]="total" [nzItemRender]="renderItemTemplate"
+                [nzFrontPagination]="false" [nzData]="dataSet" [nzLoading]="loading" (nzPageIndexChange)="queryData($event)">
+        <thead>
+        <tr>
+          <th>编号</th>
+          <th>操作</th>
+          <th>类型</th>
+          <th>疫苗类型</th>
+          <th>订单号</th>
+          <th>订单状态</th>
+          <th>是否付款</th>
+          <th>出入库日期</th>
+          <th>供货单位</th>
+          <th>收货单位</th>
+          <th>录入单位</th>
+          <th>创建日期</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of borderedTable.data;index as i">
+          <td>{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+          <td>
+            <a href="javascript:" class="link-a mr-1" (click)="detail(data)">查看</a>
+            <a href="javascript:" class="link-a mr-1"
+               *ngIf="data.orderStatus == '12'" (click)="delete(data)">删除</a>
+          </td>
+          <td>{{ data.orderType | dicPipe:'pfOrdertype'}}</td>
+          <td>{{ data.vaccineType | dicPipe:'vaccineType' }}</td>
+          <td>{{ data.orderNo }}</td>
+          <td>{{ data.orderStatus | dicPipe:'pfOrderStatus' }}</td>
+          <td>{{ data.isPay }}</td>
+          <td>{{ data.orderDate | date:"yyyy-MM-dd"}}</td>
+          <td>{{ data.supplyorgName }}</td>
+          <td>{{ data.receiveorgName }}</td>
+          <td>{{ data.createorgName }}</td>
+          <td>{{ data.creatDate | date:"yyyy-MM-dd"}}</td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  <ng-template #renderItemTemplate let-type let-page="page">
+    <a *ngIf="type === 'pre'">上一页</a>
+    <a *ngIf="type === 'next'">下一页</a>
+    <a *ngIf="type === 'page'">{{ page }}</a>
+  </ng-template>
+</nz-card>

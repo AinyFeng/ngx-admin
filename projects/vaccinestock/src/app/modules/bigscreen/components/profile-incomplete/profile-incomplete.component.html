@@ -1,0 +1,11 @@
+<div [theme]="theme" style="height: 100%;" echarts [options]="echartsOption"></div>
+<div class="profile-panel">
+  <div class="panel-text mb-2"><span class="panel-desc-text">本区域档案总数</span>
+    <span
+      class="panel-text-figure width-150">{{ profileTotal }}</span></div>
+  <div class="panel-text mb-2"><span class="panel-desc-text">档案完整总数</span>
+    <span
+      class="panel-text-figure width-150">{{ profileCompleteTotal }}</span></div>
+  <div class="panel-text"><span class="panel-desc-text">占比</span>
+    <span class="panel-text-figure width-150">{{ ratio }}</span></div>
+</div>

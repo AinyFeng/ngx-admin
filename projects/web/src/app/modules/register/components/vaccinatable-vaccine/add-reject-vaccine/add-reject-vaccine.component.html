@@ -1,0 +1,27 @@
+<nb-card size="giant" class="nb-card-container-xs">
+  <nb-card-header class="nb-card-header-qb">
+    添加不接种疫苗
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="form-group">
+      <label class="col-form-label label-required">不接种描述</label>
+      <input nbInput fullWidth placeholder="" [(ngModel)]="symptomDescriptions">
+    </div>
+    <div class="form-group">
+      <label class="col-form-label label-required">避免接种的疫苗制品种类</label>
+      <nb-select multiple fullWidth placeholder="选择避免接种的制品种类" [(selected)]="selectAvoid">
+        <nb-option *ngFor="let o of avoidOpt" [value]="o.value">{{ o.label }}</nb-option>
+      </nb-select>
+    </div>
+    <div class="form-group">
+      <label for="memo" class="col-form-label">备注</label>
+      <textarea id="memo" fullWidth nbInput [(ngModel)]="memo"></textarea>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button nbButton status="info" class="mr-3" (click)="onSubmit()">保存</button>
+    </div>
+  </nb-card-footer>
+</nb-card>

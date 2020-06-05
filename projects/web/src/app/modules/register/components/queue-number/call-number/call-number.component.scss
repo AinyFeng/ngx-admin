@@ -1,0 +1,46 @@
+// @import '../../../../../@uea/theme/global_theme';
+// // @import '../../../../common/global-theme/global_theme';
+
+@import '../../../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+	.regQueue {
+		font-size: nb-theme(text-heading-5-font-size);
+		font-weight: nb-theme(text-heading-5-font-weight);
+		color: nb-theme(text-basic-color);
+	}
+
+	.call-number {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		align-items: baseline;
+		font-size: nb-theme(text-heading-6-font-size);
+		font-weight: nb-theme(text-heading-6-font-weight);
+		color: nb-theme(text-info-color);
+
+		& > * {
+			margin: 0 0.25rem;
+		}
+	}
+
+  .calling-number {
+    font-size: 2rem;
+  }
+
+  .waiting-number {
+    font-size: 1rem;
+  }
+
+  .card-height-mini {
+    height: 8rem;
+    overflow: hidden;
+  }
+
+  .card-height-mini-double {
+    position: absolute;
+    width: 95%;
+    z-index: 10;
+    box-shadow: 0 0 5px 2px nb-theme(color-info-400);
+  }
+}

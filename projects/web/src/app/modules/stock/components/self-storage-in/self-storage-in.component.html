@@ -1,0 +1,92 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    自采入库
+    <div>
+      <div>
+        <button class="mr-2" nbButton status="info" (click)="searchData()">查询</button>
+        <button class="mr-2" nbButton status="info" (click)="addSelfStorage()">新增</button>
+        <button class="mr-2" nbButton status="warning" (click)="reset()">重置</button>
+      </div>
+
+     <!-- <button [nbSpinner]="loading"  (click)="openSaveDialog(saveDialog)" nbSpinnerStatus="info" nbSpinnerMessage="" nbButton status="info" >保存
+      </button>
+      <button [nbSpinner]="loading" (click)="reset()" nbSpinnerStatus="warning" nbSpinnerMessage="" nbButton status="info">重填
+      </button>-->
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="searchFrom">
+
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">入库日期(起)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择日期" [nbDatepicker]="DatePicker"
+                   formControlName="DateStart" id="DateStart">
+            <nb-datepicker [filter]="filterStartDate" #DatePicker format="YYYY-MM-DD"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">入库日期(止)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择日期" [nbDatepicker]="DateEndPicker"
+                   formControlName="DateEnd" id="DateEnd">
+            <nb-datepicker [filter]="filterEndDate" #DateEndPicker format="YYYY-MM-DD"></nb-datepicker>
+          </div>
+        </div>
+
+    </div>
+    </form>
+  </nb-card-body>
+
+
+</nb-card>
+<nb-card>
+  <nb-card-body>
+    <nz-table #msgTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false" [nzData]="listOfData"
+              [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex"
+              (nzPageIndexChange)="searchData($event)">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">入库时间</th>
+        <th [nzAlign]="'center'">类型</th>
+        <th [nzAlign]="'center'">业务</th>
+        <th [nzAlign]="'center'">疫苗名称</th>
+        <th [nzAlign]="'center'">生产企业</th>
+        <th [nzAlign]="'center'">疫苗批次</th>
+        <th [nzAlign]="'center'">疫苗剂量</th>
+        <th [nzAlign]="'center'">有效期</th>
+        <th [nzAlign]="'center'">数量(支)</th>
+        <th [nzAlign]="'center'">归属科室</th>
+        <th [nzAlign]="'center'">入库单号</th>
+        <th [nzAlign]="'center'">操作人</th>
+       <!-- <th [nzAlign]="'center'">备注</th>-->
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index">
+        <td [nzAlign]="'center'">{{(pageIndex - 1) * pageSize + i + 1}}</td>
+        <td [nzAlign]="'center'">{{data.stockChangeTime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
+        <td [nzAlign]="'center'">{{data.isStockIn == 1 ? '入库' : '出库'}}</td>
+        <td [nzAlign]="'center'">{{data.stockChangeEvent | dicPipe:'stockChangeEvent'}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineProductName}}</td>
+        <td [nzAlign]="'center'">{{data.manufacturer}}</td>
+        <td [nzAlign]="'center'">{{data.batchNo}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineSpecification}}</td>
+        <td [nzAlign]="'center'">{{data.loseEfficacyDate | date:"yyyy-MM-dd"}}</td>
+        <td [nzAlign]="'center'">{{data.count}}</td>
+        <td [nzAlign]="'center'">{{data.departmentCode | departmentNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{data.acceptance_serial}}</td>
+        <td [nzAlign]="'center'">{{data.stockChangeBy | povStaffNamePipe | async}}</td>
+       <!-- <td [nzAlign]="'center'">{{data.memo}}</td>-->
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+
+
+
+
+

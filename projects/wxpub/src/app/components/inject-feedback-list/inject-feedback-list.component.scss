@@ -1,0 +1,38 @@
+.list-item {
+  background: #ffffff;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.cell-wrap {
+  flex-direction: column;
+}
+.title-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.img-wrap {
+  display: flex;
+
+  img {
+    display: inline-block;
+    width: 150px;
+    height: 100px;
+    margin: 5px;
+  }
+
+}
+
+.add-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  line-height: 60px;
+  text-align: center;
+  background:  #7aa8f8;
+  color: white;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}

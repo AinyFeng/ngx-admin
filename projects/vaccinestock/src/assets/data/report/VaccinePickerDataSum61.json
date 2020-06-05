@@ -1,0 +1,108 @@
+[
+  {
+    "vacName": "乙肝",
+    "vacCode": "02",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacName": "卡介苗",
+    "vacCode": "01",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacName": "脊灰",
+    "vacCode": "03",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacName": "百白破",
+    "vacCode": "04",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacName": "白破",
+    "vacCode": "06",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacName": "麻风",
+    "vacCode": "14",
+    "tags": [
+      "MCV",
+      "RCV"
+    ],
+    "selected": false
+  },
+  {
+    "vacName": "麻腮风",
+    "vacCode": "12",
+    "tags": [
+      "MCV",
+      "RCV",
+      "MumCV"
+    ],
+    "selected": false
+  },
+  {
+    "vacName": "麻腮",
+    "vacCode": "13",
+    "tags": [
+      "MCV",
+      "MumCV"
+    ],
+    "selected": false
+  },
+  {
+    "vacName": "麻疹",
+    "vacCode": "09",
+    "tags": [
+      "MCV"
+    ],
+    "selected": false
+  },
+  {
+    "vacName": "流脑A",
+    "vacCode": "16",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacName": "流脑A+C",
+    "vacCode": "17",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacName": "乙脑（减毒）",
+    "vacCode": "1801",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacName": "乙脑（灭活）",
+    "vacCode": "1802",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacName": "甲肝（减毒）",
+    "vacCode": "1901",
+    "tags": [
+      "HepA"
+    ],
+    "selected": false
+  },
+  {
+    "vacName": "甲肝（灭活）",
+    "vacCode": "1903",
+    "tags": [
+      "HepA"
+    ],
+    "selected": false
+  }
+]

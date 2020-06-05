@@ -1,0 +1,91 @@
+<nb-card accent="info">
+  <nb-card-header>
+    节假日配置
+    <div>
+      <button nbButton status="info" (click)="searchData()">查询</button>
+      <button nbButton status="info">导出报表</button>
+      <button nbButton status="warning" (click)="reset()">重置</button>
+      <button nbButton status="warning" (click)="addForm()">新增</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="holidayForm">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">节假日类型：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择节假日类型" fullWidth outline status="info" formControlName="holidayType" id="holidayType">
+              <!--              <nb-option value="">全部</nb-option>-->
+              <nb-option value="1">公历节假日</nb-option>
+              <nb-option value="2">农历节假日</nb-option>
+              <!--<nb-option value="9">农历节假日</nb-option>-->
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">节假日名称：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入节假日" formControlName="holidayName" id="holidayName">
+          </div>
+        </div>
+
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">是否可用：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择是否可用" fullWidth outline status="info" formControlName="useAble" id="useAble">
+              <!--              <nb-option value="">全部</nb-option>-->
+              <nb-option value="1">可用</nb-option>
+              <nb-option value="0">不可用</nb-option>
+            </nb-select>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center">
+  <nb-card-body>
+    <nz-table #groupingTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false"
+              [nzData]="listOfData"
+              [nzPageIndex]="pageIndex"
+              [nzLoading]="loading" [nzTotal]="total"
+              (nzPageIndexChange)="searchData($event)">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">年份</th>
+        <th [nzAlign]="'center'">节日名称</th>
+        <th [nzAlign]="'center'">节日类型</th>
+        <th [nzAlign]="'center'">是否法定假日</th>
+        <th [nzAlign]="'center'">具体日期</th>
+        <th [nzAlign]="'center'">是否可用</th>
+        <th [nzAlign]="'center'">创建时间</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of groupingTable.data;let i=index;">
+        <td [nzAlign]="'center'">{{i + 1}}</td>
+        <td [nzAlign]="'center'">{{data.year}}</td>
+        <td [nzAlign]="'center'">{{data.holiday_name}}</td>
+        <td [nzAlign]="'center'">{{data.holiday_type == '1' ? '公历节假日' : '农历节假日'}}</td>
+        <td [nzAlign]="'center'">{{data.legal == '1' ? '是' : '否'}}</td>
+        <td [nzAlign]="'center'">{{data.holiday_date}}</td>
+        <td [nzAlign]="'center'">{{data.use_able == '0' ? '不可用' : '可用'}}</td>
+        <td [nzAlign]="'center'">{{data.createDate | date: 'yyyy-MM-dd HH:mm' }}</td>
+        <td [nzAlign]="'center'">
+          <button class="btn btn-sm btn-success" *ngIf="data.use_able === '0'"
+                  (click)="setUseAble(data.holiday_code, '1')">启用
+          </button>
+          <button class="btn btn-sm btn-primary" *ngIf="data.use_able === '1'"
+                  (click)="setUseAble(data.holiday_code, '0')">停用
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

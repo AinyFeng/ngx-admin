@@ -1,0 +1,7 @@
+@import '../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+	.toggle-icon {
+		font-size: 0.75rem;
+	}
+}

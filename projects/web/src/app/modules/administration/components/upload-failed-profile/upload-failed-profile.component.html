@@ -1,0 +1,75 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    上传失败档案查询
+    <div>
+      <button nbButton status="info" class="mr-2" [nbSpinner]="loading" nbSpinnerStatus="primary"
+              (click)="searchData()">查询</button>
+      <button nbButton status="info">上传</button>
+      <button nbButton status="info" [nbSpinner]="loading" nbSpinnerStatus="primary" (click)="export()" class="ml-2 mr-2">导出报表</button>
+      <button nbButton status="warning" (click)="replacement()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="uploadProfileFrom">
+      <div class="form-group row">
+        <div class="col-3 row">
+          <label class="col-form-label col-4 text-right">姓名:</label>
+          <div class="col-8">
+            <input nbInput fullWidth placeholder="输入姓名" formControlName="name" id="name">
+          </div>
+        </div>
+        <div class="col-3 row">
+          <label class="col-form-label col-4 text-right">生日(起):</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择生日" [nbDatepicker]="birthDatePicker"
+                   formControlName="birthStartDate" id="birthStartDate">
+            <nb-datepicker #birthDatePicker format="YYYY/MM/DD" [filter]="filterBirthStartDate"></nb-datepicker>
+            <!--            <uea-show-form-errors [control]="uploadProfileFrom.get('birthStartDate')"></uea-show-form-errors>-->
+          </div>
+        </div>
+        <div class="col-3 row">
+          <label class="col-form-label col-4 text-right">生日(止):</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择生日" [nbDatepicker]="birthDateEndPicker"
+                   formControlName="birthEndDate" id="birthEndDate">
+            <nb-datepicker #birthDateEndPicker format="YYYY/MM/DD" [filter]="filterBirthEndDate"></nb-datepicker>
+            <!--            <uea-show-form-errors [control]="uploadProfileFrom.get('birthEndDate')"></uea-show-form-errors>-->
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow-x: scroll;">
+  <nb-card-body>
+    <nz-table #msgTable [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false" [nzLoading]="loading"
+              [nzFrontPagination]="false"
+              [nzTotal]="total"
+              [nzPageIndex]="pageIndex"
+              (nzPageIndexChange)="searchData($event)">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">档案编码</th>
+        <th [nzAlign]="'center'">姓名</th>
+        <th [nzAlign]="'center'">性别</th>
+        <th [nzAlign]="'center'">出生日期</th>
+        <th [nzAlign]="'center'">失败原因</th>
+        <th [nzAlign]="'center'">失败日期</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;index as i">
+        <td [nzAlign]="'center'">{{(pageIndex - 1) * pageSize + i + 1}}</td>
+        <td [nzAlign]="'center'">{{data.profileCode}}</td>
+        <td [nzAlign]="'center'">{{data.name}}</td>
+        <td [nzAlign]="'center'">{{data.gender | dicPipe: 'genderCode'}}</td>
+        <td [nzAlign]="'center'">{{data.birthDate | date:'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">{{data.failedReason}}</td>
+        <td [nzAlign]="'center'">{{data.failedDate | date:'yyyy-MM-dd'}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

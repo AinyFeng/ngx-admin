@@ -1,0 +1,146 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    预诊记录管理
+    <div>
+      <button nbButton status="info" (click)="queryData()" [nbSpinner]="loading">查询
+      </button>
+      <button nbButton status="warning" (click)="resetForm()" class="ml-2">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="queryForm">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">档案编号:</label>
+          <div class="col-8">
+            <input type="text" class="ml-1" nbInput fullWidth placeholder="请输入受种人编号" formControlName="profileCode"
+                   id="profileCode">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">姓名:</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth
+                   formControlName="name" id="name" placeholder="请输入受种人姓名">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">预诊时间:</label>
+          <div class="col-8">
+            <nz-date-picker
+              style="width: 100%;" nzSize="large"
+              formControlName="birthStart"
+              nzShowTime
+              nzAllowClear="false"
+              nzFormat="yyyy-MM-dd"
+              [nzDisabledDate]="disabledStart">
+            </nz-date-picker>
+          </div>
+        </div>
+        <!--<div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">出生日期(止):</label>
+          <div class="col-8">
+            <nz-date-picker
+              style="width: 100%;" nzSize="large"
+              formControlName="birthEnd"
+              nzShowTime
+              nzFormat="yyyy-MM-dd"
+              [nzDisabledDate]="disabledEnd">
+            </nz-date-picker>
+          </div>
+        </div>-->
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">证件号码:</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入受种者证件号码" formControlName="idCardNo" id="idCardNo">
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">母亲姓名:</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入受种人母亲姓名" formControlName="motherName"
+                   id="motherName">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">母亲电话:</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入母亲电话" formControlName="motherContactPhone"
+                   id="motherContactPhone">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">父亲姓名:</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入父亲姓名" formControlName="fatherName" id="fatherName">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">父亲电话:</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入父亲电话" formControlName="fatherContactPhone"
+                   id="fatherContactPhone">
+          </div>
+        </div>
+      </div>
+      <!--<div class="form-group row">
+
+      </div>-->
+    </form>
+  </nb-card-body>
+</nb-card>
+<nb-card>
+  <nb-card-body>
+    <nz-table #msgTable [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false" [nzLoading]="loading"
+              [nzFrontPagination]="false"
+              [nzTotal]="total"
+              [(nzPageIndex)]="pageIndex"
+              [nzShowTotal]="totalTemplate"
+              (nzPageIndexChange)="queryData($event)">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">档案编码</th>
+        <th [nzAlign]="'center'">姓名</th>
+        <th [nzAlign]="'center'">生日</th>
+        <th [nzAlign]="'center'">证件号码</th>
+        <th [nzAlign]="'center'">母亲姓名</th>
+        <th [nzAlign]="'center'">母亲手机</th>
+        <th [nzAlign]="'center'">父亲姓名</th>
+        <th [nzAlign]="'center'">父亲手机</th>
+        <th [nzAlign]="'center'">预诊时间</th>
+        <!--        <th [nzAlign]="'center'">预诊问题</th>-->
+        <th [nzAlign]="'center'">预诊是否正常</th>
+        <th [nzAlign]="'center'">预诊医生</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index;">
+        <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+        <td [nzAlign]="'center'">{{data.profileCode}}</td>
+        <td [nzAlign]="'center'">{{data.name}}</td>
+        <td [nzAlign]="'center'">{{data.birthDate | date:'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">{{data.idCardNo}}</td>
+        <td [nzAlign]="'center'">{{data.motherName}}</td>
+        <td [nzAlign]="'center'">{{data.motherPhone}}</td>
+        <td [nzAlign]="'center'">{{data.fatherName}}</td>
+        <td [nzAlign]="'center'">{{data.fatherPhone}}</td>
+        <td [nzAlign]="'center'">{{data.createDate | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+        <!--        <td [nzAlign]="'center'">{{data.question}}</td>-->
+        <td [nzAlign]="'center'">{{data.normalStatus === '0' ? '正常' : '不正常'}}</td>
+        <td [nzAlign]="'center'">{{data.doctor | povStaffNamePipe | async }}</td>
+        <td [nzAlign]="'center'">
+          <a href="javaScript:" (click)="checkDetail(data)">查看</a>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #totalTemplate>
+  共{{ total }}条数据，当前第{{ pageIndex }}页
+</ng-template>

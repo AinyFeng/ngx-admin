@@ -1,0 +1,36 @@
+{
+  "$schema": "../../node_modules/ng-packagr/package.schema.json",
+  "name": "@tod/uea-auth-lib",
+  "version": "0.0.0",
+  "license": "TSCL",
+  "private": true,
+  "author": {
+    "name": "@tod"
+  },
+  "peerDependencies": {
+    "@angular/common": ">=8.2.0",
+    "@angular/core": ">=8.2.0",
+    "@nebular/security": ">=4.5.0",
+    "@ngx-config/core": ">=7.0.0",
+    "angular-oauth2-oidc": ">=8.0.4",
+    "mappet": ">=4.3.1"
+  },
+  "ngPackage": {
+    "lib": {
+      "entryFile": "src/public_api.ts",
+      "umdModuleIds": {
+        "@nebular/security": "@nebular/security",
+        "@ngx-config/core": "@ngx-config/core",
+        "@ngx-config/http-loader": "@ngx-config/http-loader",
+        "angular-oauth2-oidc": "angular-oauth2-oidc",
+        "lodash": "lodash"
+      }
+    },
+    "dest": "../../dist/uea-auth-lib"
+  },
+  "repository": "",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/lodash": "^4.14.146"
+  }
+}

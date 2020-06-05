@@ -1,0 +1,1259 @@
+{
+  "app": {},
+  "auth": {
+    "AuthConfig": {
+      "issuer@XXX": "https://svs.chinavacc.com.cn",
+      "issuer": "https://uat.chinavacc.com.cn",
+      "baseURI": "/wxpub",
+      "redirectUri@XXX": "window.location.origin",
+      "silentRefreshRedirectUri@XXX": "window.location.origin + '/silent-refresh.html'",
+      "clientId": "e83508de-89c0-4188-adc4-be240631d790",
+      "clientId@XXX": "@!CADB.9C8E.1925.560E!0001!982E.D9EC!0008!6913.60F3.07C2.043D",
+      "scope": "openid svsprofile",
+      "showDebugInformation": true,
+      "timeoutFactor": 0.8
+    }
+  },
+  "pulsar": {
+    "pulsarUrl": "wss:svs.chinavacc.com.cn:19999/ws/v2/reader/non-persistent/",
+    "pulsarVaccineUrl": "wss:svs.chinavacc.com.cn:19999/ws/v2/consumer/non-persistent/",
+    "pulsarNameSpace": "default",
+    "registWaitTopicShared": "regist_wait_topic_shared",
+    "registPassTopicShared": "regist_pass_topic_shared",
+    "registWaitTopic": "regist_wait_topic",
+    "registPassTopic": "regist_pass_topic",
+    "payWaitTopicShared": "pay_wait_topic_shared",
+    "payWaitTopic": "pay_wait_topic",
+    "payPassTopicShared": "pay_pass_topic_shared",
+    "payPassTopic": "pay_pass_topic",
+    "vaccinateWaitTopicShared": "vaccinate_wait_topic_shared",
+    "vaccinateWaitTopic": "vaccinate_wait_topic",
+    "vaccinateCalledTopicShared": "vaccinate_called_topic_shared",
+    "vaccinateCalledTopic": "vaccinate_called_topic"
+  },
+  "signPad": {
+    "signatureUrl": "https://svs.chinavacc.com.cn:19999/agreement/",
+    "lodopUrl": "http://localhost:8000/CLodopfuncs.js",
+    "lodopCompanyName": "安徽奇兵医学科技有限公司",
+    "lodopMainLicense": "56E2EB898EE17DEBD030D1E8A683CAFE",
+    "lodopLicenseA": "安徽奇兵醫學科技有限公司",
+    "lodopLicenseB": "423D486AF17E2120FEB7B2BDDF66F396",
+    "lodopCompanyNameEng": "THIRD LICENSE",
+    "lodopLicenseARegistName": "AnHui Ace-power Medical and Technology Co., Ltd",
+    "lodopLicenseBStr": "709251107F8D9D680D1A81F88BED121F",
+    "wsUrl": "ws://127.0.0.1:40000",
+    "receiptPrinterName": "XP-80C"
+  },
+  "receiptTemplate": {
+    "anhui2017": {
+      "taskName": "打印安徽收费票据",
+      "printMode": [
+        "PRINT_NOCOLLATE",
+        1
+      ],
+      "bkImg": "'<img border='0' src='/assets/images/receipt-template/安徽省医疗门诊收费票据-2017.png'>'",
+      "showModeWidth": [
+        "BKIMG_WIDTH",
+        "210.00mm"
+      ],
+      "showModeHeight": [
+        "BKIMG_HEIGHT",
+        "126.00mm"
+      ],
+      "pageBkImgTop": [
+        "BKIMG_TOP",
+        0
+      ],
+      "printPageSize": [
+        1,
+        2000,
+        1258,
+        ""
+      ],
+      "serialNo": [
+        70,
+        148,
+        220,
+        20
+      ],
+      "medicalInstitution": [
+        72,
+        358,
+        100,
+        20
+      ],
+      "name": [
+        96,
+        130,
+        47,
+        20
+      ],
+      "gender": [
+        94,
+        262,
+        32,
+        20
+      ],
+      "medicalInsuranceType": [
+        95,
+        353,
+        79,
+        20
+      ],
+      "totalAmountChinese": [
+        361,
+        159,
+        100,
+        20
+      ],
+      "totalAmountDigits": [
+        362,
+        491,
+        100,
+        20
+      ],
+      "medicalInsurancePayAmount": [
+        386,
+        165,
+        42,
+        20
+      ],
+      "personalAccountPayAmount": [
+        386,
+        278,
+        43,
+        20
+      ],
+      "otherMedicalInsurancePayAmount": [
+        386,
+        391,
+        68,
+        20
+      ],
+      "personalPayAmount": [
+        386,
+        544,
+        100,
+        20
+      ],
+      "payeePov": [
+        421,
+        154,
+        149,
+        20
+      ],
+      "payee": [
+        425,
+        385,
+        135,
+        20
+      ],
+      "date": [
+        413,
+        527,
+        120,
+        20
+      ],
+      "vacProductName": [
+        154,
+        97,
+        101,
+        20
+      ],
+      "vacProductQuantity": [
+        154,
+        237,
+        39,
+        20
+      ],
+      "vacProductAmount": [
+        154,
+        286,
+        45,
+        20
+      ],
+      "vacProductPersonalPayAmount": [
+        154,
+        336,
+        50,
+        20
+      ],
+      "marginLeft": 310,
+      "marginTop": 34
+    },
+    "shanghai2017": {
+      "taskName": "打印上海收费票据",
+      "printMode": [
+        "PRINT_NOCOLLATE",
+        1
+      ],
+      "bkImg": "'<img border='0' src='/assets/images/receipt-template/上海市医疗门诊急诊收费票据样本-2018.png'>'",
+      "showModeWidth": [
+        "BKIMG_WIDTH",
+        "210.00mm"
+      ],
+      "showModeHeight": [
+        "BKIMG_HEIGHT",
+        "130.00mm"
+      ],
+      "pageBkImgTop": [
+        "BKIMG_TOP",
+        0
+      ],
+      "printPageSize": [
+        1,
+        2000,
+        1258,
+        ""
+      ],
+      "serialNo": [
+        60,
+        145,
+        103,
+        20
+      ],
+      "medicalInstitution": [
+        60,
+        335,
+        123,
+        20
+      ],
+      "name": [
+        80,
+        115,
+        95,
+        20
+      ],
+      "gender": [
+        80,
+        245,
+        26,
+        20
+      ],
+      "medicalInsuranceType": [
+        80,
+        345,
+        122,
+        20
+      ],
+      "categoryName": [
+        130,
+        90,
+        100,
+        20
+      ],
+      "categoryPayAmount": [
+        130,
+        200,
+        100,
+        20
+      ],
+      "vacProductCode": [
+        130,
+        325,
+        70,
+        20
+      ],
+      "vacProductName": [
+        130,
+        410,
+        88,
+        20
+      ],
+      "vacSpecifications": [
+        130,
+        510,
+        40,
+        20
+      ],
+      "vacProductQuantity": [
+        130,
+        556,
+        30,
+        20
+      ],
+      "vacPrice": [
+        130,
+        595,
+        40,
+        20
+      ],
+      "vacProductAmount": [
+        130,
+        640,
+        55,
+        20
+      ],
+      "totalAmountChinese": [
+        250,
+        159,
+        100,
+        20
+      ],
+      "cashPayment": [
+        270,
+        140,
+        58,
+        20
+      ],
+      "personalAccountPayAmount": [
+        270,
+        260,
+        68,
+        20
+      ],
+      "medicalInsurancePayAmount": [
+        290,
+        155,
+        51,
+        20
+      ],
+      "additionalPayment": [
+        290,
+        240,
+        79,
+        20
+      ],
+      "classificationOwnPayment": [
+        310,
+        190,
+        49,
+        20
+      ],
+      "ownPayment": [
+        310,
+        268,
+        39,
+        20
+      ],
+      "ownExpense": [
+        330,
+        110,
+        51,
+        20
+      ],
+      "curYearAccountBalance": [
+        350,
+        155,
+        82,
+        20
+      ],
+      "allYearAccountBalance": [
+        350,
+        275,
+        75,
+        20
+      ],
+      "payeePov": [
+        410,
+        170,
+        100,
+        20
+      ],
+      "payee": [
+        410,
+        365,
+        100,
+        20
+      ],
+      "date": [
+        410,
+        540,
+        100,
+        20
+      ],
+      "marginTop": 34
+    },
+    "jiangxi": {
+      "taskName": "打印江西收费票据",
+      "printMode": [
+        "PRINT_NOCOLLATE",
+        1
+      ],
+      "bkImg": "'<img border='0' src='/assets/images/receipt-template/江西省医疗门诊收费票据-2016.png'>'",
+      "showModeWidth": [
+        "BKIMG_WIDTH",
+        "120.00mm"
+      ],
+      "showModeHeight": [
+        "BKIMG_HEIGHT",
+        "202.00mm"
+      ],
+      "pageBkImgTop": [
+        "BKIMG_TOP",
+        0
+      ],
+      "printPageSize": [
+        1,
+        1200,
+        2020,
+        ""
+      ],
+      "serialNo": [
+        75,
+        114,
+        95,
+        20
+      ],
+      "medicalInstitution": [
+        75,
+        230,
+        100,
+        20
+      ],
+      "name": [
+        95,
+        89,
+        92,
+        20
+      ],
+      "gender": [
+        95,
+        213,
+        18,
+        20
+      ],
+      "medicalInsuranceType": [
+        95,
+        281,
+        100,
+        20
+      ],
+      "vacProductName": [
+        160,
+        66,
+        153,
+        20
+      ],
+      "vacProductQuantity": [
+        160,
+        234,
+        40,
+        20
+      ],
+      "vacProductAmount": [
+        160,
+        285,
+        33,
+        20
+      ],
+      "personalPayAmount": [
+        160,
+        334,
+        62,
+        20
+      ],
+      "totalAmountChinese": [
+        645,
+        104,
+        137,
+        20
+      ],
+      "totalAmountDigits": [
+        645,
+        283,
+        100,
+        20
+      ],
+      "medicalInsurancePayAmount": [
+        665,
+        124,
+        76,
+        20
+      ],
+      "personalAccountPayAmount": [
+        665,
+        233,
+        63,
+        20
+      ],
+      "otherMedicalInsurancePayAmount": [
+        665,
+        345,
+        71,
+        20
+      ],
+      "personalTotalPayAmount": [
+        685,
+        127,
+        100,
+        20
+      ],
+      "payeePov": [
+        700,
+        130,
+        83,
+        20
+      ],
+      "payee": [
+        700,
+        275,
+        46,
+        20
+      ],
+      "date": [
+        700,
+        333,
+        70,
+        20
+      ],
+      "marginTop": 34
+    },
+    "yunnan": {
+      "taskName": "打印云南收费票据",
+      "printMode": [
+        "PRINT_NOCOLLATE",
+        1
+      ],
+      "bkImg": "'<img border='0' src='/assets/images/receipt-template/云南省医疗门诊收费票据-2018.png'>'",
+      "showModeWidth": [
+        "BKIMG_WIDTH",
+        "125.00mm"
+      ],
+      "showModeHeight": [
+        "BKIMG_HEIGHT",
+        "70.00mm"
+      ],
+      "pageBkImgTop": [
+        "BKIMG_TOP",
+        0
+      ],
+      "pageBkImgLeft": [
+        "BKIMG_LEFT",
+        -1
+      ],
+      "printPageSize": [
+        1,
+        1250,
+        700,
+        ""
+      ],
+      "notice": [
+        203,
+        61,
+        230,
+        20,
+        "注:电子票号与纸质票号不一致为无效票"
+      ],
+      "ticketNo": [
+        203,
+        288,
+        143,
+        20
+      ],
+      "serialNo": [
+        24,
+        113,
+        134,
+        20
+      ],
+      "medicalInstitution": [
+        42,
+        124,
+        133,
+        20
+      ],
+      "name": [
+        60,
+        89,
+        181,
+        20
+      ],
+      "gender": [
+        60,
+        310,
+        67,
+        20
+      ],
+      "medicalInsuranceType": [
+        80,
+        112,
+        100,
+        20
+      ],
+      "socialSecurityNumber": [
+        80,
+        260,
+        139,
+        20
+      ],
+      "vacProductName": [
+        100,
+        64,
+        155,
+        20
+      ],
+      "vacProductQuantity": [
+        100,
+        244,
+        53,
+        20
+      ],
+      "vacProductAmount": [
+        100,
+        316,
+        71,
+        20
+      ],
+      "totalAmountChinese": [
+        182,
+        120,
+        185,
+        20
+      ],
+      "totalAmountDigits": [
+        182,
+        336,
+        66,
+        20
+      ],
+      "payeePov": [
+        224,
+        140,
+        81,
+        20
+      ],
+      "payee": [
+        222,
+        285,
+        62,
+        20
+      ],
+      "date": [
+        223,
+        370,
+        70,
+        20
+      ],
+      "marginTop": 14
+    }
+  },
+  "oldDictionary": {
+    "situation": [
+      {
+        "label": "在册",
+        "value": "1"
+      },
+      {
+        "label": "离册",
+        "value": "2"
+      },
+      {
+        "label": "删除",
+        "value": "3"
+      },
+      {
+        "label": "死亡",
+        "value": "4"
+      },
+      {
+        "label": "服务器删除",
+        "value": "5"
+      },
+      {
+        "label": "空挂户",
+        "value": "9"
+      }
+    ],
+    "nation": [
+      {
+        "label": "汉族",
+        "value": "01"
+      },
+      {
+        "label": "蒙古族",
+        "value": "02"
+      },
+      {
+        "label": "回族",
+        "value": "03"
+      },
+      {
+        "label": "藏族",
+        "value": "04"
+      },
+      {
+        "label": "维吾尔族",
+        "value": "05"
+      },
+      {
+        "label": "苗族",
+        "value": "06"
+      },
+      {
+        "label": "彝族",
+        "value": "07"
+      },
+      {
+        "label": "壮族",
+        "value": "08"
+      },
+      {
+        "label": "布依族",
+        "value": "09"
+      },
+      {
+        "label": "朝鲜族",
+        "value": "10"
+      },
+      {
+        "label": "满族",
+        "value": "11"
+      },
+      {
+        "label": "侗族",
+        "value": "12"
+      },
+      {
+        "label": "瑶族",
+        "value": "13"
+      },
+      {
+        "label": "白族",
+        "value": "14"
+      },
+      {
+        "label": "土家族",
+        "value": "15"
+      },
+      {
+        "label": "哈尼族",
+        "value": "16"
+      },
+      {
+        "label": "哈萨克族",
+        "value": "17"
+      },
+      {
+        "label": "傣族",
+        "value": "18"
+      },
+      {
+        "label": "黎族",
+        "value": "19"
+      },
+      {
+        "label": "傈僳族",
+        "value": "20"
+      },
+      {
+        "label": "佤族",
+        "value": "21"
+      },
+      {
+        "label": "畲族",
+        "value": "22"
+      },
+      {
+        "label": "高山族",
+        "value": "23"
+      },
+      {
+        "label": "拉祜族",
+        "value": "24"
+      },
+      {
+        "label": "水族",
+        "value": "25"
+      },
+      {
+        "label": "东乡族",
+        "value": "26"
+      },
+      {
+        "label": "纳西族",
+        "value": "27"
+      },
+      {
+        "label": "景颇族",
+        "value": "28"
+      },
+      {
+        "label": "柯尔克孜族",
+        "value": "29"
+      },
+      {
+        "label": "土族",
+        "value": "30"
+      },
+      {
+        "label": "达斡尔族",
+        "value": "31"
+      },
+      {
+        "label": "仫佬族",
+        "value": "32"
+      },
+      {
+        "label": "羌族",
+        "value": "33"
+      },
+      {
+        "label": "布朗族",
+        "value": "34"
+      },
+      {
+        "label": "撒拉族",
+        "value": "35"
+      },
+      {
+        "label": "毛南族",
+        "value": "36"
+      },
+      {
+        "label": "仡佬族",
+        "value": "37"
+      },
+      {
+        "label": "锡伯族",
+        "value": "38"
+      },
+      {
+        "label": "阿昌族",
+        "value": "39"
+      },
+      {
+        "label": "普米族",
+        "value": "40"
+      },
+      {
+        "label": "塔吉克族",
+        "value": "41"
+      },
+      {
+        "label": "怒族",
+        "value": "42"
+      },
+      {
+        "label": "乌孜别克族",
+        "value": "43"
+      },
+      {
+        "label": "俄罗斯族",
+        "value": "44"
+      },
+      {
+        "label": "鄂温克族",
+        "value": "45"
+      },
+      {
+        "label": "德昂族",
+        "value": "46"
+      },
+      {
+        "label": "保安族",
+        "value": "47"
+      },
+      {
+        "label": "裕固族",
+        "value": "48"
+      },
+      {
+        "label": "京族",
+        "value": "49"
+      },
+      {
+        "label": "塔塔尔族",
+        "value": "50"
+      },
+      {
+        "label": "独龙族",
+        "value": "51"
+      },
+      {
+        "label": "鄂伦春族",
+        "value": "52"
+      },
+      {
+        "label": "赫哲族",
+        "value": "53"
+      },
+      {
+        "label": "门巴族",
+        "value": "54"
+      },
+      {
+        "label": "珞巴族",
+        "value": "55"
+      },
+      {
+        "label": "基诺族",
+        "value": "56"
+      },
+      {
+        "label": "外国血统",
+        "value": "57"
+      },
+      {
+        "label": "其他",
+        "value": "58"
+      }
+    ],
+    "properties": [
+      {
+        "label": "本市",
+        "value": "1"
+      },
+      {
+        "label": "本省",
+        "value": "2"
+      },
+      {
+        "label": "外省",
+        "value": "3"
+      },
+      {
+        "label": "境外",
+        "value": "4"
+      },
+      {
+        "label": "本县",
+        "value": "5"
+      },
+      {
+        "label": "港澳台",
+        "value": "6"
+      }
+    ]
+  },
+  "report": {
+    "VaccinePickerDataSum61": [
+      {
+        "vacName": "乙肝",
+        "vacCode": "02",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacName": "卡介苗",
+        "vacCode": "01",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacName": "脊灰",
+        "vacCode": "03",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacName": "百白破",
+        "vacCode": "04",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacName": "白破",
+        "vacCode": "06",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacName": "麻风",
+        "vacCode": "14",
+        "tags": [
+          "MCV",
+          "RCV"
+        ],
+        "selected": false
+      },
+      {
+        "vacName": "麻腮风",
+        "vacCode": "12",
+        "tags": [
+          "MCV",
+          "RCV",
+          "MumCV"
+        ],
+        "selected": false
+      },
+      {
+        "vacName": "麻腮",
+        "vacCode": "13",
+        "tags": [
+          "MCV",
+          "MumCV"
+        ],
+        "selected": false
+      },
+      {
+        "vacName": "麻疹",
+        "vacCode": "09",
+        "tags": [
+          "MCV"
+        ],
+        "selected": false
+      },
+      {
+        "vacName": "流脑A",
+        "vacCode": "16",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacName": "流脑A+C",
+        "vacCode": "17",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacName": "乙脑（减毒）",
+        "vacCode": "1801",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacName": "乙脑（灭活）",
+        "vacCode": "1802",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacName": "甲肝（减毒）",
+        "vacCode": "1901",
+        "tags": [
+          "HepA"
+        ],
+        "selected": false
+      },
+      {
+        "vacName": "甲肝（灭活）",
+        "vacCode": "1903",
+        "tags": [
+          "HepA"
+        ],
+        "selected": false
+      }
+    ],
+    "VaccinePickerDataSum62": [
+      {
+        "vacCode": "0201,0202,0203",
+        "vacName": "乙肝",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "1701",
+        "vacName": "流脑A+C群",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "2501",
+        "vacName": "23价肺炎",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "3801",
+        "vacName": "霍乱 ",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "0601",
+        "vacName": "白破",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "1702",
+        "vacName": "流脑A+C（结合）",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "2502",
+        "vacName": "7价肺炎",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "4701",
+        "vacName": "森林脑炎 ",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "0401",
+        "vacName": "百白破",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "1703",
+        "vacName": "流脑A+C+Y+W135",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "2901,2902,2903,2904,2905,2906",
+        "vacName": "出血热",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "0303",
+        "vacName": "脊灰疫苗(灭活Salk株)",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "1401",
+        "vacName": "麻风",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "1901,1902",
+        "vacName": "甲肝（减毒）",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "3401",
+        "vacName": "钩体",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "1301",
+        "vacName": "麻腮",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "5201",
+        "vacName": "戊肝",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "1903",
+        "vacName": "甲肝（灭活）",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "3601",
+        "vacName": "炭疽",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "5001",
+        "vacName": "百白破IPV和Hib五联",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "1201",
+        "vacName": "麻腮风",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "2001",
+        "vacName": "甲乙肝 ",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "4301,4401,4402,2801,2802,2803,2804,2805",
+        "vacName": "狂犬病",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "4901",
+        "vacName": "百白破Hib四联 ",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "1101,1102",
+        "vacName": "风疹(Rub)",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "2301",
+        "vacName": "Hib",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "3001,3002,3101,3201",
+        "vacName": "伤寒 ",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "5301",
+        "vacName": "A+C流脑Hib联合疫苗 ",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "1001",
+        "vacName": "腮腺炎",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "2201",
+        "vacName": "水痘",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "3301",
+        "vacName": "痢疾",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "5401,5402",
+        "vacName": "71型肠道病毒(灭活) ",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "1801",
+        "vacName": "乙脑（减毒）",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "2401",
+        "vacName": "轮状病毒",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "3701",
+        "vacName": "布病",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "1802,1803",
+        "vacName": "乙脑（灭活）",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "2101,2102,2103,2104,2105,2106",
+        "vacName": "流感",
+        "tags": [],
+        "selected": false
+      },
+      {
+        "vacCode": "3501",
+        "vacName": "鼠疫 ",
+        "tags": [],
+        "selected": false
+      }
+    ]
+  }
+}

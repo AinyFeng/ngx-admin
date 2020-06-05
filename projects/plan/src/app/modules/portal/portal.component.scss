@@ -1,0 +1,7 @@
+// @import '~bootstrap/scss/mixins/breakpoints';
+// @import '~@nebular/theme/styles/global/breakpoints';
+// @import '../../@uea/theme/global_theme';
+@import '../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+}

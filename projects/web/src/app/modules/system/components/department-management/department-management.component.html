@@ -1,0 +1,111 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    科室信息管理
+    <div>
+      <button nbButton status="info" (click)="search()" [nbSpinner]="loading" [disabled]="loading">查询</button>
+      <button nbButton status="info" (click)="addDepartment()" [nbSpinner]="loading" class="ml-2 mr-2"
+              [disabled]="loading">新增科室
+      </button>
+      <button nbButton status="warning" (click)="reset()" [nbSpinner]="loading" [disabled]="loading">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <div class="col-md-4 row">
+          <label class="col-4 col-form-label text-right">科室编码：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth formControlName="povCode" id="povCode">
+          </div>
+        </div>
+        <div class="col-md-4 row">
+          <label class="col-4 col-form-label text-right">科室简称：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth formControlName="name" id="name">
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+<nb-card>
+  <nb-card-body>
+    <nz-table #povInfo [nzData]="departmentData" nzBordered
+              nzSimple="false"
+              nzSize="small"
+              [nzLoading]="loading"
+              [nzFrontPagination]="true">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">科室编码</th>
+        <th [nzAlign]="'center'">科室简称</th>
+        <th [nzAlign]="'center'">科室全称</th>
+        <th [nzAlign]="'center'">是否关联叫号屏</th>
+        <th [nzAlign]="'center'">叫号屏</th>
+        <th [nzAlign]="'center'">备注</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let d of povInfo.data">
+        <td [nzAlign]="'center'">{{d.departmentCode}}</td>
+        <td [nzAlign]="'center'">{{d.departmentName}}</td>
+        <td [nzAlign]="'center'">{{d.departmentAlias}}</td>
+        <!--<td [nzAlign]="'center'">
+          {{(d.type === '0' || d.type === '1' || d.type === '6') ? d.iotId ? '是' : '否' : '-'}}
+        </td>-->
+        <td [nzAlign]="'center'">
+          {{(d.type === '0' || d.type === '1' || d.type === '6') ? d.iotInfo.length ? '是' : '否' : '-'}}
+        </td>
+        <td [nzAlign]="'center'">
+          {{(d.type === '0' || d.type === '1' || d.type === '6') ? d.iotName ? d.iotName : '暂无' : '-'}}
+        </td>
+        <td [nzAlign]="'center'">{{d.memo}}</td>
+        <td [nzAlign]="'center'">
+          <a href="javascript:" class="link-a mr-1" (click)="changeInfo(d)">修改</a>
+          <a href="javascript:" class="link-a mr-2" (click)="deleteInfo(d)">删除</a>
+          <a href="javascript:" class="link-a mr-1" (click)="manageIot(d)"
+             *ngIf="(d.type === '0' || d.type === '1' || d.type === '6')">管理叫号屏</a>
+          <!--<a href="javascript:" class="link-a mr-1" (click)="relevanceIot(d)"
+             *ngIf="(d.type === '0' || d.type === '1' || d.type === '6') && !d.iotInfo.length">关联叫号屏</a>
+          <a href="javascript:" class="link-a mr-1" (click)="changeIotInfo(d)"
+             *ngIf="(d.type === '0' || d.type === '1' || d.type === '6') && d.iotInfo.length">修改叫号屏</a>-->
+          <!--<a href="javascript:" class="link-a mr-1" (click)="deleteIotInfo(d)"
+             *ngIf="(d.type === '0' || d.type === '1' || d.type === '6') && d.iotInfo.length">删除叫号屏</a>-->
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card [ngStyle]="{'width': '400px', 'height': '300px'}">
+    <nb-card-header>{{data}}</nb-card-header>
+    <nb-card-body [ngStyle]="{'text-align': 'center'}">
+      <!--multiple-->
+      <nb-select multiple placeholder="选择固定资产" [(selected)]="selectedIot"
+                 [ngStyle]="{'position': 'relative', 'width': '200px', 'top': '30%'}">
+        <nb-option *ngFor="let department of screenOptions" [value]="department.fixedAssetsCode">
+          {{ department.fixedAssetsName }}
+        </nb-option>
+      </nb-select>
+    </nb-card-body>
+    <nb-card-footer [ngStyle]="{'text-align': 'center'}">
+      <button nbButton (click)="saveVaccineConfig(ref)" class="mr-4">保存</button>
+      <button nbButton (click)="ref.close()">关闭</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+<ng-template #dialogIot let-data let-ref="dialogRef">
+  <nb-card [ngStyle]="{'width': '600px', 'height': '300px'}">
+    <nb-card-header>{{data}}</nb-card-header>
+    <nb-card-body [ngStyle]="{'text-align': 'center'}">
+      <!--       (ngModelChange)="updateSingleChecked()"-->
+      <nz-checkbox-group [(ngModel)]="checkOptionsOne"></nz-checkbox-group>
+    </nb-card-body>
+    <nb-card-footer [ngStyle]="{'text-align': 'center'}">
+      <button nbButton (click)="saveIot(ref)" class="mr-4" [disabled]="loading" [nbSpinner]="loading">确定</button>
+      <button nbButton (click)="ref.close()">关闭</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

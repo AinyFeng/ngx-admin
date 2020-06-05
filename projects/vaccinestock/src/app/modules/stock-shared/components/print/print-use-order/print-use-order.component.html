@@ -1,0 +1,64 @@
+<div [id]="printUseOrderInfo.id">
+  <div style="padding: 0 50px;">
+    <p style="text-align: center; font-size: 1.5em; margin: 18px 0 8px;">
+      {{printUseOrderInfo.orderInfo.createorgName}}&nbsp;疫苗使用记录表</p>
+    <div style="width: 100%; line-height: 28px; display: flex; justify-content: space-between; align-items: center;">
+      <span>
+        出库日期：{{today.getFullYear()}}年{{today.getMonth() + 1}}月{{today.getDate()}}日
+      </span>
+      <span>
+        出入库单号：{{printUseOrderInfo.orderInfo.orderNo}}
+      </span>
+    </div>
+    <div style="line-height: 28px;">
+      备注信息：{{printUseOrderInfo.orderInfo.memo ? printUseOrderInfo.orderInfo.memo : '无'}}
+    </div>
+    <table
+      border="1" cellspacing="0" cellpadding="0"
+      style="border-collapse:collapse; border-spacing:0; width: 100%; font-size: 14.4px; text-align: center;"
+    >
+      <tr>
+        <th>序</th>
+        <th>名称</th>
+        <th>生产企业</th>
+        <th>规格</th>
+        <th>批号</th>
+        <th>有效期</th>
+        <th>数量</th>
+        <th *ngIf="printUseOrderInfo.orderInfo.vaccineType == '1'">单价</th>
+        <th *ngIf="printUseOrderInfo.orderInfo.vaccineType == '1'">冷链费</th>
+        <th>类别</th>
+      </tr>
+      <tr *ngFor="let vac of printUseOrderInfo.vaccineInfo; index as i">
+        <td>{{i + 1}}</td>
+        <td>{{vac.vaccName}}</td>
+        <td>{{vac.manufactureName}}</td>
+        <td>{{vac.spec}}</td>
+        <td>{{vac.batchNo}}</td>
+        <td>{{vac.loseEfficacyDate | date: 'yyyy-MM-dd'}}</td>
+        <td>{{vac.vaccNum ? vac.vaccNum : 0}}</td>
+        <td *ngIf="printUseOrderInfo.orderInfo.vaccineType == '1'">{{vac.sellPrice ? vac.sellPrice : 0}}</td>
+        <td *ngIf="printUseOrderInfo.orderInfo.vaccineType == '1'">
+          {{vac.vaccineType == null ? '' : 8}}
+        </td>
+        <td>{{vac.vaccineType == null ? '' : (vac.vaccineType == '0' ? '第一类' : '第二类')}}</td>
+      </tr>
+      <tr>
+        <td colspan="6" style="text-align: center;">合计</td>
+        <td>{{printUseOrderInfo.priceSum.sumNum ? printUseOrderInfo.priceSum.sumNum : 0}}</td>
+        <td *ngIf="printUseOrderInfo.orderInfo.vaccineType == '0'">——</td>
+        <td colspan="3" *ngIf="printUseOrderInfo.orderInfo.vaccineType == '1'">——</td>
+      </tr>
+    </table>
+    <div style="margin: 5px auto; display: flex; justify-content: space-between; align-items: center;">
+      <p style="width: 30%; font-size: 13px;">制单: <span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;">{{printUseOrderInfo.orderInfo.entrystaffName}}</span>
+      </p>
+      <p style="width: 30%; font-size: 13px;">出库：<span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+      <p style="width: 30%; font-size: 13px;">审批：<span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,59 @@
+@import '../../../../../@uea/theme/global_theme';
+// @import '../../../../common/global-theme/global_theme';
+@include nb-install-component() {
+	.footer-container {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+	.body-container {
+		display: flex;
+		width: 260px;
+		flex-direction: row;
+		justify-content: space-around;
+		align-items: center;
+	}
+
+	.option-icon {
+		font-size: 3.15rem;
+	}
+
+	::ng-deep nb-radio .radio-indicator {
+		align-self: center;
+	}
+
+	.option-label {
+		font-size: 2rem;
+	}
+
+	.inner-card {
+		box-shadow: 3px 3px 5px #888888;
+		margin-bottom: 0;
+		margin-left: 1rem;
+		height: 80px;
+		&:hover,
+		&:focus,
+		&:active,
+		&-selected {
+			//background-color: nb-theme(radio-checked-checkmark);
+			//color: nb-theme(color-white);
+		}
+	}
+
+	::ng-deep nb-stepper .header {
+		margin-left: 100px;
+		margin-right: 100px;
+	}
+	::ng-deep .step-content {
+		height: 100%;
+	}
+
+	.option-content {
+		height: 100%;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+}

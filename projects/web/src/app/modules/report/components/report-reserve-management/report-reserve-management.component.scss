@@ -1,0 +1,46 @@
+@import '../../../../@uea/theme/global_theme';
+// @import '~bootstrap/scss/mixins/_breakpoints';
+// @import '~@nebular/theme/styles/global/_breakpoints';
+
+@include nb-install-component() {
+	.waitTollCard {
+		text-align: center;
+		min-height: 550px;
+	}
+
+	.searchForm {
+		.group-search {
+			margin-top: 15px;
+			margin-bottom: 15px;
+			margin-left: 15px;
+			div {
+				//width: 250px;
+				//margin-right: 20px;
+				margin-bottom: 10px;
+				label {
+					margin-top: 5px;
+				}
+				input {
+					width: 150px;
+					float: right;
+				}
+				nb-select {
+					width: 150px;
+					float: right;
+				}
+				button {
+					margin-right: 10px;
+				}
+			}
+		}
+	}
+
+	.group-tools {
+		div {
+			margin-right: 15px;
+			input {
+				margin-right: 15px;
+			}
+		}
+	}
+}

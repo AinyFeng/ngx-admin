@@ -1,0 +1,55 @@
+<div nz-row>
+  <form nz-form [formGroup]="saveForm" (ngSubmit)="save()">
+    <nz-form-item>
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzRequired nzFor="vaccineSubclassCode">疫苗编号</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="请输入疫苗编号！">
+        <input nz-input formControlName="vaccineSubclassCode"/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzRequired nzFor="vaccineSubclassName">疫苗名称</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+        <input nz-input formControlName="vaccineSubclassName"/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzRequired nzFor="spec">规格</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+        <input nz-input formControlName="spec" type="number"/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzRequired nzFor="dosage">免疫程序剂次数</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+        <input nz-input formControlName="dosage" type="number"/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzRequired nzFor="lossFactor">损耗系数</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+        <input nz-input formControlName="lossFactor" type="number"/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzRequired nzFor="type">类型</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+        <nz-radio-group formControlName="type">
+          <label nz-radio nzValue="1">一类</label>
+          <label nz-radio nzValue="2">二类</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="memo">备注</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+        <textarea nz-input  formControlName="memo"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row class="register-area">
+      <nz-form-control [nzSpan]="14" [nzOffset]="6">
+        <button nz-button nzType="primary" [disabled]="!saveForm.valid">保存</button>
+        <button nz-button nzType="default" type="button" (click)="back()">返回</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>

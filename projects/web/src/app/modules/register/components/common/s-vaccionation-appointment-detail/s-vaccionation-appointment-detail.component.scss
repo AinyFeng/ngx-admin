@@ -1,0 +1,24 @@
+@import '../../../../../@uea/theme/global_theme';
+// @import '../../../../common/global-theme/global_theme';
+@include nb-install-component() {
+	.reservationDetail {
+		width: 460px;
+	}
+	.detailCard {
+		width: 100%;
+	}
+	.detailTable > tbody > tr {
+		margin-top: 1.5rem;
+		margin-bottom: 1.5rem;
+		font-size: 1.25rem;
+		//color: nb-theme(color-fg-text);
+		& > th {
+			text-align: right;
+			width: 50%;
+			//border-top-color: nb-theme(smart-table-separator);
+		}
+		& > td {
+			//border-top-color: nb-theme(smart-table-separator);
+		}
+	}
+}

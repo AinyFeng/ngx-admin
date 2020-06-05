@@ -1,0 +1,146 @@
+<div class="nb-card-xx">
+  <nb-card size="xlarge">
+    <nb-card-header class="nb-card-header-qb">
+      {{data ? '详细儿童个案' : '全部儿童个案'}}
+      <span class="float-right mr-4 cursor-pointer" title="关闭" (click)="onClose()"><i
+        class="far fa-times-circle"></i></span>
+    </nb-card-header>
+    <nb-card-body>
+      <nb-tabset (changeTab)="changeTab($event)">
+        <nb-tab tabTitle="应种">
+          <nz-table #nzTable
+                    [nzData]="shouldKindData"
+                    [nzTotal]="shouldTotal"
+                    [nzLoading]="shouldLoading"
+                    nzBordered
+                    [(nzPageIndex)]="shouldPageIndex"
+                    [nzPageSize]="shouldPageSize"
+                    [nzShowTotal]="totalTemplate1"
+                    nzSize="small" nzSimple="false"
+                    [nzFrontPagination]="false"
+                    (nzPageIndexChange)="queryShouldData($event)">
+            <!--
+            [nzFrontPagination]="false"
+              [nzTotal]="total"
+              [(nzPageIndex)]="pageIndex"
+              [nzShowTotal]="totalTemplate"
+              (nzPageIndexChange)="profileSearch($event)"
+            -->
+            <thead>
+            <tr>
+              <th [nzAlign]="'center'">姓名</th>
+              <th [nzAlign]="'center'">生日</th>
+              <th [nzAlign]="'center'">母亲姓名</th>
+              <th [nzAlign]="'center'">母亲电话</th>
+              <th [nzAlign]="'center'">父亲姓名</th>
+              <th [nzAlign]="'center'">父亲电话</th>
+              <th [nzAlign]="'center'">区域划分</th>
+              <th [nzAlign]="'center'">应种疫苗</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of nzTable.data">
+              <td [nzAlign]="'center'">{{data.profileName}}</td>
+              <td [nzAlign]="'center'">{{data.birth | date: 'yyyy-MM-dd'}}</td>
+              <td [nzAlign]="'center'">{{data.montherName}}</td>
+              <td [nzAlign]="'center'">{{data.montherPhone}}</td>
+              <td [nzAlign]="'center'">{{data.fatherName}}</td>
+              <td [nzAlign]="'center'">{{data.fatherPhone}}</td>
+              <td [nzAlign]="'center'">{{data.community_name}}</td>
+              <td [nzAlign]="'center'">{{data.vacc}}</td>
+            </tr>
+            </tbody>
+          </nz-table>
+        </nb-tab>
+        <nb-tab tabTitle="实种">
+          <nz-table #nzTable2
+                    [nzData]="realKindData"
+                    [nzTotal]="realTotal"
+                    [nzLoading]="realLoading"
+                    nzBordered
+                    [(nzPageIndex)]="realPageIndex"
+                    [nzPageSize]="realPageSize"
+                    [nzShowTotal]="totalTemplate2"
+                    nzSize="small" nzSimple="false"
+                    [nzFrontPagination]="false"
+                    (nzPageIndexChange)="queryRealData($event)">
+            <thead>
+            <tr>
+              <th [nzAlign]="'center'">姓名</th>
+              <th [nzAlign]="'center'">生日</th>
+              <th [nzAlign]="'center'">母亲姓名</th>
+              <th [nzAlign]="'center'">母亲电话</th>
+              <th [nzAlign]="'center'">父亲姓名</th>
+              <th [nzAlign]="'center'">父亲电话</th>
+              <th [nzAlign]="'center'">区域划分</th>
+              <th [nzAlign]="'center'">实种疫苗</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of nzTable2.data">
+              <td [nzAlign]="'center'">{{data.profileName}}</td>
+              <td [nzAlign]="'center'">{{data.birth | date: 'yyyy-MM-dd'}}</td>
+              <td [nzAlign]="'center'">{{data.montherName}}</td>
+              <td [nzAlign]="'center'">{{data.montherPhone}}</td>
+              <td [nzAlign]="'center'">{{data.fatherName}}</td>
+              <td [nzAlign]="'center'">{{data.fatherPhone}}</td>
+              <td [nzAlign]="'center'">{{data.community_name}}</td>
+              <td [nzAlign]="'center'">{{data.vacc}}</td>
+            </tr>
+            </tbody>
+          </nz-table>
+        </nb-tab>
+        <nb-tab tabTitle="应种未种">
+          <nz-table #nzTable3
+                    [nzData]="shouldNoKindData"
+                    [nzTotal]="shouldNoKindTotal"
+                    [nzLoading]="shouldNoKindLoading"
+                    nzBordered
+                    [nzShowTotal]="totalTemplate3"
+                    nzSize="small" nzSimple="false"
+                    [(nzPageIndex)]="shouldNoKindPageIndex"
+                    [nzPageSize]="shouldNoKindPageSize"
+                    [nzFrontPagination]="false"
+                    (nzPageIndexChange)="queryShouldNoKindData($event)">
+            <thead>
+            <tr>
+              <th [nzAlign]="'center'">姓名</th>
+              <th [nzAlign]="'center'">生日</th>
+              <th [nzAlign]="'center'">母亲姓名</th>
+              <th [nzAlign]="'center'">母亲电话</th>
+              <th [nzAlign]="'center'">父亲姓名</th>
+              <th [nzAlign]="'center'">父亲电话</th>
+              <th [nzAlign]="'center'">区域划分</th>
+              <th [nzAlign]="'center'">应种疫苗</th>
+              <!--              <th [nzAlign]="'center'">目前状态</th>-->
+              <!--              <th [nzAlign]="'center'">下针可预约时间</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of nzTable3.data">
+              <td [nzAlign]="'center'">{{data.profileName}}</td>
+              <td [nzAlign]="'center'">{{data.birth | date: 'yyyy-MM-dd'}}</td>
+              <td [nzAlign]="'center'">{{data.montherName}}</td>
+              <td [nzAlign]="'center'">{{data.montherPhone}}</td>
+              <td [nzAlign]="'center'">{{data.fatherName}}</td>
+              <td [nzAlign]="'center'">{{data.fatherPhone}}</td>
+              <td [nzAlign]="'center'">{{data.community_name}}</td>
+              <td [nzAlign]="'center'">{{data.vacc}}</td>
+            </tr>
+            </tbody>
+          </nz-table>
+        </nb-tab>
+      </nb-tabset>
+    </nb-card-body>
+  </nb-card>
+  <ng-template #totalTemplate1>
+    共{{ shouldTotal }}条数据，当前第{{ shouldPageIndex }}页
+  </ng-template>
+  <ng-template #totalTemplate2>
+    共{{ realTotal }}条数据，当前第{{ realPageIndex }}页
+  </ng-template>
+  <ng-template #totalTemplate3>
+    共{{ shouldNoKindTotal }}条数据，当前第{{ shouldNoKindPageIndex }}页
+  </ng-template>
+
+</div>

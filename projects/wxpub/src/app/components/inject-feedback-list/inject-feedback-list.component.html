@@ -1,0 +1,27 @@
+<div class="wx-content">
+  <div class="weui-cells weui-cells_form">
+    <div class="weui-cell list-item" *ngFor="let item of listData">
+      <div class="weui-cell__bd cell-wrap">
+        <div class="title-wrap">
+          <h5>{{item.selfObserveRecord['profileName']}}</h5>
+          <span class="title-info">{{item.time}}</span>
+        </div>
+        <div class="title-detail title">问题描述:</div>
+        <div class="divider"></div>
+        <div class="title-info">
+          {{item.selfObserveFeedbackContent[0] ? item.selfObserveFeedbackContent[0]['userFeedbackContent'] : '暂无'}}</div>
+        <div class="divider"></div>
+        <div class="img-wrap">
+          <img [src]="getImageUrl(imgUrl)" *ngFor="let imgUrl of item.selfObserveImgRecords">
+        </div>
+        <div class="divider"></div>
+        <div class="title-detail title">专家答复：</div>
+        <div class="divider"></div>
+        <div class="title-info">
+          {{item.selfObserveFeedbackContent[0] ? item.selfObserveFeedbackContent[0]['doctorFeedbackContent'] : '暂无答复'}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="add-btn" routerLink="/addInjectFeedback">添加</div>
+</div>

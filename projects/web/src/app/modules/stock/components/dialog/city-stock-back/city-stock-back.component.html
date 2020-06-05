@@ -1,0 +1,143 @@
+<div style="background:#edf1f7">
+<nb-card accent="info">
+  <nb-card-header>
+   市平台退回
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+  <form [formGroup]="sendBackForm" novalidate>
+    <div class="form-group row">
+      <label  class="col-sm-2 col-form-label text-right label-required">操作人：</label>
+      <div class="col-sm-4">
+          <nb-select placeholder="请选择" status="info" fullWidth formControlName= "stockBy" id = "stockBy" >
+            <nb-option [value]="v.number" *ngFor="let v of staffOptionSelected">{{v.realName}}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="sendBackForm.get('stockBy')"></uea-show-form-errors>
+    </div>
+      <label  class="col-sm-2 col-form-label text-right label-required">原因：</label>
+      <div class="col-sm-4">
+        <input type="text" nbInput fullWidth placeholder="请输入" formControlName="reason" id="reason" >
+       <!-- <textarea nbInput formControlName="reason" id="reason" fullWidth placeholder="请输入......"></textarea>-->
+        <uea-show-form-errors [control]="sendBackForm.get('reason')"></uea-show-form-errors>
+      </div>
+    </div>
+    <div class="form-group row">
+
+    </div>
+    <div class="form-group row">
+      <label  class="col-sm-2 col-form-label text-right ">备注：</label>
+      <div class="col-sm-10">
+        <textarea nbInput formControlName="memo" id="memo" fullWidth placeholder="请输入......"></textarea>
+        <uea-show-form-errors [control]="sendBackForm.get('memo')"></uea-show-form-errors>
+      </div>
+    </div>
+
+  </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerMessage="" nbButton status="info" class="mr-5"
+              (click)="sendBack()">确认
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>
+
+  <!--<nb-card-body>
+    <form [formGroup]="searchForm">
+
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">出入库日期(起)：</label>
+          <div class="col-8">
+            <input nbInput formControlName="beginTime" placeholder="请选择开始日期" [nbDatepicker]="beginTime" >
+            <nb-datepicker [filter]="filterStartDate" #beginTime format="YYYY-MM-DD"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">出入库日期(止)：</label>
+          <div class="col-8">
+            <input nbInput formControlName="endTime" placeholder="请选择结束日期" [nbDatepicker]="endTime" >
+            <nb-datepicker  [filter]="filterEndDate" #endTime format="YYYY-MM-DD"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗批次：</label>
+          <div class="col-8">
+            <input type="text" nbInput formControlName="prodBatchCode" placeholder="请输入疫苗批次">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗名称：</label>
+          <div class="col-8">
+            <uea-nb-select-all [placeholderText]="'请选择'" [options]="vacSubClassData"  formControlName="subClassData" >
+            </uea-nb-select-all>
+        </div>
+      </div>
+      </div>
+
+    &lt;!&ndash;  <div class="row group-search form-inline">
+        <div class="form-group mb-4 ml-2">
+          <label class="">入库日期(起)：</label>
+          <input nbInput formControlName="beginTime" placeholder="请选择开始日期" [nbDatepicker]="beginTime" >
+          <nb-datepicker [filter]="filterStartDate" #beginTime format="YYYY-MM-DD"></nb-datepicker>
+
+          <label class="">入库日期(止)：</label>
+          <input nbInput formControlName="endTime" placeholder="请选择结束日期" [nbDatepicker]="endTime" >
+          <nb-datepicker  [filter]="filterEndDate" #endTime format="YYYY-MM-DD"></nb-datepicker>
+
+          <label class="ml-4">疫苗批次：</label>
+          <input type="text" nbInput formControlName="prodBatchCode" placeholder="请输入疫苗批次">
+
+          <label class="ml-4">疫苗产品：</label>
+          <input type="text" nbInput formControlName="productCode" placeholder="请输入疫苗产品">
+        </div>
+      </div>&ndash;&gt;
+
+      <div class="float-right mr-3 cursor-pointer">
+        <button nbButton status="info" [disabled]="loading" (click)="toSearch()">查询</button>
+        <button nbButton status="warning" (click)="reset()">重置</button>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+  <nb-card class="text-center" style="overflow:scroll;">
+    <nb-card-body>
+      <nz-table #msgTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false" [nzData]="listOfData"
+                [nzLoading]="loading" [nzTotal]="total"
+                (nzPageIndexChange)="toSearch($event)" >
+        <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">流水号</th>
+        <th [nzAlign]="'center'">入库单号</th>
+        <th [nzAlign]="'center'">所属部门</th>
+        <th [nzAlign]="'center'">疫苗产品</th>
+        <th [nzAlign]="'center'">疫苗批号</th>
+        <th [nzAlign]="'center'">已使用</th>
+        <th [nzAlign]="'center'">总库存</th>
+        <th [nzAlign]="'center'">当前库存</th>
+        <th [nzAlign]="'center'">上报人编码</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index;">
+        <td [nzAlign]="'center'">{{(pageIndex - 1) * pageSize + i + 1}}</td>
+        <td [nzAlign]="'center'">{{data.detailSerial}}</td>
+        <td [nzAlign]="'center'">{{data.acceptanceSerial}}</td>
+        <td [nzAlign]="'center'">{{data.departmentCode | departmentNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{data.vaccProductCode | vacProductNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{data.prodBatchNumber}}</td>
+        <td [nzAlign]="'center'">{{data.useCount}}</td>
+        <td [nzAlign]="'center'">{{data.totalCount}}</td>
+        <td [nzAlign]="'center'">{{data.oddCount}}</td>
+        <td [nzAlign]="'center'">{{data.stockChangeTime | date: 'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'"> <a  href="javascript:" class="link-a mr-1" (click)="sendBack(data)">退回</a></td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+  </nb-card>
+</div>-->

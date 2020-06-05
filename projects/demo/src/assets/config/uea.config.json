@@ -1,0 +1,19 @@
+{
+  "app": {},
+  "auth": {
+    "AuthConfig": {
+      "issuer": "https://uat.chinavacc.com.cn",
+      "baseURI": "/incubation/demo",
+      "clientId": "e83508de-89c0-4188-adc4-be240631d790",
+      "scope": "openid svsprofile",
+      "showDebugInformation": true,
+      "timeoutFactor": 0.8
+    }
+  },
+  "social_auth": {
+    "DingDing": {
+      "appid": "dingoaul036ovuxknlyfof",
+      "redirect_uri": "https://svs.chinavacc.com.cn/passport/auth/dingding/callback"
+    }
+  }
+}

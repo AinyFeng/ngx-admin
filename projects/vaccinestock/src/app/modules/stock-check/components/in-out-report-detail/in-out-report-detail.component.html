@@ -1,0 +1,96 @@
+<form nz-form [formGroup]="reportDetailForm" class="mb-3">
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item class="m-0">
+        <nz-form-label nzFor="vaccineSubclassName" nzSpan="8">疫苗名称</nz-form-label>
+        <nz-form-control nzSpan="16">
+          <input type="text" id="vaccineSubclassName" nz-input readonly formControlName="vaccineSubclassName">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item class="m-0">
+        <nz-form-label nzFor="vaccineType" nzSpan="8">疫苗类型</nz-form-label>
+        <nz-form-control nzSpan="16">
+          <input type="text" id="vaccineType" nz-input readonly formControlName="vaccineType">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item class="m-0">
+        <nz-form-label nzFor="manufactureName" nzSpan="8">生产企业</nz-form-label>
+        <nz-form-control nzSpan="16">
+          <input type="text" readonly nz-input id="manufactureName" formControlName="manufactureName">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item class="m-0">
+        <nz-form-label nzRequired nzFor="outboundDate" nzSpan="8">日期(起)</nz-form-label>
+        <nz-form-control nzSpan="16" nzErrorTip="请选择日期">
+          <nz-date-picker formControlName="outboundDate"
+                          nzDisabled
+                          id="outboundDate"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item class="m-0">
+        <nz-form-label nzRequired nzFor="outboundDateBreak" nzSpan="8">日期(止)</nz-form-label>
+        <nz-form-control nzSpan="16" nzErrorTip="请选择日期">
+          <nz-date-picker formControlName="outboundDateBreak"
+                          nzDisabled
+                          id="outboundDateBreak"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item class="m-0">
+        <nz-form-label nzFor="batchno" nzSpan="8">疫苗批号</nz-form-label>
+        <nz-form-control nzSpan="16">
+          <input type="text" readonly id="batchno" formControlName="batchno" nz-input>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</form>
+
+<nz-table nzSize="small" [nzTotal]="total"
+          [nzShowTotal]="totalTemplate"
+          [(nzPageIndex)]="pageIndex"
+          [nzLoading]="loading"
+          #report [nzData]="reportDetailData">
+  <thead>
+  <tr>
+    <th>编号</th>
+    <th>出入库类型</th>
+    <th>订单号</th>
+    <th>供货单位</th>
+    <th>收货单位</th>
+    <th>时间</th>
+    <th>数量</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of report.data;index as i">
+    <td>{{ i + 1 }}</td>
+    <td>{{ data.type }}</td>
+    <td *ngIf="data.orderNo !== '-'">
+      <a   (click)="queryOrderInfo(data)" href="javascript:void(0)">{{ data.orderNo }}</a>
+    </td>
+    <td *ngIf="data.orderNo == '-'">
+      <a>{{ data.orderNo }}</a>
+    </td>
+    <td>{{ data.supplyorgName }}</td>
+    <td>{{ data.receiveorgName }}</td>
+    <td>{{ data.createDate }}</td>
+    <td>{{ data.num }}</td>
+  </tr>
+  </tbody>
+</nz-table>
+
+<ng-template #totalTemplate>
+  共{{ total }}条数据，当前第{{ pageIndex }}页
+</ng-template>

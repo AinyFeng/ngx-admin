@@ -1,0 +1,12 @@
+@import '../../../../@uea/theme/global_theme';
+// @import '../../../common/global-theme/global_theme';
+
+@include nb-install-component() {
+	nb-radio-group {
+		display: flex;
+	}
+	::ng-deep .addBorder tr th {
+		border-bottom: 1px solid nb-theme(border-basic-color-4) !important;
+		border-right: 1px solid nb-theme(border-basic-color-4) !important;
+	}
+}

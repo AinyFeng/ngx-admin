@@ -1,0 +1,11 @@
+@import '../../../../@uea/theme/global_theme';
+// @import '~bootstrap/scss/mixins/_breakpoints';
+// @import '~@nebular/theme/styles/global/_breakpoints';
+@include nb-install-component() {
+	nb-radio-group {
+		display: flex;
+	}
+	button {
+		margin-right: 10px;
+	}
+}

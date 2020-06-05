@@ -1,0 +1,15 @@
+@import '../../../../@uea/theme/global_theme';
+// @import '../../../common/global-theme/global_theme';
+
+@include nb-install-component() {
+	.grid {
+		display: flex;
+	}
+	.blank {
+		width: 20px;
+	}
+	.contents {
+		width: 840px;
+		margin: 0 auto;
+	}
+}

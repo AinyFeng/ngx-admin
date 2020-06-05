@@ -1,0 +1,97 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    总库存量
+    <div>
+      <button class="mr-2" nbButton status="info">查询</button>
+      <button class="mr-2" nbButton status="info">导出</button>
+      <button class="mr-2" nbButton status="info">导出详情</button>
+      <button class="mr-2" nbButton status="info">打印</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form>
+      <div class="group-search row">
+        <div class="form-group col-md-3 row">
+          <label class="col-md-5 col-form-label">疫苗名称：</label>
+          <div class="col-md-7">
+            <nb-select multiple placeholder="请选择疫苗名称" fullWidth outline status="info">
+              <nb-option value="1">卡介苗</nb-option>
+              <nb-option value="2">乙肝疫苗</nb-option>
+              <nb-option value="3">百日破</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="form-group col-md-3 row">
+          <label class="col-md-5 col-form-label">疫苗批次：</label>
+          <div class="col-md-7">
+            <input nbInput placeholder="请输入疫苗批次" fullWidth>
+          </div>
+        </div>
+        <div class="form-group col-md-3 row">
+          <label class="col-md-5 col-form-label">生产企业：</label>
+          <div class="col-md-7">
+            <nb-select multiple placeholder="请选择生产企业" fullWidth outline status="info">
+              <nb-option value="1">长春生物</nb-option>
+              <nb-option value="2">北京生物</nb-option>
+              <nb-option value="3">四川制药厂</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="form-group col-md-3 row">
+          <label class="col-md-5 col-form-label">疫苗类型：</label>
+          <div class="col-md-7">
+            <nb-select multiple placeholder="疫苗类型" fullWidth outline status="info">
+              <nb-option value="1">一类</nb-option>
+              <nb-option value="2">二类</nb-option>
+            </nb-select>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row">
+        <div class="col-12">
+          <button nbButton status="info" >查询</button>
+          <button nbButton status="info" >导出</button>
+          <button nbButton status="info" >导出详情</button>
+          <button nbButton status="info">打印</button>
+        </div>
+      </div> -->
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow:scroll;">
+  <nz-table #msgTable [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false">
+    <thead>
+      <tr>
+        <th [nzAlign]="'center'">疫苗名称</th>
+        <th [nzAlign]="'center'">生产企业名称</th>
+        <th [nzAlign]="'center'">批号</th>
+        <th [nzAlign]="'center'">容器类型</th>
+        <th [nzAlign]="'center'">产品剂量</th>
+        <th [nzAlign]="'center'">单支剂次</th>
+        <th [nzAlign]="'center'">批次文号</th>
+        <th [nzAlign]="'center'">库存</th>
+        <th [nzAlign]="'center'">价格</th>
+        <th [nzAlign]="'center'">归属科室</th>
+        <th [nzAlign]="'center'">有效期</th>
+        <th [nzAlign]="'center'">入库时间</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of msgTable.data">
+        <td>{{data.name}}</td>
+        <td>{{data.company}}</td>
+        <td>{{data.number}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.afi}}</td>
+        <td>{{data.time}}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nb-card>

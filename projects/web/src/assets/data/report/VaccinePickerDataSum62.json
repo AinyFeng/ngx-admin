@@ -1,0 +1,268 @@
+[
+  {
+    "vacCode": "0201,0202,0203",
+    "vacName": "乙肝",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "1701",
+    "vacName": "流脑A+C群",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "2501",
+    "vacName": "23价肺炎",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "3801",
+    "vacName": "霍乱 ",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "0601",
+    "vacName": "白破",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "1702",
+    "vacName": "流脑A+C（结合）",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "2502",
+    "vacName": "7价肺炎",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "4701",
+    "vacName": "森林脑炎 ",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "0401",
+    "vacName": "百白破",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "1703",
+    "vacName": "流脑A+C+Y+W135",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "2901,2902,2903,2904,2905,2906",
+    "vacName": "出血热",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "0303",
+    "vacName": "脊灰疫苗(灭活Salk株)",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "1401",
+    "vacName": "麻风",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "1901,1902",
+    "vacName": "甲肝（减毒）",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "3401",
+    "vacName": "钩体",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "1301",
+    "vacName": "麻腮",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "5201",
+    "vacName": "戊肝",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "1903",
+    "vacName": "甲肝（灭活）",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "3601",
+    "vacName": "炭疽",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "5001",
+    "vacName": "百白破IPV和Hib五联",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "1201",
+    "vacName": "麻腮风",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "2001",
+    "vacName": "甲乙肝 ",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "4301,4401,4402,2801,2802,2803,2804,2805",
+    "vacName": "狂犬病",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "4901",
+    "vacName": "百白破Hib四联 ",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "1101,1102",
+    "vacName": "风疹(Rub)",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "2301",
+    "vacName": "Hib",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "3001,3002,3101,3201",
+    "vacName": "伤寒 ",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "5301",
+    "vacName": "A+C流脑Hib联合疫苗 ",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "1001",
+    "vacName": "腮腺炎",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "2201",
+    "vacName": "水痘",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "3301",
+    "vacName": "痢疾",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "5401,5402",
+    "vacName": "71型肠道病毒(灭活) ",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "1801",
+    "vacName": "乙脑（减毒）",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "2401",
+    "vacName": "轮状病毒",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "3701",
+    "vacName": "布病",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "1802,1803",
+    "vacName": "乙脑（灭活）",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "2101,2102,2103,2104,2105,2106",
+    "vacName": "流感",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacCode": "3501",
+    "vacName": "鼠疫 ",
+    "aliasName": "",
+    "tags": [],
+    "selected": false
+  }
+]

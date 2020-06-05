@@ -1,0 +1,71 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    短信记录
+    <div>
+      <button nbButton status="info" (click)="searchData()" [nbSpinner]="loading">查询</button>
+      <button nbButton status="info" (click)="export()"  [nbSpinner]="loading" class="ml-2 mr-2">导出</button>
+      <button nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label">受种者编码：</label>
+          <div class="col-8">
+            <input type="text" nbInput placeholder="请输入受种者编号" fullWidth formControlName="profileCode" id="profileCode">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label">姓名：</label>
+          <div class="col-8">
+            <input type="text" nbInput placeholder="请输入姓名" fullWidth formControlName="name" id="name">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label">手机号：</label>
+          <div class="col-8">
+            <input type="text" nbInput placeholder="请输入手机号" fullWidth formControlName="telephone" id="telephone">
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow: scroll;">
+  <nb-card-body>
+    <nz-table #msgTable [nzData]="listOfData"
+              [nzLoading]="loading"
+              [nzTotal]="total"
+              [nzPageIndex]="pageIndex"
+              [nzFrontPagination]="false"
+              (nzPageIndexChange)="searchData($event)"
+              nzBordered nzSize="small" nzSimple="false">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">受种者编码</th>
+        <th [nzAlign]="'center'">姓名</th>
+        <th [nzAlign]="'center'">出生日期</th>
+        <th [nzAlign]="'center'">手机号码</th>
+        <th [nzAlign]="'center'">短信内容</th>
+        <th [nzAlign]="'center'">提交时间</th>
+        <th [nzAlign]="'center'">录入者</th>
+        <th [nzAlign]="'center'">发送结果</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data">
+        <td [nzAlign]="'center'">{{data.profile}}</td>
+        <td [nzAlign]="'center'">{{data.name}}</td>
+        <td [nzAlign]="'center'">{{data.birthday | date: 'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">{{data.phoneNumber}}</td>
+        <td [nzAlign]="'center'">{{data.templateContent}}</td>
+        <td [nzAlign]="'center'">{{data.submissionTime}}</td>
+        <td [nzAlign]="'center'">{{data.user}}</td>
+        <td [nzAlign]="'center'">{{data.sendResult === '0' ? '成功' : '失败'}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

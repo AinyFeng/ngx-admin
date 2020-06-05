@@ -1,0 +1,79 @@
+<nb-card accent="info">
+  <nb-card-header>
+    <div>
+      账户管理
+      <small>完成0/4</small>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-list>
+      <nb-list-item>
+        <div class="left"><i nz-icon nzType="mail" nzTheme="outline"></i></div>
+        <div class="center">
+          <p>
+            <span class="font1">邮箱</span>
+            <span class="font3" *ngIf="!binding">已绑定</span>
+            <span class="font4" *ngIf="binding">未绑定</span>
+          </p>
+          <p class="font2">可用邮箱加密码登录系统,可用邮箱找回密码</p>
+        </div>
+        <div class="right">
+          <button nbButton status="info" (click)="nowBinding('email',false)" *ngIf="binding">立即绑定</button>
+          <button nbButton status="info" (click)="nowBinding('email',true)" *ngIf="!binding">更改绑定</button>
+        </div>
+      </nb-list-item>
+      <nb-list-item>
+        <div class="left"><i nz-icon nzType="mobile" nzTheme="outline"></i></div>
+        <div class="center">
+          <p>
+            <span class="font1">手机</span>
+            <span class="font3" *ngIf="!isPhone">{{phoneNumber}}</span>
+            <span class="font4" *ngIf="isPhone">未绑定</span>
+          </p>
+          <p class="font2">可用手机号加密登录系统,可通过手机号找回密码&nbsp;<a href="javascript:">无法绑定</a></p>
+        </div>
+        <div class="right">
+          <button nbButton status="info" (click)="nowBinding('phone',false)" *ngIf="isPhone">立即绑定</button>
+          <button nbButton status="info" (click)="nowBinding('phone',true)" *ngIf="!isPhone">更改绑定</button>
+        </div>
+      </nb-list-item>
+      <nb-list-item>
+        <div class="left"><i nz-icon nzType="safety-certificate" nzTheme="outline"></i></div>
+        <div class="center">
+          <p>
+            <span class="font1">密码</span>
+            <span class="font3">已设置</span>
+            <span class="font4"></span>
+          </p>
+          <p class="font2">用于保护账号信息和登录安全</p>
+        </div>
+        <div class="right">
+          <button nbButton status="info" (click)="nowBinding('password',false)">修改密码</button>
+        </div>
+      </nb-list-item>
+      <nb-list-item>
+        <div class="left"><i nz-icon nzType="message" nzTheme="outline"></i></div>
+        <div class="center">
+          <p>
+            <span class="font1">社交账号</span>
+            <span class="font3"></span>
+            <span class="font4"></span>
+          </p>
+          <p class="font2">绑定第三方账号,可以直接登录.</p>
+
+        </div>
+      </nb-list-item>
+      <nb-list-item class="accountBox">
+        <a class="innerBox" href="http://www.chinavacc.com">
+          <img src="/assets/icons/login/wechat.svg" target="_blank" title="点击绑定微信">
+        </a>
+        <a class="innerBox" href="http://www.chinavacc.com">
+          <img src="/assets/icons/login/dingding.svg" target="_blank" title="点击绑定钉钉">
+        </a>
+        <a class="innerBox" href="http://www.chinavacc.com" target="_blank">
+          <i nz-icon nzType="qq" nzTheme="" title="点击绑定QQ"></i>
+        </a>
+      </nb-list-item>
+    </nb-list>
+  </nb-card-body>
+</nb-card>

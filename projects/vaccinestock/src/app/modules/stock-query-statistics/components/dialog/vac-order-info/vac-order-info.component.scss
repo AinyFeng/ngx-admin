@@ -1,0 +1,7 @@
+@import '../../../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+  .preventForm {
+    pointer-events: none;
+  }
+}

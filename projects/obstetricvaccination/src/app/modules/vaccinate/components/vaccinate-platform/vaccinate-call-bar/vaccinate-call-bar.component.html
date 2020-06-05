@@ -1,0 +1,29 @@
+
+<div nz-row *ngIf="isShow">
+  <nb-card *ngIf="showCard" accent="info">
+    <nb-card-header>
+      <ng-container [ngTemplateOutlet]="callBar">
+      </ng-container>
+    </nb-card-header>
+  </nb-card>
+  <ng-container *ngIf="!showCard" [ngTemplateOutlet]="callBar"></ng-container>
+  <ng-template #callBar>
+    <div nz-row class="div-btn div-select">
+      <div nz-col nzXXl="12" nzXl="9"  nzLg="24" nzSpan="24" class="line-height-2rem">
+        <span class="span-title">【{{ (currentQueueItem ? currentQueueItem?.queueCode + '-' : '无信息') + (currentQueueItem? currentQueueItem?.profileName + getStatus() : '') }}】</span>
+      </div>
+      <div nz-col nzXXl="12" nzXl="15" nzLg="24" nzSpan="24" class="line-height-2rem">
+        <ul class="ul-btn">
+          <li>
+            <nb-select placeholder="选择出库冰箱" [(selected)]="selectedFacilityCode" (selectedChange)="changeFacility($event)">
+              <nb-option *ngFor="let facility of coldStorageFacilitiesOption" [value]="facility.facilityCode">{{ facility.name }}</nb-option>
+            </nb-select>
+          </li>
+          <li>
+            <button nbButton status="info" (click)="breakageOpen()">报损</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </ng-template>
+</div>

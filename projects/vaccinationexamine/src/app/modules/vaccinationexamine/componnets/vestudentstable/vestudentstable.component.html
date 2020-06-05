@@ -1,0 +1,78 @@
+<nz-table
+	#dynamicTable
+	[nzScroll]="fixHeader ? { y: '240px' } : null"
+	[nzData]="listOfData"
+	[nzBordered]="bordered"
+	[nzSimple]="simple"
+	[nzLoading]="loading"
+	[nzPaginationPosition]="position"
+	[nzShowSizeChanger]="sizeChanger"
+	[nzFrontPagination]="pagination"
+	[nzShowPagination]="pagination"
+	[nzFooter]="footer ? 'Here is Footer' : null"
+	[nzTitle]="title"
+	[nzSize]="size"
+	(nzCurrentPageDataChange)="currentPageDataChange($event)"
+>
+	<thead>
+		<tr *ngIf="header">
+			<th nzWidth="32px" nzShowExpand *ngIf="expandable"></th>
+			<th
+				*ngIf="checkbox"
+				nzWidth="32px"
+				nzShowCheckbox
+				[(nzChecked)]="allChecked"
+				[nzIndeterminate]="indeterminate"
+				(nzCheckedChange)="checkAll($event)"
+			></th>
+			<th nzWidth="64px">姓名</th>
+			<th nzWidth="32px">性别</th>
+			<th>出生日期</th>
+			<th>市级</th>
+			<th>县级</th>
+			<th>接种点</th>
+			<th>学校</th>
+			<th>班级</th>
+			<th>入学时间</th>
+			<th>是否完成</th>
+			<th>未种疫苗</th>
+			<th>联系电话</th>
+			<th>导入时间</th>
+			<th nzWidth="64px">操作</th>
+		</tr>
+	</thead>
+	<tbody>
+		<ng-template ngFor let-data [ngForOf]="dynamicTable.data">
+			<tr>
+				<td nzShowExpand *ngIf="expandable" [(nzExpand)]="data.expand"></td>
+				<td
+					nzShowCheckbox
+					*ngIf="checkbox"
+					[(nzChecked)]="data.checked"
+					(nzCheckedChange)="refreshStatus()"
+				></td>
+				<td>{{ data.name }}</td>
+				<td>{{ data.gender }}</td>
+				<td>{{ data.birthdate }}</td>
+				<td>{{ data.city }}</td>
+				<td>{{ data.district }}</td>
+				<td>{{ data.pov }}</td>
+				<td>{{ data.school }}</td>
+				<td>{{ data.classes }}</td>
+				<td>{{ data.entrytime }}</td>
+				<td>{{ data.done }}</td>
+				<td>{{ data.unreceived }}</td>
+				<td>{{ data.mobile }}</td>
+				<td>{{ data.importtime }}</td>
+				<td>
+					<button nz-button nzType="primary" nzBlock="true" nzSize="small" class="mb-1 mr-1">编辑</button>
+					<button nz-button nzType="danger" nzBlock="true" nzSize="small">转班</button>
+				</td>
+			</tr>
+			<tr [nzExpand]="data.expand && expandable">
+				<td></td>
+				<td [attr.colspan]="checkbox ? 5 : 4">{{ data.description }}</td>
+			</tr>
+		</ng-template>
+	</tbody>
+</nz-table>

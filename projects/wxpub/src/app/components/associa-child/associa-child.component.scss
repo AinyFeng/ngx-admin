@@ -1,0 +1,22 @@
+.child-birthday {
+  margin-top: -1px !important;
+
+  .code-btn {
+    width: 104px;
+    margin: 10px 10px 10px 0;
+    padding: 8px 8px;
+    position: absolute;
+    right: -8px;
+    bottom: -1px;
+    z-index: 1000;
+  }
+  .weui-cell_vcode {
+    height: 60px;
+    position: relative;
+  }
+  .weui-icon-warn{
+    display: none;
+    width: 0;
+  }
+}
+

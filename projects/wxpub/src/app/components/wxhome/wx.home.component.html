@@ -1,0 +1,31 @@
+<div class="wx-content">
+<!--	  <div class="weui-cells">-->
+<!--	    <div class="weui-cell" routerLink="/wxpub/myAttention">-->
+<!--	      我的关注（myAttention）-->
+<!--	    </div>-->
+<!--	    <div class="weui-cell" routerLink="/addArchives">-->
+<!--	      自助建档（addArchives）-->
+<!--	    </div>-->
+<!--	    <div class="weui-cell" routerLink="/archivesList">-->
+<!--	      建档列表（addArchives）-->
+<!--	    </div>-->
+<!--	    <div class="weui-cell" routerLink="/appointmentList">-->
+<!--	      预约服务（appointmentList）-->
+<!--	    </div>-->
+<!--	    <div class="weui-cell" routerLink="/injectFeedbackList">-->
+<!--	      接种反馈（injectFeedbackList）-->
+<!--	    </div>-->
+<!--	  </div>-->
+	<h1 class="title">智慧接种</h1>
+	<div class="banner-wrap">
+    <img src="assets/images/home/banner01.png" alt="">
+  </div>
+
+	<div class="content-wrap">
+		<div class="list-item" *ngFor="let item of dataList" [routerLink]="item.routeLink">
+			<img style="width: 4.5rem;" [src]="item.img" alt="" />
+			<span class="info">{{item.title}}</span>
+		</div>
+	</div>
+<!--	<button weui-button (click)="loginOut()">退出登录</button>-->
+</div>

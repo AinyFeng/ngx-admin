@@ -1,0 +1,152 @@
+<form nz-form [formGroup]="stockSearchForm" class="ant-advanced-search-form">
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item class="m-0">
+        <nz-form-label nzSpan="8">疫苗/注射器</nz-form-label>
+        <nz-form-control nzSpan="16">
+          <nz-select nzShowSearch nzAllowClear formControlName="batchType" nzPlaceHolder="请选择">
+            <nz-option *ngFor="let c of containerTypeOptions" [nzLabel]="c.label" [nzValue]="c.value"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item class="m-0">
+        <nz-form-label nzSpan="8">疫苗类型</nz-form-label>
+        <nz-form-control nzSpan="16">
+          <nz-select nzShowSearch nzAllowClear formControlName="type" nzPlaceHolder="请选择">
+            <nz-option nzLabel="一类" nzValue="0"></nz-option>
+            <nz-option nzLabel="二类" nzValue="1"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item class="m-0">
+        <nz-form-label nzSpan="8">疫苗批号</nz-form-label>
+        <nz-form-control nzSpan="16">
+          <input type="text" nz-input formControlName="batchNo">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item class="m-0">
+        <nz-form-label nzSpan="8">疫苗名称</nz-form-label>
+        <nz-form-control nzSpan="16">
+          <nz-select nzShowSearch nzAllowClear formControlName="vaccineSubclassCode" nzPlaceHolder="请选择">
+            <nz-option *ngFor="let s of subclassCodeOptions" [nzLabel]="s.label" [nzValue]="s.value"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item class="m-0">
+        <nz-form-label nzSpan="8">疫苗生产企业</nz-form-label>
+        <nz-form-control nzSpan="16">
+          <nz-select nzShowSearch nzAllowClear formControlName="manufactureCode" nzPlaceHolder="请选择">
+            <nz-option *ngFor="let m of manufactureOptions" [nzLabel]="m.name" [nzValue]="m.code"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="8">
+      <nz-form-item class="m-0">
+        <nz-form-label nzSpan="8">疫苗大类</nz-form-label>
+        <nz-form-control nzSpan="16">
+          <nz-select nzShowSearch nzAllowClear formControlName="broadHeadingCode" nzPlaceHolder="请选择">
+            <nz-option *ngFor="let s of vacBroadHeadingData" [nzLabel]="s.broadHeadingName"
+                       [nzValue]="s.broadHeadingCode"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="8">
+      <nz-form-item class="m-0">
+        <nz-form-label nzSpan="8">起始有效期</nz-form-label>
+        <nz-form-control nzSpan="16">
+          <nz-date-picker [nzDisabledDate]="disabledStartDate" formControlName="startDate">></nz-date-picker>
+          <!-- <input type="text" nz-input formControlName="">-->
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="8">
+      <nz-form-item class="m-0">
+        <nz-form-label nzSpan="8">截止有效期</nz-form-label>
+        <nz-form-control nzSpan="16">
+          <nz-date-picker [nzDisabledDate]="disabledEndDate" formControlName="endDate">></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="8">
+      <nz-form-item class="m-0">
+        <nz-form-label nzSpan="8">失效</nz-form-label>
+        <nz-form-control nzSpan="16">
+          <nz-radio-group id="isLoseEfficacy" formControlName="isLoseEfficacy">
+            <label nz-radio nzValue="1">是</label>
+            <label nz-radio nzValue="0">否</label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</form>
+<div class="mb-2">
+  <button class="mr-2" nz-button (click)="queryStock()" nzType="primary">查询</button>
+  <button class="mr-2" nz-button nzType="primary" (click)="closeDialog()">关联</button>
+  <button nz-button nzType="primary" (click)="reset()">重置</button>
+</div>
+<nz-table nzSize="small" #vac [nzData]="vaccineData" [nzTotal]="total"
+          (nzPageIndexChange)="queryStock($event)"
+          [nzFrontPagination]="false"
+          [nzLoading]="loading"
+          nzBordered="false"
+          [nzShowTotal]="totalTemplate" [(nzPageIndex)]="pageIndex">
+  <thead>
+  <tr>
+    <th>选择</th>
+    <th>类型</th>
+    <th>疫苗名称</th>
+    <th>疫苗属性</th>
+    <th>疫苗生产企业</th>
+    <th>疫苗批号</th>
+    <th>规格</th>
+    <th>剂量</th>
+    <th>有效日期</th>
+    <th>成本价</th>
+    <th>库存数量</th>
+    <th>可用库存</th>
+    <th>阿里健康疫苗</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of vac.data">
+    <td nzShowCheckbox
+        [(nzChecked)]="data.checked"
+        [nzDisabled]="data.disabled || data.storenumF <= 0"
+        (nzCheckedChange)="addVaccine($event, data)">
+      <span *ngIf="data.disabled">已添加</span>
+      <span *ngIf="data.storenumF <= 0">无库存</span>
+    </td>
+    <td>{{ data.batchType | dicPipe: 'batchType' }}</td>
+    <td>{{data.vaccName}}</td>
+    <td>{{data.vaccineType === '0' ? '第一类' : '第二类'}}</td>
+    <td>{{data.manufactureName}}</td>
+    <td>{{data.batchNo}}</td>
+    <td>{{data.spec}}</td>
+    <td>{{data.dose}}</td>
+    <td>{{data.loseEfficacyDate | date: 'yyyy-MM-dd'}}</td>
+    <td>{{data.orignPrice}}</td>
+    <td>{{data.storeNum}}</td>
+    <td>{{data.storenumF}}</td>
+    <td>{{data.ailhealthSerialCode ? '是' : '否'}}</td>
+  </tr>
+  </tbody>
+</nz-table>
+
+
+<ng-template #totalTemplate>共{{ total }}条数据，当前第{{ pageIndex }}页</ng-template>
+

@@ -1,0 +1,17 @@
+<nb-card size="xlarge" class="nb-card-container">
+  <nb-card-header class="nb-card-header-qb">
+    修改档案
+    <span class="float-right mr-4 cursor-pointer" title="关闭" (click)="onClose()"><i
+      class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <ngx-tab-add-child-file #child [operationUpdate]="true" (showLoading)="onLoading($event)" (operationUpdateClose)="onClose()"></ngx-tab-add-child-file>
+  </nb-card-body>
+  <nb-card-footer class="text-center">
+    <button [disabled]="loading"
+            [nbSpinner]="loading"
+            nbSpinnerStatus="info"
+            nbSpinnerMessage="" status="info"
+            (click)="onSubmit()" nbButton>保存</button>
+  </nb-card-footer>
+</nb-card>

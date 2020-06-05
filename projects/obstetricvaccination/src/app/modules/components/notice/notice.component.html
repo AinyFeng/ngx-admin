@@ -1,0 +1,33 @@
+<nb-card accent="info">
+  <!-- <nb-card-header>
+    系统公告
+  </nb-card-header> -->
+  <nb-card-body>
+    <div class="notice-box">
+      <nb-tabset fullWidth>
+        <nb-tab tabTitle="全部信息">
+          <nz-table #notice [nzData]="noticeData" [nzTotal]="total" [nzFrontPagination]="false"
+            (nzPageIndexChange)="getSysAllInfo($event)" (nzPageSize)="pageSize">
+            <thead>
+              <tr>
+                <th [nzAlign]="'center'">发送人</th>
+                <th [nzAlign]="'center'">发送内容</th>
+                <th [nzAlign]="'center'">发送时间</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let v of notice.data">
+                <td [nzAlign]="'left'">{{v.sender}}</td>
+                <td [nzAlign]="'left'">{{v.sendContent}}</td>
+                <td [nzAlign]="'center'">{{v.sendingTime | date: 'yyyy-MM-dd'}}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </nb-tab>
+        <nb-tab tabTitle="预警信息">
+          <p class="m-1" *ngFor="let v of messages;let i = index" style="margin-top:5px;">{{v.sendContent}}</p>
+        </nb-tab>
+      </nb-tabset>
+    </div>
+  </nb-card-body>
+</nb-card>

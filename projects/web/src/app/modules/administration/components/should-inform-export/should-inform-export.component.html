@@ -1,0 +1,123 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    应种统计通知及导出
+    <div>
+      <button nbButton status="info" (click)="searchData()" [nbSpinner]="loading">查询</button>
+      <button nbButton status="info" (click)="export()"  [nbSpinner]="loading" class="ml-2 mr-2">导出报表</button>
+      <button nbButton status="info" (click)="sendSms()" [nbSpinner]="loading">发送短信</button>
+      <button nbButton status="warning" (click)="reset()" class="ml-2" [nbSpinner]="loading">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">生日(起)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择出生日期" [nbDatepicker]="birthDateStartPicker"
+                   formControlName="birthStart" id="birthStart">
+            <nb-datepicker #birthDateStartPicker format="YYYY/MM/DD" [filter]="filterBirthStartDate"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">生日(止)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择出生日期"
+                   [nbDatepicker]="birthDatePicker" formControlName="birthEnd" id="birthEnd">
+            <nb-datepicker #birthDatePicker format="YYYY/MM/DD" [filter]="filterBirthEndDate"></nb-datepicker>
+          </div>
+        </div>
+        <!--<div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">现管理单位：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择" fullWidth outline status="info" formControlName="currentManagementUnit"
+                       id="currentManagementUnit">
+              <nb-option value="1">本点管理</nb-option>
+              <nb-option value="0">所有</nb-option>
+            </nb-select>
+          </div>
+        </div>-->
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">居住类别：</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择居住类别" formControlName="residentialTypeCode"
+                               [options]="residentialTypeData"></uea-nb-select-all>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">在册类别：</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择在册类别" formControlName="profileStatusCode"
+                               [options]="profileStatusData"></uea-nb-select-all>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">区域划分：</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择区域划分" formControlName="community"
+                               [valueText]="'communityCode'"
+                               [labelText]="'communityName'"
+                               [options]="belongDistrictData"></uea-nb-select-all>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疾病大类：</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择疾病大类" formControlName="vaccineProductCode"
+                               [valueText]="'categoryCode'"
+                               [labelText]="'categoryName'"
+                               [options]="diseaseData"></uea-nb-select-all>
+            <!--<uea-nb-select-all placeholderText="请选择疫苗名称" formControlName="vaccineProductCode"
+                               [options]="vacBroadHeadingData"></uea-nb-select-all>-->
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow: scroll;">
+  <nb-card-body>
+    <nz-table #msgTable [nzData]="listOfData"
+              [nzLoading]="loading"
+              (nzPageIndexChange)="searchData($event)"
+              [nzFrontPagination]="false"
+              [(nzPageIndex)]="pageIndex"
+              [nzTotal]="total"
+              [nzShowTotal]="totalTemplate"
+              nzBordered nzSize="small" nzSimple="false">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">儿童编码</th>
+        <th [nzAlign]="'center'">儿童姓名</th>
+        <th [nzAlign]="'center'">性别</th>
+        <th [nzAlign]="'center'">出生日期</th>
+        <th [nzAlign]="'center'">居住属性</th>
+        <th [nzAlign]="'center'">母亲姓名</th>
+        <th [nzAlign]="'center'">母亲联系方式</th>
+        <th [nzAlign]="'center'">地址</th>
+        <th [nzAlign]="'center'">疾病大类</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data; index as i">
+        <td [nzAlign]="'center'">{{data.profileCode}}</td>
+        <td [nzAlign]="'center'">{{data.childName}}</td>
+        <td [nzAlign]="'center'">{{data.gender | dicPipe: 'genderCode'}}</td>
+        <td [nzAlign]="'center'">{{data.birthDate}}</td>
+        <td [nzAlign]="'center'">{{data.liveType | dicPipe: 'residentialType'}}</td>
+        <td [nzAlign]="'center'">{{data.monName}}</td>
+        <td [nzAlign]="'center'">{{data.monPhone}}</td>
+        <td [nzAlign]="'center'">{{data.address}}</td>
+        <td [nzAlign]="'center'">{{data.diseaseCategory}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #totalTemplate>
+  共{{ total }}条数据，当前第{{ pageIndex }}页
+</ng-template>

@@ -1,0 +1,68 @@
+<nz-table [nzPageSize]="pageSize"
+          nzHideOnSinglePage
+          nzSize="small"
+          [nzTotal]="reservationRecordListCount" #res [nzData]="reservationRecordList">
+  <thead>
+  <tr>
+    <th [nzAlign]="'center'">预约日期</th>
+    <th [nzAlign]="'center'">预约时段</th>
+    <th [nzAlign]="'center'">疫苗种类</th>
+    <!--    <th [nzAlign]="'center'">针次</th>-->
+    <!--    <th [nzAlign]="'center'">价格</th>-->
+    <th [nzAlign]="'center'">来源</th>
+    <th [nzAlign]="'center'">预约状态</th>
+    <th [nzAlign]="'center'">操作时间</th>
+    <th [nzAlign]="'center'">操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of res.data">
+    <td [nzAlign]="'center'">{{data.finalDate | date: 'yyyy-MM-dd'}}</td>
+    <td [nzAlign]="'center'">{{data.workingTime}}</td>
+    <td [nzAlign]="'center'">{{data.reservationGroup | vacBroadHeadingPipe}}</td>
+    <!--    <td [nzAlign]="'center'">{{  }}</td>-->
+    <!--    <td [nzAlign]="'center'">-->
+    <!--      <nz-tag [nzColor]="data.price === 0 ? '#87d068' : '#f50'">{{ data.price === 0 ? '免费' : '自费' }}</nz-tag>-->
+    <!--    </td>-->
+    <td [nzAlign]="'center'">{{data.channel === '1' ? '人工预约' : '网上预约'}}</td>
+    <td [nzAlign]="'center'">
+      <nz-tag [nzColor]="data.status == '3' || data.status == '9' ? '#ff3d71' : '#87d068'">
+        {{ data.status | dicPipe: 'reservationStatus' }}
+      </nz-tag>
+    </td>
+    <td [nzAlign]="'center'">{{ data.createDate | date: 'yyyy-MM-dd HH:mm' }}</td>
+    <td [nzAlign]="'center'">
+      <a href="javascript:" [nbPopover]="recordDetail"
+         class="mr-2"
+         [nbPopoverContext]="data"
+         nbPopoverPlacement="left">详情</a>
+      <a *ngIf="data.status != '3' && data.status !== '9'" href="javascript:"
+         (click)="cancelReservation(data.reservationDetailSerial)">取消</a>
+      <a *ngIf="data.status == '3' || data.status == '9'">已取消</a>
+
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
+<ng-template #recordDetail let-data>
+  <nb-card class="mb-0">
+    <nb-card-body>
+      <ul style="list-style-type: none; margin: 0; padding: 0;">
+        <li><strong>预约日期: </strong>{{data.finalDate | date: 'yyyy-MM-dd'}}</li>
+        <li><strong>预约时段: </strong>{{data.workingTime}}</li>
+        <li><strong>疫苗种类: </strong>{{data.reservationVaccine | vacSubclassPipe}}</li>
+        <li>
+          <strong>价格: </strong>
+          <nz-tag [nzColor]="data.price === 0 ? '#87d068' : '#ff3d71'">{{ data.price === 0 ? '免费' : '自费' }}</nz-tag>
+        </li>
+        <li><strong>来源: </strong>{{data.channel === '1' ? '人工预约' : '网上预约'}}</li>
+        <li>
+          <strong>预约状态: </strong>
+          <nz-tag [nzColor]="data.status == '3' ? '#ff3d71' : '#87d068'">
+            {{ data.status | dicPipe: 'reservationStatus' }}
+          </nz-tag>
+        </li>
+      </ul>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

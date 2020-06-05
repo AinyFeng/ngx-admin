@@ -1,0 +1,62 @@
+<nb-card size="xlarge" class="nb-card-container-xx">
+  <nb-card-header class="nb-card-header-qb">
+    请选择一条档案记录
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-alert outline="info"
+              class="text-center">
+      一共查询到{{ total }}条数据，请双击选择一条数据
+    </nb-alert>
+    <!--<nz-alert class="mt-3 mb-3" nzType="info" [nzMessage]="template"></nz-alert>
+    <ng-template #template>
+      <div class="text-center">
+        一共查询到{{ total }}条数据，请双击选择一条数据
+      </div>
+    </ng-template>-->
+    <nz-table #basicTable [nzData]="data"
+              [nzLoading]="loading"
+              nzSize="small"
+              [nzFrontPagination]="false"
+              [nzTotal]="total"
+              [nzPageSize]="pageSize"
+              (nzPageIndexChange)="queryData($event)">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>姓名</th>
+        <th>档案编码</th>
+        <th>性别</th>
+        <th>证件号码</th>
+        <th>在册状态</th>
+        <th>出生日期</th>
+        <th>民族</th>
+        <th>户口地址</th>
+        <th>所属POV</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let d of basicTable.data;let i = index" (dblclick)="select(d)">
+        <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+        <td>{{ d.name }}</td>
+        <td>{{ d.profileCode }}</td>
+        <td>{{ d.gender | dicPipe: 'genderCode'}}</td>
+        <td>{{ d.idCardNo }}<br><span *ngIf="d.idCardType && d.idCardNo">【{{ d.idCardType | dicPipe: 'idCardType' }}
+          】</span></td>
+        <td>
+          <nz-tag *ngIf="d.profileStatusCode === '10'" [nzColor]="'#f50'">{{ d.profileStatusCode | dicPipe: 'profileStatus' }}</nz-tag>
+          <nz-tag *ngIf="d.profileStatusCode !== '10'" [nzColor]="'#108ee9'">{{ d.profileStatusCode | dicPipe: 'profileStatus' }}</nz-tag>
+        </td>
+        <td>{{ d.birthDate | date: 'yyyy-MM-dd' }}</td>
+        <td>{{ d.nationCode | nationPipe }}</td>
+        <td>{{ d.idCardProvCode | administrativePipe | async}}{{ d.idCardCityCode | administrativePipe | async}}{{ d.idCardDistrictCode | administrativePipe | async}}
+          <br>{{ d.idCardDetail }}</td>
+        <td>{{ d.vaccinationPovCode | povNamePipe | async}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+  <nb-card-footer class="text-center">
+    <button nbButton status="info" (click)="onClose()">关闭</button>
+  </nb-card-footer>
+</nb-card>

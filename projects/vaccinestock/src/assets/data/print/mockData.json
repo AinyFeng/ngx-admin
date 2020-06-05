@@ -1,0 +1,211 @@
+{
+  "anhui": {
+    "serialNo": "业务流水号",
+    "medicalInstitution": "医疗机构类型",
+    "name": "张无忌",
+    "gender": "女",
+    "medicalInsuranceType": "医保类型",
+    "totalAmountChinese": "伍佰伍拾元整",
+    "totalAmountDigits": "￥550",
+    "medicalInsurancePayAmount": 999,
+    "personalAccountPayAmount": 444,
+    "otherMedicalInsurancePayAmount": 58,
+    "personalPayAmount": 584,
+    "payeePov": "收款单位",
+    "payee": "收款人",
+    "date": "2019-01-01",
+    "vacProducts": [
+      {
+        "vacProductName": "冻干狂苗乙肝疫苗酒酿酵母/1.0ml",
+        "vacProductQuantity": 5,
+        "vacProductAmount": 100,
+        "vacProductPersonalPayAmount": 50
+      },
+      {
+        "vacProductName": "冻干狂苗乙肝疫苗酒酿酵母/2.0ml",
+        "vacProductQuantity": 5,
+        "vacProductAmount": 100,
+        "vacProductPersonalPayAmount": 50
+      },
+      {
+        "vacProductName": "冻干狂苗乙肝疫苗酒酿酵母/3.0ml",
+        "vacProductQuantity": 5,
+        "vacProductAmount": 100,
+        "vacProductPersonalPayAmount": 50
+      },
+      {
+        "vacProductName": "冻干狂苗乙肝疫苗酒酿酵母/4.0ml",
+        "vacProductQuantity": 5,
+        "vacProductAmount": 100,
+        "vacProductPersonalPayAmount": 50
+      },
+      {
+        "vacProductName": "冻干狂苗乙肝疫苗酒酿酵母/5.0ml",
+        "vacProductQuantity": 5,
+        "vacProductAmount": 100,
+        "vacProductPersonalPayAmount": 50
+      },
+      {
+        "vacProductName": "冻干狂苗乙肝疫苗酒酿酵母/6.0ml",
+        "vacProductQuantity": 5,
+        "vacProductAmount": 100,
+        "vacProductPersonalPayAmount": 50
+      },
+      {
+        "vacProductName": "冻干狂苗/7.0ml",
+        "vacProductQuantity": 5,
+        "vacProductAmount": 100,
+        "vacProductPersonalPayAmount": 50
+      },
+      {
+        "vacProductName": "冻干狂苗/8.0ml",
+        "vacProductQuantity": 5,
+        "vacProductAmount": 100,
+        "vacProductPersonalPayAmount": 50
+      },
+      {
+        "vacProductName": "冻干狂苗乙肝疫苗酒酿酵母/9.0ml",
+        "vacProductQuantity": 5,
+        "vacProductAmount": 100,
+        "vacProductPersonalPayAmount": 50
+      },
+      {
+        "vacProductName": "冻干狂苗乙肝疫苗酒酿酵母/10.0ml",
+        "vacProductQuantity": 5,
+        "vacProductAmount": 100,
+        "vacProductPersonalPayAmount": 50
+      },
+      {
+        "vacProductName": "冻干狂苗乙肝疫苗酒酿酵母/11.0ml",
+        "vacProductQuantity": 5,
+        "vacProductAmount": 100,
+        "vacProductPersonalPayAmount": 50
+      },
+      {
+        "vacProductName": "冻干狂苗/12.0ml",
+        "vacProductQuantity": 5,
+        "vacProductAmount": 100,
+        "vacProductPersonalPayAmount": 50
+      }
+    ]
+  },
+  "shanghai": {
+    "serialNo": "业务流水号",
+    "medicalInstitution": "医疗机构",
+    "name": "张继武",
+    "gender": "男",
+    "medicalInsuranceType": "自费",
+    "categoryList": [
+      {
+        "categoryName": "西药费",
+        "categoryPayAmount": 800.00
+      },
+      {
+        "categoryName": "大类项目二名称",
+        "categoryPayAmount": "大类项目二金额"
+      }
+    ],
+    "vacProducts": [
+      {
+        "vacProductCode": "0000215",
+        "vacProductName": "冻干狂苗乙肝疫苗酒酿酵母",
+        "vacSpecifications": "1.0ml",
+        "vacProductQuantity": 1,
+        "vacPrice": 300,
+        "vacProductAmount": 300
+      },
+      {
+        "vacProductCode": "0000515",
+        "vacProductName": "冻干狂苗乙肝疫苗酒酿酵母",
+        "vacSpecifications": "2.0ml",
+        "vacProductQuantity": 1,
+        "vacPrice": 500,
+        "vacProductAmount": 500
+      }
+    ],
+    "totalAmountChinese": "捌佰元整",
+    "cashPayment": 200,
+    "personalAccountPayAmount": 100,
+    "medicalInsurancePayAmount": 100,
+    "additionalPayment": 36.50,
+    "classificationOwnPayment": 200.50,
+    "ownPayment": 255.50,
+    "ownExpense": 125.25,
+    "curYearAccountBalance": 110.50,
+    "allYearAccountBalance": 2251.36,
+    "payeePov": "34021515153",
+    "payee": "2515154",
+    "date": "2019-01-01"
+  },
+  "jiangxi": {
+    "serialNo": "513151351351351",
+    "medicalInstitution": "江西某医院",
+    "name": "张无忌",
+    "gender": "男",
+    "medicalInsuranceType": "自费",
+    "totalAmountChinese": "玖佰玖拾元整",
+    "totalAmountDigits": "￥990",
+    "medicalInsurancePayAmount": 5660,
+    "personalAccountPayAmount": 500,
+    "otherMedicalInsurancePayAmount": 1000,
+    "personalTotalPayAmount": 15200,
+    "payeePov": "收款部门",
+    "payee": "收款人",
+    "date": "2019-01-01",
+    "vacProducts": [
+      {
+        "vacProductName": "破伤风/10ml",
+        "vacProductQuantity": 99,
+        "vacProductAmount": 9900,
+        "personalPayAmount": 1000
+      },
+      {
+        "vacProductName": "乙肝酒酿酵母/10ml",
+        "vacProductQuantity": 2,
+        "vacProductAmount": 10,
+        "personalPayAmount": 5
+      }
+    ]
+  },
+  "yunnan": {
+    "ticketNo": "电子票号:0126006318",
+    "serialNo": "515613513513513",
+    "medicalInstitution": "医疗机构名称",
+    "name": "张无忌",
+    "gender": "男",
+    "medicalInsuranceType": "自费",
+    "socialSecurityNumber": "15151351351435135",
+    "vacProducts": [
+      {
+        "vacProductName": "乙肝疫苗",
+        "vacProductQuantity": 2,
+        "vacProductAmount": 500
+      },
+      {
+        "vacProductName": "乙肝疫苗",
+        "vacProductQuantity": 2,
+        "vacProductAmount": 500
+      },
+      {
+        "vacProductName": "乙肝疫苗",
+        "vacProductQuantity": 2,
+        "vacProductAmount": 500
+      },
+      {
+        "vacProductName": "乙肝疫苗",
+        "vacProductQuantity": 2,
+        "vacProductAmount": 500
+      },
+      {
+        "vacProductName": "乙肝疫苗",
+        "vacProductQuantity": 2,
+        "vacProductAmount": 500
+      }
+    ],
+    "totalAmountChinese": "伍佰伍拾陆元整",
+    "totalAmountDigits": "￥556.00",
+    "payeePov": "某一个医院",
+    "payee": "收款人",
+    "date": "2019-01-01"
+  }
+}

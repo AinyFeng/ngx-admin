@@ -1,0 +1,14 @@
+@import '../../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+  .input-error {
+    border-color: red;
+
+    &:hover {
+      box-shadow: 0 0 4px red;
+    }
+    &:focus {
+      box-shadow: 0 0 4px red;
+    }
+  }
+}

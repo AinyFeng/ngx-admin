@@ -1,0 +1,134 @@
+<form [formGroup]="searchForm">
+  <div class="d-inline-flex mt-3 mb-3">
+    <label class="col-form-label mr-2">受种人姓名</label>
+    <div class="mr-3">
+      <input formControlName="vaccineeName" id="vaccineeName" fullWidth type="text" nbInput
+             placeholder="请输入姓名">
+    </div>
+    <label class="col-form-label mr-2">支付类型</label>
+    <div class="mr-3">
+      <uea-nb-select-all placeholderText="请选择支付方式" formControlName="payChannel"
+                         [options]="paymentWays"></uea-nb-select-all>
+    </div>
+    <label class="col-form-label mr-2">订单时间(起)</label>
+    <div class="mr-3">
+      <nz-date-picker style="width: 100%;" nzSize="large"
+                      nzAllowClear="false"
+                      formControlName="createStartTime" nzShowTime
+                      nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择创建时间"
+                      [nzDisabledDate]="filterStartDate"></nz-date-picker>
+    </div>
+    <label class="col-form-label mr-2">订单时间(止)</label>
+    <div>
+      <nz-date-picker style="width: 100%;" nzSize="large"
+                      nzAllowClear="false"
+                      formControlName="createEndTime" nzShowTime
+                      nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择创建时间"
+                      [nzDisabledDate]="filterEndDate"></nz-date-picker>
+    </div>
+  </div>
+  <div class="d-inline-flex mt-3 mb-3">
+    <button nbButton status="info" class="mr-3" (click)="queryPaidOrder()" [disabled]="loading">
+      查询
+    </button>
+    <button nbButton status="warning" (click)="resetForm()">重置</button>
+  </div>
+</form>
+<nz-table #paidOrder nzBordered nzSize="small" [nzData]="paidOrderData"
+          [nzLoading]="loading"
+          [(nzPageIndex)]="pageIndex"
+          (nzPageIndexChange)="queryPaidOrder($event)"
+          [nzFrontPagination]="false"
+          [nzTotal]="total"
+          [nzShowTotal]="totalTemplate"
+          [nzShowPagination]="true">
+  <thead>
+  <tr>
+    <th nzShowExpand></th>
+    <th [nzAlign]="'center'">缴费姓名</th>
+    <th [nzAlign]="'center'">付款方式</th>
+    <th [nzAlign]="'center'">付款凭证</th>
+    <th [nzAlign]="'center'">总金额(元)</th>
+    <th [nzAlign]="'center'">订单创建时间</th>
+    <th [nzAlign]="'center'">付款时间</th>
+    <th [nzAlign]="'center'">是否使用医保</th>
+    <th [nzAlign]="'center'">收费医生</th>
+    <th [nzAlign]="'center'">状态</th>
+    <th [nzAlign]="'center'">开票</th>
+    <th [nzAlign]="'center'">操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-template ngFor let-orderFinishData [ngForOf]="paidOrder.data">
+    <tr>
+      <td nzShowExpand [(nzExpand)]="orderFinishData.expand"
+          (nzExpandChange)="expand(orderFinishData.expand, orderFinishData)"></td>
+      <td [nzAlign]="'center'">{{orderFinishData.vaccineeName}}</td>
+      <td [nzAlign]="'center'">{{orderFinishData.payChannel | dicPipe : 'payWay'}}</td>
+      <td [nzAlign]="'center'">{{orderFinishData.payCertificate}}</td>
+      <td [nzAlign]="'center'">{{orderFinishData.totalAmount | currency: '￥'}}</td>
+      <td [nzAlign]="'center'">{{orderFinishData.createTime | date : 'yyyy-MM-dd HH:mm'}}</td>
+      <td [nzAlign]="'center'">{{orderFinishData.payedTime | date : 'yyyy-MM-dd HH:mm'}}</td>
+      <td
+        [nzAlign]="'center'">{{orderFinishData.useMedicalInsurance | dicPipe : 'useMedicalStatus'}}</td>
+      <td [nzAlign]="'center'">{{orderFinishData.cashierName}}</td>
+      <td [nzAlign]="'center'">{{orderFinishData.status | dicPipe:'orderStatus'}}</td>
+      <td [nzAlign]="'center'">{{ orderFinishData.invoiceStatus | invoiceStatusPipe }}</td>
+      <td [nzAlign]="'center'">
+        <!--        开票 - 没开票且已付款或者没开票且已接种完成-->
+        <a *ngIf="orderFinishData.invoiceStatus === '0' && (orderFinishData.status === '2' || orderFinishData.status === '8')"
+          href="javascript:void(0)"
+          (click)="printReceipt(orderFinishData)"><i class="fas fa-print"></i> 开票</a>
+        <!--退款 - 只要已缴费,都可以退款-->
+        <a *ngIf="orderFinishData.status === '2'"
+           href="javascript:void(0)" class="ml-2 mr-2"
+           (click)="refund(orderFinishData)"> 退款</a>
+        <!--        作废发票 - 已开票且订单状态不是已退款，退款是在取消订单或者作废发票时才会有的状态-->
+        <a href="javascript:void(0)" class="text-danger" (click)="invalidInvoice(orderFinishData)"
+           *ngIf="orderFinishData.invoiceStatus === '1' && orderFinishData.status !== '9'">作废发票</a>
+      </td>
+    </tr>
+    <tr [nzExpand]="orderFinishData.expand">
+      <td></td>
+      <td colspan="10">
+        <nz-table
+            #orderDetail [nzData]="orderFinishData.details" nzSize="small"
+            [nzShowPagination]="false">
+  <thead>
+  <tr>
+    <th [nzAlign]="'center'">产品编码</th>
+    <th [nzAlign]="'center'">产品名称</th>
+    <th [nzAlign]="'center'">厂商信息</th>
+    <th [nzAlign]="'center'">批号</th>
+    <th [nzAlign]="'center'">单价</th>
+    <th [nzAlign]="'center'">疫苗总数</th>
+    <th [nzAlign]="'center'">总金额</th>
+    <th [nzAlign]="'center'">剩余剂数</th>
+    <th [nzAlign]="'center'">状态</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let orderFinishDetailData of orderDetail.data">
+    <td [nzAlign]="'center'">{{orderFinishDetailData.productCode}}</td>
+    <td [nzAlign]="'center'">{{orderFinishDetailData.productName}}</td>
+    <td [nzAlign]="'center'">{{orderFinishDetailData.manufacturer}}</td>
+    <td [nzAlign]="'center'">{{orderFinishDetailData.batchCode}}</td>
+    <td [nzAlign]="'center'">{{orderFinishDetailData.unitPrice}}</td>
+    <td [nzAlign]="'center'">{{orderFinishDetailData.count}}</td>
+    <td [nzAlign]="'center'">{{orderFinishDetailData.totalAmount}}</td>
+    <td [nzAlign]="'center'">{{orderFinishDetailData.leftCount}}</td>
+    <td [nzAlign]="'center'">{{orderFinishDetailData.status | dicPipe:'orderStatus'}}</td>
+  </tr>
+  </tbody>
+</nz-table>
+</td>
+</tr>
+</ng-template>
+</tbody>
+</nz-table>
+<ng-template #totalTemplate let-total> 共 {{ total }} 条数据，当前第{{ pageIndex }}页</ng-template>
+<!--<nb-alert *ngIf="!showError" class="flex-row" outline="warning" closable (close)="closeAlert()">
+  打印机连接失败，请安装<a href="http://www.lodop.net/download.html" target="_blank">Lodop</a>插件
+</nb-alert>-->
+<uea-print-receipt class="print-receipt" (printTemplate)="getPrintTemplate($event)"></uea-print-receipt>
+

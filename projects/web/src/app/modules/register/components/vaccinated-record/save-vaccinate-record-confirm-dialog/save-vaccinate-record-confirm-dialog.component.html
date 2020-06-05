@@ -1,0 +1,55 @@
+<nz-card nzTitle="补录异常" [nzExtra]="extraTemplate" [nzActions]="[confirm, cancel]">
+  <div class="mt-3" *ngIf="confirmRecords.length > 0">
+    <h5>有{{ confirmRecords.length }}条补录的接种记录将会修改现有的接种策略模型：</h5>
+    <nz-table #confirmRec [nzData]="confirmRecords">
+      <thead>
+      <tr>
+        <th>接种疫苗</th>
+        <th>接种时间</th>
+        <th>接种医生</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of confirmRec.data">
+        <td>{{data.vaccineSubclassCode | vacSubclassPipe}}</td>
+        <td>{{data.vaccinateTime | date: 'yyyy-MM-dd'}}</td>
+        <td>{{data.vaccinateDoctorCode | povStaffNamePipe | async}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+
+  <div class="mt-5" *ngIf="failedRecords.length > 0">
+    <h5>有{{ failedRecords.length }}条补录的接种记录入库失败：</h5>
+    <nz-table #failedRec [nzData]="failedRecords">
+      <thead>
+      <tr>
+        <th>接种疫苗</th>
+        <th>接种时间</th>
+        <th>接种医生</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of failedRec.data">
+        <td>{{data.vaccineSubclassCode | vacSubclassPipe}}</td>
+        <td>{{data.vaccinateTime | date: 'yyyy-MM-dd'}}</td>
+        <td>{{data.vaccinateDoctorCode | povStaffNamePipe | async}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+
+  <h4 class="text-danger">请确认是否再次尝试？</h4>
+</nz-card>
+<ng-template #extraTemplate>
+  <a (click)="onClose()">
+    <nb-icon class="fas fa-times"></nb-icon>
+  </a>
+</ng-template>
+
+<ng-template #confirm>
+  <a (click)="onClose(true)" href="javascript:void(0)">确认</a>
+</ng-template>
+<ng-template #cancel>
+  <a (click)="onClose(false)" href="javascript:void(0)">取消</a>
+</ng-template>

@@ -1,0 +1,69 @@
+// @import '../../../@uea/theme/global_theme';
+
+/**
+nb-form 类别的样式，包括 input  select  radio  a  font
+ */
+
+@include nb-install-component() {
+	.input-width-xs {
+		width: 120px;
+	}
+	.input-width-sm {
+		width: 160px;
+	}
+	.input-width {
+		width: 220px;
+	}
+	.input-width-x {
+		width: 320px;
+	}
+	.input-width-xx {
+		width: 400px;
+	}
+	.select-width {
+		width: 140px;
+	}
+	.select-width-sm {
+		width: 80px;
+	}
+	.qb-full-width {
+		width: 100%;
+	}
+	// radio 平铺的样式
+	.qb-nb-radio-group {
+		display: flex;
+		flex-wrap: wrap;
+	}
+	.link-a-highlight {
+		color: nb-theme(color-primary-400);
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+	// 必填项的星号 *
+	.label-required::before {
+		content: '*';
+		position: absolute;
+		margin-left: -10px;
+		color: nb-theme(color-danger-500);
+	}
+
+	.star-required {
+		color: nb-theme(color-danger-500);
+	}
+	.font-color-main {
+		color: nb-theme(color-basic-900);
+	}
+	.font-color-highlight {
+		color: nb-theme(color-primary-400);
+	}
+	.font-size-sm {
+		font-size: 1rem;
+	}
+	.link-underline {
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}

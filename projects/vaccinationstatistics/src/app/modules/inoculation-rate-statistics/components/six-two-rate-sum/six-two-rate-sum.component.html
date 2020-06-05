@@ -1,0 +1,106 @@
+<nz-card style="width:100%;" nzTitle="6-2接种率报表累计汇总">
+  <form nz-form class="ant-advanced-search-form">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="5">
+        <nz-form-item nzFlex>
+          <nz-form-control [nzLg]="20" [nzMd]="20" [nzXs]="24">
+            <nz-select nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" name="year" [(ngModel)]="year">
+              <nz-option [nzLabel]="item.label" [nzValue]="item.value" *ngFor="let item of years"></nz-option>
+            </nz-select>
+          </nz-form-control>
+          <nz-form-label [nzLg]="2" [nzMd]="2" [nzXs]="24">年</nz-form-label>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="5">
+        <nz-form-item nzFlex>
+          <nz-form-control [nzLg]="20" [nzMd]="20" [nzXs]="24">
+            <nz-select nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" name="monthStart"
+                       [(ngModel)]="monthStart"
+            >
+              <nz-option [nzLabel]="item.label" [nzValue]="item.value" *ngFor="let item of months"></nz-option>
+            </nz-select>
+          </nz-form-control>
+          <nz-form-label [nzLg]="2" [nzMd]="2" [nzXs]="24">月~</nz-form-label>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="5">
+        <nz-form-item nzFlex>
+          <nz-form-control [nzLg]="20" [nzMd]="20" [nzXs]="24">
+            <nz-select nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" name="monthEnd"
+                       [(ngModel)]="monthEnd"
+            >
+              <nz-option [nzLabel]="item.label" [nzValue]="item.value" *ngFor="let item of months"></nz-option>
+            </nz-select>
+          </nz-form-control>
+          <nz-form-label [nzLg]="2" [nzMd]="2" [nzXs]="24">月</nz-form-label>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="16">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="2" [nzMd]="2" [nzXs]="24" nzFor="vaccineName" class="text-left">疫苗名称</nz-form-label>
+          <nz-form-control [nzLg]="17" [nzMd]="17" [nzXs]="24">
+            <input type="text" class="form-control d-inline-block w-75 mr-1" name="selectName" placeholder="请选择疫苗"
+                   [(ngModel)]="selectedVaccine.selectName" [disabled]="true">
+            <span class="">
+              <button class="btn btn-primary btn-sm input-group-text d-inline-block" (click)="selectVac()">
+                选择疫苗
+              </button>
+          </span>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+            <label nz-checkbox name="zero" (nzCheckedChange)="showZero($event)" [(ngModel)]="zero">显示零值</label>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="24" class="search-area">
+        <button nz-button [nzType]="'primary'" (click)="queryData()" [disabled]="loading">统计</button>
+        <button nz-button [nzType]="'primary'" (click)="preview()" class="ml-2 mr-2">预览</button>
+        <button nz-button [nzType]="'primary'" class="ml-2 mr-2 mb-2">导出</button>
+      </div>
+    </div>
+  </form>
+  <nz-table #groupingTable
+            [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false"
+            [nzFrontPagination]="false">
+    <thead>
+    <tr>
+      <th colspan="4" [nzAlign]="'center'">{{year}}年{{monthStart}}月~{{monthEnd}}月常规免疫接种情况汇总表</th>
+    </tr>
+    <tr>
+      <th colspan="4" [nzAlign]="'center'">
+        {{povInfo.curProvCode ? (povInfo.curProvCode | administrativePipe | async) : ''}}  {{povInfo.curCityCode ? (povInfo.curCityCode | administrativePipe | async) : ''}} {{povInfo.curDistrictCode ? (povInfo.curDistrictCode | administrativePipe | async) : ''}} {{userInfo?.pov | povNamePipe | async}}
+      </th>
+    </tr>
+    <tr>
+      <th [nzAlign]="'center'" class="w240">疫苗名称</th>
+      <th [nzAlign]="'center'" class="w110">接种针次数</th>
+      <th [nzAlign]="'center'" class="w240">疫苗名称</th>
+      <th [nzAlign]="'center'" class="w110">接种针次数</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr *ngFor="let data of groupingTable.data">
+      <td [nzAlign]="'center'">{{data[0].vaccName}}</td>
+      <td [nzAlign]="'center'">{{data[0].vaccSum}}</td>
+      <td [nzAlign]="'center'" *ngIf="data[1]">{{data[1].vaccName}}</td>
+      <td [nzAlign]="'center'" *ngIf="data[1]">{{data[1].vaccSum}}</td>
+      <td [nzAlign]="'center'" *ngIf="!data[1]"></td>
+      <td [nzAlign]="'center'" *ngIf="!data[1]"></td>
+    </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+
+
+
+
+

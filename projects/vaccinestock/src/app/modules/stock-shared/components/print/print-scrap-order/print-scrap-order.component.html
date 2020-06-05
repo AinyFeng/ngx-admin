@@ -1,0 +1,77 @@
+<div [id]="printScrapOrderInfo.id">
+  <div style="padding: 0 50px;">
+    <p style="text-align: center; font-size: 1.5em; margin: 18px 0 8px;">
+      {{printScrapOrderInfo.orderInfo.supplyorgName}}&nbsp;疫苗报废/销毁工作记录表</p>
+    <div style="width: 100%; line-height: 28px; display: flex; justify-content: space-between; align-items: center;">
+      <span>
+        出库日期：{{today.getFullYear()}}年{{today.getMonth() + 1}}月{{today.getDate()}}日
+      </span>
+      <span>
+        出入库单号：{{printScrapOrderInfo.orderInfo.orderNo}}
+      </span>
+    </div>
+    <div style="line-height: 28px;">
+      销毁方式:（1）向医疗废物集中处置单位移交:（2）自行就地处置。（3）其他方式
+    </div>
+    <div style="line-height: 28px;">
+      备注信息（报废/销毁原因）：{{printScrapOrderInfo.orderInfo.memo ? printScrapOrderInfo.orderInfo.memo : '无'}}
+    </div>
+    <table
+      border="1" cellspacing="0" cellpadding="0"
+      style="border-collapse:collapse; border-spacing:0; width: 100%; font-size: 14.4px; text-align: center;"
+    >
+      <tr>
+        <th>序</th>
+        <th>名称</th>
+        <th>生产企业</th>
+        <th>规格</th>
+        <th>批号</th>
+        <th>有效期</th>
+        <th>数量</th>
+        <th *ngIf="printScrapOrderInfo.orderInfo.vaccineType == '1'">单价</th>
+        <th *ngIf="printScrapOrderInfo.orderInfo.vaccineType == '1'">金额</th>
+        <th>类别</th>
+      </tr>
+      <tr *ngFor="let vac of printScrapOrderInfo.vaccineInfo; index as i">
+        <td>{{i + 1}}</td>
+        <td>{{vac.vaccName}}</td>
+        <td>{{vac.manufactureName}}</td>
+        <td>{{vac.spec}}</td>
+        <td>{{vac.batchNo}}</td>
+        <td>{{vac.loseEfficacyDate | date: 'yyyy-MM-dd'}}</td>
+        <td>{{vac.vaccNum ? vac.vaccNum : 0}}</td>
+        <td *ngIf="printScrapOrderInfo.orderInfo.vaccineType == '1'">{{vac.sellPrice ? vac.sellPrice : 0}}</td>
+        <td *ngIf="printScrapOrderInfo.orderInfo.vaccineType == '1'">
+          <span *ngIf="vac.vaccineType !== null">￥</span>{{vac.vaccNum * vac.sellPrice ? vac.vaccNum * vac.sellPrice : (vac.vaccineType == null ? ' ' : 0)}}</td>
+        <td>{{vac.vaccineType == null ? '' : (vac.vaccineType == '0' ? '第一类' : '第二类')}}</td>
+      </tr>
+      <tr>
+        <td colspan="6" style="text-align: center;">合计</td>
+        <td>{{printScrapOrderInfo.priceSum.sumNum ? printScrapOrderInfo.priceSum.sumNum : 0}}</td>
+        <td *ngIf="printScrapOrderInfo.orderInfo.vaccineType == '1'">——</td>
+        <td *ngIf="printScrapOrderInfo.orderInfo.vaccineType == '1'">
+          ￥{{printScrapOrderInfo.priceSum.priceSum ? printScrapOrderInfo.priceSum.priceSum : 0}}</td>
+        <td>——</td>
+      </tr>
+    </table>
+    <div style="margin: 5px auto; display: flex; justify-content: space-between; align-items: center;">
+      <p style="width: 30%; font-size: 13px;">制单: <span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+      <p style="width: 30%; font-size: 13px;">药械科：<span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+      <p style="width: 30%; font-size: 13px;">审批：<span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+    </div>
+    <div style="margin: 5px auto; display: flex; justify-content: space-between; align-items: center;">
+      <p style="width: 30%; font-size: 13px;">销毁日期:<span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+      <p style="width: 35%; font-size: 13px;">执行销毁人员:<span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+      <p style="width: 40%; font-size: 13px;"><span style="display:inline-block; width: 50%;">执行销毁机构(盖章):</span>
+        <span style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+    </div>
+    <br>
+    <br>
+    <p>注：第一联（白色）冷库，第二联（红色）财务，第三联（黄色）食品药品监管机构</p>
+  </div>
+</div>

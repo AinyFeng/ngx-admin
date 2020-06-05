@@ -1,0 +1,10 @@
+@import '../../../../../@uea/theme/global_theme';
+// @import '../../../../common/global-theme/global_theme';
+
+@include nb-install-component() {
+	::ng-deep .upload-list-inline .ant-upload-list-item {
+		float: left;
+		width: 200px;
+		margin-right: 8px;
+	}
+}

@@ -1,0 +1,89 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    固定资产管理
+    <div>
+      <button nbButton status="info" (click)="editFixedAsset(null)" [nbSpinner]="loading">添加</button>
+      <button nbButton status="info" class="ml-2 mr-2" [nbSpinner]="loading" (click)="export()">导出</button>
+      <button nbButton status="warning">重置</button>
+      <button nbButton status="info" (click)="searchData()" class="ml-2">查询</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="searchAssetsForm">
+      <div class="form-group row">
+
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">固定资产编号：</label>
+          <div class="col-8">
+            <input type="text" nbInput placeholder="请输入固定资产编号" fullWidth formControlName="fixedAssetsNumber">
+          </div>
+        </div>
+
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">出厂编号：</label>
+          <div class="col-8">
+            <input type="text" nbInput placeholder="请输入出厂编号" fullWidth formControlName="manufactureCode" >
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center">
+  <nb-card-body>
+    <nz-table #msgTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false" [nzData]="listOfData"
+              [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex"
+              (nzPageIndexChange)="searchData($event)" >
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">固定资产编码</th>
+        <th [nzAlign]="'center'">固定资产名称</th>
+        <th [nzAlign]="'center'">经费来源</th>
+        <th [nzAlign]="'center'">生产编号</th>
+        <th [nzAlign]="'center'">生产日期</th>
+        <th [nzAlign]="'center'">出厂日期</th>
+        <th [nzAlign]="'center'">到货日期</th>
+        <th [nzAlign]="'center'">启用时间</th>
+        <th [nzAlign]="'center'">报废时间</th>
+        <th [nzAlign]="'center'">备注</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index;">
+        <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+        <td [nzAlign]="'center'">{{data.fixedAssetsNumber}}</td>
+        <td [nzAlign]="'center'">{{data.fixedAssetsName}}</td>
+        <td [nzAlign]="'center'">{{data.sourceCode | dicPipe:'fixedAssetsSource'}}</td>
+        <td [nzAlign]="'center'">{{data.manufactureCode}}</td>
+        <td [nzAlign]="'center'">{{data.manufactureDate | date:"yyyy-MM-dd"}}</td>
+        <td [nzAlign]="'center'">{{data.leaveFactoryDate  | date:"yyyy-MM-dd"}}</td>
+        <td [nzAlign]="'center'">{{data.receiveDate  | date:"yyyy-MM-dd"}}</td>
+        <td [nzAlign]="'center'">{{data.useStartDate  | date:"yyyy-MM-dd"}}</td>
+        <td [nzAlign]="'center'">{{data.useEndDate  | date:"yyyy-MM-dd"}}</td>
+        <td [nzAlign]="'center'">{{data.memo}}</td>
+        <td [nzAlign]="'center'">
+          <button nbButton size="tiny" status="primary" (click)="editFixedAsset(data)">编辑</button>&nbsp;
+          <button nbButton size="tiny" status="danger" (click)="openDeleteDialog(deleteDialog, data)">删除</button>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+<ng-template #deleteDialog let-ref="dialogRef">
+  <!--  [ngStyle]="{'width': '1000px'}" -->
+  <nb-card size="small" style="width: 300px;">
+    <nb-card-header>删除固定资产</nb-card-header>
+    <nb-card-body [ngStyle]="{'text-align': 'center'}">
+      是否删除该条固定资产？
+    </nb-card-body>
+    <nb-card-footer [ngStyle]="{'text-align': 'right'}">
+      <button nbButton status="danger" (click)="delete(ref)">删除</button>
+      <button nbButton style="margin-left: 5px;" (click)="ref.close()">关闭</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

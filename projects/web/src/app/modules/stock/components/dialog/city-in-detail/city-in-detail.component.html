@@ -1,0 +1,40 @@
+<nb-card accent="info">
+  <nb-card-header>
+    订单疫苗详情
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+
+  <nb-card-body>
+    <nz-table #msgTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false" [nzData]="listOfData"
+              [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex"
+              (nzPageIndexChange)="searchDetail($event)" >
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">产品编码</th>
+        <th [nzAlign]="'center'">疫苗名称</th>
+        <th [nzAlign]="'center'">疫苗厂家</th>
+        <th [nzAlign]="'center'">疫苗批号</th>
+        <th [nzAlign]="'center'">疫苗剂量</th>
+        <th [nzAlign]="'center'">每支剂次</th>
+        <th [nzAlign]="'center'">疫苗价格</th>
+        <th [nzAlign]="'center'">数量(支)</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index;">
+        <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+        <td [nzAlign]="'center'">{{data.vaccProductCode}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineProductName}}</td>
+        <td [nzAlign]="'center'">{{data.manufacturer}}</td>
+        <td [nzAlign]="'center'">{{data.prodBatchNumber}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineSpecification}}</td>
+        <td [nzAlign]="'center'">{{data.dosageByEach}}</td>
+        <td [nzAlign]="'center'">{{data.purchasePrise}}</td>
+        <td [nzAlign]="'center'">{{data.count}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+

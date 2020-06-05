@@ -1,0 +1,131 @@
+<nz-card style="width:100%;" nzTitle="儿童个案信息">
+  <div nz-row>
+    <div nz-col [nzSpan]="18" [nzPush]="6">
+      <h4 style="text-align: center;">
+        已接种疫苗
+      </h4>
+      <div nz-row>
+        <nz-table #borderedTable nzBordered [nzPageIndex]="pageIndex" [nzTotal]="total"
+                  [nzItemRender]="renderItemTemplate"
+                  [nzFrontPagination]="false" [nzData]="dataSet" [nzLoading]="loading"   (nzPageIndexChange)="queryVacRecord($event)">
+          <thead>
+          <tr>
+            <th>疫苗名称</th>
+            <th>批号</th>
+            <th>生产厂商</th>
+            <th>针次</th>
+            <th>接种部位</th>
+            <th>疫苗价格</th>
+            <th>接种日期</th>
+            <th>接种医生</th>
+            <th>接种单位</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of borderedTable.data;">
+            <td>{{ data.vaccineProductName }}</td>
+            <td><a href="javascript:" class="link-a mr-1" (click)="detail(data)">{{ data.vaccineBatchNo }}</a></td>
+            <td>{{ data.manufacturerName }}</td>
+            <td>{{ data.vaccinateInjectNumber }}</td>
+            <td>{{ data.vaccinatePart  | dicPipe:'vaccinatePart'}}</td>
+            <td>￥{{ data.totalAmount }}</td>
+            <td>{{ data.vaccinateTime | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>{{ data.regDoctName }}</td>
+            <td>{{ data.povName }}</td>
+
+          </tr>
+          </tbody>
+        </nz-table>
+      </div>
+      <ng-template #renderItemTemplate let-type let-page="page">
+        <a *ngIf="type === 'pre'">上一页</a>
+        <a *ngIf="type === 'next'">下一页</a>
+        <a *ngIf="type === 'page'">{{ page }}</a>
+      </ng-template>
+    </div>
+    <div nz-col [nzSpan]="5" [nzPull]="18">
+      <h4 style="text-align: center;">
+        儿童基本信息
+      </h4>
+      <table class="table table-bordered">
+        <tbody>
+        <tr>
+          <th>儿童编码：</th>
+          <td>{{childInfo?.profileCode}}</td>
+        </tr>
+        <tr>
+          <th>儿童身份证：</th>
+          <td>{{childInfo?.idCardNo}}</td>
+        </tr>
+        <tr>
+          <th>出生证号：</th>
+          <td>{{childInfo?.birthCardNo}}</td>
+        </tr>
+        <tr>
+          <th>儿童姓名：</th>
+          <td>{{childInfo?.name}}</td>
+        </tr>
+        <tr>
+          <th>性  别：</th>
+          <td>{{childInfo?.gender | dicPipe: 'genderCode'}}</td>
+        </tr>
+        <tr>
+          <th>出生日期 ：</th>
+          <td>
+            {{childInfo?.birthDate| date:'yyyy-MM-dd'}}</td>
+        </tr>
+        <tr>
+          <th>出生医院：</th>
+          <td>{{childInfo?.birthHospitalCode | povNamePipe | async}}</td>
+        </tr>
+        <tr>
+          <th>出生体重(g)：</th>
+          <td>{{childInfo?.birthWeight}}</td>
+        </tr>
+        <tr>
+          <th>区域划分：</th>
+          <td>{{childInfo?.community | dicPipe:'belongDistrict'}}</td>
+        </tr>
+        <tr>
+          <th>母亲姓名：</th>
+          <td>{{childInfo?.motherName}}</td>
+        </tr>
+        <tr>
+          <th>手机号码：</th>
+          <td>{{childInfo?.motherContactPhone}}</td>
+        </tr>
+        <tr>
+          <th>母亲身份证：</th>
+          <td>{{childInfo?.motherIdCardNo}}</td>
+        </tr>
+        <tr>
+          <th>家庭住址：</th>
+          <td>{{childInfo?.liveDetail}}</td>
+        </tr>
+        <tr>
+          <th>户籍地址：</th>
+          <td>{{childInfo?.idCardDetail}}</td>
+        </tr>
+        <tr>
+          <th>接种单位：</th>
+          <td style="color: red">{{childInfo?.vaccinationPovCode | povNamePipe | async}}</td>
+        </tr>
+        <tr>
+          <th>在册情况：</th>
+          <td style="color: red">{{childInfo?.profileStatusCode| dicPipe: 'profileStatus'}}</td>
+        </tr>
+        <tr>
+          <th>备注：</th>
+          <td>{{childInfo?.memo}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <button nz-button nzType="primary" class="mr-2" (click)="goBack()">返回</button>
+  <button nz-button nzType="primary"  [nzLoading]="loading" (click)="print(true)">打印</button>
+</nz-card>
+<!--儿童个案信息打印-->
+<uea-print-children-basic-info #printChildrenInfo
+                               style="position: absolute; margin-left: -999rem;"
+                               [printChildrenDetailInfo]="printChildrenDetailInfo"></uea-print-children-basic-info>

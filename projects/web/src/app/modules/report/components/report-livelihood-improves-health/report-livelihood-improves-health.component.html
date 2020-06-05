@@ -1,0 +1,68 @@
+<nb-card accent="info">
+
+  <nb-card-header>
+    民生工程-提高妇女儿童健康水平基础资料
+    <div>
+      <button nbButton status="success">查询</button>
+      <button nbButton status="primary">导出</button>
+      <button nbButton status="default">返回</button>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <form class="searchForm">
+      <div class="row group-search">
+
+        <div class="form-group col-md-4 row ">
+          <label class="col-md-4">生日：</label>
+          <div class="col-md-8 ">
+            <input nbInput fieldSize="small" placeholder="请选择生日" [nbDatepicker]="birthDatePicker">
+            <nb-rangepicker #birthDatePicker format="yyyy/MM/dd"></nb-rangepicker>
+            <!--<nb-datepicker #reserveDatePicker></nb-datepicker>-->
+          </div>
+        </div>
+
+        <!-- <div class="form-group col-md-6">
+          <button nbButton status="success" >查询</button>
+          <button nbButton status="primary" >导出</button>
+          <button nbButton status="default" >返回</button>
+        </div> -->
+
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center">
+
+  <nb-card-body>
+    <nz-table #groupingTable [nzData]="listOfDisplayData" nzBordered nzSize="small" nzSimple="false">
+      <thead>
+        <tr>
+          <th>姓名</th>
+          <th>出生日期</th>
+          <th>身份证号</th>
+          <th>父亲身份证</th>
+          <th>母亲身份证</th>
+          <th>免费婚前检查</th>
+          <th>孕产妇住院分娩</th>
+          <th>免疫</th>
+          <th>医疗机构</th>
+          <th>接种剂次数</th>
+          <th>补助金额单价(元)</th>
+          <th>补助金额(元)</th>
+          <th>备注(联系方式)</th>
+          <th>家庭住址</th>
+          <th>接种疫苗</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of groupingTable.data">
+
+        </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+
+</nb-card>

@@ -1,0 +1,129 @@
+<div nz-row>
+  <nz-card>
+    <nz-tabset>
+      <nz-tab nzTitle="出生年月分布市">
+        <div nz-row>
+          <form nz-form [nzLayout]="'inline'" [formGroup]="queryForm">
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="12">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="3" [nzMd]="3" [nzXs]="24" nzFor="address">地区名称</nz-form-label>
+                  <nz-form-control [nzLg]="8" [nzMd]="8" [nzXs]="24">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" id="address"
+                               formControlName="address">
+                      <nz-option [nzLabel]="item.name" [nzValue]="item.code+item.level"
+                                 *ngFor="let item of addressData"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="3" [nzMd]="3" [nzXs]="24" nzFor="annual">年度</nz-form-label>
+                  <nz-form-control [nzLg]="19" [nzMd]="19" [nzXs]="24">
+                    <nz-year-picker nzFormat="yyyy" formControlName="annual"></nz-year-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="12">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="3" [nzMd]="3" [nzXs]="24" nzFor="residentialTypeCode">居住属性</nz-form-label>
+                  <nz-form-control [nzLg]="19" [nzMd]="19" [nzXs]="24">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" id="residentialTypeCode"
+                               style="width: 175px"
+                               formControlName="residentialTypeCode">
+                      <nz-option [nzLabel]="item.label" [nzValue]="item.value"
+                                 *ngFor="let item of residentialTypeData"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="3" [nzMd]="3" [nzXs]="24" nzFor="creatDate">建档日期</nz-form-label>
+                  <nz-form-control [nzLg]="19" [nzMd]="19" [nzXs]="24">
+                    <nz-date-picker [nzDisabledDate]="disableCreateDateStart"
+                                    formControlName="creatDateStart"></nz-date-picker>
+                    至
+                    <nz-date-picker [nzDisabledDate]="disableCreatDateEnd"
+                                    formControlName="creatDateEnd"></nz-date-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="12">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="3" [nzMd]="3" [nzXs]="24" nzFor="profileStatusCode">儿童状态</nz-form-label>
+                  <nz-form-control [nzLg]="19" [nzMd]="19" [nzXs]="24">
+                    <nz-checkbox-group formControlName="profileStatusCode" [(ngModel)]="checkOptionsOne">
+                    </nz-checkbox-group>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+            <nz-form-item>
+              <nz-form-control>
+                <button nz-button nzType="primary" (click)="query()" [nzLoading]="loading" class="mr-2" >查询</button>
+                <button nz-button nzType="primary" class="mr-2" >重置</button>
+                <button nz-button nzType="primary" class="mr-2"  [nzLoading]="loading">导出</button>
+                <button nz-button nzType="primary">隐藏图表</button>
+              </nz-form-control>
+            </nz-form-item>
+
+          </form>
+        </div>
+        <div nz-row>
+          <nz-table #borderedTable nzBordered [nzPageIndex]="pageIndex" [nzTotal]="total"
+                    [nzItemRender]="renderItemTemplate"
+                    [nzFrontPagination]="false" [nzData]="listOfData">
+            <thead>
+            <tr>
+              <th>地区名称</th>
+              <th>1月</th>
+              <th>2月</th>
+              <th>3月</th>
+              <th>4月</th>
+              <th>5月</th>
+              <th>6月</th>
+              <th>7月</th>
+              <th>8月</th>
+              <th>9月</th>
+              <th>10月</th>
+              <th>11月</th>
+              <th>12月</th>
+              <th>合计</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of borderedTable.data">
+              <td>{{ data.organization_name }}</td>
+              <td>{{ data.january }}</td>
+              <td>{{ data.february }}</td>
+              <td>{{ data.march }}</td>
+              <td>{{ data.april }}</td>
+              <td>{{ data.may }}</td>
+              <td>{{ data.june }}</td>
+              <td>{{ data.july }}</td>
+              <td>{{ data.august }}</td>
+              <td>{{ data.september }}</td>
+              <td>{{ data.october }}</td>
+              <td>{{ data.november }}</td>
+              <td>{{ data.december }}</td>
+              <td>{{ data.totalCount }}</td>
+            </tr>
+            </tbody>
+          </nz-table>
+          <ng-template #renderItemTemplate let-type let-page="page">
+            <a *ngIf="type === 'pre'">上一页</a>
+            <a *ngIf="type === 'next'">下一页</a>
+            <a *ngIf="type === 'page'">{{ page }}</a>
+          </ng-template>
+        </div>
+      </nz-tab>
+    </nz-tabset>
+  </nz-card>
+</div>
+

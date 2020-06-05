@@ -1,0 +1,111 @@
+<div class="wx-content">
+  疫苗知识
+  <!--  <div class="tab-wrap">-->
+  <!--    <div class="tab-item" *ngFor="let item of ['疫苗知识', '疫苗说明书', '接种门诊']; let i = index" (click)="tabClick(i)"-->
+  <!--         [ngStyle]="{'border-bottom': i===tabCurrentIndex ?'1px solid #4ca6ff' : ''}">-->
+  <!--      <div class="tab-info" [ngClass]="{'tab-select':i===tabCurrentIndex}">{{item}}</div>-->
+  <!--    </div>-->
+  <!--  </div>-->
+
+  <!--  &lt;!&ndash;  疫苗知识&ndash;&gt;-->
+  <!--  <div *ngIf="tabCurrentIndex===0">-->
+  <!--    <mat-divider></mat-divider>-->
+  <!--    &lt;!&ndash; <div style="border-bottom: 1px solid #ddd;">-->
+  <!--      <SearchBar [placeholder]="'搜索关键词'" [setFocus]="true"></SearchBar>-->
+  <!--    </div> &ndash;&gt;-->
+  <!--    <mat-toolbar color="primary">-->
+  <!--      <mat-toolbar-row>-->
+  <!--        <span Button [type]="'primary'" (onClick)="queryPovData()">'搜索关键词'</span>-->
+  <!--      </mat-toolbar-row>-->
+  <!--    </mat-toolbar>-->
+
+  <!--    <mat-list [className]="'my-list'">-->
+  <!--      <mat-list-item [arrow]="'horizontal'" (onClick)="cellClick(item)" *ngFor="let item of knowledgeData">-->
+  <!--        {{item.title}}-->
+  <!--      </mat-list-item>-->
+  <!--    </mat-list>-->
+
+  <!--  </div>-->
+
+  <!--  &lt;!&ndash;  疫苗说明书&ndash;&gt;-->
+  <!--  <div *ngIf="tabCurrentIndex===1">-->
+  <!--    <mat-divider></mat-divider>-->
+  <!--    <form [formGroup]="vaccForm">-->
+  <!--      <mat-list>-->
+  <!--        <mat-list-item [arrow]="'horizontal'" Picker [extra]="vaccInfo.vaccClass" [arrow]="'horizontal'"-->
+  <!--                       [data]="['男', '女']" formControlName="vaccClass" (onPickerChange)="vaccInfo.vaccClass=$event">-->
+  <!--          疫苗大类：-->
+  <!--        </mat-list-item>-->
+  <!--        <mat-list-item [arrow]="'horizontal'" Picker [extra]="vaccInfo.vaccFactor" [arrow]="'horizontal'"-->
+  <!--                       [data]="['11男', '11女']" formControlName="vaccFactor"-->
+  <!--                       (onPickerChange)="vaccInfo.vaccFactor=$event">-->
+  <!--          疫苗厂商：-->
+  <!--        </mat-list-item>-->
+  <!--        <mat-list-item>-->
+  <!--          <InputItem formControlName="vaccNumber" [content]="adultName" [clear]="true" [placeholder]="'请输入'">-->
+  <!--            <ng-template #adultName>疫苗批号：</ng-template>-->
+  <!--          </InputItem>-->
+  <!--        </mat-list-item>-->
+  <!--      </mat-list>-->
+  <!--    </form>-->
+  <!--    <div>-->
+  <!--      <mat-divider></mat-divider>-->
+  <!--      <mat-divider></mat-divider>-->
+  <!--      <mat-divider></mat-divider>-->
+  <!--      <div Button [type]="'primary'" (onClick)="queryVaccData()">查询</div>-->
+  <!--      <mat-divider></mat-divider>-->
+  <!--      <mat-divider></mat-divider>-->
+  <!--      <mat-divider></mat-divider>-->
+  <!--      <span style="font-size: 16px; font-weight: bold;" *ngIf="vaccArr.length>0">查询结果</span>-->
+  <!--    </div>-->
+
+  <!--    <div class="result-list">-->
+  <!--      <div class="list-item" *ngFor="let item of vaccArr">-->
+  <!--        <div class="item-info">疫苗大类：<span>乙肝疫苗</span></div>-->
+  <!--        <div class="item-info">疫苗厂商：<span>华兰生物</span></div>-->
+  <!--        <div class="item-info">疫苗批号：<span>c20189872</span></div>-->
+  <!--        <div class="item-info">产品名称：<span>乙肝-华兰-1ml-D-普酵60ug液预</span></div>-->
+  <!--      </div>-->
+  <!--    </div>-->
+
+  <!--  </div>-->
+
+  <!--  &lt;!&ndash;  接种门诊&ndash;&gt;-->
+  <!--  <div *ngIf="tabCurrentIndex===2">-->
+  <!--    <mat-divider></mat-divider>-->
+  <!--    <form [formGroup]="povForm">-->
+  <!--      <mat-list>-->
+  <!--        <mat-list-item [arrow]="'horizontal'" Picker [extra]="povInfo.povArea" [arrow]="'horizontal'"-->
+  <!--                       [data]="['包河区', '蜀山区']" formControlName="povArea" (onPickerChange)="povInfo.povArea=$event">-->
+  <!--          地区：-->
+  <!--        </mat-list-item>-->
+
+  <!--        <mat-list-item>-->
+  <!--          <InputItem formControlName="keyWord" [content]="keyWord" [clear]="true" [placeholder]="'请输入'">-->
+  <!--            <ng-template #keyWord>关键词：</ng-template>-->
+  <!--          </InputItem>-->
+  <!--        </mat-list-item>-->
+  <!--      </mat-list>-->
+  <!--    </form>-->
+  <!--    <div>-->
+  <!--      <mat-divider></mat-divider>-->
+  <!--      <mat-divider></mat-divider>-->
+  <!--      <mat-divider></mat-divider>-->
+
+  <!--      <mat-toolbar color="primary">-->
+  <!--        <mat-toolbar-row>-->
+  <!--          <span Button [type]="'primary'" (onClick)="queryPovData()">查询</span>-->
+  <!--        </mat-toolbar-row>-->
+  <!--      </mat-toolbar>-->
+  <!--      <span style="font-size: 16px; font-weight: bold;" *ngIf="povArr.length>0">查询结果</span>-->
+  <!--    </div>-->
+
+  <!--    <div class="list-item" *ngFor="let item of povArr">-->
+  <!--      <div class="item-title">井岗社区卫生服务中心 <span></span></div>-->
+  <!--      <div class="item-info">地址：<span>合肥市蜀山区井岗镇井岗路108号</span></div>-->
+  <!--      <div class="item-info">电话：<span>0551-6262665</span></div>-->
+  <!--      <div class="item-info">工作时间：<span>周一至周日 8:00~11:30 14:30~17:30</span></div>-->
+  <!--    </div>-->
+  <!--  </div>-->
+
+</div>

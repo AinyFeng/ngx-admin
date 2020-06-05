@@ -1,0 +1,115 @@
+<nb-card class="nb-card-container" size="xlarge">
+  <nb-card-header class="nb-card-header-qb">
+    特需疫苗登记列表 -- {{ profile ? profile?.name : '' }}
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body [nbSpinner]="loading" nbSpinnerStatus="info">
+    <nb-tabset fullWidth>
+      <nb-tab tabTitle="狂犬记录">
+        <nb-alert outline="info"
+                  class="mt-3 mb-3 text-center"
+                  *ngIf="!loading && data.length === 0">
+          <div class="text-center">
+            <span>没有查到犬伤记录数据，请<a href="javasript:" (click)="queryBiteRecord()">重试</a></span>
+          </div>
+        </nb-alert>
+        <div class="text-right mb-3">
+          <button (click)="addRecord()" status="info" nbButton><span><i class="fas fa-plus"></i></span>添加狂犬记录</button>
+        </div>
+        <nz-table #bite [nzData]="data">
+          <thead>
+          <tr>
+            <th [nzAlign]="'center'">登记时间</th>
+            <th [nzAlign]="'center'">咬伤时间</th>
+            <th [nzAlign]="'center'">咬伤部位</th>
+            <th [nzAlign]="'center'">动物名称</th>
+            <th [nzAlign]="'center'">处理时间</th>
+            <th [nzAlign]="'center'">处理地点</th>
+            <th [nzAlign]="'center'">操作</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let d of bite.data" (mouseover)="select(d)">
+            <td [nzAlign]="'center'">{{ d.createDate | date: 'yyyy-MM-dd HH:mm' }}</td>
+            <td [nzAlign]="'center'">{{ d.injuryDate | date: 'yyyy-MM-dd HH:mm' }}</td>
+            <td [nzAlign]="'center'">{{ d.injurySite | dicPipe: 'injurySite' }}</td>
+            <td [nzAlign]="'center'">{{ d.animal | dicPipe: 'animal' }}</td>
+            <td [nzAlign]="'center'">{{ d.handleDate | date: 'yyyy-MM-dd HH:mm' }}</td>
+            <td [nzAlign]="'center'">{{ d.handlePlace | dicPipe: 'handlePlace' }}</td>
+            <td [nzAlign]="'center'">
+              <a href="javascript:void(false)" class="mr-2" (mouseover)="select(d)" [nbPopover]="contentTemplate"
+                 nbPopoverPlacement="left">详情</a>
+              <a href="javascript:void(false)" class="mr-2" (click)="update(d)">修改</a>
+              <a href="javascript:void(false)" nz-popconfirm nzTitle="确认删除数据？" (nzOnConfirm)="delete(d)">删除</a>
+            </td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </nb-tab>
+      <nb-tab tabTitle="成人其他疫苗记录">
+        <nb-alert outline="info"
+                  class="mt-3 mb-3 text-center"
+                  *ngIf="!loading && adultVaccineList.length === 0">
+          <div class="text-center">
+            <span>没有查到其他特需疫苗数据，请<a href="javasript:" (click)="addAdultVaccRecord()">重试</a></span>
+          </div>
+        </nb-alert>
+        <div class="text-right mb-3 mt-3">
+          <button (click)="addAdultVaccRecord()" status="info" nbButton class="ml-3"><span><i
+            class="fas fa-plus"></i></span>添加其他特需疫苗记录
+          </button>
+        </div>
+        <nz-table #adult [nzData]="adultVaccineList">
+          <thead>
+          <tr>
+            <th [nzAlign]="'center'">登记时间</th>
+            <th [nzAlign]="'center'">疫苗类型</th>
+            <th [nzAlign]="'center'">抗体水平</th>
+            <th [nzAlign]="'center'">说明备注</th>
+            <th [nzAlign]="'center'">创建人</th>
+            <th [nzAlign]="'center'">操作</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let d of adult.data">
+            <td [nzAlign]="'center'">{{ d.registDate | date: 'yyyy-MM-dd HH:mm' }}</td>
+            <td [nzAlign]="'center'">{{d.broadHeadingCode | vacBroadHeadingPipe}}</td>
+            <td [nzAlign]="'center'">{{ d.level | dicPipe: 'hepbAntibodyLevel' }}</td>
+            <td [nzAlign]="'center'">{{ d.memo}}</td>
+            <td [nzAlign]="'center'">{{ d.createBy | povStaffNamePipe | async }}</td>
+            <td [nzAlign]="'center'">
+              <a href="javascript:void(false)" class="mr-2" (click)="updateAdult(d)">修改</a>
+              <a href="javascript:void(false)" nz-popconfirm nzTitle="确认删除数据？" (nzOnConfirm)="deleteAdult(d)">删除</a>
+            </td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+  <nb-card-footer class="text-center">
+    <button (click)="onClose()" status="info" nbButton>关闭</button>
+  </nb-card-footer>
+</nb-card>
+
+<ng-template #contentTemplate>
+  <nb-card class="mb-0">
+    <nb-card-body>
+      <ul style="list-style-type: none;">
+        <li>咬伤时间：{{ contentData.injuryDate | date: 'yyyy-MM-dd HH:mm' }}</li>
+        <li>咬伤部位：{{ contentData.injurySite | dicPipe: 'injurySite' }}</li>
+        <li>受伤方式：{{ contentData.injuryType | dicPipe: 'injuryType' }}</li>
+        <li>动物名称：{{ contentData.animal | dicPipe: 'animal' }}</li>
+        <li>处理时间：{{ contentData.handleDate | date: 'yyyy-MM-dd HH:mm'}}</li>
+        <li>处理地点：{{ contentData.handlePlace | dicPipe: 'handlePlace' }}</li>
+        <!--        <li>免疫类型：{{ contentData.immuneType | dicPipe: 'immuneType' }}</li>-->
+        <li>免疫方案：{{ contentData.programCode | rabiesStrategyPipe}}</li>
+        <li>暴露级别：{{ contentData.exposureLevel | dicPipe: 'exposureLevel' }}</li>
+        <li>是否接种狂犬病人免疫球蛋白：{{ contentData.hriVaccinated == '1' ? '已接种' : '未接种' }}</li>
+        <li>患者体重：{{ contentData.weight }}</li>
+        <li>是否超过48小时：{{ contentData.over48H == '1' ? '是' : '否' }}</li>
+        <li>患者档案编号：{{ contentData.profileCode }}</li>
+      </ul>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

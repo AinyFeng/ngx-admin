@@ -1,0 +1,233 @@
+<nb-card class="nb-card-container" size="xlarge">
+  <nb-card-header class="nb-card-header-qb">
+    {{ title }}
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body [nbSpinner]="forbid" nbSpinnerStatus="primary">
+    <form nz-form [formGroup]="form">
+      <nz-form-item>
+        <nz-form-label [nzLg]="4" [nzMd]="4" [nzXs]="24" nzRequired nzFor="vaccineBroadHeadingCode">疫苗种类</nz-form-label>
+        <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24" nzErrorTip="此项为必填项">
+          <nz-select
+            class="full-width"
+            id="vaccineBroadHeadingCode"
+            nzPlaceHolder="请选择疫苗大类"
+            (ngModelChange)="vaccineBroadHeadingChange($event)"
+            nzSize="large"
+            nzAllowClear
+            nzShowSearch
+            formControlName="vaccineBroadHeadingCode">
+            <nz-option *ngFor="let option of vacBroadHeadingOptions"
+                       [nzLabel]="option.broadHeadingFullName"
+                       [nzValue]="option.broadHeadingCode"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzLg]="4" [nzMd]="4" [nzXs]="24" nzRequired nzFor="vaccineSubclassCode">疫苗小类</nz-form-label>
+        <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24" nzErrorTip="此项为必填项">
+          <nz-select
+            class="full-width"
+            id="vaccineSubclassCode"
+            nzPlaceHolder="请选择疫苗小类"
+            nzSize="large"
+            nzAllowClear
+            nzShowSearch
+            (ngModelChange)="onVacSubClassChange($event)"
+            formControlName="vaccineSubclassCode">
+            <nz-option *ngFor="let option of vacSubClassOptions"
+                       [nzLabel]="option.label"
+                       [nzValue]="option.value"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzLg]="4" [nzMd]="4" [nzXs]="24" nzFor="vaccineProductCode">疫苗产品</nz-form-label>
+        <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24">
+          <nz-select
+            class="full-width"
+            id="vaccineProductCode"
+            nzSize="large"
+            nzAllowClear
+            nzShowSearch
+            nzPlaceHolder="请选择疫苗产品"
+            (ngModelChange)="onVacProductChange($event)"
+            formControlName="vaccineProductCode">
+            <nz-option *ngFor="let option of vacProductOptions"
+                       [nzLabel]="option.vaccineProductName"
+                       [nzValue]="option.vaccineProductCode"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzLg]="4" [nzMd]="4" [nzXs]="24" nzFor="vaccineBatchNo">疫苗批次号</nz-form-label>
+        <nz-form-control [nzLg]="6" [nzMd]="6" [nzXs]="24">
+          <input type="text" nzSize="large" nz-input placeholder="请输入批次号" formControlName="vaccineBatchNo">
+        </nz-form-control>
+        <nz-form-label [nzLg]="6" [nzMd]="6" [nzXs]="24" nzFor="vaccineManufactureCode">疫苗厂家</nz-form-label>
+        <nz-form-control [nzLg]="6" [nzMd]="6" [nzXs]="24">
+          <nz-select
+            class="full-width"
+            id="vaccineBatchNo"
+            nzAllowClear
+            nzShowSearch
+            nzSize="large"
+            nzPlaceHolder="请选择厂家"
+            formControlName="vaccineManufactureCode">
+            <nz-option *ngFor="let option of manufacture"
+                       [nzLabel]="option.name"
+                       [nzValue]="option.code"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzLg]="4" [nzMd]="4" [nzXs]="24" nzFor="vaccineType">疫苗价格</nz-form-label>
+        <nz-form-control [nzLg]="6" [nzMd]="6" [nzXs]="24">
+          <nb-radio-group formControlName="vaccineType" id="vaccineType">
+            <nb-radio value="0">免费</nb-radio>
+            <nb-radio value="1">收费</nb-radio>
+          </nb-radio-group>
+        </nz-form-control>
+        <nz-form-label [nzLg]="6" [nzMd]="6" [nzXs]="24" nzFor="electronicSupervisionCode">电子监管码</nz-form-label>
+        <nz-form-control [nzLg]="6" [nzMd]="6" [nzXs]="24">
+          <input nzSize="large" type="text" placeholder="请输入电子监管码" id="electronicSupervisionCode"
+                 formControlName="electronicSupervisionCode" nz-input>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzMd]="4" [nzXs]="24" nzRequired nzFor="vaccinateTime">接种日期</nz-form-label>
+        <nz-form-control [nzMd]="6" [nzXs]="24" nzErrorTip="此项为必填项">
+          <nz-date-picker
+            id="vaccinateTime"
+            class="full-width"
+            nzSize="large"
+            [nzDisabledDate]="filterDate"
+            formControlName="vaccinateTime"
+            nzFormat="yyyy-MM-dd"
+            nzPlaceHolder="选择接种时间"
+          ></nz-date-picker>
+        </nz-form-control>
+        <nz-form-label [nzLg]="6" [nzMd]="6" [nzXs]="24" nzRequired nzFor="vaccinatePart">接种部位</nz-form-label>
+        <nz-form-control [nzLg]="6" [nzMd]="6" [nzXs]="24" nzErrorTip="此项为必填项">
+          <nz-select
+            class="full-width"
+            id="vaccinatePart"
+            nzSize="large"
+            nzPlaceHolder="请选择接种部位"
+            formControlName="vaccinatePart">
+            <nz-option *ngFor="let option of vaccinatePart"
+                       [title]="option.label"
+                       [nzLabel]="option.label"
+                       [nzValue]="option.value"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzLg]="4" [nzMd]="4" [nzXs]="24" nzRequired nzFor="vaccinateType">接种类型</nz-form-label>
+        <nz-form-control [nzLg]="6" [nzMd]="6" [nzXs]="24" nzErrorTip="此项为必填项">
+          <nz-select
+            class="full-width"
+            id="vaccinateType"
+            nzSize="large"
+            nzPlaceHolder="请选择接种类型"
+            formControlName="vaccinateType">
+            <nz-option *ngFor="let option of vaccinateType"
+                       [title]="option.label"
+                       [nzLabel]="option.label"
+                       [nzValue]="option.value"></nz-option>
+          </nz-select>
+        </nz-form-control>
+        <nz-form-label [nzLg]="6" [nzMd]="6" [nzXs]="24" nzRequired nzFor="vaccinateWay">接种方式</nz-form-label>
+        <nz-form-control [nzLg]="6" [nzMd]="6" [nzXs]="24" nzErrorTip="此项为必填项">
+          <nz-select
+            class="full-width"
+            id="vaccinateWay"
+            nzSize="large"
+            nzPlaceHolder="请选择接种方式"
+            formControlName="vaccinateWay">
+            <nz-option *ngFor="let option of vaccinateWayOptions"
+                       [title]="option.label"
+                       [nzLabel]="option.label"
+                       [nzValue]="option.value"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+<!--        <nz-form-label [nzLg]="4" [nzMd]="4" [nzXs]="24" nzRequired nzFor="vaccinateInjectNumber">接种针次</nz-form-label>-->
+<!--        <nz-form-control [nzLg]="6" [nzMd]="6" [nzXs]="24" nzErrorTip="此项为必填项">-->
+<!--          <input type="number" nzSize="large"-->
+<!--                 numberTransfer="1"-->
+<!--                 nz-input id="vaccinateInjectNumber"-->
+<!--                 formControlName="vaccinateInjectNumber">-->
+<!--        </nz-form-control>-->
+<!--        <nz-form-label [nzLg]="4" [nzMd]="4" [nzXs]="24" nzRequired nzFor="vaccinateDoseNumber">接种剂序</nz-form-label>-->
+<!--        <nz-form-control [nzLg]="6" [nzMd]="6" [nzXs]="24" nzErrorTip="此项为必填项">-->
+<!--          <input type="number" nzSize="large" nz-input-->
+<!--                 numberTransfer="1"-->
+<!--                 formControlName="vaccinateDoseNumber" id="vaccinateDoseNumber">-->
+<!--        </nz-form-control>-->
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzLg]="4" [nzMd]="4" [nzXs]="24" nzRequired nzFor="vaccinateCount">接种支数</nz-form-label>
+        <nz-form-control [nzLg]="6" [nzMd]="6" [nzXs]="24" nzErrorTip="此项为必填项">
+          <input type="number" nzSize="large" min="1"
+                 numberTransfer="1"
+                 id="vaccinateCount" nz-input formControlName="vaccinateCount">
+        </nz-form-control>
+        <nz-form-label [nzLg]="6" [nzMd]="6" [nzXs]="24" nzRequired nzFor="actualVaccinatePovCode">接种单位</nz-form-label>
+        <nz-form-control [nzLg]="6" [nzMd]="6" [nzXs]="24" nzErrorTip="此项为必填项">
+          <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixIconButton">
+            <input id="actualVaccinatePovCode"
+                   [value]="form.get('actualVaccinatePovCode').value | povNamePipe | async"
+                   readonly formControlName="actualVaccinatePovCode" type="text" nz-input placeholder="请选择接种单位"/>
+          </nz-input-group>
+          <ng-template #suffixIconButton>
+            <button (click)="selectPovAndHospital(true)" nz-button nzType="primary" nzSize="large" nzSearch
+                    [disabled]="forbid">选择
+            </button>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzLg]="4" [nzMd]="4" [nzXs]="24" nzFor="vaccinateDepartmentCode">接种科室</nz-form-label>
+        <nz-form-control [nzLg]="6" [nzMd]="6" [nzXs]="24">
+          <nz-select
+            class="full-width"
+            id="vaccinateDepartmentCode"
+            nzSize="large"
+            nzPlaceHolder="请选择接种科室"
+            (ngModelChange)="onDepartmentChange($event)"
+            formControlName="vaccinateDepartmentCode">
+            <nz-option *ngFor="let option of departmentOptions"
+                       [nzLabel]="option.departmentName"
+                       [nzValue]="option.departmentCode"></nz-option>
+          </nz-select>
+        </nz-form-control>
+        <nz-form-label [nzLg]="6" [nzMd]="6" [nzXs]="24" nzFor="vaccinateDoctorCode">接种人员</nz-form-label>
+        <nz-form-control [nzLg]="6" [nzMd]="6" [nzXs]="24">
+          <nz-select
+            class="full-width"
+            id="vaccinateDoctorCode"
+            nzSize="large"
+            nzPlaceHolder="请选择接种人员"
+            formControlName="vaccinateDoctorCode">
+            <nz-option *ngFor="let option of vaccinateDoctorsOptions"
+                       [nzLabel]="option.realName"
+                       [nzValue]="option.number"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzLg]="4" [nzMd]="4" [nzXs]="24" nzFor="vaccinateDepartmentCode">备注</nz-form-label>
+        <nz-form-control [nzLg]="18" [nzMd]="18" [nzXs]="24">
+          <textarea formControlName="memo" placeholder="请输入备注信息" id="memo" nz-input></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </nb-card-body>
+  <nb-card-footer class="footer-btn">
+    <button nbButton status="danger" [nbSpinner]="forbid" nbSpinnerStatus="primary" (click)="removeRecord()" [disabled]="forbid || isStop">删除</button>
+    <button nbButton status="info" [nbSpinner]="forbid" nbSpinnerStatus="primary" (click)="saveRecord()" [disabled]="forbid">保存</button>
+    <button nbButton status="info" (click)="onClose()">关闭</button>
+  </nb-card-footer>
+</nb-card>

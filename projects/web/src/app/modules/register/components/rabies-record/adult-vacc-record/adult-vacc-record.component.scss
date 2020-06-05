@@ -1,0 +1,15 @@
+@import '../../../../../@uea/theme/global_theme';
+// @import '../../../../common/global-theme/global_theme';
+
+@include nb-install-component() {
+	.nb-popover {
+		background-color: #c09853;
+	}
+	::ng-deep nb-radio-group {
+		display: flex;
+		flex-direction: row;
+	}
+  ::ng-deep .active .ant-input {
+    border: 1px solid #ff3d71;
+  }
+}

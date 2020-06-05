@@ -1,0 +1,99 @@
+<div [id]="printStockInInfo.id">
+  <div style="padding: 0 50px;">
+    <p style="text-align: center; font-size: 1.5em; margin: 18px 0 8px;">
+      {{printStockInInfo.orderInfo.receiveorgName}}&nbsp;疫苗入库验收登记表</p>
+    <div style="line-height: 28px;">
+      供货企业: {{printStockInInfo.orderInfo.supplyorgName}}
+    </div>
+    <div style="line-height: 28px;">
+      配送单位: {{printStockInInfo.orderInfo.distributionUnit}}
+    </div>
+    <div style="width: 100%; line-height: 28px; display: flex; justify-content: space-between; align-items: center;">
+      <span>
+        到货日期:{{printStockInInfo.orderInfo.orderDate | date: 'yyyy-MM-dd'}}
+      </span>
+      <span>
+        验收日期：{{today.getFullYear()}}年{{today.getMonth() + 1}}月{{today.getDate()}}日
+      </span>
+      <span>
+        入库单号:{{printStockInInfo.orderInfo.orderNo}}
+      </span>
+    </div>
+    <table
+      border="1" cellspacing="0" cellpadding="0"
+      style="border-collapse:collapse; border-spacing:0; width: 100%; font-size: 14.4px; text-align: center;"
+    >
+      <tr>
+        <th>序</th>
+        <th>名称</th>
+        <th>生产企业</th>
+        <th>规格</th>
+        <th>批号</th>
+        <th>有效期</th>
+        <th>数量</th>
+        <th *ngIf="printStockInInfo.orderInfo.vaccineType == '1'">单价</th>
+        <th *ngIf="printStockInInfo.orderInfo.vaccineType == '1'">售价</th>
+        <th *ngIf="printStockInInfo.orderInfo.vaccineType == '1'">入库金额</th>
+      </tr>
+      <tr *ngFor="let vac of printStockInInfo.vaccineInfo; index as i">
+        <td>{{i + 1}}</td>
+        <td>{{vac.vaccName}}</td>
+        <td>{{vac.manufactureName}}</td>
+        <td>{{vac.spec}}</td>
+        <td>{{vac.batchNo}}</td>
+        <td>{{vac.loseEfficacyDate | date: 'yyyy-MM-dd'}}</td>
+        <td>{{vac.vaccNum ? vac.vaccNum : 0}}</td>
+        <td *ngIf="printStockInInfo.orderInfo.vaccineType == '1'">{{vac.orignPrice ? vac.orignPrice : 0}}</td>
+        <td *ngIf="printStockInInfo.orderInfo.vaccineType == '1'">{{vac.sellPrice ? vac.sellPrice : 0}}</td>
+        <td *ngIf="printStockInInfo.orderInfo.vaccineType == '1'">
+          <span *ngIf="vac.vaccineType !== null">￥</span>{{vac.vaccNum * vac.orignPrice ? vac.vaccNum * vac.orignPrice :  (vac.vaccineType == null ? ' ' : 0)}}</td>
+      </tr>
+      <tr>
+        <td colspan="6" style="text-align: center;">合计</td>
+        <td>{{printStockInInfo.priceSum.sumNum ? printStockInInfo.priceSum.sumNum : 0}}</td>
+        <td *ngIf="printStockInInfo.orderInfo.vaccineType == '1'">——</td>
+        <td *ngIf="printStockInInfo.orderInfo.vaccineType == '1'">——</td>
+        <td *ngIf="printStockInInfo.orderInfo.vaccineType == '1'">
+          ￥{{printStockInInfo.priceSum.costSum ? printStockInInfo.priceSum.costSum : 0}}</td>
+      </tr>
+    </table>
+    <br>
+    <p>注：第一联（白色）药械科，第二联（红色）财务，第三联（黄色）收货</p>
+    <div style="margin: 5px auto; display: flex; justify-content: space-between; align-items: center;">
+      <p style="width: 25%; font-size: 13px;">制单: <span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span>
+      </p>
+      <p style="width: 25%; font-size: 13px;">入库确认：<span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+      <p style="width: 25%; font-size: 13px;">收料：<span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+      <p style="width: 25%; font-size: 13px;">审核：<span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+    </div>
+    <br>
+    <table
+      border="1" cellspacing="0" cellpadding="0"
+      style="border-collapse:collapse; border-spacing:0; width: 100%; font-size: 14.4px; text-align: center; height: 35px;"
+    >
+      <tr>
+        <th colspan="2">主要验收内容</th>
+      </tr>
+      <tr>
+        <th width="50%">与出库单、运输单比较</th>
+        <td width="50%">符合 ☐ 不符合☐</td>
+      </tr>
+      <tr>
+        <th width="50%">批号、数量检查</th>
+        <td width="50%">符合 ☐ 不符合☐</td>
+      </tr>
+      <tr>
+        <th width="50%">冷链运输温度记录</th>
+        <td width="50%">符合 ☐ 不符合☐</td>
+      </tr>
+      <tr>
+        <th width="50%">验收人签字</th>
+      </tr>
+    </table>
+    <br>
+  </div>
+</div>

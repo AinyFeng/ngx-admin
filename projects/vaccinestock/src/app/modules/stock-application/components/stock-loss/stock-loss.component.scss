@@ -1,0 +1,21 @@
+@import '../../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+  .stock-input-width {
+    width: 39%;
+  }
+
+  .text-red {
+    color: red;
+    border-bottom: 1px dotted red;
+  }
+
+  .text-blue {
+    color: blue;
+    border-bottom: 1px dotted blue;
+  }
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
+}

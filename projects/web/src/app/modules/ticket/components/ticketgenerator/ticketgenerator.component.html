@@ -1,0 +1,109 @@
+<nb-card accent="info" style="min-height: 600px;" [ngClass]="{ 'full-screen': fullScreen }">
+	<nb-card-body>
+		<div *ngIf="stepIndex === '1'" class="body-container animated fadeInLeft faster">
+			<div class="body-title">
+				<p class="p-title">接种预防自助服务平台</p>
+			</div>
+			<div class="action-group">
+				<div class="a-group">
+					<div class="mb-3">
+						<button nz-button nzType="primary" nzSize="large" class="mr-3" (click)="getInjectInfo('A')">
+							<i class="fas fa-baby"></i>&nbsp;&nbsp; 儿童接种
+						</button>
+						<button nz-button nzType="primary" nzSize="large" class="mr-3" (click)="getInjectInfo('B')">
+							<i class="fas fa-user-alt"></i>&nbsp;&nbsp; 成人接种
+						</button>
+						<!--            <button nz-button status="info" class="mr-3" size="giant" (click)="simulation()">模拟取号</button>-->
+						<button nz-button nzType="primary" nzSize="large" class="mr-3" (click)="simulation(true)">
+							无证取号
+						</button>
+						<!--            <button nz-button status="info" class="mr-3" size="giant" (click)="testRetrieve()">模拟取号(测试)</button>-->
+					</div>
+					<!--          <div class="mb-3 text-center">-->
+					<!--            <button nz-button status="info" class="mr-3" size="giant" (click)="stepIndex = '2'">-->
+					<!--              <i class="fas fa-user-edit"></i>&nbsp;&nbsp;-->
+					<!--              自助登记-->
+					<!--            </button>-->
+					<!--          </div>-->
+					<p>当前是否可以打印取号小票:{{ printQueueNo ? '打印' : '不打印' }}</p>
+					<!--         <div class="d-flex">
+            <label>选择接种疫苗类型：</label>
+            <div class="flex-1">
+              <nb-checkbox class="mr-4" [(checked)]="op.checked" (checkedChange)="onCheckedChange($event, i)"
+                           *ngFor="let op of vaccineOptions;index as i" status="primary">{{ op.label }}</nb-checkbox>
+            </div>
+          </div>-->
+				</div>
+			</div>
+			<div class="full-screen-btn">
+				<button nz-button nzType="primary" nzSize="large" (click)="lockFullScreen(lockDialog)">
+					<span *ngIf="fullScreen"><i class="fas fa-lock-open"></i>&nbsp;&nbsp;解锁全屏</span>
+					<span *ngIf="!fullScreen"><i class="fas fa-lock"></i>&nbsp;&nbsp;锁定全屏</span>
+				</button>
+			</div>
+		</div>
+	</nb-card-body>
+</nb-card>
+
+<ng-template #profiledDialog let-data let-ref="dialogRef">
+	<nb-card>
+		<nb-card-header>选择一条记录</nb-card-header>
+		<nb-card-body>
+			<nz-table #record [nzData]="data.data">
+				<thead>
+					<tr>
+						<th>姓名</th>
+						<th>性别</th>
+						<th>出生日期</th>
+						<th>免疫卡号</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let d of record.data">
+						<td>{{ d.name }}</td>
+						<td>{{ d.gender | dicPipe: 'genderCode' }}</td>
+						<td>{{ d.birthDate | date: 'yyyy-MM-dd' }}</td>
+						<td>{{ d.immunityVacCard }}</td>
+						<td>
+							<a href="javascript:void(0)" (click)="ref.close(d)">选择</a>
+						</td>
+					</tr>
+				</tbody>
+			</nz-table>
+		</nb-card-body>
+		<nb-card-footer>
+			<button nz-button (click)="ref.close()">关闭</button>
+		</nb-card-footer>
+	</nb-card>
+</ng-template>
+
+<ng-template #lockDialog let-data let-ref="dialogRef">
+	<nb-card size="medium" style="width: 400px;">
+		<nb-card-body>
+			<h6 class="mb-3">解锁全屏</h6>
+			<p class="text-muted mb-3">
+				<small>解锁密码：{{ this.userInfo.userCode }}</small>
+			</p>
+			<input
+				type="password"
+				(ngModelChange)="changeLockCode()"
+				[(ngModel)]="lockCode"
+				nbInput
+				placeholder="请输入登录用户的工号进行解锁全屏"
+				fullWidth
+			/>
+			<span *ngIf="lockCode != this.userInfo.userCode">{{ errorMsg }}</span>
+		</nb-card-body>
+		<nb-card-footer style="display: flex; justify-content: space-between;">
+			<button nz-button status="info" (click)="closeDialog()">确定</button>
+			<button nz-button status="warning" (click)="closeDialog(true)">取消</button>
+		</nb-card-footer>
+	</nb-card>
+</ng-template>
+
+<uea-call-number-info
+	#printCall
+	[printData]="callNumber"
+	style="position: absolute; margin-left: -999rem;"
+></uea-call-number-info>

@@ -1,0 +1,173 @@
+<nb-card size="xlarge" class="nb-card-container-sm">
+  <nb-card-header class="nb-card-header-qb">
+    添加犬伤信息 -- {{ profile ? profile.name : '' }}
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body [nbSpinner]="loading" nbSpinnerStatus="info">
+    <div class="search-profile text-center" *ngIf="!data">
+      <label class="mr-2">自助添加</label>
+      <input nbInput type="text" [(ngModel)]="checkCode">
+      <button
+        [disabled]="loading"
+        [nbSpinner]="loading"
+        nbButton status="info" class="ml-4" (click)="SelfAddDogRecord(checkCode)">查询
+      </button>
+    </div>
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <label for="injuryDate" class="col-form-label col-2 text-right label-required">咬伤时间</label>
+        <div class="col-3">
+          <nz-date-picker
+            nzShowTime
+            class="full-width"
+            id="injuryDate"
+            nzSize="large"
+            [nzDisabledDate]="filterDate"
+            nzFormat="yyyy-MM-dd HH:mm:ss"
+            nzPlaceHolder="请选择咬伤时间"
+            formControlName="injuryDate"
+          ></nz-date-picker>
+        </div>
+        <label for="animal" class="col-form-label col-3 text-right label-required">动物名称</label>
+        <div class="col-3">
+          <nb-select placeholder="选择动物名称" fullWidth id="animal" formControlName="animal">
+            <nb-option *ngFor="let a of animalOptions" [value]="a.value">{{ a.label }}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="injuryType" class="col-form-label col-2 text-right label-required">受伤方式</label>
+        <div class="col-3">
+          <nb-select placeholder="选择受伤方式" fullWidth id="injuryType" formControlName="injuryType">
+            <nb-option *ngFor="let type of injuryTypeOptions" [value]="type.value">{{ type.label }}</nb-option>
+          </nb-select>
+        </div>
+        <label for="injurySite" class="col-form-label col-3 text-right label-required">受伤部位</label>
+        <div class="col-3">
+          <nb-select placeholder="选择受伤部位" fullWidth id="injurySite" formControlName="injurySite">
+            <nb-option *ngFor="let site of injurySiteOptions" [value]="site.value">{{ site.label }}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="handleDate" class="col-form-label col-2 text-right label-required">处理时间</label>
+        <div class="col-3">
+          <nz-date-picker
+            nzShowTime
+            nzSize="large"
+            class="full-width"
+            id="handleDate"
+            [nzDisabledDate]="filterHandleDate"
+            nzFormat="yyyy-MM-dd HH:mm:ss"
+            nzPlaceHolder="选择处理时间"
+            formControlName="handleDate"
+          ></nz-date-picker>
+        </div>
+        <label for="handlePlace" class="col-form-label col-3 text-right label-required">处理地点</label>
+        <div class="col-3">
+          <nb-select placeholder="选择处理地点" fullWidth id="handlePlace" formControlName="handlePlace">
+            <nb-option *ngFor="let p of handlePlaceOptions" [value]="p.value">{{ p.label }}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="weight" class="col-form-label col-2 text-right">受种人体重(kg)</label>
+        <div class="col-3">
+          <input type="number" id="weight"
+                 numberTransfer
+                 [status]="form.get('weight').invalid && form.get('weight').touched ? 'danger' : ''"
+                 nbInput fullWidth formControlName="weight">
+          <uea-show-form-errors [control]="form.get('weight')"></uea-show-form-errors>
+        </div>
+        <label for="programCode" class="col-form-label col-3 text-right label-required">接种方案</label>
+        <div class="col-3">
+          <nb-select placeholder="选择接种方案" fullWidth id="programCode" formControlName="programCode" >
+            <nb-option *ngFor="let p of vaccinateStrategy" [value]="p.value">{{ p.label }}</nb-option>
+          </nb-select>
+        </div>
+        <!--        <label for="handleFee" class="col-form-label col-3 text-right">伤口处理及药品费用</label>-->
+        <!--        <div class="col-3">-->
+        <!--          <input type="number" nbInput id="handleFee" fullWidth formControlName="handleFee">-->
+        <!--        </div>-->
+      </div>
+      <div class="form-group row">
+        <label for="exposureLevel" class="col-form-label col-2 text-right label-required">暴露级别</label>
+        <div class="col-3">
+          <nb-select placeholder="选择暴露级别" fullWidth id="exposureLevel" formControlName="exposureLevel">
+            <nb-option *ngFor="let e of exposureLevelOptions" [value]="e.value">{{ e.label }}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="over48H" class="col-form-label col-2 text-right label-required">是否超过48小时</label>
+        <div class="col-3">
+          <nb-radio-group class="d-flex flex-row" formControlName="over48H" id="over48H">
+            <nb-radio *ngFor="let o of yesOrNoOptions" [checked]="o.checked" [value]="o.value">{{ o.label }}</nb-radio>
+          </nb-radio-group>
+        </div>
+        <label for="hriVaccinated" class="col-form-label col-3 text-right label-required">免疫球蛋白</label>
+        <div class="col-3">
+          <nb-select placeholder="是否已经接种免疫球蛋白" fullWidth id="hriVaccinated" formControlName="hriVaccinated">
+            <nb-option value="1">已接种</nb-option>
+            <nb-option value="0">未接种</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <!--      <div class="form-group row">
+              <label for="broadHeadingCode" class="col-form-label col-2 text-right label-required">疫苗大类</label>
+              <div class="col-9">
+                <nb-select placeholder="选择疫苗大类"
+                           fullWidth id="broadHeadingCode" formControlName="broadHeadingCode">
+                  <nb-option *ngFor="let o of rabiesVaccineOptions" [value]="o.broadHeadingCode">{{ o.broadHeadingEngName }}
+                    _{{ o.broadHeadingName }}</nb-option>
+                </nb-select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="vaccineSubclassCode" class="col-2 col-form-label text-right label-required">疫苗小类</label>
+              <div class="col-9">
+                <nb-select placeholder="选择疫苗小类"
+                           fullWidth id="vaccineSubclassCode" formControlName="vaccineSubclassCode">
+                  <nb-option *ngFor="let o of vacSubClassOptions" [value]="o.value">{{ o.label }}</nb-option>
+                </nb-select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="vaccineProductCode" class="col-2 col-form-label text-right label-required">疫苗产品</label>
+              <div class="col-9">
+                <nb-select placeholder="选择疫苗产品"
+                           fullWidth id="vaccineProductCode" formControlName="vaccineProductCode">
+                  <nb-option *ngFor="let o of vacProductOptions"
+                             [value]="o.vaccineProductCode">{{ o.vaccineProductName }}</nb-option>
+                </nb-select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="manufactureCode" class="col-2 col-form-label text-right label-required">疫苗厂商</label>
+              <div class="col-3">
+                <input type="text" readonly
+                       [value]="form.get('manufactureCode').value | manufacturePipe" nbInput
+                       id="manufactureCode"
+                       formControlName="manufactureCode" fullWidth
+                       placeholder="疫苗厂商信息">
+              </div>
+              <label for="batchNo" class="col-2 col-form-label text-right">疫苗批号</label>
+              <div class="col-3">
+                <nb-select placeholder="选择疫苗批号"
+                           fullWidth id="batchNo" formControlName="batchNo">
+                  <nb-option *ngFor="let o of vacBatchNo" [value]="o.batchNo">{{ o.batchNo }}</nb-option>
+                </nb-select>
+              </div>
+            </div>-->
+      <div class="form-group row">
+        <label for="memo" class="col-form-label col-2 text-right">备注</label>
+        <div class="col-9">
+          <textarea type="text" id="memo" nbInput fullWidth formControlName="memo"></textarea>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer class="text-center" [nbSpinner]="loading" nbSpinnerStatus="info">
+    <button (click)="onSubmit()" nbButton status="info">保存</button>
+  </nb-card-footer>
+</nb-card>

@@ -1,0 +1,16 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    科室疫苗配置
+  </nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-lg-4 col-md-12 col-sm-12 m-0" *ngFor="let item of registerDeskOption; index as i" [accessKey]="i">
+        <uea-choose-vac-deploy [nodes]="treeData"
+                               [departmentData]="item"
+                               [vacSubClassData]="vacSubClassData"
+                               (changeCopay)="changeVacSub($event)"></uea-choose-vac-deploy>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>
+

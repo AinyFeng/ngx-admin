@@ -1,0 +1,32 @@
+
+
+.stock-input-width {
+  width: 39%;
+}
+.text-red {
+  color: red;
+  border-bottom: 1px dotted red;
+}
+
+.text-blue {
+  color: blue;
+  border-bottom: 1px dotted blue;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.preventForm {
+  pointer-events: none;
+}
+.border-style {
+  border-bottom: 1px solid #e8e8e8;
+  border-right: 1px solid #e8e8e8;
+  width:100px;
+}
+

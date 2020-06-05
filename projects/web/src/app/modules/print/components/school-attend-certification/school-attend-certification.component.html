@@ -1,0 +1,98 @@
+<div style="margin: 0 auto;" id="school">
+  <h3 style="text-align: center;">
+    {{ schoolAttendCertification?.curCityCode | administrativePipe | async }}{{ schoolAttendCertification?.curDistrictCode | administrativePipe | async }}
+    儿童入园、入学预防接种证查验证明
+  </h3>
+  <div style="text-align: center; margin: 3px 0; font-size: 110%; font-weight: bold;">
+    姓名: {{ schoolAttendCertification?.name }}
+    &emsp;&emsp;{{ schoolAttendCertification?.gender | dicPipe: 'genderCode' }}&emsp;出生日期：{{ schoolAttendCertification?.birthDate | date: 'yyyy-MM-dd' }}&emsp;父/母姓名:
+    {{ schoolAttendCertification?.fatherInfo?.name ? schoolAttendCertification.fatherInfo.name : '-' }}
+    /{{ schoolAttendCertification?.motherInfo?.name ? schoolAttendCertification.motherInfo.name : '-' }}
+  </div>
+  <div style="text-align: center;">
+    经检查接种记录,已完成以下疫苗接种(见表一，表二)，还有以下疫苗未完成接种(见表三)，特此证明。
+  </div>
+  <br>
+  <div style="display: flex;">
+    <!--表一-->
+    <div style="flex: 1;">
+      <div style="line-height: 35px;">一类疫苗：&emsp;&emsp;(表一)</div>
+      <table style="text-align: center;" cellpadding="0" cellspacing="0" border="1" width="100%">
+        <thead>
+        <tr>
+          <th width="20%">接种疫苗</th>
+          <th>剂次</th>
+          <th>接种日期</th>
+          <th>备注</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let vac of schoolAttendCertification?.oneVaccRecord">
+          <td [nzAlign]="'center'">{{vac.vaccineBroadHeadingCode | vacBroadHeadingPipe }}</td>
+          <td [nzAlign]="'center'">{{vac.vaccinateInjectNumber}}</td>
+          <td [nzAlign]="'center'">{{ vac.vaccinateTime | date: 'yyyy-MM-dd' }}</td>
+          <td [nzAlign]="'center'">{{vac.memo}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="width: 10px;"></div>
+    <!--表二-->
+    <div style="flex: 1;">
+      <div style="line-height: 35px;">二类疫苗：&emsp;&emsp;(表二)</div>
+      <table style="text-align: center;" cellpadding="0" cellspacing="0" border="1" width="100%">
+        <thead>
+        <tr>
+          <th width="20%">接种疫苗</th>
+          <th>剂次</th>
+          <th>接种日期</th>
+          <th>备注</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let vac of schoolAttendCertification?.twoVaccRecord">
+          <td [nzAlign]="'center'">{{vac.vaccineBroadHeadingCode | vacBroadHeadingPipe}}</td>
+          <td [nzAlign]="'center'">{{vac.vaccinateInjectNumber}}</td>
+          <td [nzAlign]="'center'">{{ vac.vaccinateTime | date: 'yyyy-MM-dd' }}</td>
+          <td [nzAlign]="'center'">{{vac.memo}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br>
+  <!--表三-->
+  <div style="line-height: 35px;">需补种疫苗：&emsp;&emsp;(表三)</div>
+  <table style="text-align: center;" cellpadding="0" cellspacing="0" border="1" width="100%">
+    <thead>
+    <tr>
+      <th>需补种疫苗</th>
+      <th>剂次</th>
+      <th>预约时间</th>
+      <th>补种时间</th>
+      <th>疫苗批号</th>
+      <th>接种者签名</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let vac of schoolAttendCertification?.addVaccRecord">
+      <td [nzAlign]="'center'">{{vac.vaccineBroadHeadingCode | vacBroadHeadingPipe }}</td>
+      <td [nzAlign]="'center'">{{vac.vaccinateInjectNumber}}</td>
+      <td [nzAlign]="'center'">{{vac.reservationDate | date: 'yyyy-MM-dd'}}</td>
+      <td [nzAlign]="'center'"></td>
+      <td [nzAlign]="'center'">{{ vac.vaccineBatchNo}}</td>
+      <td [nzAlign]="'center'"></td>
+    </tr>
+    </tbody>
+
+  </table>
+  <div style="position: relative; margin-top: 10px;">
+    <div style="position: absolute; width: 200px; right: 100px; top: 0;">
+      <div>验证人(签名):</div>
+      <br>
+      <div>验证单位(盖章):</div>
+      <br>
+      <div>验证日期：</div>
+    </div>
+  </div>
+</div>

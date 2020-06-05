@@ -1,0 +1,58 @@
+<nb-card>
+  <nb-card-header class="nb-card-header-qb">
+    预诊记录 -- {{ profile ? profile.name : '' }}
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <nz-table #msgTable [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false" [nzLoading]="loading"
+              [nzFrontPagination]="false"
+              [nzTotal]="total"
+              [(nzPageIndex)]="pageIndex"
+              [nzShowTotal]="totalTemplate"
+              (nzPageIndexChange)="queryData($event)">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">档案编码</th>
+        <th [nzAlign]="'center'">姓名</th>
+        <th [nzAlign]="'center'">生日</th>
+        <th [nzAlign]="'center'">证件号码</th>
+       <!-- <th [nzAlign]="'center'">母亲姓名</th>
+        <th [nzAlign]="'center'">母亲手机</th>
+        <th [nzAlign]="'center'">父亲姓名</th>
+        <th [nzAlign]="'center'">父亲手机</th>-->
+        <th [nzAlign]="'center'">预诊时间</th>
+        <!--        <th [nzAlign]="'center'">预诊问题</th>-->
+        <th [nzAlign]="'center'">预诊是否正常</th>
+        <th [nzAlign]="'center'">预诊医生</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index;">
+        <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+        <td [nzAlign]="'center'">{{data.profileCode}}</td>
+        <td [nzAlign]="'center'">{{data.name}}</td>
+        <td [nzAlign]="'center'">{{data.birthDate | date:'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">{{data.idCardNo}}</td>
+      <!--  <td [nzAlign]="'center'">{{data.motherName}}</td>
+        <td [nzAlign]="'center'">{{data.motherPhone}}</td>
+        <td [nzAlign]="'center'">{{data.fatherName}}</td>
+        <td [nzAlign]="'center'">{{data.fatherPhone}}</td>-->
+        <td [nzAlign]="'center'">{{data.createDate | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+        <!--        <td [nzAlign]="'center'">{{data.question}}</td>-->
+        <td [nzAlign]="'center'">{{data.normalStatus === '0' ? '正常' : '不正常'}}</td>
+        <td [nzAlign]="'center'">{{data.doctor}}</td>
+        <td [nzAlign]="'center'">
+          <a href="javaScript:" (click)="checkDetail(data)">查看</a>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+
+
+<ng-template #totalTemplate>
+  共{{ total }}条数据，当前第{{ pageIndex }}页
+</ng-template>

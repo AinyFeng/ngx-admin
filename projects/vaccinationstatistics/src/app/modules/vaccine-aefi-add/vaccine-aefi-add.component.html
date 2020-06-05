@@ -1,0 +1,244 @@
+<!--本页面参考archives-obstetrics.component.html-->
+<!-- <div nz-row> -->
+<nz-card>
+	<nz-tabset [(nzSelectedIndex)]="tabIndex">
+		<nz-tab nzTitle="新增AEFI信息">
+			<form nz-form [formGroup]="aefiAddForm">
+				<div nz-row>
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="aefiCode" [nzSm]="8" [nzXs]="24" nzRequired
+								>AEFI异常编码
+							</nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<input nz-input formControlName="aefiCode" id="aefiCode" />
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="reportCardCode" [nzSm]="8" [nzXs]="24">个案报告卡号 </nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<input nz-input formControlName="reportCardCode" id="reportCardCode" />
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="aefiAddFormCode" [nzSm]="8" [nzXs]="24"
+								>受种人档案编码
+							</nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<input nz-input formControlName="aefiAddFormCode" id="aefiAddFormCode" />
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="vacRecordCode" [nzSm]="8" [nzXs]="24">接种记录编码 </nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<input nz-input formControlName="vacRecordCode" id="vacRecordCode" />
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="surveyReportCode" [nzSm]="8" [nzXs]="24">调查报告编号 </nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<input nz-input formControlName="surveyReportCode" id="surveyReportCode" />
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="vacPovCode" [nzSm]="8" [nzXs]="24">接种门诊</nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<nz-tree-select
+									id="vacPovCode"
+									style="width: 175px;"
+									[nzNodes]="vacPovCodeNodes"
+									nzShowSearch
+									nzPlaceHolder="---请选择---"
+									formControlName="vacPovCode"
+								>
+								</nz-tree-select>
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="aefiDate" [nzSm]="8" [nzXs]="24" nzRequired
+								>AEFI发生日期
+							</nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<nz-date-picker formControlName="aefiDate" id="aefiDate"></nz-date-picker>
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="discoverDate" [nzSm]="8" [nzXs]="24" nzRequired
+								>发现/就诊日期
+							</nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<nz-date-picker formControlName="discoverDate" id="discoverDate"></nz-date-picker>
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="reaction" [nzSm]="8" [nzXs]="24" nzRequired
+								>AEFI异常反应描述
+							</nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<input
+									nz-input
+									formControlName="reaction"
+									id="reaction"
+									placeholder="AEFI异常反应描述"
+								/>
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="pic" [nzSm]="8" [nzXs]="24" nzRequired>AEFI图片 </nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<input nz-input formControlName="pic" id="pic" placeholder="AEFI图片" />
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="reportDate" [nzSm]="8" [nzXs]="24" nzRequired
+								>报告日期
+							</nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<nz-date-picker formControlName="reportDate" id="reportDate"></nz-date-picker>
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="survey_date" [nzSm]="8" [nzXs]="24" nzRequired
+								>调查日期
+							</nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<nz-date-picker formControlName="survey_date" id="survey_date"></nz-date-picker>
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="reactionType" [nzSm]="8" [nzXs]="24">反应类型</nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<nz-tree-select
+									id="reactionType"
+									style="width: 175px;"
+									[nzNodes]="reactionTypeNodes"
+									nzShowSearch
+									nzPlaceHolder="---请选择---"
+									formControlName="reactionType"
+								>
+								</nz-tree-select>
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="groupStatus" [nzSm]="8" [nzXs]="24" nzRequired
+								>是否群体AEFI
+							</nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<nz-radio-group id="groupStatus" class="d-flex" formControlName="groupStatus">
+									<label nz-radio nzValue="0">否</label>
+									<label nz-radio nzValue="1">是</label>
+								</nz-radio-group>
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="reportCode" [nzSm]="8" [nzXs]="24">报告单位</nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<nz-tree-select
+									id="reportCode"
+									style="width: 175px;"
+									[nzNodes]="vacPovCodeNodes"
+									nzShowSearch
+									nzPlaceHolder="---请选择---"
+									formControlName="reportCode"
+								>
+								</nz-tree-select>
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="patientOutcome" [nzSm]="8" [nzXs]="24" nzRequired
+								>病人转归
+							</nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<nz-radio-group id="patientOutcome" class="d-flex" formControlName="patientOutcome">
+									<label nz-radio nzValue="1">住院</label>
+									<label nz-radio nzValue="2">未住院</label>
+									<label nz-radio nzValue="3">不详</label>
+								</nz-radio-group>
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="provincialCheckStatus" [nzSm]="8" [nzXs]="24" nzRequired>
+								省级审核状态
+							</nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<nz-radio-group
+									id="provincialCheckStatus"
+									class="d-flex"
+									formControlName="provincialCheckStatus"
+								>
+									<label nz-radio nzValue="0">否</label>
+									<label nz-radio nzValue="1">是</label>
+								</nz-radio-group>
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="cityCheckStatus" [nzSm]="8" [nzXs]="24" nzRequired
+								>市级审核状态
+							</nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<nz-radio-group id="cityCheckStatus" class="d-flex" formControlName="cityCheckStatus">
+									<label nz-radio nzValue="0">否</label>
+									<label nz-radio nzValue="1">是</label>
+								</nz-radio-group>
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+					<div nz-col [nzSpan]="12">
+						<nz-form-item class="formItem">
+							<nz-form-label nzFor="countyCheckStatus" [nzSm]="8" [nzXs]="24" nzRequired>
+								县级审核状态
+							</nz-form-label>
+							<nz-form-control class="formControl" [nzSm]="10" [nzXs]="24" nzErrorTip="">
+								<nz-radio-group id="countyCheckStatus" formControlName="countyCheckStatus">
+									<label nz-radio nzValue="0">否</label>
+									<label nz-radio nzValue="1">是</label>
+								</nz-radio-group>
+							</nz-form-control>
+						</nz-form-item>
+					</div>
+				</div>
+			</form>
+			<div nz-row class="bottom-btn">
+				<button nz-button nzType="primary" [disabled]="!aefiAddForm.valid" (click)="save()">保存</button>
+				<button nz-button nzType="default" (click)="resetForm()">重置</button>
+				<!--  <button nz-button nzType="default" type="button" (click)="close()">关闭</button>-->
+			</div>
+		</nz-tab>
+	</nz-tabset>
+</nz-card>
+<!-- </div> -->

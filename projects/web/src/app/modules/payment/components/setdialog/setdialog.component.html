@@ -1,0 +1,34 @@
+<nb-card>
+  <nb-card-header>
+    设置
+  </nb-card-header>
+  <nb-card-body>
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            <label>业务流水号：</label>
+          </td>
+          <td><input></td>
+        </tr>
+        <tr>
+          <td>
+            <label>是否开票</label>
+          </td>
+          <td>
+            <nb-radio-group>
+              <nb-radio>是</nb-radio>
+              <nb-radio>否</nb-radio>
+            </nb-radio-group>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button nbButton status="info" size="xsmall" (click)="saveSet()">确定</button>
+            <button nbButton status="info" size="xsmall" (click)="dismiss()">退出</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </nb-card-body>
+</nb-card>

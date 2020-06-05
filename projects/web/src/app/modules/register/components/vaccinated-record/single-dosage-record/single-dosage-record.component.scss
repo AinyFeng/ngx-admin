@@ -1,0 +1,14 @@
+@import '../../../../../@uea/theme/global_theme';
+// @import '../../../../common/global-theme/global_theme';
+
+@include nb-install-component() {
+	nb-radio-group {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.footer-btn {
+		display: flex;
+		justify-content: space-between;
+	}
+}

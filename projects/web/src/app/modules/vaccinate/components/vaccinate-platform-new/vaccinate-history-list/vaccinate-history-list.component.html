@@ -1,0 +1,51 @@
+<nb-card *ngIf="showCard" accent="info" fixed>
+  <nb-card-header>
+    接种记录
+  </nb-card-header>
+  <nb-card-body>
+    <ng-container [ngTemplateOutlet]="historyRecord"></ng-container>
+  </nb-card-body>
+</nb-card>
+<ng-container *ngIf="!showCard" [ngTemplateOutlet]="historyRecord"></ng-container>
+<ng-template #historyRecord>
+  <nz-table #vaccinateRecordsTable nzShowPagination  nzBordered nzSize="small"
+            [nzData]="vaccinateRecords"
+            [nzTotal]="vaccinateRecordsCount"
+            [nzFrontPagination]="false"
+            [nzPageSize]="vaccinateRecordsPageSize"
+            [nzPageIndex]="vaccinateRecordsPageIndex" (nzPageIndexChange)="queryVaccinateHistoryRecords($event)">
+    <thead>
+    <tr>
+      <th [nzAlign]="'center'">序号</th>
+      <th [nzAlign]="'center'">种类</th>
+      <th [nzAlign]="'center'">剂次</th>
+      <th [nzAlign]="'center'">接种POV</th>
+      <th [nzAlign]="'center'">接种部门</th>
+      <th [nzAlign]="'center'">接种医生</th>
+      <th [nzAlign]="'center'">疫苗名称</th>
+      <th [nzAlign]="'center'">接种日期</th>
+      <th [nzAlign]="'center'">接种部位</th>
+      <th [nzAlign]="'center'">疫苗批号</th>
+      <th [nzAlign]="'center'">有效期</th>
+      <th [nzAlign]="'center'">厂商</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let vaccinateRecord of vaccinateRecordsTable.data;let i = index">
+      <td [nzAlign]="'center'">{{(vaccinateRecordsPageIndex - 1) * vaccinateRecordsPageSize + i + 1}}
+      </td>
+      <td [nzAlign]="'center'">{{vaccinateRecord.vaccineType | dicPipe:'vaccineType'}}</td>
+      <td [nzAlign]="'center'">{{vaccinateRecord.vaccinateInjectNumber}}</td>
+      <td [nzAlign]="'center'">{{vaccinateRecord.actualPovName}}</td>
+      <td [nzAlign]="'center'">{{vaccinateRecord.departmentName}}</td>
+      <td [nzAlign]="'center'">{{vaccinateRecord?.realName ? vaccinateRecord?.realName: vaccinateRecord?.vaccinateDoctoCode}}</td>
+      <td [nzAlign]="'center'">{{vaccinateRecord.vaccineProductName}}</td>
+      <td [nzAlign]="'center'">{{vaccinateRecord.vaccinateTime | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td [nzAlign]="'center'">{{vaccinateRecord.vaccinatePart | dicPipe: 'vaccinatePart'}}</td>
+      <td [nzAlign]="'center'">{{vaccinateRecord.vaccineBatchNo}}</td>
+      <td [nzAlign]="'center'">{{vaccinateRecord.loseEfficacyDate | date : 'yyyy-MM-dd'}}</td>
+      <td [nzAlign]="'center'">{{vaccinateRecord.manufactureName}}</td>
+    </tr>
+    </tbody>
+  </nz-table>
+</ng-template>

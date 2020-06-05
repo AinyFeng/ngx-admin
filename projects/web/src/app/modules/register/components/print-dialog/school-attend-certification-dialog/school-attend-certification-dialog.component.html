@@ -1,0 +1,16 @@
+<nb-card class="nb-card-container-xx">
+  <nb-card-header>
+    打印入托证明
+  </nb-card-header>
+  <nb-card-body style="min-height: 500px;">
+    <nb-alert *ngIf="error" class="flex-row" outline="warning" closable (close)="closeAlert()">
+      打印机连接失败，请安装<a href="http://www.lodop.net/download.html" target="_blank">Lodop</a>插件
+    </nb-alert>
+    <uea-care-prove [schoolAttendCertification]="schoolAttendCertification"></uea-care-prove>
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton status="info" class="mr-3" (click)="print(true)">打印预览</button>
+    <button nbButton status="info" (click)="print(false)">直接打印</button>
+    <button nbButton status="info" (click)="close()" class="float-right">关闭</button>
+  </nb-card-footer>
+</nb-card>

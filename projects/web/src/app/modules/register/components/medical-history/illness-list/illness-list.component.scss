@@ -1,0 +1,18 @@
+@import '../../../../../@uea/theme/global_theme';
+// @import '../../../../common/global-theme/global_theme';
+@include nb-install-component() {
+	.illness-title {
+		color: white;
+		background-color: #4ca6ff;
+		align-self: flex-start;
+		line-height: 42px;
+		height: 42px;
+		padding: 0 5px;
+		width: 80px;
+		border-top-left-radius: 4px;
+		border-top-right-radius: 4px;
+	}
+	.nb-border-bottom {
+		border-bottom: 1px solid #4ca6ff;
+	}
+}

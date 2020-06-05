@@ -1,0 +1,91 @@
+<nb-alert *ngIf="showProfileDeleted" status="danger" (close)="showProfileDeleted = !showProfileDeleted" closable>
+  该档案已经被删除，将无法进行任何操作
+</nb-alert>
+<div class="row">
+  <div class="col-md-8">
+    <nb-card accent="info" class="card-height-mini">
+      <!--      <nb-card-header>-->
+      <!--        登记台-->
+      <!--      </nb-card-header>-->
+      <!--      <nb-card-body>-->
+      <div class="search-items">
+        <input type="text" [nbPopover]="queryTemplate" nbPopoverPlacement="bottom" nbPopoverTrigger="hover"
+               debounceClick [disableKeyUp]="false" (debounceClick)="searchProfile()" class="wide-input"
+               [(ngModel)]="searchContent" [disabled]="loading" nbInput [fieldSize]="fieldSize"
+               placeholder="请输入姓名、档案编号、证件号码、电话号码、出生日期">
+        <ng-template #queryTemplate>
+          <nb-card class="mb-0">
+            <nb-card-header>查询参数示例：</nb-card-header>
+            <nb-card-body>
+              <ul style="list-style-type: none; margin: 0; padding: 0;">
+                <li>姓名：刘备</li>
+                <li>档案编码：6d157fc24fe04b94bcffe93cb3ef9f36</li>
+                <li>证件号码：110101201803076876</li>
+                <li>电话号码：15454545454、14114111111</li>
+                <li>出生日期：20190708、20190710</li>
+                <li>注：日期格式请严格按照样例的格式</li>
+              </ul>
+            </nb-card-body>
+          </nb-card>
+        </ng-template>
+        <button debounceClick [disabled]="loading" [nbSpinner]="loading"
+                nbSpinnerStatus="info" nbSpinnerSize="xsmall"
+                nbSpinnerMessage=""
+                class="mr-2"
+                (debounceClick)="searchProfile()"
+                nbButton status="info" [size]="btnSize">查询
+        </button>
+        <button nbButton status="info" [size]="btnSize"
+                class="mr-2"
+                (click)="preliminaryClinical()">预诊
+        </button>
+        <nb-select outline status="info"
+                   class="mr-2"
+                   placeholder="档案操作">
+          <nb-option *ngFor="let fo of fileOps" (click)="openDialog(fo.value)">{{ fo.label }}</nb-option>
+        </nb-select>
+        <!--         <nb-select outline status="info"
+                            class="mr-2"
+                            placeholder="更多操作" [(selected)]="moreOption">
+                   <nb-option *ngFor="let mo of moreOps" [value]="mo.value" (click)="openDialog(mo.value)">{{ mo.label }}
+                   </nb-option>
+                 </nb-select>-->
+        <nb-select outline status="info"
+                   class="mr-2"
+                   placeholder="打印" [(selected)]="printOption">
+          <nb-option *ngFor="let po of printOps" (click)="openDialog(po.value)" [value]="po.value">{{ po.label }}
+          </nb-option>
+        </nb-select>
+        <button (click)="gotoReservationManagement()" nbButton status="info">预约管理</button>
+      </div>
+      <!--      </nb-card-body>-->
+    </nb-card>
+  </div>
+  <div class="col-md-4">
+    <uea-s-queue-number (callNumberEvent)="onCallNumberQueryProfile($event)"></uea-s-queue-number>
+  </div>
+  <div class="col-lg-3 col-md-12 col-sm-12">
+    <uea-show-profile></uea-show-profile>
+  </div>
+  <div class="col-lg-5 col-md-12 col-sm-12">
+    <uea-vaccinated-list></uea-vaccinated-list>
+  </div>
+  <div class="col-lg-4 col-md-12 col-sm-12">
+    <vaccination-list [diagnosePass]="diagnosePass"></vaccination-list>
+  </div>
+  <div class="col-12">
+    <nb-card accent="info" size="large">
+      <nb-card-body class="overflow-auto">
+        <nb-tabset fullWidth>
+          <nb-tab tabTitle="预约记录" badgeStatus="success" [badgeText]="reservationRecordCount + ''">
+            <uea-reservation-record-list (reservationRecordCount)="onReservationRecordCount($event)">
+            </uea-reservation-record-list>
+          </nb-tab>
+          <nb-tab tabTitle="当日登记记录" badgeStatus="success" [badgeText]="registRecordCount + ''">
+            <uea-regist-record-list (registRecordCount)="onRegistRecordCount($event)"></uea-regist-record-list>
+          </nb-tab>
+        </nb-tabset>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

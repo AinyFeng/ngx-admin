@@ -1,0 +1,96 @@
+<form style="width: 100%;" nz-form [formGroup]="addPlanForm">
+  <div nz-row [nzGutter]="24">
+    <div nz-col nzSpan="12">
+      <nz-form-item class="m-0">
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="checkName">盘点计划名称</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="此项必填">
+          <input nz-input formControlName="checkName" id="checkName"/>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzSpan="12">
+      <nz-form-item class="m-0">
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="checkDate">盘点日期</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="此项必填">
+          <nz-date-picker
+            [nzDisabledDate]="filterDate"
+            id="checkDate" formControlName="checkDate"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col nzSpan="12">
+      <nz-form-item class="m-0">
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="checkUser">盘点人员</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="此项必填">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" formControlName="checkUser">
+            <nz-option *ngFor="let s of povStaffOptions" [nzLabel]="s.realName" [nzValue]="s.number"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzSpan="12">
+      <nz-form-item class="m-0">
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="storeName">盘点单位</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="此项必填">
+          <input nz-input readonly formControlName="storeName" id="storeName"/>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col nzSpan="24">
+      <nz-form-item class="m-0">
+        <nz-form-label [nzSm]="3" [nzXs]="24" nzFor="memo">备注</nz-form-label>
+        <nz-form-control [nzSm]="19" [nzXs]="24">
+          <textarea
+            nz-input
+            placeholder="盘点的备注信息"
+            formControlName="memo"
+            [nzAutosize]="{ minRows: 2, maxRows: 4 }"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</form>
+
+<nz-table #stock [nzData]="selectedData" nzSize="small">
+  <thead>
+  <tr>
+    <th>编号</th>
+    <th>名称</th>
+    <th>属性</th>
+    <th>生产企业</th>
+    <th>批号</th>
+    <th>批签发证号</th>
+    <th>规格(剂/支/粒)</th>
+    <th>剂量</th>
+    <th>剂型</th>
+    <th>有效期</th>
+    <th>成本价</th>
+    <th>实际库存</th>
+    <th>可用库存</th>
+    <th>在途库存</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of stock.data; index as i">
+    <td>{{ i + 1 }}</td>
+    <td>{{data.vaccName}}</td>
+    <td>{{data.vaccineType}}</td>
+    <td>{{ data.manufactureName }}</td>
+    <td>{{ data.batchNo }}</td>
+    <td>{{ data.certifiCode }}</td>
+    <td>{{ data.spec }}</td>
+    <td>{{ data.dose | dicPipe: 'pfVaccineSpecification' }}</td>
+    <td>{{ data.doseType }}</td>
+    <td>{{ data.outBoundDate | date: 'yyyy-MM-dd' }}</td>
+    <td>{{ data.orignPrice | currency: '￥' }}</td>
+    <td>{{ data.storeNum }}</td>
+    <td>{{ data.storenumF }}</td>
+    <td>{{ data.sumWay }}</td>
+  </tr>
+  </tbody>
+</nz-table>

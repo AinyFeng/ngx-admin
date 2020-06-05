@@ -1,0 +1,153 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    <div>
+      打印模块
+      <small>打印模块可以打印受种人的接种记录、接种告知书、入托证明、注射单、档案信息，请先查询档案</small>
+    </div>
+    <div>
+      <button debounceClick (debounceClick)="searchProfile()" nbButton status="info">查询</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-alert *ngIf="!showError" class="flex-row" outline="warning" closable (close)="closeAlert()">
+      打印机连接失败，请安装<a href="http://www.lodop.net/download.html" target="_blank">Lodop</a>插件
+    </nb-alert>
+    <section class="d-flex justify-content-center mb-3">
+      <label for="search" class="col-form-label">请输入查询条件：</label>
+      <input [nbPopover]="queryTemplate" nbPopoverPlacement="bottom" nbPopoverTrigger="hover"
+        [(ngModel)]="searchContent" id="search" type="text" nbInput placeholder="请输入姓名、档案编号、证件号码、电话号码、出生日期">
+      <button debounceClick (debounceClick)="searchProfile()" nbButton status="info" class="ml-2">查询</button>
+      <ng-template #queryTemplate>
+        <nb-card>
+          <nb-card-header>查询参数示例：</nb-card-header>
+          <nb-card-body>
+            <ul>
+              <li>姓名：eson、super、asino</li>
+              <li>档案编码：6d157fc24fe04b94bcffe93cb3ef9f36</li>
+              <li>证件号码：110101201803076876</li>
+              <li>电话号码：15454545454、14114111111</li>
+              <li>出生日期：20190708、20190710</li>
+              <li>注：日期格式请严格按照样例的格式</li>
+            </ul>
+          </nb-card-body>
+        </nb-card>
+      </ng-template>
+    </section>
+    <nb-tabset fullWidth (changeTab)="changeTabEvent($event)">
+      <nb-tab tabTitle="接种记录">
+        <uea-print-vacc-record (showStep)="showStep($event)" [vaccinateRecord]="vaccinateRecordData"
+          (getPrintRecord)="getPrintRecord($event)"></uea-print-vacc-record>
+      </nb-tab>
+      <nb-tab tabTitle="个案信息">
+        <uea-child-case-info [printProfileData]="childCaseInfo" [idType]="idType"></uea-child-case-info>
+      </nb-tab>
+      <nb-tab tabTitle="告知书">
+        <uea-vaccinate-agreement (selectedTabId)="onSelectTab($event)" [userInfo]="userInfo" [profile]="profile">
+        </uea-vaccinate-agreement>
+      </nb-tab>
+      <nb-tab tabTitle="入托证明">
+        <uea-care-prove [schoolAttendCertification]="schoolAttendCertification"></uea-care-prove>
+      </nb-tab>
+      <nb-tab tabTitle="注射单">
+        <uea-injection-sheet [adultVaccineList]="adultVaccineList"></uea-injection-sheet>
+      </nb-tab>
+      <nb-tab tabTitle="档案信息">
+        <uea-print-profile [profileData]="printProfileData"></uea-print-profile>
+      </nb-tab>
+      <nb-tab tabTitle="上海免疫接种卡">
+        <uea-shanghai-immunity-vac-card (printShanghai)="onShanghaiPrint($event)"
+          [vaccinateRecords]="shanghaiVacRecords" [profile]="profile"></uea-shanghai-immunity-vac-card>
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+  <nb-card-footer *ngIf="!injectSheet">
+    <div *ngIf="recordBtn" class="text-left">
+      <div class="d-flex" *ngIf="vaccinateRecordData.prePage">
+          <label class="col-form-label">证件类型:</label>
+            <nb-select placeholder="请选择证件类型" outline status="info"
+              [(selected)]="chooseType">
+              <nb-option [value]="item.value" *ngFor="let item of vaccinateRecordData.vaccCertificateType"
+                (click)="savePrintModel(item.value)">{{item.label}}</nb-option>
+            </nb-select>
+          <button nbButton status="info" *ngIf="vaccinateRecordData.showNextStep" (click)="nextStep()">
+            下一步
+          </button>
+      </div>
+      <div *ngIf="!vaccinateRecordData.prePage">
+        <div class="form-group row">
+          <div class="col-md-3 row">
+            <label class="col-6 col-form-label">上页边距(px):</label>
+            <div class="col-6">
+              <input type="number" [min]="0" fullWidth nbInput value="0" [(ngModel)]="settings.marginTop">
+            </div>
+          </div>
+          <div class="col-md-3 row">
+            <label class="col-6 col-form-label">左页边距(px):</label>
+            <div class="col-6">
+              <input type="number" [min]="0" fullWidth nbInput value="0" [(ngModel)]="settings.marginLeft">
+            </div>
+          </div>
+          <div class="col-md-3 row">
+            <label class="col-5 col-form-label text-right">医生姓名:</label>
+            <div class="col-7">
+              <nb-select placeholder="请选择" minlength="100" fullWidth outline status="info" [(selected)]="doctorName">
+                <nb-option [value]="item.value" *ngFor="let item of doctorNames">{{item.label}}</nb-option>
+              </nb-select>
+            </div>
+          </div>
+          <div class="col-md-2 row" *ngIf="vaccinateRecordData.currentTab === '空白页'">
+            <label class="col-6 col-form-label text-right">开始行:</label>
+            <div class="col-6">
+              <input type="number" [min]="1" fullWidth nbInput value="0" [(ngModel)]="settings.startLine">
+            </div>
+          </div>
+          <div class="col-md-1">
+            <button nbButton status="info" (click)="saveSetting()">保存设置</button>
+          </div>
+        </div>
+        <div class="form-group row">
+          <button nbButton status="info" class="mr-4 ml-3" (click)="preStep()">上一步</button>
+          <button nbButton status="info" class="mr-4" (click)="prints(true)">打印预览</button>
+          <button nbButton status="info" class="mr-4" (click)="prints(false)">直接打印</button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!recordBtn && !caseInfoBtn" class="d-flex">
+      <button nbButton status="info" (click)="print(true)" class="mr-3">打印预览</button>
+      <button nbButton status="info" (click)="print(false)">直接打印</button>
+    </div>
+    <div *ngIf="caseInfoBtn">
+      <div class="form-group row">
+        <div class="col-md-5 row">
+          <label class="col-4 col-form-label">证件类型:</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择证件类型" minlength="100" fullWidth outline status="info"
+                       [(selected)]="idType">
+              <nb-option [value]="item.value" *ngFor="let item of vaccinateRecordData.vaccCertificateType"
+                         (click)="savePrintModel(item.value)">{{item.label}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-6 col-form-label text-right">上页边距(px):</label>
+          <div class="col-6">
+            <input type="number" [min]="0" fullWidth nbInput value="0" [(ngModel)]="marginTop">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-6 col-form-label text-right">左页边距(px):</label>
+          <div class="col-6">
+            <input type="number" [min]="0" fullWidth nbInput value="0" [(ngModel)]="marginLeft">
+          </div>
+        </div>
+        <div class="col-md-1">
+          <button nbButton status="info" (click)="storageMedia()">保存设置</button>
+        </div>
+      </div>
+      <div class="form-group d-flex">
+        <button nbButton status="info" class="mr-3" (click)="printChildCase(true)">打印预览</button>
+        <button nbButton status="info" (click)="printChildCase(false)">直接打印</button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

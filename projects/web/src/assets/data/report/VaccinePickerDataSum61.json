@@ -1,0 +1,123 @@
+[
+  {
+    "vacName": "乙肝",
+    "vacCode": "02",
+    "aliasName": "hepb",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacName": "卡介苗",
+    "vacCode": "01",
+    "aliasName": "bcg",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacName": "脊灰",
+    "vacCode": "03",
+    "aliasName": "pv",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacName": "百白破",
+    "vacCode": "04",
+    "aliasName": "dtp",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacName": "白破",
+    "vacCode": "06",
+    "aliasName": "dt",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacName": "麻风",
+    "vacCode": "14",
+    "aliasName": "mr",
+    "tags": [
+      "mcv",
+      "rcv"
+    ],
+    "selected": false
+  },
+  {
+    "vacName": "麻腮风",
+    "vacCode": "12",
+    "aliasName": "mmr",
+    "tags": [
+      "mcv",
+      "rcv",
+      "mumcv"
+    ],
+    "selected": false
+  },
+  {
+    "vacName": "麻腮",
+    "vacCode": "13",
+    "aliasName": "mm",
+    "tags": [
+      "mcv",
+      "mumcv"
+    ],
+    "selected": false
+  },
+  {
+    "vacName": "麻疹",
+    "vacCode": "09",
+    "aliasName": "mv",
+    "tags": [
+      "mcv"
+    ],
+    "selected": false
+  },
+  {
+    "vacName": "流脑A",
+    "vacCode": "16",
+    "aliasName": "mena",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacName": "流脑A+C",
+    "vacCode": "17",
+    "aliasName": "menac",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacName": "乙脑（减毒）",
+    "vacCode": "1801",
+    "aliasName": "jel",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacName": "乙脑（灭活）",
+    "vacCode": "1802",
+    "aliasName": "jei",
+    "tags": [],
+    "selected": false
+  },
+  {
+    "vacName": "甲肝（减毒）",
+    "vacCode": "1901",
+    "aliasName": "hepal",
+    "tags": [
+      "hepa"
+    ],
+    "selected": false
+  },
+  {
+    "vacName": "甲肝（灭活）",
+    "vacCode": "1903",
+    "aliasName": "hepai",
+    "tags": [
+      "hepa"
+    ],
+    "selected": false
+  }
+]

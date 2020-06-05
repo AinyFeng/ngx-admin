@@ -1,0 +1,119 @@
+<nb-card accent="info" *ngIf="showCard" style="height: 100%;">
+  <nb-card-header>
+    <div nz-row nzType="flex" nzJustify="space-between" nzAlign="middle" nzGutter="12">
+      <div nz-col>
+        <h6 style="display: inline-block;">排号队列</h6>
+        <span style="margin-left:15px; display:inline-block;" (click)="refreshTopic($event)" title="立即刷新">
+          <i class="fa fa-refresh fa-2x" aria-hidden="true" style="cursor: pointer;"></i>
+        </span>
+      </div>
+      <div nz-col style="text-align: right;">
+        <div class="mb-3">
+          受种人核验开关
+          <nz-switch [(ngModel)]="checkProfileFlag"
+                     #nzSwitchProfileCom
+                     (ngModelChange)="switchProfileFlag($event)"
+                     nzSize="default"
+                     nzCheckedChildren="开"
+                     nzUnCheckedChildren="关">
+
+          </nz-switch>
+        </div>
+        <div>
+          疫苗核验开关
+          <nz-switch [(ngModel)]="checkVaccineFlag"
+                     #nzSwitchCom
+                     (ngModelChange)="switchVaccineFlag($event)"
+                     nzSize="default"
+                     nzCheckedChildren="开"
+                     nzUnCheckedChildren="关">
+
+          </nz-switch>
+        </div>
+      </div>
+    </div>
+    <!--    <div class="queueHeader">-->
+    <!--      <h6 style="display: inline-block">排号队列</h6>-->
+    <!--      <nb-action style="margin-left:15px;display: inline-block" icon="sync-alt" debounceClick (debounceClick)="initTopic()" title="立即刷新" size="large"></nb-action>-->
+    <!--      <nb-toggle [(ngModel)]="platformService.checkVaccineFlag">是否开启疫苗核验</nb-toggle>-->
+    <!--    </div>-->
+  </nb-card-header>
+  <nb-card-body>
+    <ng-container [ngTemplateOutlet]="queueList"></ng-container>
+  </nb-card-body>
+</nb-card>
+<ng-container *ngIf="!showCard" [ngTemplateOutlet]="queueList"></ng-container>
+<ng-template #queueList>
+  <nb-tabset>
+    <nb-tab tabTitle="待接种" [badgeText]="getWaitingQueueLength() + ''" badgeStatus="info">
+      <nz-table class="mt-2" #waitQueues nzSimple [nzShowPagination]="false" nzSize="small"
+                [nzPageSize]="getWaitingQueueLength()"
+                [nzScroll]="{ x: '100%', y: '700px' }"
+                [nzData]="platformService.waitingQueueData">
+        <thead>
+        <tr>
+          <th [nzWidth]="'33%'" [nzAlign]="'center'">号码</th>
+          <th [nzWidth]="'34%'" [nzAlign]="'center'">姓名</th>
+          <th [nzWidth]="'33%'" [nzAlign]="'center'">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let waitQueue of waitQueues.data">
+          <td [nzAlign]="'center'">{{waitQueue.queueCode}}</td>
+          <td [nzAlign]="'center'">{{waitQueue.profileName}}</td>
+          <td [nzAlign]="'center'">
+            <a href="javascript:" class="link-a-highlight" (click)="consultVaccinatePersonInfo(waitQueue, false)">查看</a>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </nb-tab>
+    <nb-tab tabTitle="已过号" [badgeText]="getPassedQueueLength() + ''" badgeStatus="warning">
+      <nz-table class="mt-2" #passQueues nzSimple [nzShowPagination]="false" nzSize="small"
+                [nzPageSize]="getPassedQueueLength()"
+                [nzScroll]="{ x: '100%', y: '700px' }"
+                [nzData]="platformService.passedQueueData">
+        <thead>
+        <tr>
+          <th [nzAlign]="'center'">号码</th>
+          <th [nzAlign]="'center'">姓名</th>
+          <th [nzAlign]="'center'">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let passQueue of passQueues.data">
+          <td [nzAlign]="'center'">{{passQueue.queueCode}}</td>
+          <td [nzAlign]="'center'">{{passQueue.profileName}}</td>
+          <td [nzAlign]="'center'">
+            <a href="javascript:" (click)="consultVaccinatePersonInfo(passQueue, false)">查看</a>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </nb-tab>
+    <nb-tab tabTitle="已完成" [badgeText]="getSuccessQueueLength() + ''" badgeStatus="success">
+      <nz-table class="mt-2" #successQueues nzSimple [nzShowPagination]="false" nzSize="small"
+                [nzPageSize]="getSuccessQueueLength()"
+                [nzScroll]="{ x: '100%', y: '700px' }"
+                [nzData]="platformService.successQueueData">
+        <thead>
+        <tr>
+          <th [nzAlign]="'center'">号码</th>
+          <th [nzAlign]="'center'">姓名</th>
+          <th [nzAlign]="'center'">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let successQueue of successQueues.data">
+          <td>{{successQueue?.businessType + successQueue?.queueCode}}</td>
+          <td>{{successQueue?.profileName}}</td>
+          <td nzAlign="center">
+            <a href="javascript:" class="link-a-highlight"
+               (click)="consultVaccinatePersonInfo(successQueue, true)">查看</a>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </nb-tab>
+  </nb-tabset>
+</ng-template>

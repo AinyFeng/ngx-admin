@@ -1,0 +1,400 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    <h6>报表管理</h6>
+    <div>
+      <button nbButton status="info" (click)="queryInventory()" *ngIf="showTipBtn">查询</button>
+      <button nbButton status="warning" (click)="reset()" *ngIf="showTipBtn" class="ml-2 mr-2">重置</button>
+      <button nbButton status="info" (click)="queryReportManager()" *ngIf="!showTipBtn">查询</button>
+      <button nbButton status="warning" (click)="resetReport()" *ngIf="!showTipBtn" class="ml-2 mr-2">重置</button>
+      <button nbButton status="info" (click)="goBack()">返回收银台</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-tabset (changeTab)="changeTab($event)" fullWidth>
+      <nb-tab tabTitle="发票统计">
+        <form [formGroup]="invoiceForm" class="mt-2">
+          <div class="form-group row mb-3">
+            <div class="row col-md-3">
+              <label class="col-form-label col-4 text-right">收银员:</label>
+              <div class="col-8">
+                <nb-select placeholder="请选择收银员" fullWidth outline status="info"
+                           formControlName="cashierName">
+                  <nb-option [value]="item.number" *ngFor="let item of options">{{item.realName}}</nb-option>
+                </nb-select>
+              </div>
+            </div>
+            <div class="row col-md-3">
+              <label class="col-form-label col-4 text-right">发票状态:</label>
+              <div class="col-8">
+                <nb-select placeholder="请选择发票状态" fullWidth minlength="100" outline status="info"
+                           formControlName="status">
+                  <nb-option value="0">正常</nb-option>
+                  <nb-option value="1">已作废</nb-option>
+                </nb-select>
+              </div>
+            </div>
+            <!--<div class="form-group col-md-3">
+            <label class="">开票状态：</label>
+            <nb-select class="col-md-7" placeholder="请选择开票状态" status="info" formControlName="facilityCode">
+            <nb-option value="1">冷藏设备1</nb-option>
+            <nb-option value="2">冷藏设备2</nb-option>
+            </nb-select>
+            </div>
+
+            <div class="form-group col-md-3">
+            <label class="">支付类型：</label>
+            <nb-select class="col-md-7" placeholder="请选择支付类型" status="info" formControlName="facilityCode">
+            <nb-option *ngFor="let payWay of payWays" [value]="payWay.value">{{payWay.label}}</nb-option>
+            </nb-select>
+            </div>-->
+            <div class="row col-md-3">
+              <label class="col-form-label col-4 text-right">受种人姓名:</label>
+              <div class="col-8">
+                <input type="text" fullWidth nbInput placeholder="请输入受种人姓名" formControlName="vaccineeName">
+              </div>
+            </div>
+            <div class="row col-md-3">
+              <label class="col-form-label col-4 text-right">业务流水号:</label>
+              <div class="col-8">
+                <input type="text" fullWidth nbInput placeholder="请输入业务流水号" formControlName="invoiceSerial">
+              </div>
+            </div>
+            <!--<div class="row col-md-3">
+              <label class="col-form-label col-4 text-right">开始时间:</label>
+              <input nbInput class="col-8" fullWidth formControlName="createStartTime" placeholder="请选择开始日期"
+                [nbDatepicker]="invoiceCreateStartTime">
+              <nb-datepicker #invoiceCreateStartTime format="YYYY-MM-DD"></nb-datepicker>
+            </div>
+            <div class="row col-md-3">
+              <label class="col-form-label col-4 text-right">结束时间:</label>
+              <input nbInput class="col-8" fullWidth formControlName="createEndTime" placeholder="请选择结束日期"
+                [nbDatepicker]="invoiceCreateEndTime">
+              <nb-datepicker #invoiceCreateEndTime format="YYYY-MM-DD"></nb-datepicker>
+            </div>-->
+          </div>
+          <div class="form-group row">
+            <div class="row col-md-3">
+              <label class="col-form-label col-4 text-right">开始时间:</label>
+              <div class="col-8">
+                <nz-date-picker
+                  style="width: 100%;" nzSize="large"
+                  formControlName="createStartTime"
+                  nzShowTime
+                  nzAllowClear="false"
+                  nzFormat="yyyy-MM-dd"
+                  [nzDisabledDate]="disabledInvoiceDayStart">
+                </nz-date-picker>
+                <!--<input nbInput fullWidth formControlName="createStartTime" placeholder="请选择开始日期"
+                       [nbDatepicker]="invoiceCreateStartTime">
+                <nb-datepicker #invoiceCreateStartTime format="YYYY-MM-DD" [filter]="filterStartDate"></nb-datepicker>-->
+              </div>
+
+            </div>
+            <div class="row col-md-3">
+              <label class="col-form-label col-4 text-right">结束时间:</label>
+              <div class="col-8">
+                <nz-date-picker
+                  style="width: 100%;" nzSize="large"
+                  formControlName="createEndTime"
+                  nzShowTime
+                  nzAllowClear="false"
+                  nzFormat="yyyy-MM-dd"
+                  [nzDisabledDate]="disabledInvoiceDayEnd">
+                </nz-date-picker>
+                <!--<input nbInput fullWidth formControlName="createEndTime" placeholder="请选择结束日期"
+                       [nbDatepicker]="invoiceCreateEndTime">
+                <nb-datepicker #invoiceCreateEndTime format="YYYY-MM-DD" [filter]="filterEndDate"></nb-datepicker>-->
+              </div>
+            </div>
+            <!--<div class="row col-md-3">
+              <label class="col-form-label col-4 text-right">受种人姓名:</label>
+              <div class="col-8">
+                <input type="text" fullWidth nbInput placeholder="请输入受种人姓名" formControlName="vaccineeName">
+              </div>
+            </div>
+            <div class="row col-md-3">
+              <label class="col-form-label col-4 text-right">业务流水号:</label>
+              <div class="col-8">
+                <input type="text" fullWidth nbInput placeholder="请输入业务流水号" formControlName="invoiceSerial">
+              </div>
+            </div>-->
+            <!--<div class="col-md-3">
+              <button nbButton status="info" class="ml-4" (click)="queryInventory()">查询</button>
+            </div>-->
+          </div>
+        </form>
+
+
+      </nb-tab>
+      <!-- <nb-tab tabTitle="网上支付统计">
+         <form [formGroup]="payForm" class="form-inline">
+           <div class="row mb-3 mt-3" style="width: 100%;">
+             <div class="form-group col-md-3">
+               <label class="">受种人姓名：</label>
+               <input class="col-md-7" type="text" nbInput placeholder="请输入受种人姓名" formControlName="vaccineeName">
+             </div>
+
+             <div class="form-group col-md-3">
+               <label class="">发票流水号：</label>
+               <input class="col-md-7" type="text" nbInput placeholder="请输入发票流水号" formControlName="orderSerial">
+             </div>
+
+             <div class="form-group col-md-3">
+               <label class="">开始时间：</label>
+               <input nbInput class="col-md-6" formControlName="createStartTime" placeholder="请选择开始日期"
+                 [nbDatepicker]="payCreateStartTime">
+               <nb-datepicker #payCreateStartTime format="YYYY-MM-DD"></nb-datepicker>
+             </div>
+             <div class="form-group col-md-3">
+               <label class="">结束时间：</label>
+               <input nbInput class="col-md-6" formControlName="createEndTime" placeholder="请选择结束日期"
+                 [nbDatepicker]="payCreateEndTime">
+               <nb-datepicker #payCreateEndTime format="YYYY-MM-DD"></nb-datepicker>
+             </div>
+             <button nbButton status="info" class="mr-3" (click)="queryPayType()">查询</button>
+           </div>
+
+         </form>
+
+         <nb-card class="text-center" style="">
+           <nb-card-header class="text-left">
+             <span class="total-top-item">网上收款笔数： 4</span>
+             <span class="total-top-item">网上收款总额<span class="sub-title">(元)</span>： 600.00</span>
+           </nb-card-header>
+           <nb-card-body>
+             <nz-table #payTable [nzData]="onlinePayList" nzBordered nzSize="small">
+               <thead>
+                 <tr>
+                   <th [nzAlign]="'center'">序号</th>
+                   <th [nzAlign]="'center'">姓名</th>
+                   <th [nzAlign]="'center'">订单号</th>
+                   <th [nzAlign]="'center'">疫苗数量</th>
+                   <th [nzAlign]="'center'">总额(元)</th>
+                   <th [nzAlign]="'center'">缴费时间</th>
+                   <th [nzAlign]="'center'">状态</th>
+                   <th [nzAlign]="'center'">开票</th>
+                   &lt;!&ndash;<th [nzAlign]="'center'">备注</th>&ndash;&gt;
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr *ngFor="let data of payTable.data index as i">
+                   <td [nzAlign]="'center'">{{i+1}}</td>
+                   <td [nzAlign]="'center'">{{data.vaccineeName || '暂无'}}</td>
+                   <td [nzAlign]="'center'">{{data.orderSerial || '暂无'}}</td>
+                   <td [nzAlign]="'center'">{{data.count || 0 }}</td>
+                   <td [nzAlign]="'center'">{{data.totalAmount || '暂无'}}</td>
+                   <td [nzAlign]="'center'">{{data.payedTime || '暂无'}}</td>
+                   <td [nzAlign]="'center'">{{data.status || '暂无'}}</td>
+                   <td [nzAlign]="'center'">{{data.invoiceStatus || '暂无'}}</td>
+                   &lt;!&ndash;<td [nzAlign]="'center'">{{data.name}}</td>&ndash;&gt;
+                 </tr>
+               </tbody>
+             </nz-table>
+           </nb-card-body>
+         </nb-card>
+       </nb-tab>
+       <nb-tab tabTitle="对账管理">
+         <form [formGroup]="orderForm" class="form-inline">
+           <div class="row mb-3 mt-3" style="width: 100%;">
+             <div class="form-group col-md-3">
+               <label class="">订单号：</label>
+               <input class="col-md-7" type="text" nbInput placeholder="请输入订单号" formControlName="orderSerial">
+             </div>
+
+             <div class="form-group col-md-3">
+               <label class="">开始时间：</label>
+               <input nbInput class="col-md-6" formControlName="createStartTime" placeholder="请选择开始日期"
+                 [nbDatepicker]="orderCreateStartTime">
+               <nb-datepicker #orderCreateStartTime format="YYYY-MM-DD"></nb-datepicker>
+             </div>
+             <div class="form-group col-md-3">
+               <label class="">结束时间：</label>
+               <input nbInput class="col-md-6" formControlName="createEndTime" placeholder="请选择结束日期"
+                 [nbDatepicker]="orderCreateEndTime">
+               <nb-datepicker #orderCreateEndTime format="YYYY-MM-DD"></nb-datepicker>
+             </div>
+             <button nbButton status="info" class="mr-3" (click)="queryOrderManager()">查询</button>
+           </div>
+         </form>
+
+         <nb-card class="text-center" style="">
+           <nb-card-header class="text-left">
+             <span class="total-top-item">网上收款笔数： 4</span>
+             <span class="total-top-item">网上收款总额<span class="sub-title">(元)</span>： 600.00</span>
+           </nb-card-header>
+           <nb-card-body>
+             <nz-table #payCheckTable [nzData]="payCheckList" nzBordered nzSize="small">
+               <thead>
+                 <tr>
+                   <th [nzAlign]="'center'">序号</th>
+                   <th [nzAlign]="'center'">订单流水号</th>
+                   <th [nzAlign]="'center'">订单创建时间</th>
+                   <th [nzAlign]="'center'">订单支付时间</th>
+                   <th [nzAlign]="'center'">所在地址</th>
+                   <th [nzAlign]="'center'">接种单位名称</th>
+                   <th [nzAlign]="'center'">付款金额（元）</th>
+                   <th [nzAlign]="'center'">找零金额</th>
+                   <th [nzAlign]="'center'">总金额</th>
+                   &lt;!&ndash;<th [nzAlign]="'center'">订单金额<span class="sub-title">(元)</span></th>&ndash;&gt;
+                   &lt;!&ndash;<th [nzAlign]="'center'">收款金额<span class="sub-title">(元)</span></th>&ndash;&gt;
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr *ngFor="let data of payCheckTable.data index as i">
+                   <td [nzAlign]="'center'">{{i+1}}</td>
+                   <td [nzAlign]="'center'">{{data.orderSerial || '暂无'}}</td>
+                   <td [nzAlign]="'center'">{{data.createTime || '暂无'}}</td>
+                   <td [nzAlign]="'center'">{{data.payedTime || '暂无'}}</td>
+                   <td [nzAlign]="'center'">{{data.communicationAddress || '暂无'}}</td>
+                   <td [nzAlign]="'center'">{{data.povName || '暂无'}}</td>
+                   <td [nzAlign]="'center'">{{data.payedAmount || '暂无'}}</td>
+                   <td [nzAlign]="'center'">{{data.changeAmount || '暂无'}}</td>
+                   <td [nzAlign]="'center'">{{data.totalAmount || '暂无'}}</td>
+                   &lt;!&ndash;<td [nzAlign]="'center'">{{data.name}}</td>&ndash;&gt;
+                   &lt;!&ndash;<td [nzAlign]="'center'">{{data.name}}</td>&ndash;&gt;
+                 </tr>
+               </tbody>
+             </nz-table>
+           </nb-card-body>
+         </nb-card>
+       </nb-tab>-->
+      <nb-tab tabTitle="报表明细">
+        <form [formGroup]="reportForm" class="mt-2">
+          <div class="form-group row mb-3">
+            <!--<div class="row col-md-3">
+              <label class="col-4 col-form-label text-right">受种人姓名：</label>
+              <div class="col-8">
+                <input type="text" fullWidth nbInput placeholder="请输入受种人姓名" formControlName="vaccineeName">
+              </div>
+            </div>-->
+            <!--<div class="row col-md-3">
+              <label class="col-4 col-form-label text-right">疫苗名称：</label>
+              <div class="col-8">
+                <uea-nb-select-all placeholderText="请选择疫苗名称" formControlName="vaccineProductCode"
+                                   [options]="vacSubClassData"></uea-nb-select-all>
+              </div>
+            </div>-->
+            <div class="row col-md-3">
+              <label class="col-4 col-form-label text-right">收银员：</label>
+              <div class="col-8">
+                <nb-select placeholder="请选择收银员" fullWidth outline status="info"
+                           formControlName="cashierName">
+                  <nb-option [value]="item.number" *ngFor="let item of options">{{item.realName}}</nb-option>
+                </nb-select>
+                <!--                <input type="text" fullWidth nbInput placeholder="请输入收银员姓名" formControlName="cashierName">-->
+              </div>
+            </div>
+            <div class="row col-md-3">
+              <label class="col-4 col-form-label text-right">开始时间：</label>
+              <div class="col-8">
+                <nz-date-picker
+                  style="width: 100%;" nzSize="large"
+                  formControlName="createStartTime"
+                  nzShowTime
+                  nzAllowClear="false"
+                  nzFormat="yyyy-MM-dd"
+                  [nzDisabledDate]="disabledDayStart">
+                </nz-date-picker>
+                <!--<input fullWidth nbInput formControlName="createStartTime" placeholder="请选择开始日期"
+                       [nbDatepicker]="reportCreateStartTime">
+                <nb-datepicker #reportCreateStartTime format="YYYY-MM-DD"
+                               [filter]="filterCreateStartDate"></nb-datepicker>-->
+              </div>
+            </div>
+            <div class="row col-md-3">
+              <label class="col-4 col-form-label text-right">结束时间：</label>
+              <div class="col-8">
+                <nz-date-picker
+                  style="width: 100%;" nzSize="large"
+                  formControlName="createEndTime"
+                  nzShowTime
+                  nzAllowClear="false"
+                  nzFormat="yyyy-MM-dd"
+                  [nzDisabledDate]="disabledDayEnd">
+                </nz-date-picker>
+                <!--<input fullWidth nbInput formControlName="createEndTime" placeholder="请选择结束日期"
+                       [nbDatepicker]="reportCreateEndTime">
+                <nb-datepicker #reportCreateEndTime format="YYYY-MM-DD" [filter]="filterCreateEndDate"></nb-datepicker>-->
+              </div>
+            </div>
+          </div>
+        </form>
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+</nb-card>
+<nb-card class="text-center" *ngIf="showTipBtn">
+  <nb-card-header class="text-left">
+    <span class="total-top-item">实际打印发票<span class="sub-title">(张)</span>： {{reallyPrintCount}}</span>
+    <span class="total-top-item">收款总额<span class="sub-title">(元)</span>： {{totalAmount}}</span>
+  </nb-card-header>
+  <nb-card-body>
+    <nz-table #invoiceTable [nzData]="invoiceList"
+              [nzTotal]="invoiceTotal"
+              [nzFrontPagination]="false"
+              [(nzPageIndex)]="pageIndexInvoice"
+              (nzPageIndexChange)="queryInventory($event)"
+              nzBordered nzSize="small" [nzLoading]="loading">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">姓名</th>
+        <th [nzAlign]="'center'">业务流水号</th>
+        <th [nzAlign]="'center'">疫苗数量</th>
+        <th [nzAlign]="'center'">总额(元)</th>
+        <th [nzAlign]="'center'">缴费时间</th>
+        <th [nzAlign]="'center'">开票人</th>
+        <th [nzAlign]="'center'">是否开发票</th>
+        <th [nzAlign]="'center'">发票状态</th>
+        <!--<th [nzAlign]="'center'">备注</th>-->
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of invoiceTable.data index as i">
+        <td [nzAlign]="'center'">{{i + 1}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineeName}}</td>
+        <td [nzAlign]="'center'">{{data.invoiceSerial}}</td>
+        <td [nzAlign]="'center'">{{data.count || 0}}</td>
+        <td [nzAlign]="'center'">{{data.totalAmount}}</td>
+        <td [nzAlign]="'center'">{{data.payedTime}}</td>
+        <td [nzAlign]="'center'">{{ data.cashierName | povStaffNamePipe | async }}</td>
+        <td
+          [nzAlign]="'center'">{{data.invoiceStatus | invoiceStatusPipe}}</td>
+        <td [nzAlign]="'center'">{{data.status === '0' ? '正常' : '已作废'}}</td>
+        <!--<td [nzAlign]="'center'">{{data.name}}</td>-->
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+<nb-card class="text-center" *ngIf="!showTipBtn">
+  <nb-card-body>
+    <nz-table #reportTable
+              [nzTotal]="reportTotal"
+              [nzFrontPagination]="false"
+              [nzPageIndex]="pageIndexReport"
+              (nzPageIndexChange)="queryReportManager($event)"
+              [nzData]="reportList" nzBordered nzSize="small" [nzLoading]="loading">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">日期</th>
+        <th [nzAlign]="'center'">现金汇总</th>
+        <th [nzAlign]="'center'">转账汇总</th>
+        <th [nzAlign]="'center'">支付宝汇总</th>
+        <th [nzAlign]="'center'">合计<span class="sub-title">(元)</span></th>
+        <th [nzAlign]="'center'">开票人</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of reportTable.data">
+        <td [nzAlign]="'center'">{{data.oneDay}}</td>
+        <td [nzAlign]="'center'">{{data.sumCash}}</td>
+        <td [nzAlign]="'center'">{{data.sumTrans}}</td>
+        <td [nzAlign]="'center'">{{data.sumAlipay}}</td>
+        <td [nzAlign]="'center'">{{data.total}}</td>
+        <td [nzAlign]="'center'">{{data.cashierName | povStaffNamePipe | async}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

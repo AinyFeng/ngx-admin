@@ -1,0 +1,55 @@
+<nz-card style="width:100%;">
+  <form nz-form [formGroup]="queryForm" class="ant-advanced-search-form">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="8" [nzMd]="8" [nzXs]="24" nzFor="deviceName">传感器名称</nz-form-label>
+          <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <input
+              nz-input
+              nzSize="large"
+              placeholder="请输入设备名称"
+              formControlName="deviceName"
+              id="deviceName"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="8" [nzMd]="8" [nzXs]="24" nzFor="startDate">开始时间</nz-form-label>
+          <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <nz-date-picker [nzDisabledDate]="disabledStartDate" nzSize="large"  nzFormat="yyyy-MM-dd HH:mm:ss"
+                            formControlName="startDate" id="startDate" nzPlaceHolder="选择时间"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="8" [nzMd]="8" [nzXs]="24" nzFor="endDate">结束时间</nz-form-label>
+          <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <nz-date-picker [nzDisabledDate]="disabledEndDate" nzSize="large"  nzFormat="yyyy-MM-dd HH:mm:ss"
+                            formControlName="endDate" id="endDate" nzPlaceHolder="选择时间"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div class="mb-2">
+        <button nz-button [nzType]="'primary'" (click)="serachData()">查询</button>
+      </div>
+
+    </div>
+
+  <!--  <div nz-row>
+      <div nz-col [nzSpan]="24" class="search-area">
+        <button nz-button [nzType]="'primary'" (click)="serachData()">查询</button>
+      </div>
+    </div>-->
+  </form>
+</nz-card>
+<nz-card style="margin-top: 20px;">
+  <div echarts [options]="option">
+  </div>
+</nz-card>

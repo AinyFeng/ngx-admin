@@ -1,0 +1,61 @@
+<nb-card class="nb-card-container" size="giant">
+  <nb-card-header class="nb-card-header-qb">
+    批量补录接种记录
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body class="overflow-auto">
+    <nz-table #editRowTable [nzFrontPagination]="false" [nzShowPagination]="false" nzBordered
+              [nzLoading]="loading"
+              [nzData]="subclassTableData" nzSize="small">
+      <thead>
+      <tr>
+        <th nzWidth="16%">疫苗名称</th>
+        <th nzWidth="14%">第一针</th>
+        <th nzWidth="14%">第二针</th>
+        <th nzWidth="14%">第三针</th>
+        <th nzWidth="14%">第四针</th>
+        <th nzWidth="14%">第五针</th>
+        <th nzWidth="14%">第六针</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of editRowTable.data;">
+        <td>{{ data.name }}</td>
+        <td *ngFor="let d of data.records">
+          <div style="width: 100%; height: 50px; margin: -20px 0; padding-top: 16px;"
+               *ngIf="editId !== d.id; else editTpl">
+            <div style="width: 100%; height: 100%;" (click)="startEdit(d.id, $event, data.records)">
+              {{ d.vaccinateTime }}
+            </div>
+          </div>
+          <ng-template #editTpl>
+            <input type="text"
+                   nbTooltip="日期格式：20190101" nbTooltipPlacement="top" nbTooltipStatus="basic" status="basic"
+                   inputDateFormat nz-input [(ngModel)]="d.vaccinateTime"/>
+          </ng-template>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+    <div class="form-group d-flex justify-content-start">
+      <nb-radio-group [(ngModel)]="selectPov">
+        <nb-radio value="1">补录本地接种信息（{{userInfo.pov | povNamePipe | async}}）</nb-radio>
+        <nb-radio value="2">补录外地接种信息</nb-radio>
+      </nb-radio-group>
+      <div class="position-relative">
+        <div style="bottom: 0; width: 300px;" class="position-absolute">
+          <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
+            <input type="text" [(ngModel)]="selectedPovFromDialogText" nz-input placeholder="请选择门诊或医院"/>
+          </nz-input-group>
+          <ng-template #suffixButton>
+            <button nz-button nzType="primary" (click)="openDialog()" nzSearch>选择</button>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+  </nb-card-body>
+  <nb-card-footer class="footer-btn">
+    <button nbButton status="info" [nbSpinner]="loading" nbSpinnerStatus="primary" (click)="saveRecords()">保存</button>
+  </nb-card-footer>
+</nb-card>

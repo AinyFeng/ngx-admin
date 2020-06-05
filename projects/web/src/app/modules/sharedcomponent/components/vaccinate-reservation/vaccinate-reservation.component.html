@@ -1,0 +1,93 @@
+<nb-card size="xlarge" class="container-appointment" [nbSpinner]="loading" nbSpinnerStatus="info">
+  <nb-card-header class="nb-card-header-qb">
+    预约登记 --- {{ profile ? profile['name'] : '' }}
+    <span class="float-right mr-3 cursor-pointer" (click)="closeDialog()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="d-inline-flex">
+      <h4>预约下一针时间：{{ date| date: 'yyyy-MM-dd' }}</h4>
+      <div class="h5">
+        <span class="mr-5 ml-3">与当前时间间隔：{{ countDays >= 0 ? countDays : 0 }}天</span>
+        出生日期：{{ profile ? (profile['birthDate'] | date: 'yyyy-MM-dd') : '' }}
+        ({{ (profile ? profile['age'] : null) ? profile['age'] + '岁' : '' }}{{ profile['age'] >= 16 ? '' : profile['month'] + '月' + profile['days'] + '天'  }}
+        )
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <nz-date-picker [(ngModel)]="date"
+                        [nzOpen]="true"
+                        [nzDisabledDate]="filterValidateDate"
+                        (ngModelChange)="handleDateChange($event)"></nz-date-picker>
+      </div>
+      <div class="col-md-4">
+        <div class="timeRange p-2" [nbSpinner]="loadingWorkingTime" nbSpinnerStatus="primary">
+          <nb-alert outline="info" *ngIf="closeAlert" (close)="closeAlert = !closeAlert" closable>未查到可预约时段！
+          </nb-alert>
+          <nb-radio-group [(ngModel)]="selectTime">
+            <nb-radio
+              *ngFor="let t of workingTimeData"
+              [disabled]="t.count && t.count >= t.reservationCount"
+              [value]="t.workingTimeSerial">
+              {{ t.workingTime }}（{{ t.count }} / {{ t.reservationCount }}）
+            </nb-radio>
+          </nb-radio-group>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="vac-panel">
+          <div class="text-center vac-header p-1">可预约疫苗</div>
+          <div class="vac-list p-2" [nbSpinner]="loadingRecommend" nbSpinnerStatus="info">
+            <nb-alert outline="info" *ngIf="freeVacData.length === 0 && !loadingRecommend && showFreeVacDataAlert"
+                      (close)="showFreeVacDataAlert = !showFreeVacDataAlert" closable>未查到可预约疫苗
+            </nb-alert>
+            <nb-checkbox *ngFor="let fr of freeVacData; index as i"
+                         [disabled]="fr.stock == 0"
+                         [(checked)]="fr.checked"
+                         class="d-block"
+                         (checkedChange)="selectFreeVacChange($event, i)">
+              {{ fr.vaccineSubclassCode | vacSubclassPipe }}
+              <span *ngIf="fr.manufacturer">【{{ fr.manufacturer }}】</span>
+<!--              <span *ngIf="fr.povVaccPrice == 0 && fr.count > 0">【免费】</span>-->
+              <span *ngIf="fr.count >= 100">【库存充足】</span>
+              <span *ngIf="fr.count > 0 && fr.count < 100">【库存较少】</span>
+              <span *ngIf="fr.count == 0">【暂无库存】</span>
+            </nb-checkbox>
+          </div>
+        </div>
+<!--        <div class="vac-panel">-->
+<!--          <div class="text-center vac-header p-1">二类苗</div>-->
+<!--          <div class="vac-list p-2" [nbSpinner]="loadingRecommend" nbSpinnerStatus="info">-->
+<!--            <nb-alert outline="info" *ngIf="nonFreeVacData.length === 0 && !loadingRecommend && showNonFreeVacData"-->
+<!--                      (close)="showNonFreeVacData = !showNonFreeVacData" closable>未查到可预约疫苗！-->
+<!--            </nb-alert>-->
+<!--            <nb-checkbox *ngFor="let fr of nonFreeVacData; index as i"-->
+<!--                         [(checked)]="fr.checked"-->
+<!--                         (checkedChange)="selectNonFreeVacChange($event, i)"-->
+<!--                         [disabled]="fr.count == 0">-->
+<!--              {{ fr.vaccineSubclassCode | vacSubclassPipe }}-->
+<!--              <span *ngIf="fr.povVaccPrice > 0 && fr.count > 0">【自费】</span>-->
+<!--              <span *ngIf="fr.count >= 100">【库存充足】</span>-->
+<!--              <span *ngIf="fr.count > 0 && fr.count < 10">【库存较少】</span>-->
+<!--              <span *ngIf="fr.count == 0">【暂无库存】</span>-->
+<!--            </nb-checkbox>-->
+<!--          </div>-->
+<!--        </div>-->
+
+      </div>
+      <div class="col-md-8 pt-3 pb-3">
+        <button nbButton [disabled]="option.disable" class="mr-3 mb-3"
+                [status]="selectDay == option.value ? 'primary' : ''"
+                (click)="selectAge(option)"
+                *ngFor="let option of countDaysOptions">{{ option.label }}</button>
+        <textarea id="memo" nbInput fullWidth [(ngModel)]="memo" placeholder="请输入备注信息"></textarea>
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button nbButton status="info" (click)="submitAppointment()">预约</button>
+    </div>
+  </nb-card-footer>
+</nb-card>
+

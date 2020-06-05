@@ -1,0 +1,28 @@
+<nb-card size="xlarge" class="nb-card-container">
+  <nb-card-header class="nb-card-header-qb">
+    新建档案 -- <span *ngIf="profileType ==  'child'">【儿童档案】</span>
+    <span *ngIf="profileType == 'adult'">【成人档案】</span>
+    <span class="float-right mr-4 cursor-pointer" title="关闭" (click)="onClose()"><i
+      class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body [nbSpinner]="loading" nbSpinnerStatus="info">
+    <nb-tabset fullWidth (changeTab)="chooseFileType($event)">
+      <nb-tab tabTitle="儿童档案">
+        <ngx-tab-add-child-file #addChild (showLoading)="onLoading($event)"
+                                (changeFileType)="profileTypeChange($event)"></ngx-tab-add-child-file>
+      </nb-tab>
+      <nb-tab tabTitle="成人档案">
+        <ngx-tab-add-adult-file #addAdult (showLoading)="onLoading($event)"
+                                [scanIdCardInfo]="scanIdCardInfo"
+                                (changeFileType)="profileTypeChange($event)"></ngx-tab-add-adult-file>
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+  <nb-card-footer class="text-center" [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerMessage="">
+    <button nbButton status="info" (click)="saveProfile()">保存</button>
+    <button nbButton status="info" *ngIf="profileType == 'adult'" outline class="ml-3" (click)="readIdCardInfo()">
+      读取身份证信息
+    </button>
+  </nb-card-footer>
+</nb-card>
+

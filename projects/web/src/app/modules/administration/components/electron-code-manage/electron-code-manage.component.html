@@ -1,0 +1,53 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    电子监管码管理
+    <div>
+      <button nbButton status="info" (click)="searchData()" class="mr-2" [nbSpinner]="loading">查询</button>
+      <!--<button nbButton status="info">删除</button>-->
+      <button nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form  [formGroup]="eleCodeFrom">
+      <div class="form-group row">
+        <div class="col-md-4 row">
+          <label class="col-4 col-form-label">电子监管码：</label>
+          <div class="col-8">
+            <input type="text"  nbInput placeholder="请输入电子监管码" fullWidth formControlName="eleCode" id="eleCode">
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<!--<nb-card class="text-center" style="overflow: scroll;">-->
+  <nb-card class="text-center">
+    <nb-card-body>
+      <nz-table #msgTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false" [nzData]="listOfData"
+                [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
+                (nzPageIndexChange)="searchData()" (nzPageSizeChange)="searchData(true)" [nzShowSizeChanger]="true">
+        <thead>
+        <tr>
+          <th [nzAlign]="'center'">序号</th>
+          <th [nzAlign]="'center'">电子监管码</th>
+          <th [nzAlign]="'center'">批号</th>
+          <!--   <th [nzAlign]="'center'">疫苗名称</th>
+             <th [nzAlign]="'center'">国标编码</th>
+             <th [nzAlign]="'center'">厂商名称</th>
+             <th [nzAlign]="'center'">有效期</th>
+             <th [nzAlign]="'center'">查询次数</th>
+             <th [nzAlign]="'center'">最后查询时间</th>-->
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of msgTable.data; index as i">
+          <td [nzAlign]="'center'">{{(pageIndex - 1) * pageSize + i + 1}}</td>
+          <td [nzAlign]="'center'">{{data.electronicSupervisionCode}}</td>
+          <td [nzAlign]="'center'">{{data.batchNo}}</td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </nb-card-body>
+  </nb-card>
+<!--</nb-card>-->

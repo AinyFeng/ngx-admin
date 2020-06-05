@@ -1,0 +1,35 @@
+<nb-card class="nb-card-container-xx">
+  <nb-card-header class="headers">
+    预诊检查
+    <span class="float-right mr-4 cursor-pointer" title="关闭" (click)="onClose()"><i
+      class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body class="text-center">
+    <h6 class="mb-2">受种人的身体状态</h6>
+    <nz-table #msgTable [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false">
+      <tbody>
+      <tr *ngFor="let data of msgTable.data">
+        <td [nzAlign]="'center'">{{data.question}}</td>
+        <td [nzAlign]="'center'">
+          <!--<div *ngIf="data.value === '8'">
+            <input type="text" nbInput status="info" [(ngModel)]="temperature" placeholder="请输入测量体温℃">
+          </div>-->
+          <!--<nz-radio-group *ngIf="data.value !== '8'" nzName="radiogroup">
+            <label nz-radio *ngFor="let option of data.options; let i = index;" [nzValue]="option.value"
+                   (click)="changeRadio(option.label, data.id)">{{option.label}}</label>
+          </nz-radio-group>-->
+          <nz-radio-group nzName="radiogroup">
+            <label nz-radio *ngFor="let option of data.options; let i = index;" [nzValue]="option"
+                   (click)="changeRadio(data, option)">{{option}}</label>
+          </nz-radio-group>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+  <nb-card-footer class="text-center">
+    <button nbButton status="info" (click)="saveInfo()">保存</button>
+    <button nbButton status="info" class="ml-4" (click)="onClose()">关闭</button>
+  </nb-card-footer>
+</nb-card>
+

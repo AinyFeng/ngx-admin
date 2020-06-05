@@ -1,0 +1,72 @@
+<nb-card size="xlarge" class="nb-card-container-sm">
+  <nb-card-header class="nb-card-header-qb">
+    免疫接种卡信息 -- {{ profile ? profile.name : '' }}
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <nz-spin [nzSpinning]="loading">
+      <!--<nz-alert
+        class="mt-3 mb-3"
+        *ngIf="!loading && data.length === 0"
+        nzType="info"
+        nzCloseable
+        [nzMessage]="msg">
+      </nz-alert>
+      <ng-template #msg>
+        <div class="h6 text-center">
+          <span>没有查到数据，请<a href="javasript:" (click)="queryImmuCard()">重试</a></span>
+        </div>
+      </ng-template>-->
+      <nb-alert outline="info"
+                class="mt-3 mb-3 text-center"
+                *ngIf="!loading && data.length === 0">
+        <div class="text-center">
+          <span>没有查到数据，请<a href="javasript:" (click)="queryImmuCard()">重试</a></span>
+        </div>
+      </nb-alert>
+      <div class="text-right mb-3">
+        <button (click)="addRecord()" status="info" nbButton><span><i class="fas fa-plus"></i></span>添加新卡</button>
+      </div>
+      <nz-table #contraTable
+                nzBordered
+                nzNoResult="暂时没有数据"
+                [nzData]="data"
+                [nzShowPagination]="true" [nzSize]="'small'">
+        <thead>
+        <tr>
+          <th>免疫卡号</th>
+          <th>发卡日期</th>
+          <th>卡状态</th>
+          <th>备注</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of contraTable.data">
+          <td>{{ data.immuVacCardNo }}</td>
+          <td>{{ data.issueDate | date: 'yyyy-MM-dd HH:mm' }}</td>
+          <td>
+            <nz-tag *ngIf="data.vacCardStatus === '1'" [nzColor]="'#87d068'">有效</nz-tag>
+            <nz-tag *ngIf="data.vacCardStatus === '0'" [nzColor]="'#a9a9a9'">无效</nz-tag>
+          </td>
+          <td [title]="data.memo">
+            <span *ngIf="!editable">{{ data.memo }}</span>
+            <input *ngIf="editable" type="text" [(ngModel)]="data.memo">
+          </td>
+          <td>
+            <a class="link-a" (click)="update(data)">启用</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a class="link-a" nz-popconfirm nzTitle="确定删除数据吗?" (nzOnConfirm)="delete(data)">删除</a>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </nz-spin>
+  </nb-card-body>
+  <nb-card-footer class="text-center">
+    <button nbButton status="info" (click)="onClose()">关闭</button>
+  </nb-card-footer>
+</nb-card>
+
+
+

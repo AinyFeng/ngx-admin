@@ -1,0 +1,127 @@
+<nb-card *ngIf="showCard" accent="info" class="group-current-inoculate" size="xsmall">
+  <nb-card-header>
+    <!--    <h6>{{checkProfileRet?'本次接种':'本次登记'}}</h6>-->
+    <h6>{{checkProfileRet?'本次接种':'本次登记'}}</h6>
+  </nb-card-header>
+  <nb-card-body [nbSpinner]="loading" nbSpinnerMessage="" nbSpinnerStatus="info">
+    <ng-container [ngTemplateOutlet]="vaccineList"></ng-container>
+  </nb-card-body>
+</nb-card>
+<ng-container *ngIf="!showCard" [ngTemplateOutlet]="vaccineList"></ng-container>
+<ng-template #vaccineList>
+  <nz-table *ngIf="!checkProfileRet" #registerVaccinateRecordsTable nzBordered nzSize="small" [nzData]="registerVaccinateRecords" [nzShowPagination]="false">
+    <thead>
+    <tr>
+      <th [nzAlign]="'center'">种类</th>
+      <th [nzAlign]="'center'">剂序</th>
+      <th [nzAlign]="'center'">部位</th>
+      <th [nzAlign]="'center'">途径</th>
+      <th [nzAlign]="'center'">产品</th>
+      <th [nzAlign]="'center'">批次号</th>
+      <th [nzAlign]="'center'">接种状态</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let registerVaccinateRecord of registerVaccinateRecordsTable.data">
+      <td [nzAlign]="'center'">{{registerVaccinateRecord.vaccineProductShortName}}</td>
+      <td [nzAlign]="'center'">{{registerVaccinateRecord.vaccinateInjectNumber}}</td>
+      <td [nzAlign]="'center'">{{registerVaccinateRecord.vaccinatePart | dicPipe:'vaccinatePart'}}</td>
+      <td [nzAlign]="'center'">{{registerVaccinateRecord.vaccinateWay | dicPipe:'vaccinateWay'}}</td>
+      <td [nzAlign]="'center'">{{registerVaccinateRecord.vaccineProductName}}</td>
+      <td [nzAlign]="'center'">{{registerVaccinateRecord.vaccineBatchNo}}</td>
+      <td [nzAlign]="'center'">{{registerVaccinateRecord.registStatus | dicPipe: 'registStatus'}}</td>
+    </tr>
+    </tbody>
+  </nz-table>
+  <nz-table *ngIf="checkProfileRet"  #currentVaccinateRecordsTable  nzBordered nzSize="small" [nzData]="currentVaccinateRecords" [nzShowPagination]="false">
+    <thead>
+    <tr>
+      <th [nzAlign]="'center'">种类</th>
+      <th [nzAlign]="'center'">剂序</th>
+      <th [nzAlign]="'center'">部位</th>
+      <th [nzAlign]="'center'">途径</th>
+      <th [nzAlign]="'center'">产品</th>
+      <th [nzAlign]="'center'">价格</th>
+      <th [nzAlign]="'center'">接种支数</th>
+      <th [nzAlign]="'center'">批次号</th>
+      <th [nzAlign]="'center'">有效期</th>
+      <th [nzAlign]="'center'">状态</th>
+      <th [nzAlign]="'center'">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let currentVaccinateRecord of currentVaccinateRecordsTable.data"
+        [ngClass]="{'table-success' : currentVaccinateRecord.vaccinateStatus === '3', 'table-secondary': currentVaccinateRecord.vaccinateStatus === '99'}">
+      <td nzAlign="center">
+        {{currentVaccinateRecord.subclassName}}第{{currentVaccinateRecord.vaccinateInjectNumber}}针
+      </td>
+      <td nzAlign="center">
+        {{currentVaccinateRecord.vaccinateDoseNumber}}
+      </td>
+      <td nzAlign="center">
+        <div *ngIf="!currentVaccinateRecord.edit; else vaccinatePartEdit">
+          {{currentVaccinateRecord.vaccinatePart | dicPipe:'vaccinatePart'}}
+        </div>
+        <ng-template #vaccinatePartEdit>
+          <ng-container *ngIf="!currentVaccinateRecord.vaccinatePart; else vaccPart">
+            <nb-select nz-tooltip [nzVisible]="true" nzTooltipTitle="请选择部位！" nzTooltipTrigger="hover" size="tiny" [(ngModel)]="currentVaccinateRecord.vaccinatePart">
+              <nb-option *ngFor="let vaccinatePart of vaccinateParts" [value]="vaccinatePart.value"
+                         (click)="updateVaccinateRecord(currentVaccinateRecord.id,'vaccinatePart',vaccinatePart.value)">
+                {{vaccinatePart.label}}
+              </nb-option>
+            </nb-select>
+          </ng-container>
+          <ng-template #vaccPart>
+            <nb-select size="tiny" [(ngModel)]="currentVaccinateRecord.vaccinatePart">
+              <nb-option *ngFor="let vaccinatePart of vaccinateParts" [value]="vaccinatePart.value"
+                         (click)="updateVaccinateRecord(currentVaccinateRecord.id,'vaccinatePart',vaccinatePart.value)">
+                {{vaccinatePart.label}}
+              </nb-option>
+            </nb-select>
+          </ng-template>
+        </ng-template>
+      </td>
+      <td nzAlign="center">{{currentVaccinateRecord.vaccinateWay | dicPipe:'vaccinateWay'}}</td>
+      <td nzAlign="center">{{currentVaccinateRecord.vaccineProductName}}</td>
+      <td nzAlign="center">{{currentVaccinateRecord.povVaccPrice > 0 ? '收费' : '免费'}}</td>
+      <td nzAlign="center">{{currentVaccinateRecord.vaccinateCount}}</td>
+      <td nzAlign="center">{{currentVaccinateRecord.vaccineBatchNo}}</td>
+      <td nzAlign="center">{{currentVaccinateRecord.loseEfficacyDate | date: 'yyyy-MM-dd'}}</td>
+      <td nzAlign="center">{{currentVaccinateRecord.vaccinateStatus | dicPipe:'vaccinateStatus'}}</td>
+      <td class="d-flex flex-column justify-content-center">
+        <ng-container *ngIf="checkVaccineFlag; else checkButton">
+          <ng-container *ngIf="!currentVaccinateRecord.vaccinatePart; else partBtn">
+            <button nz-tooltip  nzTooltipTitle="请选择部位！" nzTooltipTrigger="hover" nbButton status="info" class="mb-1 mr-0"
+                    [disabled]="currentVaccinateRecord.finishBtnStatus || !isSigned"
+                    (click)="vaccinateFinishConfirm(currentVaccinateRecord)">完成
+            </button>
+          </ng-container>
+          <ng-template #partBtn>
+            <button nbButton status="info" class="mb-1 mr-0"
+                    [disabled]="currentVaccinateRecord.finishBtnStatus || !isSigned"
+                    (click)="vaccinateFinishConfirm(currentVaccinateRecord)">完成
+            </button>
+          </ng-template>
+        </ng-container>
+        <ng-template #checkButton>
+          <ng-container *ngIf="!currentVaccinateRecord.vaccinatePart; else partBtn2">
+            <button nz-tooltip [nzVisible]="true" nzTooltipTitle="请选择部位！" nzTooltipTrigger="hover"  nbButton status="info" class="mb-1 mr-0"
+                    [disabled]="currentVaccinateRecord.finishBtnStatus"
+                    (click)="vaccinateFinishConfirm(currentVaccinateRecord)">完成
+            </button>
+          </ng-container>
+          <ng-template #partBtn2>
+            <button nbButton status="info" class="mb-1 mr-0"
+                    [disabled]="currentVaccinateRecord.finishBtnStatus"
+                    (click)="vaccinateFinishConfirm(currentVaccinateRecord)">完成
+            </button>
+          </ng-template>
+        </ng-template>
+        <button nbButton status="info" class="ml-0" [disabled]="currentVaccinateRecord.cancelBtnStatus"
+                (click)="vaccinateMemo(currentVaccinateRecord)">取消
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</ng-template>

@@ -1,0 +1,45 @@
+<nb-card size="giant" class="nb-card-container-x">
+  <nb-card-header class="nb-card-header-qb">
+    可预约列表
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <p>只展示当天可以预约的受种人信息并进行预约，如果需要查看所有的预约记录，请访问<a routerLink="/modules/admin/reservationSearch"
+                                                href="javascript:void(0)" (click)="onClose()">预约记录查询</a></p>
+    <nz-table nzSize="small" [nzShowTotal]="totalTemp"
+              [(nzPageIndex)]="pageIndex"
+              #record [nzData]="listData" [nzLoading]="loading">
+      <thead>
+      <tr>
+        <th>序号</th>
+        <th>姓名</th>
+        <th>性别</th>
+        <th>出生日期</th>
+        <th>母亲姓名</th>
+        <th>母亲证件号码</th>
+        <th>是否预约</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of record.data;index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ data.name }}</td>
+        <td>{{ data.gender | dicPipe: 'genderCode' }}</td>
+        <td>{{ data.birthDate | date: 'yyyy-MM-dd' }}</td>
+        <td>{{ data.motherName }}</td>
+        <td>{{ data.motherIdCardNo }}</td>
+        <td>{{ data.birthDate ? (data.birthDate | date: 'yyyy-MM-dd') : '无预约' }}</td>
+        <td>
+          <a href="javascript:void(0)" class="mr-2" (click)="queryReservation(data)">查看预约</a>
+          <a href="javascript:void(0)" (click)="addReservation(data)">新增预约</a>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #totalTemp>
+  共{{ this.listData.length }}条数据，当前第{{ pageIndex }}页
+</ng-template>

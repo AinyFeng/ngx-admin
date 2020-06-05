@@ -1,0 +1,321 @@
+<div nz-row>
+  <nb-card accent="info">
+    <nb-card-header>
+      <div nz-row class="div-btn div-select">
+        <div nz-col nzXXl="12" nzXl="8"  nzLg="24" nzSpan="24" class="line-height-2rem">
+          <span class="span-title mr-4">{{ currentQueueItem ? currentQueueItem?.queueCode : '无信息' }}</span>
+          <span class="span-title">{{ currentQueueItem? currentQueueItem?.profileName + getStatus() : '' }}</span>
+        </div>
+        <div nz-col nzXXl="12" nzXl="16" nzLg="24" nzSpan="24" class="line-height-2rem">
+          <ul class="ul-btn">
+            <li>
+              <button nbButton status="info" [disabled]="isCallNumberDisabled || vaccinatingQueueData.length === 0" (click)="callNumber($event)">叫号</button>
+            </li>
+            <li>
+              <button nbButton status="info" (click)="nextNumber($event)" [disabled]="nextBtnStatus"> 下一号</button>
+            </li>
+            <li>
+              <nb-select placeholder="选择接种科室" [(selected)]="selectedDepartmentCode" (selectedChange)="initQueueList($event)">
+                <nb-option *ngFor="let department of departmentOption" [value]="department.departmentCode">{{ department.departmentName }}</nb-option>
+              </nb-select>
+            </li>
+            <li>
+              <button nbButton status="info" (click)="showVaccinateLog()">接种日志</button>
+            </li>
+            <li>
+              <button nbButton status="info" (click)="breakageOpen()">报损</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nb-card-header>
+  </nb-card>
+</div>
+
+<div nz-row nzGutter="16">
+  <div nz-col nzSpan="6">
+    <nb-card accent="info">
+      <nb-card-header>
+        <div class="queueHeader">
+          <h6>排号队列</h6>
+        </div>
+        <nb-toggle [(ngModel)]="checkVaccineFlag" (ngModelChange)="checkVaccineFlagStatus()">是否开启疫苗核验</nb-toggle>
+      </nb-card-header>
+      <nb-card-body>
+        <nb-tabset>
+          <nb-tab tabTitle="待接种" [badgeText]="waitQueueLength() + ''" badgeStatus="info">
+            <nz-table class="mt-2" #waitQueues nzSimple [nzShowPagination]="false" [nzFrontPagination]="false"
+                      nzSize="small" [nzData]="waitQueueData">
+              <thead>
+              <tr>
+                <th [nzAlign]="'center'">号码</th>
+                <th [nzAlign]="'center'">姓名</th>
+                <th [nzAlign]="'center'">操作</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let waitQueue of waitQueues.data">
+                <td [nzAlign]="'center'">{{waitQueue.queueCode}}</td>
+                <td [nzAlign]="'center'">{{waitQueue.profileName}}</td>
+                <td [nzAlign]="'center'">
+                  <a href="javascript:" class="link-a-highlight"
+                     (click)="consultVaccinatePersonInfo(waitQueue, false)">查看</a>
+                </td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </nb-tab>
+          <nb-tab tabTitle="已过号" [badgeText]="passQueueLength() + ''" badgeStatus="warning">
+            <nz-table class="mt-2" #passQueues nzSimple [nzShowPagination]="false" [nzFrontPagination]="false"
+                      nzSize="small" [nzData]="passQueueData">
+              <thead>
+              <tr>
+                <th [nzAlign]="'center'">号码</th>
+                <th [nzAlign]="'center'">姓名</th>
+                <th [nzAlign]="'center'">操作</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let passQueue of passQueues.data">
+                <td [nzAlign]="'center'">{{passQueue.queueCode}}</td>
+                <td [nzAlign]="'center'">{{passQueue.profileName}}</td>
+                <td [nzAlign]="'center'">
+                  <a href="javascript:" (click)="consultVaccinatePersonInfo(passQueue, false)">查看</a>
+                </td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </nb-tab>
+          <nb-tab tabTitle="已完成" [badgeText]="successQueueLength() + ''" badgeStatus="success">
+            <nz-table class="mt-2" #successQueues nzSimple [nzShowPagination]="true" nzSize="small"
+                      [nzData]="successQueueData">
+              <thead>
+              <tr>
+                <th [nzAlign]="'center'">号码</th>
+                <th [nzAlign]="'center'">姓名</th>
+                <th [nzAlign]="'center'">操作</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let successQueue of successQueues.data">
+                <td>{{successQueue?.businessType + successQueue?.queueCode}}</td>
+                <td>{{successQueue?.profileName}}</td>
+                <td nzAlign="center">
+                  <a href="javascript:" class="link-a-highlight"
+                     (click)="consultVaccinatePersonInfo(successQueue, true)">查看</a>
+                </td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </nb-tab>
+        </nb-tabset>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div nz-col nzSpan="18">
+    <div class="row">
+      <div class="col-xl-12">
+        <nb-card accent="info" class="group-current-inoculate" size="xsmall">
+          <nb-card-header>
+            <h6>基本信息</h6>
+          </nb-card-header>
+          <nb-card-body>
+            <nz-descriptions nzTitle="" nzBordered [nzSize]="'small'" [nzColumn]="{ xxl: 3, xl: 3, lg: 2, md: 2, sm: 2, xs: 1 }">
+              <nz-descriptions-item nzTitle="档案编号">{{ basicInfo.profileCode }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="姓名">{{ basicInfo.name }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="出生日期">{{ basicInfo.birthDate }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="性别">{{ basicInfo.gender | qbGenderPipe }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="免疫卡号">{{ basicInfo.immunityVacCard }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="监护人">{{ basicInfo.guardian }}</nz-descriptions-item>
+            </nz-descriptions>
+          </nb-card-body>
+        </nb-card>
+        <nb-card accent="info" class="group-current-inoculate" size="xsmall">
+          <nb-card-header>
+            <h6>{{ showvaccinateOrRegister? '本次接种': '本次登记'}}</h6>
+          </nb-card-header>
+          <nb-card-body>
+            <nz-table *ngIf="showvaccinateOrRegister" #currentVaccinateRecordsTable nzBordered nzSize="small"
+                      [nzData]="currentVaccinateRecords" [nzShowPagination]="false">
+              <thead>
+              <tr>
+                <th [nzAlign]="'center'">种类</th>
+                <th [nzAlign]="'center'">剂序</th>
+                <th [nzAlign]="'center'">部位</th>
+                <th [nzAlign]="'center'">途径</th>
+                <th [nzAlign]="'center'">产品</th>
+                <th [nzAlign]="'center'">接种支数</th>
+                <th [nzAlign]="'center'">批次号</th>
+                <th [nzAlign]="'center'">有效期</th>
+                <th [nzAlign]="'center'">状态</th>
+                <th [nzAlign]="'center'">操作</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let currentVaccinateRecord of currentVaccinateRecordsTable.data"
+                  [ngClass]="{'table-success' : currentVaccinateRecord.vaccinateStatus === '3', 'table-secondary': currentVaccinateRecord.vaccinateStatus === '99'}">
+                <td nzAlign="center">
+                  {{currentVaccinateRecord.subclassName}}第{{currentVaccinateRecord.vaccinateInjectNumber}}针
+                </td>
+                <td nzAlign="center">
+                  {{currentVaccinateRecord.vaccinateDoseNumber}}
+                </td>
+                <td nzAlign="center">
+                  <div *ngIf="!currentVaccinateRecord.edit; else vaccinatePartEdit">
+                    {{currentVaccinateRecord.vaccinatePart | dicPipe:'vaccinatePart'}}
+                  </div>
+                  <ng-template #vaccinatePartEdit>
+                    <nb-select size="tiny" [(ngModel)]="currentVaccinateRecord.vaccinatePart">
+                      <nb-option *ngFor="let vaccinatePart of vaccinateParts" value="{{vaccinatePart.value}}"
+                                 (click)="updateVaccinateRecord(currentVaccinateRecord.id,'vaccinatePart',vaccinatePart.value)">
+                        {{vaccinatePart.label}}
+                      </nb-option>
+                    </nb-select>
+                  </ng-template>
+                </td>
+                <td nzAlign="center">{{currentVaccinateRecord.vaccinateWay | dicPipe:'vaccinateWay'}}</td>
+                <td nzAlign="center">{{currentVaccinateRecord.vaccineProductName}}</td>
+                <td nzAlign="center">{{currentVaccinateRecord.vaccinateCount}}</td>
+                <td nzAlign="center">{{currentVaccinateRecord.vaccineBatchNo}}</td>
+                <td nzAlign="center">{{currentVaccinateRecord.loseEfficacyDate | date: 'yyyy-MM-dd'}}</td>
+                <td nzAlign="center">{{currentVaccinateRecord.vaccinateStatus | dicPipe:'vaccinateStatus'}}</td>
+                <td class="d-flex flex-column justify-content-center">
+                  <button nbButton status="info" class="mb-1 mr-0"
+                          [disabled]="currentVaccinateRecord.finishBtnStatus"
+                          (click)="vaccinateFinishConfirm(currentVaccinateRecord)">完成
+                  </button>
+                  <button nbButton status="info" class="ml-0" [disabled]="currentVaccinateRecord.cancelBtnStatus"
+                          (click)="vaccinateMemo(currentVaccinateRecord)">取消
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </nz-table>
+            <nz-table *ngIf="!showvaccinateOrRegister" #registerVaccinateRecordsTable nzBordered nzSize="small"
+                      [nzData]="registerVaccinateRecords" [nzShowPagination]="false">
+              <thead>
+              <tr>
+                <th [nzAlign]="'center'">种类</th>
+                <th [nzAlign]="'center'">剂序</th>
+                <th [nzAlign]="'center'">部位</th>
+                <th [nzAlign]="'center'">途径</th>
+                <th [nzAlign]="'center'">产品</th>
+                <th [nzAlign]="'center'">批次号</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let registerVaccinateRecord of registerVaccinateRecordsTable.data">
+                <td [nzAlign]="'center'">{{registerVaccinateRecord.vaccineProductShortName}}</td>
+                <td [nzAlign]="'center'">{{registerVaccinateRecord.vaccinateInjectNumber}}</td>
+                <td [nzAlign]="'center'">{{registerVaccinateRecord.vaccinatePart | dicPipe:'vaccinatePart'}}</td>
+                <td [nzAlign]="'center'">{{registerVaccinateRecord.vaccinateWay | dicPipe:'vaccinateWay'}}</td>
+                <td [nzAlign]="'center'">{{registerVaccinateRecord.vaccineProductName}}</td>
+                <td [nzAlign]="'center'">{{registerVaccinateRecord.vaccineBatchNo}}</td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </nb-card-body>
+        </nb-card>
+        <nb-card accent="info" class="group-current-inoculate" size="xsmall">
+          <nb-card-header>
+            <h6>多剂次</h6>
+          </nb-card-header>
+          <nb-card-body>
+            <nz-table #manyDoseTable [nzData]="vaccineDoseDatas" nzBordered [nzShowPagination]="false" nzSize="small">
+              <thead>
+              <tr>
+                <th [nzAlign]="'center'">名称</th>
+                <th [nzAlign]="'center'">厂商</th>
+                <th [nzAlign]="'center'">批号</th>
+                <th [nzAlign]="'center'">总剂次</th>
+                <th [nzAlign]="'center'">剩余剂次</th>
+                <th [nzAlign]="'center'">归属部门</th>
+                <th [nzAlign]="'center'">开启时间</th>
+                <th [nzAlign]="'center'">有效时间</th>
+                <th [nzAlign]="'center'">倒计时</th>
+                <th [nzAlign]="'center'">操作</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of manyDoseTable.data">
+                <td [nzAlign]="'center'">{{data.vaccineProductName}}</td>
+                <td [nzAlign]="'center'">{{data.manufacturerName}}</td>
+                <td [nzAlign]="'center'">{{data.vaccineBatchNo}}</td>
+                <td [nzAlign]="'center'">{{data.dosageByEach}}</td>
+                <td [nzAlign]="'center'">{{data.dosageByEach - data.vaccinateDoseNumber}}</td>
+                <td [nzAlign]="'center'">{{data.departmentName}}</td>
+                <td [nzAlign]="'center'">{{data.vaccinateTime | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td [nzAlign]="'center'">{{data.effectiveTime | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td [nzAlign]="'center'">
+                  <countdown [config]="{ stopTime: data.effectiveTime }" (event)="onDoseFinished($event,data)">
+                  </countdown>
+                </td>
+                <td [nzAlign]="'center'">
+                  <button nbButton nzSize="tiny" status="info" [disabled]="data.disabled"
+                          (click)="manyDoseOperationBreakage(data)">弃用
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </nb-card-body>
+        </nb-card>
+
+        <nb-card accent="info" fixed>
+          <nb-card-header>
+            接种记录
+          </nb-card-header>
+          <nb-card-body>
+            <nz-table #vaccinateRecordsTable [nzData]="vaccinateRecords" [nzTotal]="vaccinateRecordsCount" nzBordered nzSize="small"
+                      [nzPageSize]="vaccinateRecordsPageSize" [nzPageIndex]="vaccinateRecordsPageIndex">
+              <thead>
+              <tr>
+                <th [nzAlign]="'center'">序号</th>
+                <th [nzAlign]="'center'">种类</th>
+                <th [nzAlign]="'center'">剂次</th>
+                <th [nzAlign]="'center'">接种POV</th>
+                <th [nzAlign]="'center'">接种部门</th>
+                <th [nzAlign]="'center'">接种医生</th>
+                <th [nzAlign]="'center'">疫苗名称</th>
+                <th [nzAlign]="'center'">接种日期</th>
+                <th [nzAlign]="'center'">接种部位</th>
+                <th [nzAlign]="'center'">疫苗批号</th>
+                <th [nzAlign]="'center'">有效期</th>
+                <th [nzAlign]="'center'">厂商</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let vaccinateRecord of vaccinateRecordsTable.data;let i = index">
+                <td [nzAlign]="'center'">{{(vaccinateRecordsPageIndex - 1) * vaccinateRecordsPageSize + i + 1}}
+                </td>
+                <td [nzAlign]="'center'">{{vaccinateRecord.vaccineType | dicPipe:'vaccineType'}}</td>
+                <td [nzAlign]="'center'">{{vaccinateRecord.vaccinateInjectNumber}}</td>
+                <td [nzAlign]="'center'">{{vaccinateRecord.actualPovName}}</td>
+                <td [nzAlign]="'center'">{{vaccinateRecord.departmentName}}</td>
+                <td [nzAlign]="'center'">{{vaccinateRecord.realName}}</td>
+                <td [nzAlign]="'center'">{{vaccinateRecord.vaccineProductName}}</td>
+                <td [nzAlign]="'center'">{{vaccinateRecord.vaccinateTime | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td [nzAlign]="'center'">{{vaccinateRecord.vaccinatePart | dicPipe: 'vaccinatePart'}}</td>
+                <td [nzAlign]="'center'">{{vaccinateRecord.vaccineBatchNo}}</td>
+                <td [nzAlign]="'center'">{{vaccinateRecord.loseEfficacyDate | date : 'yyyy-MM-dd'}}</td>
+                <td [nzAlign]="'center'">{{vaccinateRecord.manufactureName}}</td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </nb-card-body>
+        </nb-card>
+        <div class="row">
+          <div class="col-sm-12">
+          </div>
+          <div class="col-md-12">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<uea-vaccinate-breakage (_onBreakageSuccess)="breakageSuccess()" [breakageObj]="breakageObj"
+  [(breakageVisible)]="breakageVisible" [vaccineProductOptions]="breakageVaccineProductOptions"
+  [eleSuperviseCodeOptions]="eleSuperviseCodes" [facilityCodeOptions]="breakageFacilityCodeOptions"
+  [vaccineBatchOptions]="vaccineBatches"></uea-vaccinate-breakage>

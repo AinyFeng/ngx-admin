@@ -1,0 +1,17 @@
+<nb-layout>
+	<nb-layout-header fixed *ngIf="showHeadFoot">
+		<uea-page-header></uea-page-header>
+	</nb-layout-header>
+
+	<nb-sidebar *ngIf="showSidebar" tag="sidebar-menu" fixed="false" state="compacted">
+		<nb-menu [items]="sidemenus"></nb-menu>
+	</nb-sidebar>
+
+	<nb-layout-column>
+		<ng-content select="router-outlet"></ng-content>
+	</nb-layout-column>
+
+	<nb-layout-footer fixed *ngIf="showHeadFoot">
+		<uea-page-footer></uea-page-footer>
+	</nb-layout-footer>
+</nb-layout>

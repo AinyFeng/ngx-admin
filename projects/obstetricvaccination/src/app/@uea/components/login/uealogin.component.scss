@@ -1,0 +1,111 @@
+@import '../../theme/global_theme';
+
+@include nb-install-component() {
+	.login-panel {
+		width: 64rem;
+		//height: 75vh;
+		height: 61vh;
+		margin: auto;
+		box-shadow: 0 0 0.25rem nb-theme(color-basic-600); // #919191;
+		display: flex;
+		background: #edf1f7;
+
+		.panel-left {
+			flex-basis: 50%;
+			background: url('../../../../assets/images/login/login-img.png'); // #eaf6fe;
+			background-position: center;
+			background-repeat: round;
+			background-size: contain;
+			padding: 4rem;
+			box-sizing: border-box;
+			-moz-box-sizing: border-box; /* Firefox */
+			-webkit-box-sizing: border-box; /* Safari */
+
+			.panel-left-title {
+				color: nb-theme(color-info-400);
+			}
+		}
+
+		.panel-right {
+			flex-basis: 50%;
+			height: 100%;
+			box-sizing: border-box;
+			-moz-box-sizing: border-box; /* Firefox */
+			-webkit-box-sizing: border-box; /* Safari */
+			padding: 4rem;
+			background: nb-theme(color-basic-100);
+
+			.panel-right-title {
+				margin-bottom: 2rem;
+			}
+
+			.panel-content-card {
+				margin: 1rem 0;
+				border-radius: 0.25rem;
+				border: 0.0625rem solid #eee;
+				background-color: #fafafa;
+				padding: 1rem 0;
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: center;
+				transition: all 0.2s ease-in-out;
+				line-height: 6rem;
+				cursor: pointer;
+
+				img {
+					width: 2rem;
+				}
+			}
+
+			.divider {
+				margin-top: 2rem;
+				// height: 1.875rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				span:nth-child(odd) {
+					flex: 1;
+					display: inline-block;
+					height: 0.0625rem;
+					// margin-top: 0.5rem;
+					background: nb-theme(text-hint-color);
+				}
+
+				span:nth-child(even) {
+					flex: 1;
+					display: inline-block;
+					text-align: center;
+					color: nb-theme(text-hint-color);
+				}
+			}
+
+			.other-login {
+				text-align: center;
+				cursor: auto;
+
+				img ~ img {
+					margin-left: 2.5rem;
+				}
+
+				.wxicon {
+					width: 2rem;
+				}
+
+				.ddicon {
+					width: 2.25rem;
+				}
+			}
+		}
+	}
+
+	.flip {
+		position: relative;
+	}
+
+	.verification {
+		height: 2.25rem;
+		line-height: 2.25rem;
+	}
+}

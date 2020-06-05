@@ -1,0 +1,112 @@
+[
+  {
+    "title": "行政管理报表",
+    "expanded": true,
+    "icon": "person-outline",
+    "children": [
+      {
+        "title": "国家报表6-1",
+        "link": "nation-six-one"
+      },
+      {
+        "title": "国家报表6-1汇总表",
+        "link": "nation-six-one-sum"
+      },
+      {
+        "title": "国家报表6-2",
+        "link": "nation-six-two"
+      },
+      {
+        "title": "国家报表6-2汇总表",
+        "link": "nation-six-two-sum"
+      },
+      {
+        "title": "二类疫苗进销存报表7-2",
+        "link": "class-two-vaccine-invoicing"
+      },
+      {
+        "title": "二类疫苗预售表",
+        "link": "class-two-pre-presale"
+      },
+      {
+        "title": "新生儿建卡统计",
+        "link": "new-child-count"
+      },
+      {
+        "title": "一类疫苗预防儿童明细",
+        "link": "class-one-prevention"
+      },
+      {
+        "title": "基本资料完整性",
+        "link": "file-integrity-check"
+      },
+      {
+        "title": "接种记录完整性",
+        "link": "record-integrity-check"
+      },
+      {
+        "title": "民生工程-提高妇女儿童健康水平基础资料",
+        "link": "livelihood-improves-health"
+      }
+    ]
+  },
+  {
+    "title": "接种统计",
+    "icon": "nb-compose",
+    "children": [
+      {
+        "title": "接种统计",
+        "link": ""
+      },
+      {
+        "title": "应种统计",
+        "link": ""
+      },
+      {
+        "title": "逾期未中",
+        "link": ""
+      }
+    ]
+  },
+  {
+    "title": "业务统计",
+    "icon": "nb-shuffle",
+    "children": []
+  },
+  {
+    "title": "库存统计",
+    "icon": "nb-keypad",
+    "children": [
+      {
+        "title": "盘点记录",
+        "link": ""
+      },
+      {
+        "title": "库存查询",
+        "link": ""
+      },
+      {
+        "title": "出入库记录",
+        "link": ""
+      },
+      {
+        "title": "出入库记录详情",
+        "link": ""
+      }
+    ]
+  },
+  {
+    "title": "预约管理",
+    "icon": "nb-star",
+    "children": [
+      {
+        "title": "预约图表",
+        "link": "reserve-table"
+      },
+      {
+        "title": "预约管理",
+        "link": "reserve-management"
+      }
+    ]
+  }
+]

@@ -1,0 +1,71 @@
+/*@import '../../../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+}*/
+
+.maskBg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  background-color: rgba(255,255,255, 0.4);
+  .model-content {
+    width: 75%;
+    height: 80%;
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    background-color: #25344d;
+    border-radius: 6px;
+    color: #ffffff;
+    .mask-header {
+      height: 50px;
+      line-height: 50px;
+      font-size: 1.5rem;
+      color: #ffffff;
+    }
+    .mask-footer {
+      position: absolute;
+      bottom: 0;
+    }
+  }
+  table th, table td {
+    vertical-align: middle;
+  }
+}
+.table-native {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  border-spacing: 0;
+  border: 1px solid #ebeef5;
+  color: #ffffff;
+
+  tr:hover {
+    background-color: #1a2b44;
+  }
+  th, td {
+    border-bottom: 1px solid #ebeef5;
+    border-right: 1px solid #ebeef5;
+  }
+
+  .table-tbody td {
+    vertical-align: middle;
+    text-align: center;
+    height: 30px;
+    //color: #606266;
+    color: #ffffff;
+  }
+
+  .table-header th {
+    font-size: 15px;
+    text-align: center;
+    height: 50px;
+    //background-color: #f5f7fa;
+    //color: #606266;
+    color: #ffffff;
+  }
+}

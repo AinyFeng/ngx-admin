@@ -1,0 +1,28 @@
+@import '../../big.screen';
+
+.profile-panel {
+  position: absolute;
+  top: 80px;
+  left: 50px;
+  right: 20px;
+  color: #5ed2eb;
+  font-size: 1.25rem;
+}
+
+.panel-text-figure {
+  color: #e4dc1f;
+  font-size: 1.75rem;
+}
+
+.panel-text {
+  display: flex;
+}
+
+.panel-desc-text {
+  flex: 1;
+  align-self: center;
+}
+
+.width-150 {
+  width: 150px;
+}

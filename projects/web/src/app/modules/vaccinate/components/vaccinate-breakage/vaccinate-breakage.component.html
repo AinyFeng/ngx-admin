@@ -1,0 +1,92 @@
+<nz-drawer [nzClosable]="false" [nzVisible]="breakageVisible" [nzWidth]="350" nzPlacement="right" nzTitle="报损"
+           (nzOnClose)="close()">
+  <form [formGroup]="breakageForm">
+    <div class="form-group row">
+      <label class="col-sm-4 col-form-label">疫苗大类</label>
+      <div class="col-sm-8">
+        <nz-select class="full-width" id="broadHeadingCode" nzPlaceHolder="选择疫苗大类"
+                   (ngModelChange)="getVaccProduct($event)" nzSize="large" formControlName="broadHeadingCode">
+          <nz-option *ngFor="let vaccineProduct of vacBroadHeadingOptions"
+                     [nzLabel]="vaccineProduct.broadHeadingEngName+'_'+vaccineProduct.broadHeadingName"
+                     [nzValue]="vaccineProduct.broadHeadingCode"></nz-option>
+        </nz-select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-4 col-form-label">疫苗产品</label>
+      <div class="col-sm-8">
+<!--        (ngModelChange)="loadBatchInfoByProduct($event)"-->
+        <nz-select class="full-width" id="vaccProductCode" nzPlaceHolder="请选择疫苗产品" nzSize="large" formControlName="vaccProductCode">
+          <nz-option *ngFor="let vaccineProduct of vaccineProductOptions" [nzLabel]="vaccineProduct.vaccineProductName"
+                     [nzValue]="vaccineProduct.vaccineProductCode"></nz-option>
+        </nz-select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-4 col-form-label">疫苗批号</label>
+      <div class="col-sm-8">
+        <nz-select class="full-width" id="prodBatchCode" nzPlaceHolder="请选择批号"
+                   (ngModelChange)="loadEleSuperviseCodeByBatchNo($event)" nzSize="large" formControlName="prodBatchCode">
+          <nz-option *ngFor="let vaccineBatch of vaccineBatchOptions" [nzLabel]="vaccineBatch.batchNo" [nzDisabled]="vaccineBatch.disabled"
+                     [nzValue]="vaccineBatch.batchNo"></nz-option>
+        </nz-select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-4 col-form-label" for="eleSuperviseCode">电子监管码</label>
+      <div class="col-sm-8">
+        <nz-select class="full-width" id="eleSuperviseCode" nzPlaceHolder="请选择电子监管码" nzSize="large"
+                   formControlName="eleSuperviseCode">
+          <nz-option *ngFor="let esCode of eleSuperviseCodeOptions" [nzLabel]="esCode.electronicSupervisionCode"
+                     [nzValue]="esCode.electronicSupervisionCode"></nz-option>
+        </nz-select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-4 col-form-label">冷藏设备</label>
+      <div class="col-sm-8">
+        <nz-select class="full-width" id="facilityCode" nzPlaceHolder="请选择冷藏设备" nzSize="large"
+                   formControlName="facilityCode">
+          <nz-option *ngFor="let coldStorageFacility of facilityCodeOptions" [nzLabel]="coldStorageFacility.name"
+                     [nzValue]="coldStorageFacility.facilityCode"></nz-option>
+        </nz-select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-4 col-form-label">报损类型</label>
+      <div class="col-sm-8">
+        <nz-select class="full-width" id="breakType" nzPlaceHolder="请选择报损类型" nzSize="large"
+                   formControlName="breakType">
+          <nz-option *ngFor="let breakType of breakTypeOptions" [nzLabel]="breakType.label" [nzValue]="breakType.value">
+          </nz-option>
+        </nz-select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-4 col-form-label">报损数量<span *ngIf="_breakageObj">(剂)</span><span *ngIf="!_breakageObj">(支)</span></label>
+      <div class="col-sm-8">
+        <input type="number" nzSize="large" nz-input formControlName="count" class="full-width" min="0" placeholder="请输入报损数量">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-4 col-form-label">报损时间</label>
+      <div class="col-sm-8">
+        <nz-date-picker
+          [nzDisabledDate]="disableDate"
+          [nzStyle]="{'border': breakageForm.get('reportTime').invalid && breakageForm.get('reportTime').touched ? '2px solid red' : ''}"
+          formControlName="reportTime" nzSize="large" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss"
+          nzPlaceHolder="请选择报损时间"></nz-date-picker>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-4 col-form-label">报损备注</label>
+      <div class="col-sm-8">
+        <textarea nz-input placeholder="请输入报损备注" class="full-width" formControlName="memo"></textarea>
+      </div>
+    </div>
+    <div class="form-group row" style="display: block;flex-wrap: unset;">
+      <button nbButton size="large" status="danger" (click)="breakage()">报损</button>
+      <button nbButton size="large" status="primary" class="float-right" (click)="resetForm()">重置</button>
+    </div>
+  </form>
+</nz-drawer>

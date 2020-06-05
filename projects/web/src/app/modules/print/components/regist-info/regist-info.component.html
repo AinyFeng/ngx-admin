@@ -1,0 +1,44 @@
+<nb-card style="width: 300px;">
+  <nb-card-body [id]="id">
+    <div style="text-align: center;">
+      <span style="display: inline-block; height: 1px; background-color: black; width: 90px; margin-bottom: 5px; margin-right: 5px;"></span>
+      <span style="display: inline-block;">智慧接种</span>
+      <span style="display: inline-block; height: 1px; background-color: black; width: 90px; margin-bottom: 5px; margin-left: 5px;"></span>
+    </div>
+    <p style="text-align: center; font-size: 26px; font-weight: bolder;">{{ data ? data?.queueCode : 'A001' }}</p>
+    <p style="text-align: center; font-size: 26px; font-weight: bolder;">{{ data?.businessType | businessTypePipe }}</p>
+    <ul style="list-style: none; margin: 0; padding: 0;">
+      <li>档案编码：{{ data?.profileCode }}</li>
+      <li>免疫卡号：{{ data?.immunityVacCard }}</li>
+      <li>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：{{ data?.name }}</li>
+      <li>接种疫苗列表：</li>
+      <ng-container *ngFor="let v of data?.vaccineList">
+        <span style="display: inline-block; height: 1px; background-color: black; width: 240px; margin-bottom: 5px; margin-right: 5px;"></span>
+        <li>疫苗名称：{{ v?.vaccineSubclassCode | vacSubclassPipe }}</li>
+        <li>疫苗厂家：{{ v?.vaccineManufactureName }}</li>
+        <li>疫苗批号：{{ v?.vaccineBatchNo }}</li>
+        <li>疫苗价格：{{ v?.vaccinePrice == 0 ? '免费' : (v?.vaccinePrice | currency: '￥') }}</li>
+        <li><strong>{{ v?.vaccineSubclassCode | vacSubclassPipe }}</strong> <strong>第{{ v?.vaccinateInjectNumber }}
+          剂次</strong>
+        </li>
+      </ng-container>
+      <span style="display: inline-block; height: 1px; background-color: black; width: 240px; margin-bottom: 5px; margin-right: 5px;"></span>
+      <li>排号时间：{{ data?.createDate | date: 'yyyy-MM-dd HH:mm:ss' }}</li>
+<!--      <li>等待人数：{{ data?.wait }}</li>-->
+    </ul>
+    <p>家长或监护人签字：</p>
+    <img [src]="data?.signature" alt="家长签字信息" style="width: 100px; max-height: 60px;">
+    <p>接种时间：{{ vaccinateDate | date: 'yyyy-MM-dd' }}</p>
+    <p *ngIf="data?.needToPay === '0'">请前往接种台等待接种</p>
+    <p *ngIf="data?.needToPay === '1'">请前往缴费</p>
+<!--    <p>厂家：{{ data?.vaccineManufactureName }}  批号：{{ data?.vaccineBatchNo }}</p>-->
+    <div style="text-align: center;">
+      <qrcode style="display: inline-block;" [qrdata]="qrCode" [size]="64" [level]="'M'"></qrcode>
+    </div>
+    <p style="text-align: center; margin-top: 10px; margin-bottom: 10px;">扫描关注二维码，获取更多信息</p>
+  </nb-card-body>
+  <nb-card-footer class="text-center">
+    <button nbButton status="info" class="mr-3" (click)="print(true)">打印预览</button>
+    <button nbButton status="info" (click)="print(false)">直接打印</button>
+  </nb-card-footer>
+</nb-card>

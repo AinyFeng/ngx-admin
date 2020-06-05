@@ -1,0 +1,145 @@
+<form  nz-form [formGroup]="modifyOrAddFrom" >
+  <div class="form-group row">
+    <label for="facilityCode" class="col-sm-2 col-form-label text-right label-required">设备编号：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large"  type="text" placeholder="请输入" formControlName="facilityCode" id="facilityCode" >
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('facilityCode')"></uea-show-form-errors>
+    </div>
+
+    <label for="facilityName" class="col-sm-2 col-form-label text-right label-required">设备名称：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="text" placeholder="请输入" formControlName="facilityName" id="facilityName" >
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('facilityName')"></uea-show-form-errors>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label text-right label-required">设备品牌：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="text" placeholder="请输入" formControlName="brand" id="brand" >
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('brand')"></uea-show-form-errors>
+    </div>
+
+    <label class="col-sm-2 col-form-label text-right label-required">经费来源：</label>
+    <div class="col-sm-4">
+      <nz-select formControlName="source" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+        <nz-option *ngFor="let v of sourceCodeOptions"  [nzLabel]="v.label" [nzValue]="v.value"></nz-option>
+      </nz-select>
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('source')"></uea-show-form-errors>
+    </div>
+
+  </div>
+
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label text-right label-required">生产厂商：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="text" placeholder="请输入" formControlName="manufacturer" id="manufacturer" >
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('manufacturer')"></uea-show-form-errors>
+    </div>
+
+    <label class="col-sm-2 col-form-label text-right label-required">设备型号：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="text" placeholder="请输入" formControlName="model" id="model" >
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('model')"></uea-show-form-errors>
+    </div>
+  </div>
+
+  <div class="form-group row">
+
+    <label for="factoryNum" class="col-sm-2 col-form-label text-right label-required">出厂编号：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="text" placeholder="请输入" formControlName="factoryNum" id="factoryNum" >
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('factoryNum')"></uea-show-form-errors>
+    </div>
+
+    <label class="col-sm-2 col-form-label text-right label-required">冷藏包数量：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+             formControlName="storageCapacityPackage" id="storageCapacityPackage" placeholder="请输入">
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('storageCapacityPackage')"></uea-show-form-errors>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label text-right label-required">冷藏容积：</label>
+    <div class="col-sm-2">
+      <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+             formControlName="storageCapacity" id="storageCapacity" placeholder="请输入">
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('storageCapacity')"></uea-show-form-errors>
+    </div>
+
+    <div class="col-sm-2">
+      <nz-select formControlName="storageCapacityUnit" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+        <nz-option *ngFor="let v of unitOptions"  [nzLabel]="v.label" [nzValue]="v.value"></nz-option>
+      </nz-select>
+     <uea-show-form-errors [control]="modifyOrAddFrom.get('storageCapacityUnit')"></uea-show-form-errors>
+    </div>
+
+    <label class="col-sm-2 col-form-label text-right label-required">冷冻容积：</label>
+    <div class="col-sm-2">
+      <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+             formControlName="freezeCapacity" id="freezeCapacity" placeholder="请输入">
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('freezeCapacity')"></uea-show-form-errors>
+    </div>
+
+    <div class="col-sm-2">
+      <nz-select formControlName="freezeCapacityUnit" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+        <nz-option *ngFor="let v of unitOptions"  [nzLabel]="v.label" [nzValue]="v.value"></nz-option>
+      </nz-select>
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('freezeCapacityUnit')"></uea-show-form-errors>
+    </div>
+  </div>
+
+  <div class="form-group row">
+
+    <label class="col-sm-2 col-form-label text-right">出厂日期：</label>
+    <div class="col-sm-4">
+       <nz-date-picker [nzDisabledDate]="filterHandleDate" nzSize="large"  nzFormat="yyyy-MM-dd HH:mm:ss"
+                      formControlName="productionDate" id="productionDate" nzPlaceHolder="选择时间"></nz-date-picker>
+    </div>
+
+    <label class="col-sm-2 col-form-label text-right label-required">到货日期：</label>
+    <div class="col-sm-4">
+      <nz-date-picker [nzDisabledDate]="filterHandleDate" nzSize="large" formControlName="arrivalDate" id="arrivalDate"
+                      nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择时间"></nz-date-picker>
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('arrivalDate')"></uea-show-form-errors>
+    </div>
+
+  </div>
+
+  <div class="form-group row">
+
+    <label  class="col-sm-2 col-form-label text-right label-required">启用日期：</label>
+    <div class="col-sm-4">
+      <nz-date-picker [nzDisabledDate]="filterHandleDate" nzSize="large" formControlName="startuseDate" id="startuseDate"
+                      nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择时间"></nz-date-picker>
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('startuseDate')"></uea-show-form-errors>
+    </div>
+
+    <label class="col-sm-2 col-form-label text-right">报废日期：</label>
+    <div class="col-sm-4">
+      <nz-date-picker [nzDisabledDate]="filterHandleDate" nzSize="large" formControlName="scrapDate" id="scrapDate"
+                      nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择时间"></nz-date-picker>
+    </div>
+
+    </div>
+
+  <div class="form-group row">
+    <label for="status" class="col-sm-2 col-form-label text-right label-required">设备运转状态：</label>
+    <div class="col-sm-4">
+      <nb-select placeholder="请选择" fullWidth outline status="info" formControlName="status"
+                 id="status">
+        <nb-option [value]="v.value" *ngFor="let v of facilityStatusOptions">{{v.label}}</nb-option>
+      </nb-select>
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('status')"></uea-show-form-errors>
+    </div>
+  </div>
+
+</form>
+<div class="text-right">
+  <button nz-button [nzLoading]="loading" nzType="primary" (click)="saveOrEdit()">保存</button>
+  <button nz-button nzType="default" (click)="onClose()">取消</button>
+</div>
+
+
+

@@ -1,0 +1,104 @@
+<nb-card accent="info">
+  <nb-card-header>
+    学校数据
+    <div>
+      <button nbButton status="info" (click)="search()" [disabled]="loading">查询</button>
+      <button nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="kindergartenForm">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">学校编码：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth formControlName="schoolCode" id="schoolCode">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">单位全称：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth formControlName="unitFullName" id="unitFullName">
+          </div>
+        </div>
+        <!--<div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">单位简称：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth formControlName="unitName" id="unitName">
+          </div>
+        </div>-->
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">地址：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth formControlName="address" id="address">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">联系人：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth formControlName="contact" id="contact">
+          </div>
+        </div>
+      </div>
+      <div class="form-group row mt-2 ml-0">
+        <!--<div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">联系人：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth formControlName="contact" id="contact">
+          </div>
+        </div>-->
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">联系电话：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth formControlName="contactNumber" id="contactNumber">
+          </div>
+        </div>
+        <!--<div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">手机：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth formControlName="telphone" id="telphone">
+          </div>
+        </div>-->
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+<nb-card>
+  <nb-card-body>
+    <nz-table #kindergartenInfo [nzData]="kindergartenData"
+              nzSize="small" nzSimple="false" [nzLoading]="loading"
+              [nzTotal]="total"
+              [nzFrontPagination]="false"
+              (nzPageIndexChange)="search($event)">
+      <thead>
+        <tr>
+          <th [nzAlign]="'center'">学校编码</th>
+          <th [nzAlign]="'center'">单位全称</th>
+          <!--          <th [nzAlign]="'center'">单位简称</th>-->
+          <th [nzAlign]="'center'">地址</th>
+          <th [nzAlign]="'center'">联系人</th>
+          <th [nzAlign]="'center'">联系电话</th>
+          <!--          <th [nzAlign]="'center'">手机</th>-->
+          <th [nzAlign]="'center'">备注</th>
+          <th [nzAlign]="'center'">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of kindergartenInfo.data">
+          <td [nzAlign]="'center'">{{d.schoolCode}}</td>
+          <td [nzAlign]="'center'">{{d.name}}</td>
+          <!--          <td [nzAlign]="'center'">{{d.name}}</td>-->
+          <td [nzAlign]="'center'">{{d.address}}</td>
+          <td [nzAlign]="'center'">{{d.principal}}</td>
+          <td [nzAlign]="'center'">{{d.principalPhone}}</td>
+          <!--          <td [nzAlign]="'center'">{{d.principalPhone}}</td>-->
+          <td [nzAlign]="'center'">{{d.memo}}</td>
+          <td [nzAlign]="'center'">
+            <!-- <a href="javascript:" class="link-a mr-1" (click)="updateSchool(d)">修改</a>
+             <a href="javascript:" class="link-a" (click)="deleteSchool(d)">删除</a>-->
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

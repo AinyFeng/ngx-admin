@@ -1,0 +1,15 @@
+<!--建档列表-->
+<div class="weui-cells wx-content-margin">
+  <div class="list-item weui-cell weui-cell_swiped"  weui-swipe *ngFor="let item of listData" >
+    <div class="item-title weui-cell__bd" (click)="showDetail(item)">
+      <div class="item-top">
+        <div class="title">{{item.profileName}}</div>
+        <span class="item-info">{{item.time}}</span>
+      </div>
+      <div class="item-code">建档编号: <span class="item-info">{{item.checkCode}}</span></div>
+    </div>
+    <div class="weui-cell__ft">
+      <a class="weui-swiped-btn weui-swiped-btn_warn" (click)="deleteArchive(item)">删除</a>
+    </div>
+  </div>
+</div>

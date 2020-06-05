@@ -1,0 +1,98 @@
+<nb-card size="large" class="nb-card-container">
+  <nb-card-header class="nb-card-header-qb">
+    <span *ngIf="flag">选择接种地点</span>
+    <span *ngIf="!flag">选择出生医院</span>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-3 overflow-auto">
+        <nz-tree [nzData]="administrativeTreeData" nzShowIcon [nzExpandedIcon]="expandedIconTpl" nzShowLine
+                 (nzClick)="onClickTree($event)">
+          <ng-template #expandedIconTpl let-node>
+            <nb-icon style="color: #ffaa00;" *ngIf="!node.isExpanded" class="far fa-folder"></nb-icon>
+            <nb-icon style="color: #ffaa00;" *ngIf="node.isExpanded" class="far fa-folder-open"></nb-icon>
+          </ng-template>
+        </nz-tree>
+      </div>
+      <div class="col-9">
+        <nb-tabset>
+          <nb-tab tabTitle="接种单位" *ngIf="flag">
+            <div class="search-input mt-3 mb-3">
+              <label class="col-form-label mr-3">筛选名称</label>
+              <input nbTooltip="请输入至少两个中文字符，仅支持按名称查询" nbTooltipStatus="info"
+                     [(ngModel)]="searchPovText" [disabled]="loading"
+                     nbInput placeholder="输入pov名称关键字" (ngModelChange)="filterPov($event)">
+            </div>
+            <nz-table #pov [nzData]="povData" [nzFrontPagination]="false"
+                      [nzTotal]="povTotal"
+                      [nzShowTotal]="totalPov"
+                      [nzPageIndex]="povPageIndex"
+                      [nzLoading]="loading" (nzPageIndexChange)="queryPovData($event, searchPovText)">
+              <thead>
+              <tr>
+                <th>门诊编号</th>
+                <th>门诊名称</th>
+                <th>操作</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of pov.data">
+                <td>{{data.povCode}}</td>
+                <td>{{data.name}}</td>
+                <td>
+                  <a href="javascript:" (click)="selectPov(data)" class="link-a">选择</a>
+                </td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </nb-tab>
+          <nb-tab tabTitle="出生医院">
+            <div class="mt-3 mb-3 search-input">
+              <label class="col-form-label mr-3">筛选名称</label>
+              <input nbInput [(ngModel)]="searchText" [disabled]="loading"
+                     nbTooltip="请输入至少两个中文字符，仅支持按名称查询" nbTooltipStatus="info"
+                     placeholder="输入医院名称关键字" (ngModelChange)="filterHospital($event)">
+            </div>
+            <nz-table #hospital [nzFrontPagination]="false"
+                      [nzTotal]="hosTotal"
+                      [nzLoading]="loading"
+                      [nzPageIndex]="hosPageIndex"
+                      [nzShowTotal]="totalHos"
+                      [nzData]="hospitalData" (nzPageIndexChange)="queryHosData($event, searchText)">
+              <thead>
+              <tr>
+                <th>医院编码</th>
+                <th>医院名称</th>
+                <th>操作</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of hospital.data">
+                <td>{{data.hospitalCode}}</td>
+                <td>{{data.hospitalName}}</td>
+                <td>
+                  <a href="javascript:" (click)="selectHos(data)" class="link-a">选择</a>
+                </td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </nb-tab>
+        </nb-tabset>
+      </div>
+    </div>
+
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button status="info" nbButton (click)="onClose()">关闭</button>
+    </div>
+  </nb-card-footer>
+</nb-card>
+
+<ng-template #totalHos>
+  共{{ hosTotal }}条数据，当前第{{ hosPageIndex }}页
+</ng-template>
+
+<ng-template #totalPov>
+  共{{ povTotal }}条数据，当前第{{ povPageIndex }}页
+</ng-template>

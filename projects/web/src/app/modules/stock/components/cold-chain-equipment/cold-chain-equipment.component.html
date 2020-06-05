@@ -1,0 +1,128 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    冷链设备管理
+    <div>
+      <button class="mr-2" nbButton status="info" [disabled]="loading" (click)="searchData()">查询</button>
+      <!--<button nbButton status="info" (click)="addFacility(null)">新增</button>-->
+      <button class="mr-2" nbButton status="warning" (click)="reset()">重置</button>
+      <!--<button nbButton status="info">导出报表</button>-->
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="searchForm">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">经费来源：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择" fullWidth outline status="info" formControlName="sourceCode"
+                       id="sourceCode">
+              <nb-option [value]="v.value" *ngFor="let v of sourceCodeOptions">{{v.label}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">设备类型：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择" fullWidth outline status="info" formControlName="deviceTypeCode"
+                       id="deviceTypeCode">
+              <nb-option [value]="v.value" *ngFor="let v of deviceTypeOptions">{{v.label}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">设备品牌：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入" formControlName="brand" id="brand">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">设备型号：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入" formControlName="model" id="model">
+          </div>
+        </div>
+      </div>
+
+
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">设备状态：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择" fullWidth outline status="info" formControlName="facilityStatus"
+                       id="facilityStatus">
+              <nb-option [value]="v.value" *ngFor="let v of facilityStatusOptions">{{v.label}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+      </div>
+    </form>
+    <nz-divider></nz-divider>
+    <nz-table #msgTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false" [nzData]="listOfData"
+              [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex"
+              (nzPageIndexChange)="searchData($event)">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">设备编码</th>
+        <th [nzAlign]="'center'">所属科室</th>
+        <th [nzAlign]="'center'">经费来源</th>
+        <th [nzAlign]="'center'">设备类型</th>
+        <th [nzAlign]="'center'">设备名称</th>
+        <th [nzAlign]="'center'">设备品牌</th>
+        <th [nzAlign]="'center'">设备型号</th>
+        <th [nzAlign]="'center'">生产日期</th>
+        <th [nzAlign]="'center'">启用日期</th>
+        <!--  <th [nzAlign]="'center'">电子监测启用日期</th>-->
+        <th [nzAlign]="'center'">冷藏容积(升)</th>
+        <th [nzAlign]="'center'">冷冻容积(升)</th>
+        <th [nzAlign]="'center'">当前运转状态</th>
+        <!-- <th [nzAlign]="'center'">录入者</th>
+         <th [nzAlign]="'center'">录入日期</th>
+         <th [nzAlign]="'center'">修改者</th>-->
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index;">
+        <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+        <td [nzAlign]="'center'">{{data.facilityNumber}}</td>
+        <td [nzAlign]="'center'">{{data.belongDepartmentCode | departmentNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{data.sourceCode |  dicPipe:'fixedAssetsSource'}}</td>
+        <td [nzAlign]="'center'">{{data.typeName}}</td>
+        <td [nzAlign]="'center'">{{data.name}}</td>
+        <td [nzAlign]="'center'">{{data.brand}}</td>
+        <td [nzAlign]="'center'">{{data.model}}</td>
+        <td [nzAlign]="'center'">{{data.manufactureDate | date: 'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">{{data.useStartDate | date: 'yyyy-MM-dd'}}</td>
+        <!-- <td [nzAlign]="'center'">{{data.name}}</td>-->  <!--电子监测启用日期-->
+        <td [nzAlign]="'center'">{{data.storageCapacity}}</td>
+        <td [nzAlign]="'center'">{{data.freezeCapacity}}</td>
+        <td [nzAlign]="'center'">{{data.facilityStatus | dicPipe:'facilityStatus'}}</td>
+        <!--   <td [nzAlign]="'center'">{{data.name}}</td>
+           <td [nzAlign]="'center'">{{data.name}}</td>
+           <td [nzAlign]="'center'">{{data.name}}</td> -->
+        <td [nzAlign]="'center'">
+          <a *ngIf="data.belongDepartmentCode" href="javascript:void(0)" class="mr-2" style="color: #ff3d71;"
+             (click)="cancelDepartment(data)">取消科室关联</a>
+          <a href="javascript:void(0)" class="mr-2" (click)="editFacility(data)">编辑</a>&nbsp;
+          <!-- <button nbButton size="tiny" status="danger" (click)="openDeleteDialog(deleteDialog, data)">删除</button>-->
+          <a href="javascript:void(0)" nbPopoverPlacement="left" (click)="initTemperatureDate()"
+             [nbPopover]="templateRef">查看温度
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #templateRef>
+  <nb-card class="margin-bottom-0">
+    <nb-card-header>温度信息</nb-card-header>
+    <nb-list>
+      <nb-list-item *ngFor="let t of temperatureDate">
+        {{t.hours}}&nbsp;&nbsp;&nbsp;&nbsp;{{t.temperature}}
+      </nb-list-item>
+    </nb-list>
+  </nb-card>
+</ng-template>

@@ -1,0 +1,20 @@
+<!--<div style="height: 100%;" echarts [options]="echartsOption"></div>-->
+<table class="table table-borderless font-color-main">
+  <thead>
+  <tr>
+    <th>区域</th>
+    <th>档案数量</th>
+    <th>重复档案</th>
+    <th>重卡率(千分比)</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let op of optionData;index as i" class="animated slideInLeft"
+      [ngStyle]="{'animation-delay': i * 0.1 + 's'}">
+    <td>{{ op.name }}</td>
+    <td>{{ op.count }}</td>
+    <td>{{ op.dupCount }}</td>
+    <td>{{ op.value === 0 ? op.value : op.value + '‰' }}</td>
+  </tr>
+  </tbody>
+</table>

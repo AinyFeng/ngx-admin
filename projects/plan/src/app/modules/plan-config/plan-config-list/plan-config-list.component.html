@@ -1,0 +1,80 @@
+<div nz-row>
+  <form nz-form [nzLayout]="'inline'" [formGroup]="queryForm" (ngSubmit)="query(true)">
+    <nz-form-item>
+      <nz-form-label nzFor="vaccineSubclassCode">疫苗编号</nz-form-label>
+      <nz-form-control nzErrorTip="">
+        <nz-input-group nzPrefixIcon="">
+          <input formControlName="vaccineSubclassCode" nz-input placeholder="疫苗编号" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzFor="vaccineSubclassName">疫苗名称</nz-form-label>
+      <nz-form-control nzErrorTip="">
+        <nz-input-group nzPrefixIcon="">
+          <input formControlName="vaccineSubclassName" nz-input placeholder="疫苗名称" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzFor="type">类型</nz-form-label>
+      <nz-form-control nzErrorTip="">
+        <nz-radio-group formControlName="type">
+          <label nz-radio nzValue="1">一类</label>
+          <label nz-radio nzValue="2">二类</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button nzType="primary">查询</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>
+<div nz-row>
+  <nz-table #borderedTable
+            nzBordered
+            (nzPageIndexChange)="query(false, $event)"
+            [nzPageIndex]="page"
+            [nzPageSize]="pageSize"
+            [nzTotal]="total"
+            [nzItemRender]="renderItemTemplate"
+            [nzFrontPagination]="false"
+            [nzData]="dataSet">
+    <thead>
+    <tr>
+      <th>疫苗编号</th>
+      <th>疫苗名称</th>
+      <th>规格</th>
+      <th>免疫程序剂次数</th>
+      <th>损耗系数</th>
+      <th>类型</th>
+      <th>备注</th>
+      <th>更新时间</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of borderedTable.data">
+      <td>{{ data?.vaccineSubclassCode }}</td>
+      <td>{{ data?.vaccineSubclassName }}</td>
+      <td>{{ data?.spec }}</td>
+      <td>{{ data?.dosage }}</td>
+      <td>{{ data?.lossFactor }}</td>
+      <td>{{ data.type }}</td>
+      <td>{{ data?.memo }}</td>
+      <td>{{ data?.updateDate | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+      <td>
+        <button nz-button nzSize="small" nzType="primary" (click)="update(data)">修改</button>
+        <button nz-button nzSize="small" nzType="danger"  (click)="delete(data)">删除</button>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+  <ng-template #renderItemTemplate let-type let-page="page">
+    <a *ngIf="type === 'pre'" >上一页</a>
+    <a *ngIf="type === 'next'">下一页</a>
+    <a *ngIf="type === 'page'">{{ page }}</a>
+  </ng-template>
+</div>

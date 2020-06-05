@@ -1,0 +1,19 @@
+<nb-card *ngIf="showCard" accent="info" class="group-current-inoculate" size="xsmall">
+  <nb-card-header>
+    <h6>基本信息</h6>
+  </nb-card-header>
+  <nb-card-body>
+    <ng-container [ngTemplateOutlet]="baseInfo"></ng-container>
+  </nb-card-body>
+</nb-card>
+<ng-container *ngIf="!showCard" [ngTemplateOutlet]="baseInfo"></ng-container>
+<ng-template #baseInfo>
+  <nz-descriptions nzTitle="" nzBordered [nzSize]="'small'" [nzColumn]="isSingle? 1 : { xxl: 3, xl: 3, lg: 2, md: 2, sm: 2, xs: 1 }">
+    <nz-descriptions-item nzTitle="档案编号">{{ basicInfo?.profileCode }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="姓名">{{ basicInfo?.name }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="出生日期">{{ basicInfo?.birthDate }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="性别">{{ basicInfo?.gender | qbGenderPipe }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="免疫卡号">{{ basicInfo?.immunityVacCard }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="监护人">{{ basicInfo?.motherName ? basicInfo?.motherName + '(母)': '' }}{{ basicInfo?.fatherName ? '|' + basicInfo?.fatherName + '(父亲)': '' }}</nz-descriptions-item>
+  </nz-descriptions>
+</ng-template>

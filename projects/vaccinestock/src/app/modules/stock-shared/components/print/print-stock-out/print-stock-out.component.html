@@ -1,0 +1,77 @@
+<div [id]="printStockOutInfo.id">
+  <div style="padding: 0 50px;">
+    <p
+      style="text-align: center; font-size: 1.5em; margin: 18px 0 8px;">{{printStockOutInfo ? printStockOutInfo.orderInfo.supplyorgName : ''}}{{printStockOutInfo.orderInfo.vaccineType | dicPipe: 'vaccineType'}}
+      疫苗出库单</p>
+    <div style="width: 100%; line-height: 28px; display: flex; justify-content: space-between; align-items: center;">
+      <span>
+        领苗单位：{{printStockOutInfo ? printStockOutInfo.orderInfo.receiveorgName : ''}}
+      </span>
+      <span>
+        出库日期：{{today.getFullYear()}}年{{today.getMonth() + 1}}月{{today.getDate()}}日
+      </span>
+
+    </div>
+    <div style="line-height: 28px;">
+      出库单号：{{printStockOutInfo.orderInfo.orderNo}}
+    </div>
+    <table
+      border="1" cellspacing="0" cellpadding="0"
+      style="border-collapse:collapse; border-spacing:0; width: 100%; font-size: 14.4px; text-align: center;"
+    >
+      <tr>
+        <th>序</th>
+        <th>产品名称</th>
+        <th>规格</th>
+        <th>单位</th>
+        <th>生产厂家</th>
+        <th>批号</th>
+        <th>有效期</th>
+        <th>数量</th>
+        <th *ngIf="printStockOutInfo.orderInfo.vaccineType === '1'">单价</th>
+        <th *ngIf="printStockOutInfo.orderInfo.vaccineType === '1'">冷链费</th>
+        <th *ngIf="printStockOutInfo.orderInfo.vaccineType === '1'">金额</th>
+        <th>备注</th>
+      </tr>
+      <tr *ngFor="let data of printStockOutInfo.vaccineInfo; index as i">
+        <td>{{i + 1}}</td>
+        <td>{{data.vaccName}}</td>
+        <td>{{data.dose}}</td>
+        <td>{{data.spec}}</td>
+        <td>{{data.manufactureName}}</td>
+        <td>{{data.batchNo}}</td>
+        <td>{{data.loseEfficacyDate | date: 'yyyy-MM-dd'}}</td>
+        <td>{{data.vaccNum ? data.vaccNum : 0}}</td>
+        <td *ngIf="printStockOutInfo.orderInfo.vaccineType === '1'">{{data.orignPrice ? data.orignPrice : 0}}</td>
+        <td *ngIf="printStockOutInfo.orderInfo.vaccineType === '1'">{{data.vaccineType == null ? '' : 8}}</td>
+        <td
+          *ngIf="printStockOutInfo.orderInfo.vaccineType === '1'">
+          {{data.orignPrice * data.vaccNum + data.vaccNum * 10 ? data.orignPrice * data.vaccNum + data.vaccNum * 10 : (data.vaccineType == null ? ' ' : 0)}}
+        </td>
+        <td>{{data.memo}}</td>
+      </tr>
+      <tr>
+        <td colspan="1" class="text-right">合计</td>
+        <td *ngIf="printStockOutInfo.orderInfo.vaccineType === '1'" colspan="5" class="text-right">——</td>
+        <td *ngIf="printStockOutInfo.orderInfo.vaccineType === '1'"
+            class="text-right">{{printStockOutInfo.priceSum.sumNum ? printStockOutInfo.priceSum.sumNum : 0}}</td>
+        <td *ngIf="printStockOutInfo.orderInfo.vaccineType === '1'" colspan="2" class="text-right">——</td>
+        <td *ngIf="printStockOutInfo.orderInfo.vaccineType === '1'" colspan="2" class="text-right">
+          ￥{{printStockOutInfo.priceSum.priceSum ? printStockOutInfo.priceSum.priceSum : 0}}</td>
+        <td *ngIf="printStockOutInfo.orderInfo.vaccineType === '0'" colspan="10"
+            class="text-right">{{printStockOutInfo.priceSum.sumNum ? printStockOutInfo.priceSum.sumNum : 0}}</td>
+      </tr>
+    </table>
+    <div style="margin: 5px auto; display: flex; justify-content: space-between; align-items: center;">
+      <p style="width: 25%;">&nbsp;&nbsp;&nbsp;制单: <span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+      <p style="width: 25%;">&nbsp;&nbsp;&nbsp;&nbsp;审核: <span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+      <p style="width: 25%;">&nbsp;&nbsp;&nbsp;&nbsp;发货: <span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+      <p style="width: 25%;">&nbsp;&nbsp;&nbsp;&nbsp;验收: <span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+    </div>
+  </div>
+
+</div>

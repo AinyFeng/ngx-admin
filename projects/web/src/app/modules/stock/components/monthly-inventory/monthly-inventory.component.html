@@ -1,0 +1,102 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    月度盘点
+    <div>
+      <button class="mr-2" nbButton status="info" class="mr-3">查询</button>
+      <button class="mr-2" nbButton status="info" class="mr-3">导出</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form>
+      <div class="group-search row">
+        <div class="form-group col-md-3 row">
+          <label class="col-md-5 col-form-label">盘点日期：</label>
+          <div class="col-md-7">
+            <input nbInput fullWidth readonly placeholder="请选择日期" [nbDatepicker]="inventoryDatePicker">
+            <nb-rangepicker #inventoryDatePicker format="yyyy/MM/dd"></nb-rangepicker>
+          </div>
+        </div>
+        <div class="form-group col-md-3 row">
+          <label class="col-md-5 col-form-label">疫苗批号：</label>
+          <div class="col-md-7">
+            <input nbInput placeholder="请输入疫苗批号" fullWidth>
+          </div>
+        </div>
+        <div class="form-group col-md-3 row">
+          <label class="col-md-5 col-form-label">疫苗名称：</label>
+          <div class="col-md-7">
+            <nb-select multiple placeholder="请选择疫苗名称" fullWidth outline status="info">
+              <nb-option value="1">甲肝</nb-option>
+              <nb-option value="2">甲肝</nb-option>
+              <nb-option value="3">脊灰</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="form-group col-md-3 row">
+          <label class="col-md-5 col-form-label">疫苗类型：</label>
+          <div class="col-md-7">
+            <nb-select multiple placeholder="疫苗类型" fullWidth outline status="info">
+              <nb-option value="1">一类</nb-option>
+              <nb-option value="2">二类</nb-option>
+            </nb-select>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-3 row">
+        <label class="col-md-5 col-form-label">科室：</label>
+        <div class="col-md-7">
+          <nb-select multiple placeholder="科室" fullWidth outline status="info">
+            <nb-option value="1">科室一</nb-option>
+            <nb-option value="2">科室二</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <nb-checkbox (checkedChange)="toggle($event)">是否包含补录</nb-checkbox>
+        <!-- <button nbButton status="info" class="mr-3">查询</button> -->
+        <!-- <button nbButton status="info" class="mr-3">导出</button> -->
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow:scroll;">
+  <nz-table #msgTable [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false">
+    <thead>
+      <tr>
+        <th [nzAlign]="'center'">盘点日期</th>
+        <th [nzAlign]="'center'">疫苗名称</th>
+        <th [nzAlign]="'center'">产品编码</th>
+        <th [nzAlign]="'center'">疫苗厂商</th>
+        <th [nzAlign]="'center'">疫苗批号</th>
+        <th [nzAlign]="'center'">疫苗剂量</th>
+        <th [nzAlign]="'center'">有效期</th>
+        <th [nzAlign]="'center'">上期库存</th>
+        <th [nzAlign]="'center'">本期入库</th>
+        <th [nzAlign]="'center'">使用出库</th>
+        <th [nzAlign]="'center'">报损</th>
+        <th [nzAlign]="'center'">当前库存</th>
+        <th [nzAlign]="'center'">最后更新时间</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of msgTable.data">
+        <td>{{data.name}}</td>
+        <td>{{data.company}}</td>
+        <td>{{data.number}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.afi}}</td>
+        <td>{{data.time}}</td>
+        <td>{{data.afi}}</td>
+        <td>{{data.time}}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nb-card>

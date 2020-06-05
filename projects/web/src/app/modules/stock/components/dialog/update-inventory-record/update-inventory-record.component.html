@@ -1,0 +1,139 @@
+<nb-card accent="info">
+  <nb-card-header>
+    <span>修改盘点记录</span>
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="modifyFrom" novalidate>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label text-right label-required">盘点日期：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="reportDate" id="reportDate" >
+          <!--<uea-show-form-errors [control]="modifyFrom.get('reportDate')"></uea-show-form-errors>-->
+        </div>
+
+        <label class="col-sm-2 col-form-label text-right label-required">产品批号：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth  formControlName="prodBatchCode" id="prodBatchCode" >
+         <!-- <uea-show-form-errors [control]="modifyFrom.get('prodBatchCode')"></uea-show-form-errors>-->
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label text-right label-required">产品名称：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="productName" id="productName" >
+         <!-- <uea-show-form-errors [control]="modifyFrom.get('productName')"></uea-show-form-errors>-->
+        </div>
+
+        <label class="col-sm-2 col-form-label text-right label-required">生产厂商：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth  formControlName="manufacturerName" id="manufacturerName" >
+          <!--<uea-show-form-errors [control]="modifyFrom.get('prodBatchCode')"></uea-show-form-errors>-->
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label  class="col-sm-2 col-form-label text-right">期初库存：</label>
+        <div class="col-sm-4">
+          <input type="number"  [min]="0" numberTransfer nbInput fullWidth formControlName="请输入" formControlName="beginningStock" id="beginningStock" >
+          <uea-show-form-errors [control]="modifyFrom.get('beginningStock')"></uea-show-form-errors>
+        </div>
+
+        <label  class="col-sm-2 col-form-label text-right">期末库存：</label>
+        <div class="col-sm-4">
+          <input type="number"  [min]="0" numberTransfer nbInput fullWidth formControlName="请输入" formControlName="closingStock" id="closingStock" >
+          <uea-show-form-errors [control]="modifyFrom.get('closingStock')"></uea-show-form-errors>
+        </div>
+      </div>
+
+
+      <div class="form-group row">
+        <label  class="col-sm-2 col-form-label text-right">报损出库：</label>
+        <div class="col-sm-4">
+          <input type="number"  [min]="0" numberTransfer nbInput fullWidth formControlName="请输入" formControlName="breakageOut" id="breakageOut" >
+          <uea-show-form-errors [control]="modifyFrom.get('breakageOut')"></uea-show-form-errors>
+        </div>
+
+        <label  class="col-sm-2 col-form-label text-right">门诊内调剂出库总量：</label>
+        <div class="col-sm-4">
+          <input type="number"  [min]="0" numberTransfer nbInput fullWidth formControlName="请输入" formControlName="allotOut" id="allotOut" >
+          <uea-show-form-errors [control]="modifyFrom.get('allotOut')"></uea-show-form-errors>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label  class="col-sm-2 col-form-label text-right">门诊内调剂入库总量：</label>
+        <div class="col-sm-4">
+          <input type="number"  [min]="0" numberTransfer nbInput fullWidth formControlName="请输入" formControlName="allotIn" id="allotIn" >
+          <uea-show-form-errors [control]="modifyFrom.get('allotIn')"></uea-show-form-errors>
+        </div>
+
+        <label  class="col-sm-2 col-form-label text-right">批量接种出库总量：</label>
+        <div class="col-sm-4">
+          <input type="number"  [min]="0" numberTransfer nbInput fullWidth formControlName="请输入" formControlName="massVaccinateOut" id="massVaccinateOut" >
+          <uea-show-form-errors [control]="modifyFrom.get('massVaccinateOut')"></uea-show-form-errors>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label  class="col-sm-2 col-form-label text-right">批量接种入库总量：</label>
+        <div class="col-sm-4">
+          <input type="number"  [min]="0" numberTransfer nbInput fullWidth formControlName="请输入" formControlName="massVaccinateIn" id="massVaccinateIn" >
+          <uea-show-form-errors [control]="modifyFrom.get('massVaccinateIn')"></uea-show-form-errors>
+        </div>
+
+        <label  class="col-sm-2 col-form-label text-right">省市平台出库总量：</label>
+        <div class="col-sm-4">
+          <input type="number"  [min]="0" numberTransfer nbInput fullWidth formControlName="请输入" formControlName="cdcOut" id="cdcOut" >
+          <uea-show-form-errors [control]="modifyFrom.get('cdcOut')"></uea-show-form-errors>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label  class="col-sm-2 col-form-label text-right">省市平台入库总量：</label>
+        <div class="col-sm-4">
+          <input type="number"  [min]="0" numberTransfer nbInput fullWidth formControlName="请输入" formControlName="cdcIn" id="cdcIn" >
+          <uea-show-form-errors [control]="modifyFrom.get('cdcIn')"></uea-show-form-errors>
+        </div>
+
+        <label  class="col-sm-2 col-form-label text-right">其它入库总量：</label>
+        <div class="col-sm-4">
+          <input type="number"  [min]="0" numberTransfer nbInput fullWidth formControlName="请输入" formControlName="otherIn" id="otherIn" >
+          <uea-show-form-errors [control]="modifyFrom.get('otherIn')"></uea-show-form-errors>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label  class="col-sm-2 col-form-label text-right">其它出库总量：</label>
+        <div class="col-sm-4">
+          <input type="number"  [min]="0" numberTransfer nbInput fullWidth formControlName="请输入" formControlName="otherOut" id="otherOut" >
+          <uea-show-form-errors [control]="modifyFrom.get('otherOut')"></uea-show-form-errors>
+        </div>
+
+        <label  class="col-sm-2 col-form-label text-right">免疫接种出库总量：</label>
+        <div class="col-sm-4">
+          <input type="number"  [min]="0" numberTransfer nbInput fullWidth formControlName="请输入" formControlName="vaccinateOut" id="vaccinateOut" >
+          <uea-show-form-errors [control]="modifyFrom.get('vaccinateOut')"></uea-show-form-errors>
+        </div>
+      </div>
+
+
+      <div class="form-group row">
+        <label for="memo" class="col-sm-2 col-form-label text-right">备注：</label>
+        <div class="col-sm-10">
+          <textarea nbInput formControlName="memo" id="memo" fullWidth placeholder="请输入......"></textarea>
+        </div>
+      </div>
+
+    </form>
+
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerMessage="" nbButton status="info" class="mr-5"
+              (click)="save()">保存
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>

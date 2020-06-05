@@ -1,0 +1,252 @@
+// @import '~bootstrap/scss/mixins/_breakpoints';
+// @import '~@nebular/theme/styles/global/_breakpoints';
+// @import '../../../../@uea/theme/global_theme';
+@import '../../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+  ::ng-deep .ant-table-small > .ant-table-content > .ant-table-body {
+    margin: 0;
+
+    th {
+      background: nb-theme(color-basic-200);
+    }
+  }
+
+  nb-tab {
+    &.content-active {
+      padding: 0;
+    }
+  }
+
+  .setting-drawer-handle {
+    position: fixed;
+    top: 240px;
+    right: 0;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    font-size: 16px;
+    text-align: center;
+    background: nb-theme(color-info-500);
+    border-radius: 4px 0 0 4px;
+    cursor: pointer;
+    transition: right 0.3s cubic-bezier(0.9, 0, 0.3, 0.7);
+    pointer-events: auto;
+  }
+  .setting-drawer-handle-opened {
+    right: 350px;
+    z-index: 1041;
+  }
+  .setting-drawer-handle-icon {
+    color: #fff;
+    font-size: 20px;
+  }
+
+  .baseInfoForm {
+    color: #000000;
+  }
+
+  .callNumber {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .call-number {
+    display: flex;
+
+    & .call-number-name {
+      margin-top: 10px;
+      margin-left: 10px;
+      font-size: 2.5rem;
+      color: #000000;
+      font-weight: bold;
+      flex: 2;
+    }
+
+    & .call-number-btn {
+      flex: 1;
+    }
+
+    & .call-number-tool {
+      flex: 2;
+      text-align: right;
+    }
+  }
+
+  .toolsBtn {
+    display: flex;
+    flex-direction: row;
+
+    button {
+      margin-right: 70px;
+    }
+  }
+
+  .form-breakage {
+    nb-select {
+      width: 200px;
+    }
+  }
+
+  .link-a-disabled {
+    color: #4e555b;
+  }
+
+  nb-card {
+    //  nb-card-header {
+    //    button {
+    //      float: right;
+    //      margin-right: 10px;
+    //    }
+    //  }
+
+    nb-card-body {
+      .group-callNumber-card {
+        height: 200px;
+
+        nb-card-header {
+          nb-list-item {
+            &:hover {
+              cursor: pointer;
+            }
+          }
+
+          table {
+            width: 100%;
+            font-size: 16px;
+
+            tbody {
+              width: 100%;
+            }
+          }
+        }
+
+        nb-card-body {
+          table {
+            width: 100%;
+            font-size: 24px;
+
+            tbody {
+              width: 100%;
+            }
+          }
+        }
+      }
+
+      .nb-arrow-down {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .group-manydose {
+        height: 200px;
+
+        nb-card-body {
+          nz-table {
+            font-size: 10px;
+          }
+        }
+      }
+
+      .group-current-inoculate {
+        table {
+          font-size: 12px;
+        }
+
+        .operation {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+        }
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .ant-descriptions-item-label {
+    font-weight: bold;
+  }
+
+  .ant-table-small > .ant-table-content > .ant-table-body th {
+    font-weight: bold;
+  }
+
+  .div-btn button.appearance-filled.status-info {
+    width: 100px;
+    font-size: 1.2rem;
+  }
+
+  .div-select nb-select.appearance-outline.status-basic .select-button {
+    background-color: #0095ff;
+    border-color: #0095ff;
+    color: #ffffff;
+    min-width: auto;
+    font-size: 1.2rem;
+
+    &:hover {
+      background-color: #3aa8ff;
+      border-color: #3aa8ff;
+    }
+
+    &:focus {
+      background-color: #0095ff;
+      border-color: #0095ff;
+    }
+
+    nb-icon {
+      color: #ffffff;
+    }
+  }
+
+  .nb-theme-default nb-card {
+    margin-bottom: 1rem;
+  }
+}
+
+.span-title {
+  font-size: 2rem;
+}
+
+@media (min-width: 1200px) {
+  .ul-btn {
+    float: right;
+  }
+}
+
+.ul-btn {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    display: inline;
+    float: left;
+    margin: 0 9px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &::after {
+      clear: both;
+    }
+  }
+}
+
+.clear::after {
+  clear: both;
+}
+
+.line-height-2rem {
+  line-height: 2rem;
+}

@@ -1,0 +1,62 @@
+<div [id]="printCheckPlanInfo.id">
+  <div style="padding: 0 50px;">
+    <p style="text-align: center; font-size: 1.5em; margin: 18px 0 8px;">
+      {{printCheckPlanInfo ? printCheckPlanInfo.orderInfo.supplyorgName : ''}}&nbsp;盘点计划任务表</p>
+    <div style="width: 100%; display: flex; align-items: center;">
+      <table style="width: 90%; margin: 0 auto;">
+        <tr>
+          <td style="width: 50%;">制单日期：{{today.getFullYear()}}年{{today.getMonth() + 1}}月{{today.getDate()}}日</td>
+          <td style="width: 50%;">盘点编号：{{printCheckPlanInfo ? printCheckPlanInfo.orderInfo.serialCode : ''}}</td>
+        </tr>
+        <tr>
+          <td>盘点人员：<span style="width: 50%; display:inline-block; border-bottom: 1px solid #000;">
+          {{printCheckPlanInfo.orderInfo.checkUser }}
+				</span></td>
+          <td>盘点日期：<span style="width: 50%; display:inline-block; border-bottom: 1px solid #000;">
+          {{printCheckPlanInfo.orderInfo.checkDate | date: 'yyyy-MM-dd'}}
+				</span></td>
+        </tr>
+      </table>
+      <qrcode [qrdata]="qrCode" [size]="64" [level]="'M'"></qrcode>
+    </div>
+    <p style="margin: 2px;">盘点疫苗情况：</p>
+    <table
+      border="1" cellspacing="0" cellpadding="0"
+      style="border-collapse:collapse; border-spacing:0; width: 100%; font-size: 14.4px; text-align: center;"
+    >
+      <tr>
+        <th>序</th>
+        <th>名称</th>
+        <th>生产企业</th>
+        <th>规格</th>
+        <th>批号</th>
+        <th>有效期</th>
+        <th>实际库存</th>
+        <th>可用库存</th>
+        <th>盘点库存</th>
+      </tr>
+      <tr *ngFor="let vac of printCheckPlanInfo.vaccineInfo; index as i">
+        <td>{{i + 1}}</td>
+        <td>{{vac.vaccName}}</td>
+        <td>{{vac.manufactureName}}</td>
+        <td>{{vac.spec}}</td>
+        <td>{{vac.batchNo}}</td>
+        <td>{{vac.outBoundDate | date: 'yyyy-MM-dd'}}</td>
+        <td>{{vac.storeNum}}</td>
+        <td>{{vac.storenumF}}</td>
+        <td></td>
+      </tr>
+      <tr>
+      </tr>
+    </table>
+    <table style="width: 100%; margin: 10px auto;">
+      <tr style="line-height: 25px;">
+        <td style="width: 65%;">盘点单位：<span
+          style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span>
+        </td>
+        <td style="width: 35%;">盘点人员签名：<span
+          style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></td>
+      </tr>
+    </table>
+  </div>
+</div>

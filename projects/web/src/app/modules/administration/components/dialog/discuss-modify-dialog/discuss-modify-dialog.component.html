@@ -1,0 +1,93 @@
+<nb-card accent="info">
+  <nb-card-header>
+    合议
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="modifyFrom" novalidate>
+      <div class="form-group row">
+
+        <label for="vaccineProductCode" class="col-sm-2 col-form-label text-right">疫苗名称：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="vaccineProductCode" id="vaccineProductCode" >
+        </div>
+
+        <label for="vaccineSpecification" class="col-sm-2 col-form-label text-right">产品剂量：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="vaccineSpecification" id="vaccineSpecification">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="manufacturerCode" class="col-sm-2 col-form-label text-right">厂商：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="manufacturerCode" id="manufacturerCode" >
+        </div>
+
+        <label for="prodBatchCode" class="col-sm-2 col-form-label text-right">批号：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="prodBatchCode" id="prodBatchCode">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="manufacturerCode" class="col-sm-2 col-form-label text-right">部门：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="departmentCode" id="departmentCode" [value]="modifyFrom.get('departmentCode').value| departmentNamePipe | async">
+        </div>
+
+        <label for="count" class="col-sm-2 col-form-label text-right">出入库数(支)：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="count" id="count">
+        </div>
+      </div>
+
+      <div class="form-group row">
+
+        <label for="modifyBy" class="col-sm-2 col-form-label text-right"><span class="star-required">*</span>合议人：</label>
+        <div class="col-sm-4">
+        <!--  <input type="text" fullWidth nbInput
+                  [status]="modifyFrom.get('modifyBy').invalid && modifyFrom.get('modifyBy').touched ? 'danger' : ''"
+                  formControlName="modifyBy" id="modifyBy" placeholder="合议人">-->
+          <nb-select placeholder="请选择" status="info" fullWidth formControlName= "modifyBy" id = "modifyBy" >
+            <nb-option [value]="v.number" *ngFor="let v of staffOptionSelected">{{v.realName}}</nb-option>
+          </nb-select>
+           <uea-show-form-errors [control]="modifyFrom.get('modifyBy')"></uea-show-form-errors>
+        </div>
+
+        <label for="countInOrOut" class="col-sm-2 col-form-label text-right"><span class="star-required">*</span>合议数量(支)：</label>
+        <div class="col-sm-4">
+          <input type="number" fullWidth nbInput [min]="0" [max]="10000000" numberTransfer
+                 [status]="modifyFrom.get('countInOrOut').invalid && modifyFrom.get('countInOrOut').touched ? 'danger' : ''"
+                 formControlName="countInOrOut" id="countInOrOut" placeholder="合议数量">
+          <uea-show-form-errors [control]="modifyFrom.get('countInOrOut')"></uea-show-form-errors>
+        </div>
+      </div>
+
+      <div class="form-group row">
+
+        <label for="modifyBy" class="col-sm-2 col-form-label text-right "><span class="star-required">*</span>合议项：</label>
+        <div class="col-sm-4">
+          <nb-select placeholder="请选择" fullWidth outline status="info" formControlName="modifyOption" id="modifyOption">
+            <nb-option [value]="v.value" *ngFor="let v of modifyOptionData">{{v.label}}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="modifyFrom.get('modifyOption')"></uea-show-form-errors>
+        </div>
+
+      </div>
+      <div class="form-group row">
+      <label for="memo" class="col-sm-2 col-form-label text-right">备注：</label>
+      <div class="col-sm-10">
+        <textarea nbInput formControlName="memo" id="memo" fullWidth placeholder="请输入......"></textarea>
+      </div>
+    </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerMessage="" nbButton status="info" class="mr-5"
+              (click)="modify()">确认
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>

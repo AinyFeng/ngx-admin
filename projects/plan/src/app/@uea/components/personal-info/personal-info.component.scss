@@ -1,0 +1,8 @@
+@import '../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+	@include media-breakpoint-down(sm) {
+	}
+	@include media-breakpoint-down(is) {
+	}
+}

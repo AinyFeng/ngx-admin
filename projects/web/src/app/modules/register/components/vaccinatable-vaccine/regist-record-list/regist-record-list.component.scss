@@ -1,0 +1,13 @@
+@import '../../../../../@uea/theme/global_theme';
+// @import '../../../../common/global-theme/global_theme';
+
+@include nb-install-component() {
+	.print-layer {
+		position: absolute;
+		margin-left: -999rem;
+	}
+
+	.a-delete {
+		color: nb-theme(color-danger-500);
+	}
+}

@@ -1,0 +1,44 @@
+@import '../../../../@uea/theme/global_theme';
+// @import '../../../common/global-theme/global_theme';
+
+@include nb-install-component() {
+	.immunity-card-container {
+		width: 720px;
+		text-align: center;
+		border: 1px solid #eaeaea;
+		font-size: 0.8rem;
+		margin: 0 auto;
+	}
+	.sub-title {
+		display: inline-block;
+		font-size: 0.8rem;
+	}
+
+	.profile-one span {
+		display: inline-block;
+	}
+
+	.profile-one span ~ span {
+		margin-left: 2rem;
+	}
+
+	.vac-table {
+		width: 140px;
+		display: inline-block;
+	}
+
+	.table th,
+	.table td {
+		text-align: center;
+		vertical-align: middle !important;
+		padding: 0.35rem;
+		font-size: 0.8rem;
+	}
+
+	.word-direction-col {
+		width: 0.8rem;
+		font-size: 0.8rem;
+		line-height: 1rem;
+		margin: 0 auto;
+	}
+}

@@ -1,0 +1,54 @@
+//全局覆盖样式
+.wx-content {
+  height: 100vh;
+  //margin: -15px !important;
+  background: #ffffff;
+}
+
+.wx-content-margin {
+  height: 100vh;
+  //background: #ffffff;
+}
+
+.weui-cells {
+  //margin-top: 0!important;
+}
+
+.am-list-item.am-input-item {
+  width: 100% !important;
+}
+
+.left-content .am-list-item.am-list-item .am-input-control input {
+  text-align: right !important;
+}
+
+div > listitem:nth-child(1) > div.am-list-line > div > div > inputitem > div > div.am-input-control > div > input {
+  text-align: right !important;
+}
+
+//字体为16px的标题class
+.title {
+  font-size: 16px;
+}
+
+//字体为14px而且颜色为#666666的描述class
+.title-info {
+  font-size: 14px;
+  color: #666666;
+}
+
+:host /deep/ .notifier__notification--default{
+  width: 72%!important;
+}
+:host /deep/ .notifier__notification--warning{
+  width: 72%!important;
+}
+:host /deep/ .notifier__notification--success{
+  width: 72%!important;
+}
+:host /deep/ .notifier__notification--error{
+  width: 72%!important;
+}
+:host /deep/ .notifier__notification--info{
+  width: 72%!important;
+}

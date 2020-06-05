@@ -1,0 +1,13 @@
+<!--实时监控-->
+<nz-tabset>
+	<nz-tab nzTitle="实时数据图表">
+		<div nz-row style="overflow:scroll; height: 70vh;">
+			<ng-container *ngFor="let option of data">
+				<div nz-col nzSpan="6" echarts [options]="option" class="monitor-charts"></div>
+			</ng-container>
+		</div>
+	</nz-tab>
+	<nz-tab nzTitle="温（湿）度明细">
+		<uea-temperature-humidity-detail></uea-temperature-humidity-detail>
+	</nz-tab>
+</nz-tabset>

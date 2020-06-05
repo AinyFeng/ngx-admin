@@ -1,0 +1,47 @@
+<nb-card accent="info">
+  <nb-card-header>
+    新增工作日
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="workingDayForm" novalidate>
+      <div class="form-group row">
+        <label for="workingRound" class="col-4 col-form-label text-right">周期：</label>
+        <div class="col-4">
+          <nb-select outline id="workingRound" formControlName="workingRound" status="info" placeholder="周期" fullWidth>
+            <nb-option [disabled]="c.disabled" *ngFor="let c of workingRoundOptions"
+                       [value]="c.value">{{ c.label }}</nb-option>
+          </nb-select>
+        </div>
+        <label class="col-form-label col-4 text-left">周期类型，包括周、单双周、月</label>
+      </div>
+      <div class="form-group row">
+        <label for="workingDay" class="col-4 label-required col-form-label text-right">日期：</label>
+        <div class="col-4">
+          <input type="number" nbInput max="6" min="0"
+                 [status]="workingDayForm.get('workingDay').invalid && workingDayForm.get('workingDay').touched ? 'danger' : ''"
+                 formControlName="workingDay" id="workingDay" placeholder="周期中的第几天" fullWidth>
+        </div>
+        <label class="col-form-label col-4">周期中的第几天，如果周期类型是周，则可以填入的范围是0~6，表示从周日到周六</label>
+      </div>
+      <div class="form-group row">
+        <label for="useAble" class="col-form-label col-4 text-right">是否可用</label>
+        <div class="col-4">
+          <nb-radio-group id="useAble" class="d-flex" formControlName="useAble">
+            <nb-radio *ngFor="let u of useAbleOptions" [value]="u.value">{{ u.label }}</nb-radio>
+          </nb-radio-group>
+        </div>
+        <label class="col-form-label col-4 text-left">
+          是否可用，默认为可用状态，如果不可用，则该日期不可预约
+        </label>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerMessage="" nbButton status="info" class="mr-5"
+              (click)="onSubmit()">保存
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>

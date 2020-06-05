@@ -1,0 +1,61 @@
+<nb-card accent="info">
+  <nb-card-header>
+    出生医院数据
+    <div>
+      <button nbButton status="info" (click)="search()">查询</button>
+      <button nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="hospitalForm">
+      <div class="form-group row">
+        <div class="col-md-4 row">
+          <label class="col-4 col-form-label text-right">医院编码：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth formControlName="hospitalCode" id="hospitalCode">
+          </div>
+        </div>
+        <div class="col-md-4 row">
+          <label class="col-4 col-form-label text-right">医院名称：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth formControlName="hospitalName" id="hospitalName">
+          </div>
+        </div>
+        <!-- <div class="col-md-4">
+          <button nbButton status="info"  (click)="search()">查询</button>
+            <button nbButton status="info" ><i class="fa fa-plus"></i>添加</button>
+        <button nbButton status="warning" (click)="reset()">重置</button> -->
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+<nb-card>
+  <nb-card-body>
+    <nz-table #hospitalInfo [nzData]="hospitalData" nzBordered nzSize="small" nzSimple="false" [nzLoading]="loading"
+              [nzTotal]="total"
+              [nzFrontPagination]="false"
+              (nzPageIndexChange)="search($event)">
+      <thead>
+        <tr>
+          <th [nzAlign]="'center'">医院编码</th>
+          <th [nzAlign]="'center'">医院名称</th>
+          <th [nzAlign]="'center'">备注</th>
+          <!--        <th [nzAlign]="'center'">排序</th>-->
+          <th [nzAlign]="'center'">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of hospitalInfo.data">
+          <td [nzAlign]="'center'">{{d.hospitalCode}}</td>
+          <td [nzAlign]="'center'">{{d.hospitalName}}</td>
+          <td [nzAlign]="'center'">{{d.memo}}</td>
+          <!--        <td [nzAlign]="'center'">{{d.sort}}</td>-->
+          <td [nzAlign]="'center'">
+            <!-- <a href="javascript:" class="link-a mr-1" (click)="updateHospital(d)">修改</a>
+             <a href="javascript:" class="link-a" (click)="deleteHospital(d)">删除</a>-->
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

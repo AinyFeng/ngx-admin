@@ -1,0 +1,70 @@
+<nb-card size="large" class="nb-card-container-xx">
+  <nb-card-header class="nb-card-header-qb">
+    打印接种记录
+  </nb-card-header>
+  <nb-card-body>
+    <nb-alert *ngIf="error" class="flex-row" outline="warning" closable (close)="closeAlert()">
+      打印机连接失败，请安装<a href="http://www.lodop.net/download.html" target="_blank">Lodop</a>插件
+    </nb-alert>
+    <uea-print-vacc-record (showStep)="showStep($event)" [vaccinateRecord]="vaccinateRecordData"
+                           (getPrintRecord)="getPrintRecord($event)"></uea-print-vacc-record>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="form-group row" *ngIf="vaccinateRecordData.prePage">
+      <div class="col-md-5 row">
+        <label class="col-3 col-form-label text-right">证件类型:</label>
+        <div class="col-9">
+          <nb-select placeholder="请选择证件类型" minlength="100" fullWidth outline status="info"
+                     [(selected)]="chooseType">
+            <nb-option [value]="item.value" *ngFor="let item of vaccinateRecordData.vaccCertificateType"
+                       (click)="savePrintModel(item.value)">{{item.label}}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <button nbButton status="info" class="mr-4" *ngIf="vaccinateRecordData.showNextStep" (click)="nextStep()">下一步
+        </button>
+        <button nbButton status="info" class="mr-4" (click)="onClose()">关闭</button>
+      </div>
+    </div>
+    <div *ngIf="!vaccinateRecordData.prePage">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-6 col-form-label">上页边距(px):</label>
+          <div class="col-6">
+            <input type="number" [min]="0" fullWidth nbInput value="0" [(ngModel)]="settings.marginTop">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-6 col-form-label">左页边距(px):</label>
+          <div class="col-6">
+            <input type="number" [min]="0" fullWidth nbInput value="0" [(ngModel)]="settings.marginLeft">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-5 col-form-label text-right">医生姓名:</label>
+          <div class="col-7">
+            <nb-select placeholder="请选择" minlength="100" fullWidth outline status="info" [(selected)]="doctorName">
+              <nb-option [value]="item.value" *ngFor="let item of doctorNames">{{item.label}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-2 row" *ngIf="vaccinateRecordData.currentTab === '空白页'">
+          <label class="col-form-label">开始行:</label>
+          <div class="col-7">
+            <input type="number" [min]="1" fullWidth nbInput value="0" [(ngModel)]="settings.startLine">
+          </div>
+        </div>
+        <div class="col-md-1">
+          <button nbButton status="info" (click)="saveSetting()">保存设置</button>
+        </div>
+      </div>
+      <div class="form-group row">
+        <button nbButton status="info" class="mr-4 ml-3" (click)="preStep()">上一步</button>
+        <button nbButton status="info" class="mr-4" (click)="print(true)">打印预览</button>
+        <button nbButton status="info" class="mr-4" (click)="print(false)">直接打印</button>
+        <button nbButton status="info" class="mr-4" (click)="onClose()">关闭</button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

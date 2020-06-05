@@ -1,0 +1,77 @@
+//@import '../../../../../@uea/theme/global_theme';
+//// @import '../../../../common/global-theme/global_theme';
+
+@import '../../../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+	::ng-deep nb-accordion-item {
+		margin-left: 0 !important;
+	}
+
+	nb-card {
+		width: 100%;
+		// max-height: 32rem;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.list-info {
+		list-style-type: none;
+
+		//& ~ ul {
+		margin-bottom: 0.5rem;
+		padding-left: 0;
+		//}
+
+		& > li {
+			margin-top: 0.5rem;
+			margin-bottom: 0.5rem;
+
+			& > span {
+				display: inline-block;
+				width: 35%;
+				text-align: right;
+				font-weight: bold;
+			}
+		}
+	}
+
+	.info-content {
+		padding-left: 0;
+	}
+
+	.info-item {
+		& > p > span {
+			display: inline-block;
+			width: 35%;
+			text-align: right;
+			font-weight: bold;
+		}
+	}
+
+	.basic-table {
+		& > tr > th {
+			text-align: right;
+			white-space: nowrap;
+          //color: nb-theme(color-basic-600);
+		}
+
+		& > tr > td {
+			word-break: break-all;
+		}
+	}
+
+	.immu-card > tr > th,
+	.immu-card > tr > td {
+		width: 50%;
+		text-align: center;
+	}
+
+	nb-tabset > nb-tab {
+		padding: 0.25rem;
+	}
+
+	::ng-deep .special-header {
+		padding: 0.75rem;
+	}
+}

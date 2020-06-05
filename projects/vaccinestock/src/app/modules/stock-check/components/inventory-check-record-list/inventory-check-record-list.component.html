@@ -1,0 +1,104 @@
+<nz-card style="width: 100%;" nzTitle="库存盘点记录">
+  <form nz-form [formGroup]="queryForm" class="ant-advanced-search-form">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="8">
+        <nz-form-item class="m-0">
+          <nz-form-label nzFor="vaccineSubclassCode" nzSpan="8">疫苗名称</nz-form-label>
+          <nz-form-control nzSpan="16">
+            <nz-select id="vaccineSubclassCode" nzShowSearch nzAllowClear
+                       formControlName="vaccineSubclassCode" nzPlaceHolder="请选择">
+              <nz-option *ngFor="let s of subclassCodeOptions" [nzLabel]="s.label" [nzValue]="s.value"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item class="m-0">
+          <nz-form-label nzFor="operator" nzSpan="8">盘点人员</nz-form-label>
+          <nz-form-control nzSpan="16">
+            <nz-select nzShowSearch id="operator" nzAllowClear formControlName="operator" nzPlaceHolder="请选择">
+              <nz-option *ngFor="let s of povStaffOptions" [nzLabel]="s.realName" [nzValue]="s.number"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item class="m-0">
+          <nz-form-label nzFor="checkCode" nzSpan="8">盘点编号</nz-form-label>
+          <nz-form-control nzSpan="16">
+            <input type="text" id="checkCode" nz-input formControlName="checkCode">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="8">
+        <nz-form-item class="m-0">
+          <nz-form-label nzFor="outboundDate" nzSpan="8">盘点日期(起)</nz-form-label>
+          <nz-form-control nzSpan="16">
+            <nz-date-picker [nzDisabledDate]="filterDate" formControlName="outboundDate"
+                            id="outboundDate"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item class="m-0">
+          <nz-form-label nzFor="outboundDateBreak" nzSpan="8">盘点日期(止)</nz-form-label>
+          <nz-form-control nzSpan="16">
+            <nz-date-picker [nzDisabledDate]="filterDate" formControlName="outboundDateBreak"
+                            id="outboundDateBreak"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+  <div class="mt-3 mb-3">
+    <button class="mr-2" nz-button nzType="primary" [nzLoading]="loading" (click)="query()">查询</button>
+    <button class="mr-2" nz-button nzType="primary">导出</button>
+    <button class="mr-2" nz-button nzType="primary" (click)="reset()">重置</button>
+  </div>
+  <nz-table nzSize="small" [nzTotal]="total"
+            [nzShowTotal]="totalTemplate"
+            [nzLoading]="loading"
+            [(nzPageIndex)]="pageIndex"
+            #checkRecord [nzData]="checkRecordData">
+    <thead>
+    <tr>
+      <th>编号</th>
+      <th>盘点编号</th>
+      <th>疫苗名称</th>
+      <th>生产厂家</th>
+      <th>批号</th>
+      <th>盘点前库存</th>
+      <th>盘点后库存</th>
+      <th>盘点数量</th>
+      <th>操作人</th>
+      <th>备注</th>
+      <th>操作时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of checkRecord.data;index as i">
+      <td>{{ i + 1 }}</td>
+      <td><a (click)="query(1, data.checkCode)" href="javascript:void(0)">{{ data.checkCode }}</a></td>
+      <td>{{ data.vaccName }}</td>
+      <td>{{ data.manufactureName }}</td>
+      <td>{{ data.batchNo }}</td>
+      <td>{{ data.checkBefore }}</td>
+      <td>{{ data.checkAfter }}</td>
+      <td>{{ data.checkNum }}</td>
+      <td
+        style="max-width: 100px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;">{{ data.createBy | povStaffNamePipe | async }}</td>
+      <td>{{ data.memo }}</td>
+      <td>{{ data.createDate | date: 'yyyy-MM-dd' }}</td>
+    </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+
+<ng-template #totalTemplate>
+  共{{ total }}条数据，当前第{{ pageIndex }}页
+</ng-template>

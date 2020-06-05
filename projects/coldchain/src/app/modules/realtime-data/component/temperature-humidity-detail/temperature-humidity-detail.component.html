@@ -1,0 +1,48 @@
+<!--温湿度明细-->
+<nz-table #borderedTable
+          nzBordered nzSize="small" nzSimple="false" [nzLoading]="loading"
+          [nzScroll]="{x: 'auto'}"
+          [nzPageIndex]="pageIndex"
+          [nzTotal]="total"
+          (nzPageIndexChange)="searchData($event)"
+          [nzItemRender]="renderItemTemplate"
+          [nzFrontPagination]="false"
+          [nzData]="dataSet">
+  <thead>
+  <tr>
+    <th>探温点</th>
+    <th>所属设备</th>
+    <th>接种室</th>
+    <th>品牌</th>
+    <th>型号</th>
+    <th>最低温度</th>
+    <th>最高温度</th>
+    <th>最后测量时间</th>
+    <th>当前温度</th>
+    <th>当前湿度</th>
+    <th>类型</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of borderedTable.data">
+    <td>{{ data.sensorMac }}</td>
+    <td>{{ data.dName }}</td>
+    <td>{{ data.departemtCode | departmentNamePipe | async}}</td>
+    <td>{{ data.manufacturer }}</td>
+    <td>{{ data.modelNumber }}</td>
+    <td>{{ data.lower_temp }}</td>
+    <td>{{ data.upperTemp }}</td>
+    <td>{{ data.getTime }}</td>
+    <td>{{ data.tempBcd }}</td>
+    <td>{{ data.humiBcd }}</td>
+    <td>{{ data.type }}</td>
+    <td></td>
+  </tr>
+  </tbody>
+</nz-table>
+<ng-template #renderItemTemplate let-type let-page="page">
+  <a *ngIf="type === 'pre'" >上一页</a>
+  <a *ngIf="type === 'next'">下一页</a>
+  <a *ngIf="type === 'page'">{{ page }}</a>
+</ng-template>

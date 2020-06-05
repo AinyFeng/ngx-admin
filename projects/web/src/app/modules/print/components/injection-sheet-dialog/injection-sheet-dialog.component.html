@@ -1,0 +1,61 @@
+<nb-card class="nb-card-container-xx">
+  <nb-card-header class="text-center">
+    <h5>注射单</h5>
+  </nb-card-header>
+  <nb-card-body style="min-height: 500px;" class="">
+    <nb-alert *ngIf="error" class="flex-row" outline="warning" closable (close)="closeAlert()">
+      打印机连接失败，请安装<a href="http://www.lodop.net/download.html" target="_blank">Lodop</a>插件
+    </nb-alert>
+    <div id="injectSingle" style="padding: 20px;">
+      <div style="font-weight: bold; font-size: 20px; margin-bottom: 10px;">编号: {{profile?.profileCode}}</div>
+      <div style="float: left;">
+        <qrcode style="display: inline-block;" [qrdata]="qrCode" [size]="64" [level]="'M'"></qrcode>
+      </div>
+      <div
+        style="font-size: 30px; font-weight: bold; text-align: center; letter-spacing: 10px; margin-top:12px;">{{injectSingleData?.broadHeadingCode | vacBroadHeadingPipe}}</div>
+      <br>
+      <div style="font-size: 20px; font-weight:bold; text-align: center; margin-top: 10px;">
+        姓名：{{profile?.name}}&emsp;&emsp;性别：{{profile?.gender | dicPipe:'genderCode'}}&emsp;&emsp;年龄：{{child ? (profile?.age ? profile?.age : 0) + '岁' + (profile?.month ? profile?.month : 0) + '月龄' : profile?.age}}&emsp;&emsp;
+      </div>
+      <div style="font-size: 26px; text-align: center; margin-top: 10px; font-weight:bold; letter-spacing: 16px;">注射日期
+      </div>
+      <table style="width: 90%; margin: 15px 5%; border: 1px #008000 solid; border-spacing:0;">
+        <tbody>
+        <tr style="font-size: 20px; font-weight: bold; text-align: center;" *ngFor="let item of printInfo">
+          <td style="border: 1px #008000 solid; margin: 0; width: 30%;">{{'第' + item.vaccOrder + '针'}}</td>
+          <td style="border: 1px #008000 solid; margin: 0;">{{item.vaccDate}}</td>
+          <td style="border: 1px #008000 solid; margin: 0; width: 40%;"></td>
+        </tr>
+        </tbody>
+      </table>
+      <div style="font-size: 26px; text-align: center; margin-top: 10px; font-weight:bold; letter-spacing: 16px;">接种时间
+      </div>
+      <div style="font-size: 14px; margin: 10px 5% 20px; text-align: center;">{{povInfo?.workTime}}</div>
+      <br/>
+      <div style="font-size: 25px; text-align: center; font-weight: bold; letter-spacing: 16px; margin:10px 5%; ">注意事项
+      </div>
+      <div>
+        <ul
+          style="padding: 0 5%; margin-left: 16px; font-size: 20px; margin-top: 0; line-height: 30px; list-style-type: none;">
+          <li>1. 注射疫苗期间可照常工作，切忌饮酒、浓茶等刺激性食物及剧烈劳动和运动，以避免引起反应。</li>
+          <li>2. 发热者暂缓接种。</li>
+          <li>3. 个别人可能出现红、肿、痒、痛等过敏现象。</li>
+          <li>4. 接种当日不宜沐浴。</li>
+          <li>5. 接种后留观30分钟。</li>
+          <li>6. 请您按照以上规定的时间按时接种疫苗。</li>
+        </ul>
+      </div>
+      <div style="font-size: 18px; text-align: right; margin-right: 25px;">医师：<span
+        style="text-decoration:underline;">{{userInfo.name}}</span>
+      </div>
+      <div
+        style="font-size: 16px; text-align: right; margin: 5px 25px 5px 0; font-weight: bolder;">{{userInfo.povName}}</div>
+      <div style="font-size: 16px; text-align: right; margin-right: 25px; font-weight: bolder;">{{nowDate}}</div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton status="info" class="mr-3" (click)="print(true)">打印预览</button>
+    <button nbButton status="info" (click)="print(false)">直接打印</button>
+    <button nbButton status="info" (click)="close()" class="float-right">关闭</button>
+  </nb-card-footer>
+</nb-card>

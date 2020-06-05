@@ -1,0 +1,26 @@
+<nb-card accent="info">
+  <nb-card-header>
+    手机绑定
+    <span class="cursor-pointer" (click)="saveDialog(false)"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form>
+      <div class="form-group row">
+        <label class="col-4 col-form-label">手机号码:</label>
+        <div class="col-8">
+          <input type="text" placeholder="请输入手机号码" nbInput name="telPhone" [(ngModel)]="telPhone">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4 col-form-label">手机号码:</label>
+        <div class="col-8">
+          <input type="text" placeholder="请输入手机号码" nbInput name="telPhone" [(ngModel)]="telPhone">
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton status="info" (click)="saveDialog(false)">取消</button>
+    <button nbButton status="info" (click)="saveDialog(true)">保存</button>
+  </nb-card-footer>
+</nb-card>

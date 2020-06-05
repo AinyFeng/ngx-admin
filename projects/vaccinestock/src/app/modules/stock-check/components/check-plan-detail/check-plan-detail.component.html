@@ -1,0 +1,42 @@
+<button class="mr-2" nz-button [nzType]="'primary'" (click)="printCheckPlanDetail(true)">打印</button>
+<nz-table #stock [nzData]="listOfData" [nzLoading]="loading" nzSize="small">
+  <thead>
+  <tr>
+    <th>编号</th>
+    <th>名称</th>
+    <th>属性</th>
+    <th>生产企业</th>
+    <th>批号</th>
+    <th>批签发证号</th>
+    <th>规格(剂/支/粒)</th>
+    <th>剂量</th>
+    <th>有效期</th>
+    <th>成本价</th>
+    <th>出售价</th>
+    <th>实际库存</th>
+    <th>可用库存</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of stock.data; index as i">
+    <td>{{ i + 1 }}</td>
+    <td>{{data.vaccName}}</td>
+    <td>{{data.type}}</td>
+    <td>{{ data.manufactureName }}</td>
+    <td>{{ data.batchNo }}</td>
+    <td>{{ data.certifiCode }}</td>
+    <td>{{ data.spec }}</td>
+    <td>{{ data.dose }}</td>
+    <td>{{ data.outBoundDate | date: 'yyyy-MM-dd' }}</td>
+    <td>{{ data.orignPrice | currency: '￥' }}</td>
+    <td>{{ data.sellPrice | currency: '￥' }}</td>
+    <td>{{ data.storeNum }}</td>
+    <td>{{ data.storenumF }}</td>
+  </tr>
+  </tbody>
+</nz-table>
+<!--盘点计划打印-->
+<uea-print-check-plan #printCheckPlan
+                     style="position: absolute; margin-left: -9999rem;"
+                     [printCheckPlanInfo]="printCheckPlanInfo"
+></uea-print-check-plan>

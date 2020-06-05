@@ -1,0 +1,55 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    短信模板管理
+    <div>
+      <button nbButton status="info" (click)="searchData()" [nbSpinner]="loading">查询</button>
+      <button nbButton status="info" (click)="addTemplate()" class="ml-2 mr-2">添加自定义模板</button>
+      <!--<button nbButton status="info">删除</button>
+      <button nbButton status="info">修改</button>
+      <button nbButton status="info">导出</button>-->
+      <button nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form>
+      <div class="form-group row">
+        <div class="col-md-4 row">
+          <label class="col-4 col-form-label">模板名称：</label>
+          <div class="col-8">
+            <input type="text" inputNoSpace
+                   nbInput placeholder="请输入模板名称" fullWidth [(ngModel)]="templateName" name="templateName">
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center">
+  <nb-card-body>
+    <nz-table #msgTable [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false" [nzPageIndex]="pageIndex"
+      [nzTotal]="total" [nzFrontPagination]="false" (nzPageIndexChange)="searchData($event)">
+      <thead>
+        <tr>
+          <th [nzAlign]="'center'">模板名称</th>
+          <th [nzAlign]="'center'">模板编号</th>
+          <th [nzAlign]="'center'">模板内容</th>
+          <th [nzAlign]="'center'">更新时间</th>
+          <th [nzAlign]="'center'">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of msgTable.data">
+          <td [nzAlign]="'center'">{{data.templateName}}</td>
+          <td [nzAlign]="'center'">{{data.templateCode}}</td>
+          <td [nzAlign]="'center'">{{data.templateContent}}</td>
+          <td [nzAlign]="'center'">{{data.dataTime | date: 'yyyy-MM-dd'}}</td>
+          <td [nzAlign]="'center'">
+            <a href="javascript:" class="link-a mr-1" (click)="changeInfo(data)">修改</a>
+            <a href="javascript:" class="link-a" (click)="deleteInfo(data)">删除</a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

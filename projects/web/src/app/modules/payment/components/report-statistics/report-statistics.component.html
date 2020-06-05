@@ -1,0 +1,154 @@
+<nb-card>
+  <nb-card-body>
+    <nb-tabset>
+      <nb-tab tabTitle="发票统计">
+        <nb-card>
+          <nb-card-body>
+            <form>
+              <div class="row group-invoice-statistics">
+                <div class="col-md-3">
+                  <label>收银员:</label>
+                  <nb-select [(selected)]="cashierStatusSelect">
+                    <nb-option *ngFor="let cashier of cashiers" [value]="cashier">{{cashier}}</nb-option>
+                  </nb-select>
+                </div>
+                <div class="col-md-3">
+                  <label>发票状态:</label>
+                  <nb-select [(selected)]="invoiceStatusSelect">
+                    <nb-option value="normal">正常</nb-option>
+                    <nb-option value="cancellation">作废</nb-option>
+                  </nb-select>
+                </div>
+                <div class="col-md-3">
+                  <label>开票状态:</label>
+                  <nb-select [(selected)]="invoicedStatusSelect">
+                    <nb-option selected value="all">全部</nb-option>
+                    <nb-option value="invoiced">已开票</nb-option>
+                    <nb-option value="uninvoiced">未开票</nb-option>
+                  </nb-select>
+                </div>
+                <div class="col-md-3">
+                  <label>业务流水号:</label>
+                  <input nbInput type="text" fieldSize="small" placeholder="请输入业务流水号">
+                </div>
+                <div class="col-md-3">
+                  <label>姓名:</label>
+                  <input nbInput type="text" fieldSize="small" placeholder="请输入姓名">
+                </div>
+                <div class="col-md-3">
+                  <label>创建时间(起)：</label>
+                  <nz-date-picker
+                    nzShowTime
+                    nzFormat="yyyy-MM-dd HH:mm:ss"
+                    nzPlaceHolder="选择时间"
+                    (ngModelChange)="onChange($event)"
+                    (nzOnOk)="onOk($event)"
+                  ></nz-date-picker>
+                </div>
+                <div class="col-md-3">
+                  <label>创建时间(止)：</label>
+                  <nz-date-picker
+                    nzShowTime
+                    nzFormat="yyyy-MM-dd HH:mm:ss"
+                    nzPlaceHolder="选择时间"
+                    (ngModelChange)="onChange($event)"
+                    (nzOnOk)="onOk($event)"
+                  ></nz-date-picker>
+                </div>
+                <div class="col-md-3">
+                  <button nbButton status="info" size="xsmall">查询</button>
+                  <button nbButton status="warning" size="xsmall">打印</button>
+                </div>
+              </div>
+            </form>
+          </nb-card-body>
+        </nb-card>
+        <nb-card>
+          <nb-card-body>
+          </nb-card-body>
+        </nb-card>
+      </nb-tab>
+      <nb-tab tabTitle="报表明细">
+        <nb-card>
+          <nb-card-body>
+            <form>
+              <div class="row group-invoice-statistics">
+                <div class="col-md-3">
+                  <label>收银员:</label>
+                  <nb-select [(selected)]="cashierStatusSelect">
+                    <nb-option *ngFor="let cashier of cashiers" [value]="cashier">{{cashier}}</nb-option>
+                  </nb-select>
+                </div>
+                <div class="col-md-3">
+                  <label>创建时间(起)：</label>
+                  <nz-date-picker
+                    nzShowTime
+                    nzFormat="yyyy-MM-dd HH:mm:ss"
+                    nzPlaceHolder="选择时间"
+                    (ngModelChange)="onChange($event)"
+                    (nzOnOk)="onOk($event)"
+                  ></nz-date-picker>
+                </div>
+                <div class="col-md-3">
+                  <label>创建时间(止)：</label>
+                  <nz-date-picker
+                    nzShowTime
+                    nzFormat="yyyy-MM-dd HH:mm:ss"
+                    nzPlaceHolder="选择时间"
+                    (ngModelChange)="onChange($event)"
+                    (nzOnOk)="onOk($event)"
+                  ></nz-date-picker>
+                </div>
+                <div class="col-md-3">
+                  <button nbButton status="info" size="xsmall">查询</button>
+                </div>
+              </div>
+            </form>
+          </nb-card-body>
+        </nb-card>
+        <nb-card>
+          <nb-card-body>
+          </nb-card-body>
+        </nb-card>
+      </nb-tab>
+      <nb-tab tabTitle="万达对账表">
+        <nb-card>
+          <nb-card-body>
+            <form>
+              <div class="row group-invoice-statistics">
+                <div class="col-md-3">
+                  <label>日期：</label>
+                  <nz-date-picker
+                    nzShowTime
+                    nzFormat="yyyy-MM-dd HH:mm:ss"
+                    nzPlaceHolder="选择时间"
+                    (ngModelChange)="onChange($event)"
+                    (nzOnOk)="onOk($event)"
+                  ></nz-date-picker>
+                </div>
+                <div class="col-md-3">
+                  <label>类型:</label>
+                  <nb-select [(selected)]="typeSelect">
+                    <nb-option value="success">正常</nb-option>
+                    <nb-option value="faile">作废</nb-option>
+                  </nb-select>
+                </div>
+                <div class="col-md-3">
+                  <button nbButton status="info" size="xsmall" (click)="search()">查询</button>
+                </div>
+              </div>
+            </form>
+          </nb-card-body>
+        </nb-card>
+        <nb-card *ngIf="showStatistics">
+          <nb-card-body>
+          </nb-card-body>
+        </nb-card>
+        <nb-card>
+          <nb-card-body>
+          </nb-card-body>
+        </nb-card>
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+</nb-card>

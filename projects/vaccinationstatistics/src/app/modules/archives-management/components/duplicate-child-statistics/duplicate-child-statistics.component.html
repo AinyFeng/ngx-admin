@@ -1,0 +1,84 @@
+<div nz-row>
+  <nz-card>
+    <nz-tabset>
+      <nz-tab nzTitle="重复儿童统计">
+        <div nz-row>
+          <form nz-form [nzLayout]="'inline'" [formGroup]="queryForm">
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="12">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="3" [nzMd]="3" [nzXs]="24" nzFor="address">地区名称</nz-form-label>
+                  <nz-form-control [nzLg]="8" [nzMd]="8" [nzXs]="24">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" id="address"
+                               formControlName="address">
+                      <nz-option [nzLabel]="item.name" [nzValue]="item.code+item.level"
+                                 *ngFor="let item of addressData"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="3" [nzMd]="3" [nzXs]="24" nzFor="exportPage">导出页码</nz-form-label>
+                  <nz-form-control [nzLg]="19" [nzMd]="19" [nzXs]="24">
+                    <input nz-input  formControlName="exportPageStart" style="width: 70px;"/>
+                    ~
+                    <input nz-input  formControlName="exportPageEnd" style="width: 70px;"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="12">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="3" [nzMd]="3" [nzXs]="24" nzFor="repeaConditions" [nzRequired]="true">重复条件</nz-form-label>
+                  <nz-form-control [nzLg]="19" [nzMd]="19" [nzXs]="24">
+                    <nz-checkbox-group formControlName="repeaConditions" [(ngModel)]="checkOptionsOne">
+                    </nz-checkbox-group>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="3" [nzMd]="3" [nzXs]="24" nzFor="birthDate">出生日期</nz-form-label>
+                  <nz-form-control [nzLg]="19" [nzMd]="19" [nzXs]="24">
+                    <nz-date-picker [nzDisabledDate]="disabledbirthStart" formControlName="birthDateStart"></nz-date-picker>
+                    至
+                    <nz-date-picker [nzDisabledDate]="disabledbirthEnd" formControlName="birthDateEnd"></nz-date-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+
+            <nz-form-item>
+              <nz-form-control>
+                <button nz-button nzType="primary" (click)="searchData()"  [nzLoading]="loading" class="mr-2" >查询</button>
+                <button nz-button nzType="primary" class="mr-2" (click)="resetForm()">重置</button>
+                <button nz-button nzType="primary" class="mr-2"  [nzLoading]="loading">导出</button>
+                <button nz-button nzType="primary">隐藏图表</button>
+              </nz-form-control>
+            </nz-form-item>
+
+          </form>
+        </div>
+        <div nz-row>
+          <nz-table #borderedTable nzBordered  [nzFrontPagination]="false" [nzLoading]="loading" [nzData]="listOfData">
+            <thead>
+            <tr>
+              <th>地区名称</th>
+              <th>重复儿童数</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of borderedTable.data">
+              <td>{{ data.officeName }}</td>
+              <td>{{ data.childTotalNum }}</td>
+            </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </nz-tab>
+    </nz-tabset>
+  </nz-card>
+</div>
+

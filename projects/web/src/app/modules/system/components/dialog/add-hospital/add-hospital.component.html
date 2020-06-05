@@ -1,0 +1,49 @@
+<nb-card class="nb-card-container-sm">
+  <nb-card-header class="nb-card-header-qb">
+    修改医院信息
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="hospitalForm">
+      <div class="form-group row">
+        <label class="col-form-label col-md-4 text-right label-required">
+          <span class="label-required">医院编码：</span></label>
+        <div class="col-md-4">
+          <input type="text" nbInput outline fullWidth
+                 [status]="hospitalForm.get('hospitalCode').invalid && hospitalForm.get('hospitalCode').touched ? 'danger' : ''"
+                 formControlName="hospitalCode" id="hospitalCode"/>
+          <uea-show-form-errors [control]="hospitalForm.get('hospitalCode')"></uea-show-form-errors>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-form-label col-md-4 text-right">
+          <span class="label-required">医院名称：</span></label>
+        <div class="col-md-4">
+          <input type="text" nbInput outline fullWidth
+                 [status]="hospitalForm.get('hospitalName').invalid && hospitalForm.get('hospitalName').touched ? 'danger' : ''"
+                 formControlName="hospitalName" id="hospitalName">
+          <uea-show-form-errors [control]="hospitalForm.get('hospitalName')"></uea-show-form-errors>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-form-label col-md-4 text-right">备注：</label>
+        <div class="col-md-4">
+          <textarea nbInput formControlName="memo" id="memo" fullWidth placeholder="请输入......"></textarea>
+        </div>
+      </div>
+      <!--<div class="form-group row">
+        <label class="col-form-label col-md-4 text-right">排序：</label>
+        <div class="col-md-4">
+          <input type="number" nbInput outline fullWidth formControlName="sort" id="sort" [min]="1"
+                 [status]="hospitalForm.get('sort').invalid && hospitalForm.get('sort').touched ? 'danger' : ''"
+          >
+          <uea-show-form-errors [control]="hospitalForm.get('sort')"></uea-show-form-errors>
+        </div>
+      </div>-->
+    </form>
+    <div class="text-center">
+      <button nbButton status="info" (click)="saveHospitalInfo()">保存</button>
+    </div>
+  </nb-card-body>
+</nb-card>
+

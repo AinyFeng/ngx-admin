@@ -1,0 +1,34 @@
+<nz-input-group *ngIf="!hideSearchInput && treeData.length !== 0" [nzSuffix]="suffixIcon">
+  <input type="text" nz-input placeholder="输入关键字搜索" [(ngModel)]="searchNode"/>
+</nz-input-group>
+<ng-template #suffixIcon>
+  <i nz-icon nzType="search"></i>
+</ng-template>
+<nz-alert
+  *ngIf="treeData.length === 0"
+  nzType="warning"
+  nzMessage="提示"
+  nzDescription="没有数据"
+  nzShowIcon
+></nz-alert>
+<nz-tree [nzSearchValue]="searchNode"
+         [nzData]="treeData"
+         [nzExpandAll]="expandAll"
+         [nzExpandedKeys]="expandedKeys"
+         (nzClick)="selectNode($event)"
+         nzShowIcon
+         [nzMultiple]="multiple"
+         [nzSelectedKeys]="selectedKeys"
+         [nzExpandedIcon]="mutiExpandedIconTpl"
+         [nzHideUnMatched]="true">
+  <ng-template #mutiExpandedIconTpl let-node>
+    <span *ngIf="node.origin.children && node.origin.children.length > 0">
+      <i *ngIf="!node.isExpanded" style="color: #3366ff;" class="far fa-plus-square"></i>
+      <i *ngIf="node.isExpanded" style="color: #3366ff;" class="far fa-minus-square"></i>
+    </span>
+    <span *ngIf="node.origin.organizationType !== '1'">
+        <i style="color: #ffaa00;" class="fas fa-file"></i>
+    </span>
+  </ng-template>
+</nz-tree>
+

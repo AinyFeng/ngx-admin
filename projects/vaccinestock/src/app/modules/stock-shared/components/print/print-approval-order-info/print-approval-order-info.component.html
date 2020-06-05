@@ -1,0 +1,127 @@
+<div [id]="printOrderData.id">
+  <div style="padding: 0 50px;">
+    <p style="text-align: center; font-size: 1.5em; margin: 18px 0 8px;">
+      {{printOrderData ? printOrderData.orderInfo.supplyorgName : ''}}&nbsp;疫苗运输记录表</p>
+    <div style="width: 100%; display: flex; align-items: center;">
+      <table style="width: 90%; margin: 0 auto;">
+        <tr>
+          <td style="width: 50%;">制单日期：{{today.getFullYear()}}年{{today.getMonth() + 1}}月{{today.getDate()}}日</td>
+          <td style="width: 50%;">出库单号：{{printOrderData ? printOrderData.orderInfo.orderNo : ''}}</td>
+        </tr>
+        <tr>
+          <td>疫苗运输工具：<span style="width: 50%; display:inline-block; border-bottom: 1px solid #000;">
+          {{printOrderData.orderInfo.transportation | dicPipe: 'transportationType'}}
+				</span></td>
+          <td>疫苗冷藏工具：<span style="width: 50%; display:inline-block; border-bottom: 1px solid #000;">
+          {{printOrderData.orderInfo.refrigerateType | dicPipe: 'refrigerateType'}}
+				</span></td>
+        </tr>
+        <tr *ngIf="printOrderData.orderInfo.memo">
+          <td>备注信息： {{printOrderData.orderInfo.memo}}
+          </td>
+        </tr>
+      </table>
+      <qrcode [qrdata]="qrCode" [size]="64" [level]="'M'"></qrcode>
+    </div>
+    <p style="margin: 2px;">运输疫苗情况：</p>
+    <table
+      border="1" cellspacing="0" cellpadding="0"
+      style="border-collapse:collapse; border-spacing:0; width: 100%; font-size: 14.4px; text-align: center;"
+    >
+      <tr>
+        <th>序</th>
+        <th>名称</th>
+        <th>生产企业</th>
+        <th>规格</th>
+        <th>批号</th>
+        <th>有效期</th>
+        <th>数量</th>
+        <th *ngIf="printOrderData.orderInfo.vaccineType == '1'">单价</th>
+        <th *ngIf="printOrderData.orderInfo.vaccineType == '1'">小计</th>
+        <th *ngIf="printOrderData.orderInfo.vaccineType == '0'">类别</th>
+      </tr>
+      <tr *ngFor="let vac of printOrderData.vaccineInfo; index as i">
+        <td>{{i + 1}}</td>
+        <td>{{vac.vaccName}}</td>
+        <td>{{vac.manufactureName}}</td>
+        <td>{{vac.spec}}</td>
+        <td>{{vac.batchNo}}</td>
+        <td>{{vac.loseEfficacyDate | date: 'yyyy-MM-dd'}}</td>
+        <td>{{vac.vaccNum ? vac.vaccNum : 0}}</td>
+        <td *ngIf="printOrderData.orderInfo.vaccineType == '1'">{{vac.sellPrice ? vac.sellPrice : 0}}</td>
+        <td *ngIf="printOrderData.orderInfo.vaccineType == '1'">
+          <span *ngIf="vac.vaccineType !== null">￥</span>{{vac.vaccNum * vac.sellPrice ? vac.vaccNum * vac.sellPrice :  (vac.vaccineType == null ? ' ' : 0)}}</td>
+        <td *ngIf="printOrderData.orderInfo.vaccineType == '0'">第一类</td>
+      </tr>
+      <tr>
+        <td colspan="6" style="text-align: center;">合计</td>
+        <td>{{printOrderData.priceSum.sumNum ? printOrderData.priceSum.sumNum : 0}}</td>
+        <td>——</td>
+        <td *ngIf="printOrderData.orderInfo.vaccineType == '1'">￥{{printOrderData.priceSum.priceSum ? printOrderData.priceSum.priceSum : 0}}</td>
+      </tr>
+    </table>
+
+    <p style="margin: 2px;">运输温度记录:</p>
+
+    <table
+      border="1" cellspacing="0" cellpadding="0"
+      style="border-collapse:collapse; border-spacing:0; width: 100%; font-size: 14.4px; text-align: center;"
+    >
+      <!--style="height: auto; text-align: center;" border="1" cellpadding="0" cellspacing="0" width="100%"-->
+      <tr>
+        <th>项目</th>
+        <th>日期/时间</th>
+        <th>疫苗储存温度</th>
+        <th>环境温度</th>
+      </tr>
+      <tr>
+        <td>启运</td>
+        <td>&emsp;&emsp;&emsp;年&emsp;&emsp;月&emsp;&emsp;日&emsp;&emsp;时&emsp;&emsp;分</td>
+        <td>&emsp;&emsp;&emsp;℃</td>
+        <td>&emsp;&emsp;&emsp;℃</td>
+      </tr>
+      <tr>
+        <td>途中</td>
+        <td>&emsp;&emsp;&emsp;年&emsp;&emsp;月&emsp;&emsp;日&emsp;&emsp;时&emsp;&emsp;分</td>
+        <td>&emsp;&emsp;&emsp;℃</td>
+        <td>&emsp;&emsp;&emsp;℃</td>
+      </tr>
+      <tr>
+        <td>到达</td>
+        <td>&emsp;&emsp;&emsp;年&emsp;&emsp;月&emsp;&emsp;日&emsp;&emsp;时&emsp;&emsp;分</td>
+        <td>&emsp;&emsp;&emsp;℃</td>
+        <td>&emsp;&emsp;&emsp;℃</td>
+      </tr>
+    </table>
+
+    <table style="width: 100%; margin: 10px auto;">
+      <tr style="line-height: 25px;">
+        <td colspan="2">启运至到达行驶里程数：<span
+          style="width: 25%; display:inline-block; border-bottom: 1px solid #000;"></span>千米
+        </td>
+      </tr>
+      <tr style="line-height: 25px;">
+        <td style="width: 65%;">供疫苗单位：<span
+          style="width: 50%; display:inline-block; border-bottom: 1px solid #000;">{{printOrderData ? printOrderData.orderInfo.supplyorgName : ''}}</span>
+        </td>
+        <td style="width: 35%;">供疫苗人签名：<span
+          style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></td>
+      </tr>
+      <tr style="line-height: 25px;">
+        <td style="width: 65%;">收疫苗单位：<span
+          style="width: 50%; display:inline-block; border-bottom: 1px solid #000;">{{printOrderData ? printOrderData.orderInfo.receiveorgName : ''}}</span>
+        </td>
+        <td style="width: 35%;">收疫苗人签名：<span
+          style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></td>
+      </tr>
+    </table>
+
+    <p style="margin: 2px 0;">
+      填写说明：①本表供疫苗配送企业、疾病预防控制机构、接种单位疫苗运输时填写；
+      ②出入库单号为单位编码+年月日+2位流水号；
+      ③运输超过6小时需记录途中温度，间隔不超过6小时；
+      ④疫苗类别：一类疫苗/二类疫苗
+    </p>
+
+  </div>
+</div>

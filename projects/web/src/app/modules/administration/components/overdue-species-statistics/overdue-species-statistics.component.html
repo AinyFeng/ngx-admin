@@ -1,0 +1,154 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    逾期未种统计
+    <div>
+      <button nbButton status="info" (click)="queryData()" [nbSpinner]="loading">查询</button>
+      <button nbButton status="info" (click)="export()"  [nbSpinner]="loading" class="ml-2 mr-2">导出报表</button>
+      <button nbButton status="info" (click)="sendSms()">发送短信</button>
+      <button nbButton status="warning" (click)="replace()" class="ml-2">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">未种月限：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择" fullWidth outline status="info" formControlName="month">
+              <nb-option [value]="item.value" *ngFor="let item of month">{{item.label}}</nb-option>
+              <!--<nb-option value="January">一月</nb-option>
+              <nb-option value="February">二月</nb-option>
+              <nb-option value="March">三月</nb-option>
+              <nb-option value="April">四月</nb-option>
+              <nb-option value="May">五月</nb-option>
+              <nb-option value="June">六月</nb-option>
+              <nb-option value="July">七月</nb-option>
+              <nb-option value="August">八月</nb-option>
+              <nb-option value="September">九月</nb-option>
+              <nb-option value="October">十月</nb-option>
+              <nb-option value="November">十一月</nb-option>
+              <nb-option value="December">十二月</nb-option>-->
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">生日(起)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth
+                   formControlName="birthStart"
+                   readonly placeholder="请选择出生日期" [nbDatepicker]="birthdateDatePicker">
+            <nb-datepicker #birthdateDatePicker format="YYYY/MM/DD" [filter]="filterBirthStart"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">生日(止)：</label>
+          <div class="col-8">
+            <input nbInput formControlName="birthEnd" fullWidth readonly placeholder="请选择出生日期"
+                   [nbDatepicker]="birthDatePicker">
+            <nb-datepicker #birthDatePicker format="YYYY/MM/DD" [filter]="filterBirthEnd"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">居住类别：</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择居住类别" formControlName="residentialTypeCode"
+                               [options]="residentialTypeData"></uea-nb-select-all>
+            <!--<nb-select multiple placeholder="请选择" fullWidth outline status="info" id="residentialTypeCode">
+              <nb-option [value]="v.value" *ngFor="let v of residentialTypeData">{{v.label}}</nb-option>
+            </nb-select>-->
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">在册类别：</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择在册类别" formControlName="profileStatusCode"
+                               [options]="profileStatusData"></uea-nb-select-all>
+            <!--<nb-select multiple placeholder="请选择" fullWidth outline status="info" id="profileStatusCode">
+              <nb-option [value]="v.value" *ngFor="let v of profileStatusData">{{v.label}}</nb-option>
+            </nb-select>-->
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">区域划分：</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择区域划分" formControlName="community"
+                               [valueText]="'communityCode'"
+                               [labelText]="'communityName'"
+                               [options]="communityOptions"></uea-nb-select-all>
+            <!--            <nb-select multiple placeholder="请选择区域划分" fullWidth outline status="info" id="community">-->
+            <!--              <nb-option [value]="v.value" *ngFor="let v of belongDistrictData">{{v.label}}</nb-option>-->
+            <!--            </nb-select>-->
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗名称：</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择疫苗名称" formControlName="vaccineProductCode"
+                               [options]="vacSubClassData"></uea-nb-select-all>
+            <!--<nb-select multiple placeholder="请选择疫苗名称" fullWidth outline status="info" id="vaccineProductCode">
+              <nb-option [value]="v.value" *ngFor="let v of vacSubClassData">{{v.label}}</nb-option>
+            </nb-select>-->
+          </div>
+        </div>
+      </div>
+      <!-- <div class="form-group row">
+        <div class="col-md-12">
+          <button nbButton status="info" >查询</button>
+          <button nbButton status="info" >导出报表</button>
+          <button nbButton status="info" >发送短信</button>
+          <button nbButton status="warning">重置</button>
+        </div>
+      </div> -->
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow: scroll;">
+  <nb-card-body>
+    <nz-table #msgTable [nzData]="listOfData"
+              [nzLoading]="loading"
+              [nzTotal]="total"
+              [(nzPageIndex)]="pageIndex"
+              [nzFrontPagination]="false"
+              (nzPageIndexChange)="queryData($event)"
+              nzBordered nzSize="small"
+              nzSimple="false">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">儿童编码</th>
+        <th [nzAlign]="'center'">儿童姓名</th>
+        <th [nzAlign]="'center'">性别</th>
+        <th [nzAlign]="'center'">居住属性</th>
+        <th [nzAlign]="'center'">出生日期</th>
+        <th [nzAlign]="'center'">母亲姓名</th>
+        <th [nzAlign]="'center'">母亲联系方式</th>
+        <th [nzAlign]="'center'">父亲姓名</th>
+        <th [nzAlign]="'center'">父亲联系方式</th>
+        <th [nzAlign]="'center'">地址</th>
+        <th [nzAlign]="'center'">上次接种日期</th>
+        <th [nzAlign]="'center'">应种疫苗</th>
+        <th [nzAlign]="'center'">应种剂次数</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data">
+        <td [nzAlign]="'center'">{{data.profileCode}}</td>
+        <td [nzAlign]="'center'">{{data.childName}}</td>
+        <td [nzAlign]="'center'">{{data.gender | dicPipe: 'genderCode'}}</td>
+        <td [nzAlign]="'center'">{{data.liveType}}</td>
+        <td [nzAlign]="'center'">{{data.birthDate | date: 'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">{{data.monName}}</td>
+        <td [nzAlign]="'center'">{{data.monPhone}}</td>
+        <td [nzAlign]="'center'">{{data.faName}}</td>
+        <td [nzAlign]="'center'">{{data.faPhone}}</td>
+        <td [nzAlign]="'center'">{{data.address}}</td>
+        <td [nzAlign]="'center'">{{data.preVaccineDate}}</td>
+        <td [nzAlign]="'center'">{{data.vaccName}}</td>
+        <td [nzAlign]="'center'">{{data.num}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

@@ -1,0 +1,13 @@
+@import '../../../../@uea/theme/global_theme';
+// @import '../../../common/global-theme/global_theme';
+
+@include nb-install-component() {
+	div {
+		margin-bottom: 0.25rem;
+	}
+	.stamp {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+	}
+}

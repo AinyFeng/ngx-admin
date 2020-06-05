@@ -1,0 +1,53 @@
+<nb-card *ngIf="showCard" accent="info" class="group-current-inoculate" size="xsmall">
+  <nb-card-header>
+    <h6>多剂次</h6>
+  </nb-card-header>
+  <nb-card-body>
+    <ng-container [ngTemplateOutlet]="multipleDose"></ng-container>
+  </nb-card-body>
+</nb-card>
+<ng-container *ngIf="!showCard" [ngTemplateOutlet]="multipleDose"></ng-container>
+<ng-template #multipleDose>
+  <nz-table #manyDoseTable [nzData]="platformService.vaccineDoseDatas" nzBordered [nzShowPagination]="false" nzSize="small">
+    <thead>
+    <tr>
+      <th [nzAlign]="'center'">名称</th>
+      <th [nzAlign]="'center'">厂商</th>
+      <th [nzAlign]="'center'">批号</th>
+      <th [nzAlign]="'center'">总剂次</th>
+      <th [nzAlign]="'center'">剩余剂次</th>
+      <th [nzAlign]="'center'">归属部门</th>
+      <th [nzAlign]="'center'">开启时间</th>
+      <th [nzAlign]="'center'">有效时间</th>
+      <th [nzAlign]="'center'">倒计时</th>
+      <th [nzAlign]="'center'">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of manyDoseTable.data">
+      <td [nzAlign]="'center'">{{data.vaccineProductName}}</td>
+      <td [nzAlign]="'center'">{{data.manufacturerName}}</td>
+      <td [nzAlign]="'center'">{{data.vaccineBatchNo}}</td>
+      <td [nzAlign]="'center'">{{data.dosageByEach}}</td>
+      <td [nzAlign]="'center'">{{data.dosageByEach - data.vaccinateDoseNumber}}</td>
+      <td [nzAlign]="'center'">{{data.departmentName}}</td>
+      <td [nzAlign]="'center'">{{data.vaccinateTime | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td [nzAlign]="'center'">{{data.effectiveTime | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td [nzAlign]="'center'">
+<!--        <nz-countdown [nzValue]="data.effectiveTime" nzFormat="m分s秒" (nzCountdownFinish)="onDoseFinished($event,data)"></nz-countdown>-->
+        <countdown [config]="{ stopTime: data.effectiveTime, format: 'm分s秒'}" (event)="onDoseFinished($event,data)"></countdown>
+      </td>
+      <td [nzAlign]="'center'">
+        <button nbButton size="tiny" status="info" [disabled]="data.disabled" (click)="manyDoseOperationBreakage(data)">
+          弃用
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</ng-template>
+
+<uea-vaccinate-breakage (_onBreakageSuccess)="breakageSuccess()" [breakageObj]="breakageObj"
+                        [(breakageVisible)]="breakageVisible" [vaccineProductOptions]="platformService.breakageVaccineProductOptions"
+                        [eleSuperviseCodeOptions]="platformService.eleSuperviseCodes" [facilityCodeOptions]="platformService.breakageFacilityCodeOptions"
+                        [vaccineBatchOptions]="platformService.vaccineBatches"></uea-vaccinate-breakage>

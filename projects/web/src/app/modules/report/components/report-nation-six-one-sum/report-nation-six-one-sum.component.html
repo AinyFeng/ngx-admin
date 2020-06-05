@@ -1,0 +1,1139 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    常规免疫接种情况6-1汇总表
+    <div>
+      <button nbButton status="success" (click)="queryData()" [disabled]="loading" [nbSpinner]="loading">统计</button>
+      <button nbButton status="success" class="ml-2 mr-2" (click)="printSixOneSum(true, 'sixOneSum')"
+              [disabled]="loading"
+              [nbSpinner]="loading">打印
+      </button>
+      <button nbButton status="success" (click)="previewAll()" [disabled]="loading" [nbSpinner]="loading">预览全部</button>
+      <button nbButton status="primary" (click)="exportSum()" class="ml-2" [disabled]="loading" [nbSpinner]="loading">导出</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form>
+      <div class="form-group row">
+        <div class="col-md-8 row">
+          <div class="col-md-3">
+            <nb-select placeholder="请选择年份" fullWidth outline [(selected)]="year">
+              <nb-option [value]="item.value" *ngFor="let item of years">{{item.label}}</nb-option>
+            </nb-select>
+          </div>
+          <span class="text-center middle-span">年</span>
+          <div class="col-md-3">
+            <nb-select placeholder="请选择月份" fullWidth outline [(selected)]="monthStart">
+              <nb-option [value]="item.value" *ngFor="let item of months">{{item.label}}</nb-option>
+            </nb-select>
+          </div>
+          <span class="text-center middle-span">月~</span>
+          <div class="col-md-3">
+            <nb-select placeholder="请选择月份" fullWidth outline [(selected)]="monthEnd">
+              <nb-option [value]="item.value" *ngFor="let item of months">{{item.label}}</nb-option>
+            </nb-select>
+          </div>
+          <span class="text-center middle-span">月</span>
+        </div>
+        <div class="col-md-4 row">
+          <label class="col-form-label col-4">显示类型：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择显示类型" fullWidth outline [(selected)]="showType">
+              <nb-option value="0">按居委名称</nb-option>
+              <nb-option value="1">按居住属性</nb-option>
+            </nb-select>
+          </div>
+        </div>
+      </div>
+      <!--<div class="form-group row">
+        <div class="col-md-4 row">
+          <label class="col-form-label col-4">显示类型：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择显示类型" fullWidth outline>
+              <nb-option value="1">按常规修订</nb-option>
+              <nb-option value="2">按居委名称</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        &lt;!&ndash;<div class="col-md-4 row">
+          <label class="col-4 col-form-label text-right">居住类型：</label>
+          <div class="col-8">
+            <nb-select (selectedChange)="onChange($event)" placeholder="请选择居住类型" fullWidth outline status="info"
+                       id="residentialType">
+              <nb-option [value]="item.value" *ngFor="let item of residentialTypeData">{{item.label}}</nb-option>
+            </nb-select>
+          </div>
+        </div>&ndash;&gt;
+      </div>-->
+      <div class="form-group row">
+        <div class="input-group col-md-7 row">
+          <label class="pl-3 middle-span m-0">疫苗名称：</label>
+          <input type="text" class="form-control" name="selectName" placeholder="请选择疫苗"
+                 [(ngModel)]="selectedVaccine.selectName" [disabled]="true">
+          <input type="hidden" class="form-control" name="selectCode" [(ngModel)]="selectedVaccine.selectCode">
+          <span class="input-group-append">
+              <button class="btn btn-primary btn-sm input-group-text" (click)="selectVac()">
+                选择疫苗
+              </button>
+          </span>
+        </div>
+        <div class="col-md-5 middle-span text-center">
+          <!--          <nb-checkbox class="col-sm-4">按居住属性</nb-checkbox>-->
+          <!--<nb-checkbox class="col-sm-4" (checkedChange)="showZero($event)" [checked]="zero">显示零值</nb-checkbox>
+          <nb-checkbox class="col-sm-4" (checkedChange)="showLess($event)" [checked]="lessThen">只显示接种率小于80%
+          </nb-checkbox>-->
+          <label nz-checkbox class="col-sm-5" [(ngModel)]="zero" (nzCheckedChange)="showZero($event)"
+                 name="zero">显示零值</label>
+          <label nz-checkbox class="col-sm-5" [(ngModel)]="lessThen" (nzCheckedChange)="showLess($event)" name="less">只显示接种率小于80%</label>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center">
+  <nb-card-body>
+    <nz-table #groupingTable [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false"
+              style="width: 100%;"
+              [nzScroll]="{ x: '1300px'}"
+              [nzFrontPagination]="false">
+      <thead>
+        <tr>
+          <th colspan="106" [nzAlign]="'center'">{{year}}年{{monthStart}}月~{{monthEnd}}
+            <!--（{{selectedVaccine.selectAcronym}}）-->
+            月常规免疫接种情况汇总表
+          </th>
+        </tr>
+        <tr>
+          <th rowspan="2">户籍名称</th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            HepB1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            及时数
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            HepB2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            HepB3
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('bcg') || selectedVaccine.aliasName.length === 0">
+            BCG
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            PV1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            PV2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            PV3
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            PV4
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            DTP1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            DTP2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            DTP3
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            DTP4
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('dt') || selectedVaccine.aliasName.length === 0">
+            DT
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">
+            MR1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">
+            MR2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">
+            MMR1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">
+            MMR2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">
+            MM1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">
+            MM2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">
+            MV1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">
+            MV2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">
+            MenA1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">
+            MenA2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">
+            MenAC1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">
+            MenAC2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">
+            JE-l1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">
+            JE-l2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            JE-i1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            JE-i2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            JE-i3
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            JE-i4
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">
+            HepA-l1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">
+            HepA-i1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">
+            HepA-i2
+          </th>
+        </tr>
+        <tr>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('bcg') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('bcg') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('bcg') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dt') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dt') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dt') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">接种率%</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of groupingTable.data">
+          <td>{{data.unitName}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.hepb_a_sh_s, 'hepbASh')">{{data.hepb_a_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.hepb_a_re_s, 'hepbARe')">{{data.hepb_a_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">{{data.hepb_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">{{data.hepb_aa_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">{{data.hepb_aa_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">{{data.hepb_aa_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.hepb_b_sh_s, 'hepbBSh')">{{data.hepb_b_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.hepb_b_re_s, 'hepbBRe')">{{data.hepb_b_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">{{data.hepb_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.hepb_c_sh_s, 'hepbCSh')">{{data.hepb_c_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.hepb_c_re_s, 'hepbSRe')">{{data.hepb_c_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">{{data.hepb_c_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('bcg') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.bcg_sh_s, 'bcgSh')">{{data.bcg_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('bcg') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.bcg_re_s, 'bcgRe')">{{data.bcg_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('bcg') || selectedVaccine.aliasName.length === 0">{{data.bcg_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.pv_a_sh_s, 'pvASh')">{{data.pv_a_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.pv_a_re_s, 'pvARe')">{{data.pv_a_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">{{data.pv_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.pv_b_sh_s, 'pvBSh')">{{data.pv_b_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.pv_b_re_s, 'pvBRe')">{{data.pv_b_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">{{data.pv_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.pv_c_sh_s, 'pvCSh')">{{data.pv_c_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.pv_c_re_s, 'pvCRe')">{{data.pv_c_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">{{data.pv_c_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.pv_d_sh_s, 'pvDSh')">{{data.pv_d_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.pv_d_re_s, 'pvDRe')">{{data.pv_d_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">{{data.pv_d_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.dtp_a_sh_s, 'dtpASh')">{{data.dtp_a_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.dtp_a_re_s, 'dtpARe')">{{data.dtp_a_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">{{data.dtp_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.dtp_b_sh_s, 'dtpBSh')">{{data.dtp_b_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.dtp_b_re_s, 'dtpBRe')">{{data.dtp_b_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">{{data.dtp_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.dtp_c_sh_s, 'dtpCSh')">{{data.dtp_c_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.dtp_c_re_s, 'dtpCRe')">{{data.dtp_c_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">{{data.dtp_c_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.dtp_d_sh_s, 'dtpDSh')">{{data.dtp_d_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.dtp_d_re_s, 'dtpDRe')">{{data.dtp_d_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">{{data.dtp_d_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dt') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.dt_sh_s, 'dtSh')">{{data.dt_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dt') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.dt_re_s, 'dtRe')">{{data.dt_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dt') || selectedVaccine.aliasName.length === 0">{{data.dt_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mr_a_sh_s, 'mrASh')">{{data.mr_a_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mr_a_re_s, 'mrARe')">{{data.mr_a_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">{{data.mr_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mr_b_sh_s, 'mrBSh')">{{data.mr_b_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mr_b_re_s, 'mrBRe')">{{data.mr_b_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">{{data.mr_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mmr_a_sh_s, 'mmrASh')">{{data.mmr_a_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mmr_a_re_s, 'mmrARe')">{{data.mmr_a_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">{{data.mmr_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mmr_b_sh_s, 'mmrBSh')">{{data.mmr_b_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mmr_b_re_s, 'mmrBRe')">{{data.mmr_b_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">{{data.mmr_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mm_a_sh_s, 'mmASh')">{{data.mm_a_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mm_a_re_s, 'mmARe')">{{data.mm_a_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">{{data.mm_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mm_b_sh_s, 'mmBSh')">{{data.mm_b_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mm_b_re_s, 'mmBRe')">{{data.mm_b_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">{{data.mm_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mv_a_sh_s, 'mvASh')">{{data.mv_a_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mv_a_re_s, 'mvARe')">{{data.mv_a_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">{{data.mv_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mv_b_sh_s, 'meBSh')">{{data.mv_b_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mv_b_re_s, 'mvBRe')">{{data.mv_b_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">{{data.mv_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mena_a_sh_s, 'menaASh')">{{data.mena_a_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mena_a_re_s, 'menaARe')">{{data.mena_a_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">{{data.mena_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mena_b_sh_s, 'menaBSh')">{{data.mena_b_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.mena_b_re_s, 'menaBRe')">{{data.mena_b_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">{{data.mena_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.menac_a_sh_s, 'menacASh')">{{data.menac_a_sh_s}}</a>
+          </td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.menac_a_re_s, 'menacARe')">{{data.menac_a_re_s}}</a>
+          </td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">{{data.menac_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.menac_b_sh_s, 'menacBSh')">{{data.menac_b_sh_s}}</a>
+          </td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.menac_b_re_s, 'menacBRe')">{{data.menac_b_re_s}}</a>
+          </td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">{{data.menac_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.jel_a_sh_s, 'jelASh')">{{data.jel_a_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.jel_a_re_s, 'jelARe')">{{data.jel_a_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">{{data.jel_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.jel_b_sh_s, 'jelBSh')">{{data.jel_b_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.jel_b_re_s, 'jelBRe')">{{data.jel_b_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">{{data.jel_b_sr_s}}</td>
+
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.jei_a_sh_s, 'jeiASh')">{{data.jei_a_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.jei_a_re_s, 'jeiARe')">{{data.jei_a_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">{{data.jei_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.jei_b_sh_s, 'jeiBSh')">{{data.jei_b_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.jei_b_re_s, 'jeiBRe')">{{data.jei_b_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">{{data.jei_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.jei_c_sh_s, 'jeiCSh')">{{data.jei_c_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.jei_c_re_s, 'jeiCRe')">{{data.jei_c_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">{{data.jei_c_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.jei_d_sh_s, 'jeiDSh')">{{data.jei_d_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.jei_d_re_s, 'jeiDRe')">{{data.jei_d_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">{{data.jei_d_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.hepal_sh_s, 'hepalSh')">{{data.hepal_sh_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.hepb_a_re_s, 'hepbARe')">{{data.hepb_a_re_s}}</a></td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">{{data.hepal_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.hepai_a_sh_s, 'hepaiASh')">{{data.hepai_a_sh_s}}</a>
+          </td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.hepai_a_re_s, 'hepaiARe')">{{data.hepai_a_re_s}}</a>
+          </td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">{{data.hepai_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.hepai_b_sh_s, 'hepaiBSh')">{{data.hepai_b_sh_s}}</a>
+          </td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">
+            <a href="javascript:" (click)="checkDetail(data, data.hepai_b_re_s, 'hepaiBRe')">{{data.hepai_b_re_s}}</a>
+          </td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">{{data.hepai_b_sr_s}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <div id="sixOneSum" style="position: absolute; margin-left: 999rem;">
+      <!--      <h5 style="text-align: center;">常规免疫接种情况6-1汇总表</h5>-->
+      <table border="1" cellspacing="0" cellpadding="0"
+             style="border-collapse:collapse; border-spacing:0; width: 100%; font-size: 14.4px; text-align: center;">
+        <!--        <caption>常规免疫接种情况6-1汇总表</caption>-->
+        <thead>
+        <tr>
+          <th colspan="106">{{year}}年{{monthStart}}月~{{monthEnd}}
+            <!--（{{selectedVaccine.selectAcronym}}）-->
+            月常规免疫接种情况汇总表
+          </th>
+        </tr>
+        <tr>
+          <th rowspan="2">户籍名称</th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            HepB1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            及时数
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            HepB2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            HepB3
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('bcg') || selectedVaccine.aliasName.length === 0">
+            BCG
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            PV1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            PV2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            PV3
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            PV4
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            DTP1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            DTP2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            DTP3
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            DTP4
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('dt') || selectedVaccine.aliasName.length === 0">
+            DT
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">
+            MR1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">
+            MR2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">
+            MMR1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">
+            MMR2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">
+            MM1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">
+            MM2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">
+            MV1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">
+            MV2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">
+            MenA1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">
+            MenA2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">
+            MenAC1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">
+            MenAC2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">
+            JE-l1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">
+            JE-l2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            JE-i1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            JE-i2
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            JE-i3
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            JE-i4
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">
+            HepA-l1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">
+            HepA-i1
+          </th>
+          <th colspan="3" *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">
+            HepA-i2
+          </th>
+        </tr>
+        <tr>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('bcg') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('bcg') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('bcg') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dt') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dt') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('dt') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">接种率%</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">应种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">实种数</th>
+          <th *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">接种率%</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of listOfData">
+          <td>{{data.unitName}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            {{data.hepb_a_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            {{data.hepb_a_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">{{data.hepb_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">{{data.hepb_aa_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">{{data.hepb_aa_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">{{data.hepb_aa_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            {{data.hepb_b_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            {{data.hepb_b_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">{{data.hepb_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            {{data.hepb_c_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">
+            {{data.hepb_c_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepb') || selectedVaccine.aliasName.length === 0">{{data.hepb_c_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('bcg') || selectedVaccine.aliasName.length === 0">
+            {{data.bcg_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('bcg') || selectedVaccine.aliasName.length === 0">
+            {{data.bcg_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('bcg') || selectedVaccine.aliasName.length === 0">{{data.bcg_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            {{data.pv_a_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            {{data.pv_a_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">{{data.pv_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            {{data.pv_b_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            {{data.pv_b_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">{{data.pv_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            {{data.pv_c_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            {{data.pv_c_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">{{data.pv_c_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            {{data.pv_d_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">
+            {{data.pv_d_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('pv') || selectedVaccine.aliasName.length === 0">{{data.pv_d_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            {{data.dtp_a_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            {{data.dtp_a_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">{{data.dtp_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            {{data.dtp_b_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            {{data.dtp_b_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">{{data.dtp_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            {{data.dtp_c_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            {{data.dtp_c_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">{{data.dtp_c_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            {{data.dtp_d_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">
+            {{data.dtp_d_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dtp') || selectedVaccine.aliasName.length === 0">{{data.dtp_d_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dt') || selectedVaccine.aliasName.length === 0">
+            {{data.dt_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dt') || selectedVaccine.aliasName.length === 0">
+            {{data.dt_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('dt') || selectedVaccine.aliasName.length === 0">{{data.dt_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">
+            {{data.mr_a_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">
+            {{data.mr_a_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">{{data.mr_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">
+            {{data.mr_b_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">
+            {{data.mr_b_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mr') || selectedVaccine.aliasName.length === 0">{{data.mr_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">
+            {{data.mmr_a_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">
+            {{data.mmr_a_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">{{data.mmr_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">
+            {{data.mmr_b_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">
+            {{data.mmr_b_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mmr') || selectedVaccine.aliasName.length === 0">{{data.mmr_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">
+            {{data.mm_a_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">
+            {{data.mm_a_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">{{data.mm_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">
+            {{data.mm_b_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">
+            {{data.mm_b_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mm') || selectedVaccine.aliasName.length === 0">{{data.mm_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">
+            {{data.mv_a_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">
+            {{data.mv_a_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">{{data.mv_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">
+            {{data.mv_b_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">
+            {{data.mv_b_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mv') || selectedVaccine.aliasName.length === 0">{{data.mv_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">
+            {{data.mena_a_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">
+            {{data.mena_a_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">{{data.mena_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">
+            {{data.mena_b_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">
+            {{data.mena_b_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('mena') || selectedVaccine.aliasName.length === 0">{{data.mena_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">
+            {{data.menac_a_sh_s}}
+          </td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">
+            {{data.menac_a_re_s}}
+          </td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">{{data.menac_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">
+            {{data.menac_b_sh_s}}
+          </td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">
+            {{data.menac_b_re_s}}
+          </td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('menac') || selectedVaccine.aliasName.length === 0">{{data.menac_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">
+            {{data.jel_a_sh_s}}
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">
+            {{data.jel_a_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">{{data.jel_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">
+            {{data.jel_b_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">
+            {{data.jel_b_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jel') || selectedVaccine.aliasName.length === 0">{{data.jel_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            {{data.jei_a_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            {{data.jei_a_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">{{data.jei_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            {{data.jei_b_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            {{data.jei_b_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">{{data.jei_b_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            {{data.jei_c_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            {{data.jei_c_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">{{data.jei_c_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            {{data.jei_d_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">
+            {{data.jei_d_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('jei') || selectedVaccine.aliasName.length === 0">{{data.jei_d_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">
+            {{data.hepal_sh_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">
+            {{data.hepb_a_re_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">{{data.hepal_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">
+            {{data.hepai_a_sh_s}}
+          </td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">
+            {{data.hepai_a_re_s}}
+          </td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">{{data.hepai_a_sr_s}}</td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">
+            {{data.hepai_b_sh_s}}
+          </td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">
+            {{data.hepai_b_re_s}}
+          </td>
+          <td
+            *ngIf="selectedVaccine.aliasName.includes('hepal') || selectedVaccine.aliasName.length === 0">{{data.hepai_b_sr_s}}</td>
+        </tr>
+        </tbody>
+
+      </table>
+    </div>
+  </nb-card-body>
+</nb-card>

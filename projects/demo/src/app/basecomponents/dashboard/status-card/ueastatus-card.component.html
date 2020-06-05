@@ -1,0 +1,13 @@
+<nz-card nzHoverable [nzCover]="coverTemplate" (click)="doClick()" [ngClass]="{ off: card.on === false }">
+	<nz-card-meta [nzTitle]="titleTemplate"></nz-card-meta>
+</nz-card>
+<ng-template #coverTemplate>
+	<div class="icon-container">
+		<div class="icon status-{{ card.type }}">
+			<ng-content></ng-content>
+		</div>
+	</div>
+</ng-template>
+<ng-template #titleTemplate>
+	<div class="title">{{ card.title }}</div>
+</ng-template>

@@ -1,0 +1,76 @@
+<nb-card accent="info">
+  <nb-card-header>
+    发送消息
+    <div>
+      <button nbButton status="info">发送</button>
+      <button nbButton status="warning">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <div class="col-md-6 row">
+          <div class="title col-form-label">消息标题：</div>
+          <div class="col-8">
+            <input type="text" nbInput placeholder="请输入消息标题" formControlName="msgTitle" id="msgTitle">
+          </div>
+        </div>
+        <div class="col-md-6 row">
+          <label class="title col-form-label">接收人：</label>
+          <div class="col-8">
+            <nz-tree-select #treeNode nzPlaceHolder="Please select" [nzDropdownMatchSelectWidth]="true"
+              [nzDropdownStyle]="{ 'max-height': '300px' }" [(ngModel)]="value" [nzNodes]="administrativeTreeData"
+              [nzCheckable]="true" id="receivedPov" [nzAsyncData]="true" (nzExpandChange)="onExpandChange($event)"
+              (nzTreeCheckBoxChange)="choseBox($event)" formControlName="receivedPov">
+            </nz-tree-select>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-6 row">
+          <label class="title col-form-label">消息内容：</label>
+          <div class="col-8">
+            <textarea nbInput fullWidth placeholder="请输入消息内容" id="msgContent" formControlName="msgContent"></textarea>
+          </div>
+        </div>
+
+      </div>
+      <div class="form-group row">
+        <div class="col-md-6 row">
+          <label class="title col-form-label">紧急程度：</label>
+          <div class="col-8">
+            <nb-radio-group class="qb-nb-radio-group" formControlName="urgent" id="urgent">
+              <nb-radio *ngFor="let option of options" [value]="option.value">
+                {{ option.label }}
+              </nb-radio>
+            </nb-radio-group>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-md-6">
+        <button nbButton status="info" class="mr-3">发送</button>
+        <button nbButton status="warning">重置</button>
+      </div> -->
+    </form>
+  </nb-card-body>
+</nb-card>
+<!--<nb-card>-->
+<!--  <nb-card-header>-->
+<!--    <h5>可删除消息列表</h5>-->
+<!--  </nb-card-header>-->
+<!--  <nb-card-body>-->
+<!--    <nz-list-->
+<!--      [nzDataSource]="data"-->
+<!--      nzBordered-->
+<!--      nzSize="large"-->
+<!--      [nzRenderItem]="largeItem"-->
+<!--    >-->
+<!--      <ng-template #largeItem let-item>-->
+<!--        <nz-list-item [nzActions]="[opAction]" [nzContent]="item" nzNoFlex></nz-list-item>-->
+<!--        <ng-template #opAction>-->
+<!--          <button nbButton status="info" (click)="edit()" class="mr-3">编辑</button>-->
+<!--        </ng-template>-->
+<!--      </ng-template>-->
+<!--    </nz-list>-->
+<!--  </nb-card-body>-->
+<!--</nb-card>-->

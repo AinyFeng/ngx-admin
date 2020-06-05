@@ -1,0 +1,61 @@
+<nb-card size="large" class="nb-card-container-sm">
+  <nb-card-header class="nb-card-header-qb">
+    在册变更 -- {{ profile ? profile.name : '' }}
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <label for="section" class="col-2 text-right col-form-label">
+          <span class="star-required">*</span>区域划分</label>
+        <div class="col-3">
+          <nb-select id="section" formControlName="community" outline fullWidth status="info" placeholder="选择建卡类型">
+            <nb-option *ngFor="let p of communityOptions"
+                       [value]="p.communityCode">{{ p.communityName }}</nb-option>
+          </nb-select>
+        </div>
+        <label for="residentAttr" class="col-3 text-right col-form-label">
+          <span class="star-required">*</span>居住属性</label>
+        <div class="col-3">
+          <nb-select id="residentAttr" formControlName="residentialTypeCode" outline fullWidth status="info" placeholder="选择居住属性">
+            <nb-option *ngFor="let p of residentialOptions" [value]="p.value">{{ p.label }}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="residentStatus" class="col-2 text-right col-form-label">
+          <span class="star-required">*</span>在册情况</label>
+        <div class="col-3">
+          <nb-select id="residentStatus" (ngModelChange)="changeProfileStatus($event)" formControlName="curProfileStatus" outline fullWidth status="info" placeholder="选择在册情况">
+            <nb-option *ngFor="let p of profileStatusChangeOptions" [value]="p.value">{{ p.label }}</nb-option>
+          </nb-select>
+        </div>
+        <label for="changeReason" class="col-3 text-right col-form-label">
+          <span *ngIf="showRequired" class="star-required">*</span>变更原因</label>
+        <div class="col-3">
+          <nb-select id="changeReason"
+                     [status]="form.get('changeReason').invalid && form.get('changeReason').touched ? 'danger' : 'info'"
+                     formControlName="changeReason" outline fullWidth placeholder="变更原因">
+            <nb-option *ngFor="let p of profileStatusChangeReason" [value]="p.value">{{ p.label }}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="memo" class="col-2 text-right col-form-label">
+          <span *ngIf="showRequired" class="star-required">*</span>变更备注</label>
+        <div class="col-9">
+          <textarea
+            [status]="form.get('memo').invalid && form.get('memo').touched ? 'danger' : 'info'"
+            formControlName="memo" id="memo" nbInput fullWidth placeholder="变更备注"></textarea>
+          <uea-show-form-errors [control]="form.get('memo')"></uea-show-form-errors>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerMessage="" nbButton status="info" class="mr-5" (click)="onSubmit()">保存</button>
+    </div>
+  </nb-card-footer>
+</nb-card>
+

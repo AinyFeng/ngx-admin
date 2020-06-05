@@ -1,0 +1,177 @@
+<nz-card style="width:100%;" nzTitle="疫苗报废">
+  <form nz-form [formGroup]="orderForm">
+    <div nz-row [nzGutter]="24" *ngIf="updateOrderDate?.orderNo">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="4" nzFor="orderNo">订单号</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <input type="text" readonly id="orderNo" nz-input [value]="updateOrderDate?.orderNo">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="8" nzFor="orderStatus">订单状态</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input type="text" readonly id="orderStatus"
+                   [value]="updateOrderDate?.orderStatus  | dicPipe: 'pfOrderStatus'" nz-input>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="4" nzRequired nzFor="orderDate">出库日期</nz-form-label>
+          <nz-form-control [nzSpan]="20" nzErrorTip="此项必填">
+            <nz-date-picker nzDateFullCell formControlName="orderDate" id="orderDate"
+                            nzAllowClear="false"
+                            [nzDisabledDate]="disabledDate"
+                            nzPlaceHolder="选择出库日期"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="8" nzRequired nzFor="orderType">类型</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <nz-select formControlName="orderType" id="orderType" readonly nzPlaceHolder="选择类型">
+              <nz-option nzLabel="报废" nzValue="2"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="4" nzRequired nzFor="vaccineType">疫苗类型</nz-form-label>
+          <nz-form-control [nzSpan]="14" nzErrorTip="此项必填">
+            <nz-radio-group id="vaccineType" formControlName="vaccineType">
+              <label nz-radio nzValue="0">一类</label>
+              <label nz-radio nzValue="1">二类</label>
+            </nz-radio-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row [nzGutter]="24">
+      <div nz-col nzSpan="24">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="2" nzFor="memo">备注信息</nz-form-label>
+          <nz-form-control nzSpan="21">
+          <textarea
+            nz-input
+            id="memo"
+            formControlName="memo"
+            placeholder="请输入备注信息"
+            [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+          ></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+  <nz-divider></nz-divider>
+  <div>
+    <button class="mr-2" nz-button [nzType]="'primary'" (click)="selectStock()">库存量查询</button>
+    <button class="mr-2 mb-2" nz-button [nzType]="'primary'" (click)="submitForm()">报废</button>
+    <button nz-button [nzType]="'primary'" (click)="goBack()" *ngIf="updateOrderDate?.orderNo">返回</button>
+    <p class="float-right font-weight-bolder mt-1" *ngIf="!updateOrderDate?.orderNo">合计报废数量：{{ total }}</p>
+  </div>
+  <nz-table nzBordered #stock [nzData]="vaccData" nzSize="small">
+    <thead>
+    <tr>
+      <th>操作</th>
+      <th>疫苗名称/注射器类型</th>
+      <th>属性</th>
+      <th>生产企业</th>
+      <th>批号</th>
+      <th>规格(剂/支/粒)</th>
+      <th>剂量</th>
+      <th>有效日期</th>
+      <th>实际库存</th>
+      <th>可用库存</th>
+      <th>报废数量</th>
+      <th>成本价格</th>
+      <th>出售价格</th>
+      <th>备注</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of stock.data">
+      <td><a class="text-error" (click)="remove(data)" href="javascript:void(0)">移除</a></td>
+      <!--<td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>-->
+      <td>{{data.vaccName}}</td>
+      <td>{{data.vaccineType === '0' ? '第一类':'第二类'}}</td>
+      <td>{{data.manufactureName}}</td>
+      <td>{{data.batchNo}}</td>
+      <td>{{data.spec}}</td>
+      <td>{{data.dose}}</td>
+      <td>{{data.loseEfficacyDate | date: 'yyyy-MM-dd'}}</td><!--有效日期-->
+      <td>{{data.storeNum}}</td><!--实际库存-->
+      <td>{{data.storenumF}}</td><!--可用库存-->
+      <td>
+        <!--报废数量可编辑-->
+        <div *ngIf="editId !== (data.inventorySerialCode + 'code') else breakNumTpl">
+          <div class="cursor-pointer font-weight-bolder" (click)="startEdit(data.inventorySerialCode + 'code', $event)">
+            <span [ngClass]="{'text-red': data.breakNum === 0, 'text-blue': data.breakNum > 0}">{{ data.breakNum }}</span>
+          </div>
+        </div>
+        <ng-template #breakNumTpl>
+          <input class="m-0"
+                 #breakNumTplInput
+                 (blur)="stopEdit()"
+                 (mouseover)="setFocus(breakNumTplInput)"
+                 type="number"
+                 [min]="0"
+                 nz-input
+                 [(ngModel)]="data.breakNum"/>
+        </ng-template>
+      </td>
+      <td>{{data.orignPrice | currency:'￥'}}</td><!--成本价格-->
+      <td>
+        <!--出售价格-->
+        <div *ngIf="editId !== (data.inventorySerialCode + 'sellPrice') else sellPriceTpl">
+          <div class="cursor-pointer font-weight-bolder"
+               (click)="startEdit(data.inventorySerialCode + 'sellPrice', $event)">
+            <span class="text-blue">{{ data.orignPrice | currency: '￥' }}</span>
+          </div>
+        </div>
+        <ng-template #sellPriceTpl>
+          <input class="m-0"
+                 #sellPriceTplInput
+                 (blur)="stopEdit()"
+                 (mouseover)="setFocus(sellPriceTplInput)"
+                 type="number"
+                 [min]="0"
+                 nz-input
+                 [(ngModel)]="data.sellPrice"/>
+        </ng-template>
+      </td>
+      <td>
+        <!--备注-->
+        <div *ngIf="editId !== (data.inventorySerialCode + 'memo') else memoTpl">
+          <div (click)="startEdit(data.inventorySerialCode + 'memo', $event)">
+            {{ (data.memo ? data.memo : '--') }}
+          </div>
+        </div>
+        <ng-template #memoTpl>
+          <input class="m-0"
+                 #memoTplInput
+                 (blur)="stopEdit()"
+                 (mouseover)="setFocus(memoTplInput)"
+                 type="text"
+                 nz-input
+                 [(ngModel)]="data.memo"/>
+        </ng-template>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+ <!-- <button nz-button [nzType]="'primary'" (click)="submitForm()">提交</button>-->
+</nz-card>
+

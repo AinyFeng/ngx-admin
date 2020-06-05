@@ -1,0 +1,19 @@
+@import '../../../../../@uea/theme/global_theme';
+// @import '../../../../common/global-theme/global_theme';
+@include nb-install-component() {
+	.nb-card-container-qb {
+		width: 1000px;
+	}
+  ::ng-deep .changeColor .ant-input {
+    border: 1px solid #ff3d71;
+  }
+
+	//::ng-deep nb-radio-group {
+	//  display: flex;
+	//  flex-direction: row;
+	//}
+
+	.search-profile {
+		margin: 20px 0 25px;
+	}
+}

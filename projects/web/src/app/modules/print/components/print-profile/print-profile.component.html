@@ -1,0 +1,97 @@
+<div id="profile">
+  <table style="height: 487px; text-align: center;" border="1" cellpadding="0" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+      <th colspan="6" height="54">受种者基本情况</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <th>受种者编码</th>
+      <td>{{profileData?.profileCode}}</td>
+      <th>免疫接种证号码</th>
+      <td>{{profileData?.immunityVacCard}}</td>
+      <th>出生日期</th>
+      <td>{{profileData?.birthDate | date: 'yyyy-MM-dd'}}</td>
+    </tr>
+    <tr>
+      <th>受种者姓名</th>
+      <td>{{profileData?.name}}</td>
+      <th>性别</th>
+      <td>{{profileData?.gender | dicPipe: 'genderCode'}}</td>
+      <th>户籍类型</th>
+      <td>{{profileData?.idTypeCode | dicPipe: 'idType'}}</td>
+    </tr>
+    <tr>
+      <th>居住地址</th>
+      <td colspan="5">
+        {{profileData?.idCardProvCode | administrativePipe | async }}{{profileData?.idCardCityCode | administrativePipe | async }}{{profileData?.idCardDistrictCode | administrativePipe | async }}{{profileData?.idCardDetail}}
+      </td>
+    </tr>
+    <tr>
+      <th>地块</th>
+      <td colspan="5">{{profileData?.idCardDetail}}</td>
+    </tr>
+    <tr>
+      <th>身份证号码</th>
+      <td>{{profileData?.idCardNo}}</td>
+      <th>出生证号</th>
+      <td>{{profileData?.birthCardNo}}</td>
+      <th colspan="2" rowspan="5"></th>
+    </tr>
+    <tr>
+      <th>移动电话</th>
+      <td>{{profileData?.contactPhone}}</td>
+      <th>其他电话</th>
+<!--      <td>{{profileData?.fatherContactPhone}}</td>-->
+    </tr>
+    <tr>
+      <th>父亲姓名</th>
+      <td>{{profileData?.fatherName}}</td>
+      <th>母亲姓名</th>
+      <td>{{profileData?.motherName}}</td>
+    </tr>
+    <tr>
+      <th>父亲电话</th>
+      <td>{{profileData?.fatherContactPhone}}</td>
+      <th>母亲电话</th>
+      <td>{{profileData?.motherContactPhone}}</td>
+    </tr>
+    <tr>
+      <th>出生医院</th>
+      <td>{{profileData?.birthHospitalCode | hospitalNamePipe | async}}</td>
+      <th>登记日期</th>
+      <td>{{profileData?.createDate | date: 'yyyy-MM-dd'}}</td>
+    </tr>
+  </table>
+  <div style="margin-top: 15px;">
+    <div style="display: flex;">
+      <div style="flex: 1;">
+        <span style="width: 30%;">门诊电话:</span>&nbsp;
+        <span>{{ profileData?.povInfo?.telephone }}</span>
+      </div>
+      <div style="flex: 1;">
+        <span style="width: 30%; display: inline-block; text-align: right;">联系人:</span>&nbsp;
+        <span>{{ profileData?.userInfo?.name }}</span>
+      </div>
+      <div style="flex: 1;">
+        <span style="width: 30%;">开诊时间:</span>&nbsp;
+        <span>{{ profileData?.povInfo?.workTime }}</span>
+      </div>
+    </div>
+    <div style="display: flex;">
+      <div style="flex: 1;">
+        <span style="width: 30%;">门诊编码:</span>&nbsp;
+        <span>{{ profileData?.userInfo?.pov }}</span>
+      </div>
+      <div style="flex: 1;">
+        <span style="width: 30%; display: inline-block; text-align: right;">门诊名称:</span>&nbsp;
+        <span>{{ profileData?.povInfo?.name }}</span>
+      </div>
+      <div style="flex: 1;">
+        <span style="width: 30%;">门诊地址:</span>&nbsp;
+        <span>{{ profileData?.povInfo?.registerAddress ? profileData?.povInfo.registerAddress : profileData?.povInfo?.communicationAddress }}</span>
+      </div>
+    </div>
+  </div>
+</div>

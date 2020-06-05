@@ -1,0 +1,27 @@
+<nb-card class="nb-card-container">
+  <nb-card-header class="headers">
+    预诊详情
+    <span class="float-right mr-4 cursor-pointer" title="关闭" (click)="onClose()"><i
+      class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body class="text-center">
+    <h6 class="mb-2">受种人的身体状态 -- {{preData ? preData.normalStatus === '0' ? '正常' : '不正常' : ''}}</h6>
+    <nz-table #msgTable [nzData]="listOfData"
+              [nzLoading]="loading"
+              nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false">
+      <tbody>
+      <tr *ngFor="let data of msgTable.data">
+        <td [nzAlign]="'center'">{{data.question}}</td>
+        <td [nzAlign]="'center'">
+          <nz-radio-group nzName="radiogroup" [(ngModel)]="data.checked" class="prevent">
+            <label nz-radio readonly *ngFor="let option of data.options; let i = index;"
+                   [nzValue]="option.value">{{option.label}}</label>
+          </nz-radio-group>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+
+

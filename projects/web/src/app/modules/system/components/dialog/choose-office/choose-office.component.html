@@ -1,0 +1,15 @@
+<nb-card class="nb-card-container-xxs">
+  <nb-card-header class="nb-card-header-qb">
+    选择科室
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <div style="max-height: 300px; overflow-y: scroll;">
+      <nz-tree [nzData]="administrativeTreeData" nzShowLine (nzClick)="onClickTree($event)"></nz-tree>
+    </div>
+  </nb-card-body>
+  <nb-card-footer class="text-center">
+    <button nbButton status="info" class="mr-4" (click)="confirm()">确定</button>
+    <button nbButton status="info" class="mr-4" (click)="onClose()">取消</button>
+  </nb-card-footer>
+</nb-card>

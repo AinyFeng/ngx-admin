@@ -1,0 +1,132 @@
+<nb-card size="giant" class="nb-card-container-x">
+  <nb-card-header class="nb-card-header-qb">
+    登记
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="injectionDetail p-3 mb-3">
+      <h6 class="mb-3">受种人信息</h6>
+      <div class="row mb-2">
+        <div class="col-3">姓名：{{ profile?.name }}</div>
+        <div class="col-3">年龄：{{ profile?.age }}<span *ngIf="profile?.age < 7">岁{{ profile?.month }}月龄</span></div>
+        <div class="col-3">性别：{{ profile?.gender | dicPipe: 'genderCode' }}</div>
+        <div class="col-3">出生日期：{{ profile?.birthDate | date: 'yyyy-MM-dd' }}</div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-3">证件类型：{{ profile?.idCardType | dicPipe: 'idCardType' }}</div>
+        <div class="col-3">证件号码：{{ profile?.idCardNo }}</div>
+        <div class="col-3 hideText">联系电话：{{ profile?.contactPhone }}</div>
+        <div class="col-3">民族：{{ profile?.nationCode | nationPipe }}</div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-3">母亲姓名：{{ profile?.motherName }}</div>
+        <div class="col-3">母亲电话：{{ profile?.motherContactPhone }}</div>
+        <div class="col-3">父亲姓名：{{ profile?.fatherName }}</div>
+        <div class="col-3">父亲电话：{{ profile?.fatherContactPhone }}</div>
+      </div>
+    </div>
+    <div class="form-inline mb-3" *ngIf="isCustomRegist">
+      <label>疫苗类型：</label>
+      <nb-select status="info" placeholder="选择疫苗小类" class="wide-width mr-5" [(selected)]="vaccineSubclassCode">
+        <nb-option *ngFor="let v of vacSubclassOptions" [value]="v.value">{{ v.label }}</nb-option>
+      </nb-select>
+      <button nbButton status="info" (click)="addRegistData()">添加</button>
+    </div>
+    <!--                 循环展示已选择的疫苗列表       -->
+    <div *ngFor="let vac of vacProductListData;index as i" class="injectionDetail p-3 mb-3" [nbSpinner]="loading"
+         nbSpinnerStatus="primary">
+      <div class="mb-4">
+        <label class="mr-5">疫苗种类：{{ vac.vacBroadHeadingName }}</label>
+        <label *ngIf="!isCustomRegist" class="mr-3">针次：
+          <span
+            [ngStyle]="{'color': vac.vaccinateInjectNumber == -1 ? '#ff3d71': ''}">{{ vac.vaccinateInjectNumber != -1 ? vac.vaccinateInjectNumber : '疫苗超过了标准接种次数' }}
+              </span>
+        </label>
+        <label *ngIf="isCustomRegist">针次：</label>
+        <nb-select status="info" placeholder="选择接种针次" class="mr-3"
+                   *ngIf="isCustomRegist"
+                   [(selected)]="vac.vaccinateInjectNumber">
+          <nb-option *ngFor="let inj of vaccinateInjectNumberOptions" [value]="inj">{{ inj }}</nb-option>
+        </nb-select>
+        <label>接种类型：</label>
+        <nb-select status="info" placeholder="选择接种类型" class="mr-3"
+                   [(selected)]="vac.vaccineType">
+          <nb-option *ngFor="let inj of vaccineTypeOptions" [value]="inj.value">{{ inj.label }}</nb-option>
+        </nb-select>
+        <label>接种部位：</label>
+        <nb-select status="info" placeholder="选择接种部位"
+                   [(ngModel)]="vac.vaccinatePart">
+          <nb-option *ngFor="let inj of vaccinatePartOptions" [value]="inj.value">{{ inj.label }}</nb-option>
+        </nb-select>
+        <button nbButton status="danger" (click)="removeVacData(vac)" class="float-right">取消</button>
+      </div>
+      <nz-table #vacTable nzBordered nzPageSize="5"
+                nzSize="small"
+                nzHideOnSinglePage
+                [nzLoading]="vac.loading"
+                [nzData]="vac['vaccineList']">
+        <thead>
+        <tr>
+          <th>疫苗类型</th>
+          <th>厂商</th>
+          <th>批号</th>
+          <th>支数</th>
+          <th>疫苗有效期</th>
+          <th>价格(元)</th>
+          <th>可用库存</th>
+          <th>近效期提示</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let v of vacTable.data;index as i;">
+          <td [nzAlign]="'left'">
+            <nb-checkbox [disabled]="v.count <= 0 || v.vaccinePrice < 0"
+                         (checkedChange)="onRadioGroupChange($event, vacTable.data)" [(checked)]="v.checked">
+              {{ v.vaccineSubclassCode | vacSubclassPipe }}
+            </nb-checkbox>
+          </td>
+          <td>{{ v.vaccineManufactureName }}</td>
+          <td>
+            <nz-tag
+              [nzColor]=" v.vaccinePrice === 0 ? '#87d068' : '#f50'">{{ v.vaccinePrice === 0 ? '免费' : '自费' }}
+            </nz-tag>
+            {{ v.vaccineBatchNo }}
+          </td>
+          <td>
+            <nb-select status="info" outline [(selected)]="v.vaccinateCount">
+              <nb-option *ngFor="let c of vaccinateCountOptions" [value]="c">{{ c }}</nb-option>
+            </nb-select>
+          </td>
+          <td>{{ v.loseEfficacyDate != noLoseEfficacyDate ? (v.loseEfficacyDate  | date: 'yyyy-MM-dd') : '无数据' }}</td>
+          <td>{{ v.vaccinePrice | currency: '￥' }}</td>
+          <td>{{ v.count }}</td>
+          <td>
+            <span *ngIf="v.validLabel == 'day'" class="valid-danger">效期不足{{ v.validTime }}天</span>
+            <span *ngIf="v.validLabel == 'month'"
+                  [ngClass]="{'valid-danger': v.validTime == 1,
+                      'valid-warning': v.validTime == 2,
+                      'valid-info': v.validTime == 3}">效期不足{{ v.validTime }}个月</span>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+      <label class="mt-2 mb-2">备注</label>
+      <input nbInput [(ngModel)]="vac.memo" fullWidth/>
+      <h5 class="mt-2 text-right">知情告知书签字：
+        <div class="d-inline-block signature-space">
+          <img class="sign-pic" [src]="signName" alt="签字图片" *ngIf="signSuccess">
+        </div>
+      </h5>
+    </div>
+  </nb-card-body>
+  <nb-card-footer [nbSpinner]="loading" nbSpinnerStatus="primary">
+    <button nbButton status="info" class="mr-5" (click)="register()">
+      登记排号打印
+    </button>
+    <button nbButton [disabled]="!isSignAvailable" (click)="sign()" status="info" class="mr-5"><span
+      *ngIf="signName">重签</span><span *ngIf="!signName">签字</span></button>
+    <button nbButton status="info" class="mr-5" (click)="onClose()">取消</button>
+    <button nbButton *ngIf="signError" status="danger" (click)="resetSign()">重置签字板</button>
+  </nb-card-footer>
+</nb-card>
+

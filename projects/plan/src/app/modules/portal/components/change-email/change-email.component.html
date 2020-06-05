@@ -1,0 +1,20 @@
+<nb-card>
+  <nb-card-header>
+    邮箱绑定
+    <span class="cursor-pointer" (click)="saveDialog(false)"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form>
+      <div class="form-group row">
+        <label class="col-4 col-form-label">邮箱地址:</label>
+        <div class="col-8">
+          <input type="text" placeholder="请输入邮箱地址" nbInput [(ngModel)]="email" required name="email">
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton status="info" (click)="saveDialog(false)">取消</button>
+    <button nbButton status="info" (click)="saveDialog(true)">保存</button>
+  </nb-card-footer>
+</nb-card>

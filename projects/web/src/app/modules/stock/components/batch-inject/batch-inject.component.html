@@ -1,0 +1,115 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    批量接种
+    <div>
+      <!--<nb-checkbox (checkedChange)="toggle($event)">是否包含补录</nb-checkbox>-->
+      <button nbButton class="mr-2" status="info" [disabled]="loading" (click)="searchData()">查询</button>
+      <button nbButton class="mr-2" status="info" (click)="addBatchInject()">新增</button>
+      <button nbButton class="mr-2" status="warning" (click)="reset()">重置</button>
+      <button nbButton class="mr-2" status="info" [nbSpinner]="loading" (click) = "export()">导出报表</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="batchInjectFrom">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">受种单位：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入单位" formControlName="beVaccinateUnits" id="beVaccinateUnits">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">接种时间：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择日期"[nbDatepicker]="injectDatePicker" formControlName="vaccinateTime" id="vaccinateTime">
+            <nb-datepicker  [max]="maxDate"  #injectDatePicker format="YYYY/MM/DD"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗批次编号：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入编号" formControlName="vaccineBatchNo" id="vaccineBatchNo">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗产品编号：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入编号" formControlName="vaccineProductCode" id="vaccineProductCode">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">生产企业：</label>
+          <div class="col-8">
+            <nb-select fullWidth placeholder="请选择" status="info" formControlName="manufacturerCode"
+                       id="manufacturerCode">
+              <nb-option [value]="v.code" *ngFor="let v of manufactureData">{{v.name}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗类型：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择" fullWidth outline status="info" formControlName="vaccineType"
+                       id="vaccineType">
+              <nb-option [value]="v.value" *ngFor="let v of vaccineTypeData">{{v.label}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow:scroll;">
+  <nb-card-body>
+    <nz-table #msgTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false" [nzData]="listOfData"
+              [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex"
+              (nzPageIndexChange)="searchData($event)" >
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">受种单位</th>
+        <th [nzAlign]="'center'">受种单位类型</th>
+        <th [nzAlign]="'center'">接种单位</th>
+        <th [nzAlign]="'center'">接种科室</th>
+        <th [nzAlign]="'center'">疫苗批次编号</th>
+        <th [nzAlign]="'center'">产品编号</th>
+        <th [nzAlign]="'center'">产品名称</th>
+        <th [nzAlign]="'center'">生产厂商</th>
+        <th [nzAlign]="'center'">接种医生</th>
+        <th [nzAlign]="'center'">接种日期</th>
+        <th [nzAlign]="'center'">用苗数量(支)</th>
+        <th [nzAlign]="'center'">疫苗种类</th>
+        <th [nzAlign]="'center'">疫苗价格</th>
+        <th [nzAlign]="'center'">备注</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index;">
+        <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+        <td [nzAlign]="'center'">{{data.beVaccinateUnits}}</td>
+        <td [nzAlign]="'center'">{{data.vaccinateUnitType | dicPipe:'vaccinateUnitType'}}</td>
+        <td [nzAlign]="'center'">{{data.vaccinatePovCode | povNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{data.vaccinateDepartmentCode | departmentNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineBatchNo}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineProductCode}}</td>
+        <th [nzAlign]="'center'">{{data.vaccineProductCode | vacProductNamePipe | async}}</th>
+        <td [nzAlign]="'center'">{{data.vaccineManufactureCode | manufacturePipe}}</td>
+        <td [nzAlign]="'center'">{{data.vaccinateDoctorCode | povStaffNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{data.vaccinateTime | date: 'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">{{data.vaccinateCount}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineType | dicPipe:'vaccineType'}}</td>
+        <td [nzAlign]="'center'">{{data.price}}</td>
+        <td [nzAlign]="'center'">{{data.memo}}</td>
+        <td [nzAlign]="'center'">
+          <a  href="javascript:" class="link-a mr-1" (click)="stockBack(data)" >退回</a>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

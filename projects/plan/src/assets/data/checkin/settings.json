@@ -1,0 +1,13 @@
+{
+  "signatureUrl": "https://47.111.113.145:19999/agreement/",
+  "lodopUrl": "http://localhost:8000/CLodopfuncs.js",
+  "lodopCompanyName": "安徽奇兵医学科技有限公司",
+  "lodopMainLicense": "56E2EB898EE17DEBD030D1E8A683CAFE",
+  "lodopLicenseA": "安徽奇兵醫學科技有限公司",
+  "lodopLicenseB": "423D486AF17E2120FEB7B2BDDF66F396",
+  "lodopCompanyNameEng": "THIRD LICENSE",
+  "lodopLicenseARegistName": "AnHui Ace-power Medical and Technology Co., Ltd",
+  "lodopLicenseBStr": "709251107F8D9D680D1A81F88BED121F",
+  "wsUrl": "ws://127.0.0.1:40000"
+}
+

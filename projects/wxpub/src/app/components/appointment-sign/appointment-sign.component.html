@@ -1,0 +1,26 @@
+<div class="wx-content">
+  <div style="height: calc(100% - 180px); overflow: auto;">
+    <div [innerHTML]="appointModel"></div>
+
+  </div>
+  <div class="sign-pad-wrap" *ngIf="showSignPad">
+    <div class="sign-pad">
+      <!--      <signature-pad [options]="signaturePadOptions"></signature-pad>-->
+      <app-signature-component  [options]="testOption"
+                               (SaveImage)="comSign($event)"></app-signature-component>
+    </div>
+
+  </div>
+  <div class="sign-img" (onClick)="showSign=false;">
+
+
+    <label for="weuiAgree" class="weui-agree" *ngIf="signImageUrl.length === 0">
+      <input id="weuiAgree" type="checkbox" class="weui-agree__checkbox" name="agree" [(ngModel)]="agree"/>
+      <span class="weui-agree__text"> 我已阅读以上信息，明确所有风险，同意接种 </span>
+    </label>
+
+    <img [src]="signImageUrl">
+<!--    <button weui-button class="sign-btn" (click)="toSign()">{{ signImageUrl.length === 0 ? '去签字' : '确认签字' }}</button>-->
+    <button weui-button class="sign-btn" (click)="toSign()" *ngIf="signImageUrl.length === 0">{{  '去签字'  }}</button>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+::ng-deep {
+  .ant-table-small > .ant-table-content > .ant-table-body {
+    margin: 0;
+  }
+
+  .ant-table-small > .ant-table-content > .ant-table-body > table > .ant-table-thead > tr, head > tr {
+    background: #fafafa;
+  }
+}

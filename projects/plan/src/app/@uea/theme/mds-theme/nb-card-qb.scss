@@ -1,0 +1,48 @@
+// @import '../../../@uea/theme/global_theme';
+
+/**
+nb-card 相关定义样式
+ */
+
+@include nb-install-component() {
+	// 自定义card header 标题
+	.nb-card-header-qb {
+		//padding: 1.125rem 0;
+		color: nb-theme(color-basic-900);
+		font-family: Exo;
+		font-size: 1.5rem;
+		font-weight: 600;
+		text-align: center;
+	}
+	// 定义弹出层的宽度
+	.nb-card-container {
+		width: 1000px;
+	}
+	.nb-card-container-sm {
+		width: 800px;
+	}
+	.nb-card-container-xs {
+		width: 600px;
+	}
+	.nb-card-container-xxs {
+		width: 400px;
+	}
+	.nb-card-container-x {
+		width: 1100px;
+	}
+	.nb-card-container-xx {
+		width: 1200px;
+	}
+	.nb-card-body-qb {
+		height: 500px;
+	}
+	.nb-card-body-qb-lg {
+		height: 600px;
+	}
+	.header-flex-center {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+      font-size: 1.25rem;
+	}
+}

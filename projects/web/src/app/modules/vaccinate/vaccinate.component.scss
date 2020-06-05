@@ -1,0 +1,53 @@
+::ng-deep {
+
+  .ant-modal {
+    top: 27%;
+  }
+
+  .confirm.ant-modal-wrap {
+    .ant-modal-confirm {
+      width: 450px !important;
+    }
+  }
+
+  .success.ant-modal-wrap {
+    //background-color: rgba(82, 196, 26, 0.85);
+
+    .ant-modal-confirm {
+      width: 450px !important;
+    }
+  }
+
+  .warning.ant-modal-wrap {
+    //background-color: rgba(250, 173, 20, 0.85);
+
+    .ant-modal-confirm {
+      width: 450px !important;
+    }
+  }
+
+  .error.ant-modal-wrap {
+    //background-color: rgba(245, 34, 45, 0.85);
+
+    .ant-modal-confirm {
+      width: 450px !important;
+    }
+  }
+
+  .ant-modal-confirm-body {
+    margin-top: 15px;
+  }
+
+  .ant-modal-confirm-body > .anticon {
+    font-size: 7rem;
+  }
+
+  .ant-modal-confirm-body .ant-modal-confirm-title {
+    font-size: 2rem;
+    font-weight: bolder;
+  }
+
+  .ant-modal-confirm-body .ant-modal-confirm-content {
+    font-size: 1.4rem;
+  }
+}

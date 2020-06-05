@@ -1,0 +1,14 @@
+<nb-card>
+  <nb-card-header class="text-center">
+    扫描免疫卡号条码
+    <span class="cursor-pointer float-right" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="form-group row">
+      <label class="col-md-5 col-form-label text-right">免疫卡号条码：</label>
+      <div class="col-md-7">
+        <input type="text" nbInput placeholder="请扫码免疫卡号条码" [(ngModel)]="immunizationNum">
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

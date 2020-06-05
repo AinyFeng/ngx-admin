@@ -1,0 +1,89 @@
+<nz-card style="width:100%;" nzTitle="历史数据查询">
+  <form nz-form [formGroup]="queryForm" class="ant-advanced-search-form">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="5">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="8" [nzMd]="12" [nzXs]="24" nzFor="deviceName">传感器名称</nz-form-label>
+          <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <nz-select formControlName="deviceName" id="deviceName"  nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+              <nz-option *ngFor="let v of sensorOptions"  [nzLabel]="v.sensorName" [nzValue]="v.sensorMac"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="5">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="8" [nzMd]="12" [nzXs]="24" nzFor="statue">温度状态</nz-form-label>
+          <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <nz-select nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" id="tempIsnormal"
+                       formControlName="tempIsnormal">
+              <nz-option nzLabel="正常" nzValue="正常"></nz-option>
+              <nz-option nzLabel="偏低" nzValue="偏低"></nz-option>
+              <nz-option nzLabel="偏高" nzValue="偏高"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="5">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="8" [nzMd]="12" [nzXs]="24" nzFor="startDate">开始时间</nz-form-label>
+          <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <nz-date-picker [nzDisabledDate]="disabledStartDate" nzSize="large"  nzFormat="yyyy-MM-dd HH:mm:ss"
+                            formControlName="startDate" id="startDate" nzPlaceHolder="选择时间"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="5">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="8" [nzMd]="12" [nzXs]="24" nzFor="endDate">结束时间</nz-form-label>
+          <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <nz-date-picker [nzDisabledDate]="disabledEndDate" nzSize="large"  nzFormat="yyyy-MM-dd HH:mm:ss"
+                            formControlName="endDate" id="endDate" nzPlaceHolder="选择时间"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div class="mb-2">
+        <button nz-button class="mr-2" [nzType]="'primary'" (click)="searchData()">查询</button>
+        <button nz-button [nzType]="'primary'">导出EXCEL</button>
+      </div>
+    </div>
+  </form>
+</nz-card>
+<nz-card style="margin-top: 20px;">
+  <nz-table #msgTable [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false" [nzLoading]="loading"
+            [nzFrontPagination]="false"
+            [nzTotal]="total"
+            [(nzPageIndex)]="pageIndex"
+            [nzShowTotal]="totalTemplate"
+            (nzPageIndexChange)="searchData($event)">
+    <thead>
+    <tr>
+      <th [nzAlign]="'center'">传感器编号</th>
+      <th [nzAlign]="'center'">测量时间</th>
+      <th [nzAlign]="'center'">温度℃</th>
+      <th [nzAlign]="'center'">温度状态</th>
+      <th [nzAlign]="'center'">湿度%</th>
+      <th [nzAlign]="'center'">数据状态</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of msgTable.data">
+      <td>{{data.sensorMac}}</td>
+      <td>{{data.getTime}}</td>
+      <td>{{data.tempBcd}}</td>
+      <td>{{data.tempIsnormal}}</td>
+      <td>{{data.humiBcd}}</td>
+      <td>{{data.deviceStatus}}</td>
+    </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+
+<ng-template #totalTemplate>
+  共{{ total }}条数据，当前第{{ pageIndex }}页
+</ng-template>
+

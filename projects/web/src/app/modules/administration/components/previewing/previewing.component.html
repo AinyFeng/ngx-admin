@@ -1,0 +1,206 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    预诊模板管理
+    <div>
+      <button nbButton status="info" (click)="searchData()" [nbSpinner]="loading">查询</button>
+      <button nbButton status="info" (click)="openDialog(dialog)" class="ml-2">新增模板</button>
+      <!--      <button nbButton status="warning" (click)="reset()">重置</button>-->
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <!--<form>
+      <div class="form-group row">
+        <div class="col-md-4 row">
+          <label class="col-4 col-form-label text-right">模板名称:</label>
+          <div class="col-8">
+            <input type="text" nbInput placeholder="请输入模板名称" fullWidth [(ngModel)]="templateName" name="templateName">
+          </div>
+        </div>
+      </div>
+    </form>-->
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center">
+  <nb-card-body>
+    <!--<nz-table #msgTable [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false" [nzPageIndex]="pageIndex"
+              [nzTotal]="total" [nzFrontPagination]="false" (nzPageIndexChange)="searchData($event)">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">模板名称</th>
+        <th [nzAlign]="'center'">模板编号</th>
+        <th [nzAlign]="'center'">模板内容</th>
+        <th [nzAlign]="'center'">更新时间</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data">
+        <td [nzAlign]="'center'">{{data.templateName}}</td>
+        <td [nzAlign]="'center'">{{data.templateCode}}</td>
+        <td [nzAlign]="'center'">{{data.templateContent}}</td>
+        <td [nzAlign]="'center'">{{data.dataTime | date: 'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">
+          <a href="javascript:" class="link-a mr-1" (click)="changeInfo(data)">修改</a>
+          <a href="javascript:" class="link-a" (click)="deleteInfo(data)">删除</a>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>-->
+    <nz-table #groupingTable nzBordered nzSize="middle" nzSimple="false" [nzFrontPagination]="true"
+              [nzData]="listOfData"
+              [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize">
+      <thead>
+
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <!--     <th>模板名称</th>-->
+        <th [nzAlign]="'center'">模板内容</th>
+        <th [nzAlign]="'center'">模板选项</th>
+        <!--        <th>分组</th>
+                <th [nzAlign]="'center'">数据范围</th>
+                <th [nzAlign]="'center'">默认值</th>
+                <th [nzAlign]="'center'">可选项</th>-->
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+      </thead>
+
+
+      <tbody>
+      <tr *ngFor="let data of groupingTable.data;index as i">
+        <td [nzAlign]="'center'">{{ ((i + 1) + (pageIndex - 1) * pageSize)}}</td>
+        <td [nzAlign]="'center'">{{data.question}}</td>
+        <td [nzAlign]="'center'">{{data.options}}</td>
+        <td [nzAlign]="'center'">
+          <button style="min-width: unset; margin-right: 2px;" nbButton status="warning" size="tiny"
+                  (click)="openDialog(dialog, data)">修改
+          </button>
+          <button style="min-width: unset; margin-left: 3px;" nbButton status="danger" size="tiny"
+                  (click)="openDeleteDialog(deleteDialog, data)">删除
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #dialog let-ref="dialogRef">
+  <nb-card [ngStyle]="{'width': '1000px'}">
+    <nb-card-header>{{ dialogTitle }}</nb-card-header>
+    <nb-card-body [ngStyle]="{'text-align': 'center'}">
+      <form [formGroup]="editDictForm">
+        <div class="form-group row">
+          <label class="col-2 col-form-label text-right">模板标题：</label>
+          <div class="col-6">
+            <input type="text" nbInput fullWidth
+                   [status]="editDictForm.get('question').invalid && editDictForm.get('question').touched ? 'danger' : ''"
+                   formControlName="question"/>
+            <uea-show-form-errors [control]="editDictForm.get('question')"></uea-show-form-errors>
+          </div>
+          <label class="col-4 col-form-label text-muted text-left">模板项的标题(中文)，比如：三查(1.检查受种者健康状况和接种禁忌症2.检查预防接种卡(簿)与儿童预防接种证3.检查疫苗、注射器外观与批号、有效期)</label>
+        </div>
+        <!--<div class="form-group row">
+          <label class="col-2 col-form-label text-right">配置标题(英文)：</label>
+          <div class="col-6">
+            <input type="text" nbInput fullWidth
+                   [status]="editDictForm.get('confName').invalid && editDictForm.get('confName').touched ? 'danger' : ''"
+                   formControlName="confName"/>
+            <uea-show-form-errors [control]="editDictForm.get('confName')"></uea-show-form-errors>
+          </div>
+          <label class="col-4 col-form-label text-muted text-left">配置项的标题(英文)，比如：sign_required</label>
+        </div>-->
+        <!--<div class="form-group row">
+          <label class="col-2 col-form-label text-right">说明：</label>
+          <div class="col-6">
+            <textarea type="text" nbInput fullWidth
+                      formControlName="confDesc"></textarea>
+            &lt;!&ndash;<uea-show-form-errors [control]="editDictForm.get('confDesc')"></uea-show-form-errors>&ndash;&gt;
+          </div>
+          <label class="col-4 col-form-label text-left text-muted">请输入对此模板项的描述，比如：预诊检查条件</label>
+        </div>
+        &lt;!&ndash;<div class="form-group row">
+          <label class="col-2 col-form-label text-right">分组：</label>
+          <div class="col-6">
+            <nb-select placeholder="选择分组" fullWidth formControlName="confGroup">
+              <nb-option *ngFor="let g of sysConfGroupOptions" [value]="g.value">{{ g.label }}</nb-option>
+            </nb-select>
+            <uea-show-form-errors [control]="editDictForm.get('confGroup')"></uea-show-form-errors>
+          </div>
+          <label class="col-4 col-form-label text-left text-muted">请选择此配置项的分组信息</label>
+        </div>&ndash;&gt;
+        <div class="form-group row">
+          <label class="col-2 col-form-label text-right">数据范围：</label>
+          <div class="col-6">
+            <input type="text" nbInput fullWidth
+                   [status]="editDictForm.get('confScope').invalid && editDictForm.get('confScope').touched ? 'danger' : ''"
+                   formControlName="confScope"/>
+            <uea-show-form-errors [control]="editDictForm.get('confScope')"></uea-show-form-errors>
+          </div>
+          <label class="col-4 col-form-label text-left text-muted">请输入对此模板项的数据范围，从0开始，比如：在5以内，则输入5</label>
+        </div>
+        <div class="form-group row">
+          <label class="col-2 col-form-label text-right">默认值：</label>
+          <div class="col-6">
+            <input type="text" nbInput fullWidth
+                   [status]="editDictForm.get('defaultValue').invalid && editDictForm.get('defaultValue').touched ? 'danger' : ''"
+                   formControlName="defaultValue"/>
+            <uea-show-form-errors [control]="editDictForm.get('defaultValue')"></uea-show-form-errors>
+          </div>
+          <label class="col-4 col-form-label text-left text-muted">请输入对此模板项的默认值，在数据范围之内，比如：输入1，或者其他默认参数</label>
+        </div>-->
+        <div class="form-group row">
+          <label class="col-2 col-form-label text-right">可选项：</label>
+          <div class="col-6">
+            <div class="col-12 row" *ngFor="let option of editDictForm.get('options').value;index as i"
+                 style="margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; margin-bottom: 10px;">
+              <label class="col-2 col-form-label text-right" style="float: left; padding-left: 0; padding-right: 0;">选项名称：</label>
+              <div class="col-3" style="float: left; padding-left: 0; padding-right: 0;">
+                <input type="text" nbInput fullWidth
+                       [status]="editDictForm.get(option?.labelControl).invalid && editDictForm.get(option?.labelControl).touched ? 'danger' : ''"
+                       [formControlName]="option?.labelControl"/>
+                <uea-show-form-errors [control]="editDictForm.get(option?.labelControl)"></uea-show-form-errors>
+              </div>
+              <label class="col-2 col-form-label text-right" style="float: left; padding-left: 0; padding-right: 0;">选项值：</label>
+              <div class="col-3" style="float: left; padding-left: 0; padding-right: 0;">
+                <input type="text" nbInput fullWidth
+                       [status]="editDictForm.get(option?.valueControl).invalid && editDictForm.get(option?.valueControl).touched ? 'danger' : ''"
+                       [formControlName]="option?.valueControl"/>
+                <uea-show-form-errors [control]="editDictForm.get(option?.valueControl)"></uea-show-form-errors>
+              </div>
+              <div class="col-2">
+                <nb-icon pack="fas" class="fa fa-minus-circle" status="danger" (click)="removeOption(option, $event)"
+                         style="padding: 8px 15px; font-size: 1.5rem;"></nb-icon>
+              </div>
+            </div>
+            <div class="col-12 row"
+                 style="text-align: center; display: block; margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0;">
+              <button nbButton outline fullWidth (click)="addOptions()">添加</button>
+            </div>
+          </div>
+          <label class="col-4 col-form-label text-left text-muted">请输入对此模板项的可选值，至少包含2项，比如：是 - 1， 否 -
+            0</label>
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer [ngStyle]="{'text-align': 'right'}">
+      <button nbButton *ngIf="dialogTitle === '修改预诊模板'" (click)="update(ref)">修改</button>
+      <button nbButton *ngIf="dialogTitle === '新增预诊模板'" (click)="insert(ref)">新增</button>
+      <button nbButton style="margin-left: 5px;" (click)="ref.close()">关闭</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #deleteDialog let-ref="dialogRef">
+  <!--  [ngStyle]="{'width': '1000px'}" -->
+  <nb-card size="small" style="width: 300px;">
+    <nb-card-header>删除模板</nb-card-header>
+    <nb-card-body [ngStyle]="{'text-align': 'center'}">
+      是否删除该条预诊模板？
+    </nb-card-body>
+    <nb-card-footer [ngStyle]="{'text-align': 'right'}">
+      <button nbButton status="danger" (click)="delete(ref)">删除</button>
+      <button nbButton style="margin-left: 5px;" (click)="ref.close()">关闭</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

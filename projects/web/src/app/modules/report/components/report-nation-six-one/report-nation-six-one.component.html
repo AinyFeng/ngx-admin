@@ -1,0 +1,642 @@
+<nb-card accent='info'>
+  <nb-card-header class="header-flex-center">
+    国家免疫规划疫苗常规接种情况报表6-1
+    <div>
+      <button nbButton status="success" (click)="queryData()" [nbSpinner]="loading" [disabled]="loading">统计</button>
+       <button nbButton status="success" (click)="reported()" class="ml-2 mr-2">上报</button>
+      <button nbButton status="primary" (click)="exportSixOne()" [nbSpinner]="loading" [disabled]="loading">导出</button>
+      <button nbButton status="success" (click)="printSixOne(true, 'sixOne')" class="ml-2 mr-2" [nbSpinner]="loading"
+              [disabled]="loading">打印
+      </button>
+       <button nbButton status="success">重新统计</button>
+      <button nbButton status="success" class="ml-2 mr-2" (click)="previewAll()" [nbSpinner]="loading"
+              [disabled]="loading">预览全部
+      </button>
+       <button nbButton status="primary">导出监测</button>
+      <!--<button nz-button nzType="primary" (click)="queryData()" [nzLoading]="loading" nzSize="large">统计</button>
+      <button nz-button nzType="primary" (click)="exportSixOne()" [disabled]="loading" class="ml-2 mr-2"  nzSize="large">导出</button>
+      <button nz-button nzType="primary" [disabled]="loading"  nzSize="large">打印</button>
+      <button nz-button nzType="primary" [disabled]="loading" class="ml-2 mr-2"  nzSize="large">重新统计</button>
+      <button nz-button nzType="primary" [disabled]="loading"  nzSize="large" (click)="previewAll()">预览全部</button>
+      <button nz-button nzType="primary" [disabled]="loading" class="ml-2"  nzSize="large">导出监测</button>-->
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">年月：</label>
+          <div class="col-8">
+            <!--<nb-select placeholder="请选择年份" fullWidth outline status="info" formControlName="years" id="years">
+              <nb-option [value]="item.value" *ngFor="let item of years">{{item.label}}</nb-option>
+            </nb-select>-->
+            <nz-month-picker
+              class="full-width"
+              formControlName="years"
+              nzFormat="yyyy-MM"
+              nzSize="large"
+              id="years"
+              nzShowTime
+              nzPlaceHolder="请选择年月"
+              nzAllowClear="false"
+            ></nz-month-picker>
+          </div>
+        </div>
+        <!--<div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">月份：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择月份" fullWidth outline status="info" formControlName="months" id="months">
+              <nb-option [value]="item.value" *ngFor="let item of months">{{item.label}}</nb-option>
+            </nb-select>
+          </div>
+        </div>-->
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">显示类型：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择显示类型" fullWidth outline status="info" formControlName="showType" id="showType">
+              <nb-option value="0">按居委名称</nb-option>
+              <!--              <nb-option value="1">按居住属性</nb-option>-->
+              <nb-option value="">按常规修订</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">居住类型：</label>
+          <div class="col-8">
+            <!--<uea-nb-select-all placeholderText="请选择在册类别" formControlName="profileStatusCode"
+                               [options]="residentialTypeData"></uea-nb-select-all>-->
+            <nb-select (selectedChange)="onChange($event)" placeholder="请选择居住类型" fullWidth outline status="info"
+                       formControlName="residentialType"
+                       id="residentialType">
+              <nb-option [value]="item.value" *ngFor="let item of residentialTypeData">{{item.label}}</nb-option>
+              <nb-option value="">合计</nb-option>
+            </nb-select>
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card>
+  <nb-card-header class="text-center">
+    <h4>{{year}} 年 {{month}} 月 国家免疫规划疫苗常规接种情况报表(表6-1) {{residentialType}}</h4>
+    <h6>(省、地区、县及乡级单位汇总、上报使用)</h6>
+  </nb-card-header>
+
+  <nb-card-body>
+    <nz-table *ngFor="let list of listOfData; index as i" #groupingTable [nzData]="list"
+              [nzScroll]="{x: '1300px'}"
+              [nzFrontPagination]="false" [nzShowPagination]="false"
+              style="width: 100%;" nzBordered nzSize="small" [nzFooter]="footer">
+      <thead>
+        <tr>
+          <th colspan="2">表{{i + 1}}/共{{listOfData.length}}张</th>
+          <th colspan="69"
+              class="text-left">
+            {{povInfo.curProvCode ? (povInfo.curProvCode | administrativePipe | async) : ''}}  {{povInfo.curCityCode ? (povInfo.curCityCode | administrativePipe | async) : ''}} {{povInfo.curDistrictCode ? (povInfo.curDistrictCode | administrativePipe | async) : ''}} {{userInfo?.pov | povNamePipe | async}}</th>
+        </tr>
+        <tr>
+          <th rowspan="3">报告单位</th>
+          <th rowspan="3">国标编码(县)</th>
+          <th colspan="34">本月（次）应种剂次数</th>
+          <th colspan="35">本月（次）实种剂次数</th>
+        </tr>
+
+        <tr>
+          <th colspan="3">HepB</th>
+          <th rowspan="2" class="v-t">BCG</th>
+          <th colspan="4">PV</th>
+          <th colspan="4">DTP</th>
+          <th rowspan="2" class="v-t">DT</th>
+          <th colspan="2">MR</th>
+          <th colspan="2">MMR</th>
+          <th colspan="2">MM</th>
+          <th colspan="2">MV</th>
+          <th colspan="2">MenA</th>
+          <th colspan="2">MenAC</th>
+          <th colspan="2">JE-l</th>
+          <th colspan="4">JE-i</th>
+          <th rowspan="2" class="v-t">HepA-l</th>
+          <th colspan="2">HepA-i</th>
+          <th colspan="4">HepB</th>
+          <th rowspan="2" class="v-t">BCG</th>
+          <th colspan="4">PV</th>
+          <th colspan="4">DTP</th>
+          <th rowspan="2" class="v-t">DT</th>
+          <th colspan="2">MR</th>
+          <th colspan="2">MMR</th>
+          <th colspan="2">MM</th>
+          <th colspan="2">MV</th>
+          <th colspan="2">MenA</th>
+          <th colspan="2">MenAC</th>
+          <th colspan="2">JE-l</th>
+          <th colspan="4">JE-i</th>
+          <th rowspan="2" class="v-t">HepA-l</th>
+          <th colspan="2">HepA-i</th>
+        </tr>
+
+        <tr>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>及时</th>
+          <th>2</th>
+          <th>3</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>1</th>
+          <th>2</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of groupingTable.data">
+          <td>{{data.unitName}}</td>
+          <td>{{data.unitCode}}</td>
+
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'hepbASh', data.hepbASh)">{{data.hepbASh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'hepbBSh', data.hepbBSh)">{{data.hepbBSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'hepbCSh', data.hepbCSh)">{{data.hepbCSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'bcgSh', data.bcgSh)">{{data.bcgSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'pvASh', data.pvASh)">{{data.pvASh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'pvBSh', data.pvBSh)">{{data.pvBSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'pvCSh', data.pvCSh)">{{data.pvCSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'pvDSh', data.pvDSh)">{{data.pvDSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'dtpASh', data.dtpASh)">{{data.dtpASh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'dtpBSh', data.dtpBSh)">{{data.dtpBSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'dtpCSh', data.dtpCSh)">{{data.dtpCSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'dtpDSh', data.dtpDSh)">{{data.dtpDSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'dtSh', data.dtSh)">{{data.dtSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'mrASh', data.mrASh)">{{data.mrASh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'mrBSh', data.mrBSh)">{{data.mrBSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'mmrASh', data.mmrASh)">{{data.mmrASh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'mmrBSh', data.mmrBSh)">{{data.mmrBSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'mmASh', data.mmASh)">{{data.mmASh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'mmBSh', data.mmBSh)">{{data.mmBSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'mvASh', data.mvASh)">{{data.mvASh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'mvBSh', data.mvBSh)">{{data.mvBSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'menaASh', data.menaASh)">{{data.menaASh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'menaBSh', data.menaBSh)">{{data.menaBSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'menacASh', data.menacASh)">{{data.menacASh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'menacBSh', data.menacBSh)">{{data.menacBSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'jelASh', data.jelASh)">{{data.jelASh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'jelBSh', data.jelBSh)">{{data.jelBSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'jeiASh', data.jeiASh)">{{data.jeiASh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'jeiBSh', data.jeiBSh)">{{data.jeiBSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'jeiCSh', data.jeiCSh)">{{data.jeiCSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'jeiDSh', data.jeiDSh)">{{data.jeiDSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'hepalSh', data.hepalSh)">{{data.hepalSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'hepaiASh', data.hepaiASh)">{{data.hepaiASh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'hepaiBSh', data.hepaiBSh)">{{data.hepaiBSh}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'hepbARe', data.hepbARe)">{{data.hepbARe}}</a></td>
+          <td>
+            {{data.hepbAaRe}}</td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'hepbBRe', data.hepbBRe)">{{data.hepbBRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'hepbCRe', data.hepbCRe)">{{data.hepbCRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'bcgRe', data.bcgRe)">{{data.bcgRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'pvARe', data.pvARe)">{{data.pvARe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'pvBRe', data.pvBRe)">{{data.pvBRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'pvCRe', data.pvCRe)">{{data.pvCRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'pvDRe', data.pvDRe)">{{data.pvDRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'dtpARe', data.dtpARe)">{{data.dtpARe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'dtpBRe', data.dtpBRe)">{{data.dtpBRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'dtpCRe', data.dtpCRe)">{{data.dtpCRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'dtpDRe', data.dtpDRe)">{{data.dtpDRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'dtRe', data.dtRe)">{{data.dtRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'mrARe', data.mrARe)">{{data.mrARe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'mrBRe', data.mrBRe)">{{data.mrBRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'mmrARe', data.mmrARe)">{{data.mmrARe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'mmrBRe', data.mmrBRe)">{{data.mmrBRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'mmARe', data.mmARe)">{{data.mmARe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'mmBRe', data.mmBRe)">{{data.mmBRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'mvARe', data.mvARe)">{{data.mvARe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'mvBRe', data.mvBRe)">{{data.mvBRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'menaARe', data.menaARe)">{{data.menaARe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'menaBRe', data.menaBRe)">{{data.menaBRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'menacARe', data.menacARe)">{{data.menacARe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'menacBRe', data.menacBRe)">{{data.menacBRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'jelARe', data.jelARe)">{{data.jelARe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'jelBRe', data.jelBRe)">{{data.jelBRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'jeiARe', data.jeiARe)">{{data.jeiARe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'jeiBRe', data.jeiBRe)">{{data.jeiBRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'jeiCRe', data.jeiCRe)">{{data.jeiCRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'jeiDRe', data.jeiDRe)">{{data.jeiDRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'hepalRe', data.hepalRe)">{{data.hepalRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'hepaiBRe', data.hepaiBRe)">{{data.hepaiBRe}}</a></td>
+          <td>
+            <a href="javascript:" (click)="checkDetail(data, 'hepaiBRe', data.hepaiBRe)">{{data.hepaiBRe}}</a></td>
+        </tr>
+        <ng-template #footer>
+          <tr>
+            <td colspan="71">
+              填写说明：乡级防保组织每月5日前汇总上报县级疾病预防控制机构，县级疾病预防控制机构每月10日前录入上报中国免疫规划监测信息管理系统。
+            </td>
+          </tr>
+          <tr>
+            <td [nzAlign]="'left'" colspan="71">填报日期：{{currentDate.getFullYear()}}年{{currentDate.getMonth() + 1}}
+              月{{currentDate.getDate()}}日    填报单位(印章)：{{userInfo?.pov | povNamePipe | async}}
+                  填报人：{{userInfo?.userCode | povStaffNamePipe | async}}</td>
+          </tr>
+        </ng-template>
+      </tbody>
+    </nz-table>
+    <div id="sixOne" style="position: absolute; margin-left: 999rem;">
+      <h3 style="text-align: center;">{{year}} 年 {{month}} 月 国家免疫规划疫苗常规接种情况报表(表6-1) {{residentialType}}</h3>
+      <h5 style="text-align: center;">(省、地区、县及乡级单位汇总、上报使用)</h5>
+      <table *ngFor="let list of listOfData; index as i" border="1" cellspacing="0" cellpadding="0"
+             style="border-collapse:collapse; border-spacing:0; width: 100%; font-size: 14.4px; text-align: center;">
+        <!--        <caption>常规免疫接种情况6-1汇总表</caption>-->
+        <thead>
+        <tr>
+          <th colspan="2">表{{i + 1}}/共{{listOfData.length}}张</th>
+          <th colspan="69"
+              class="text-left">
+            {{povInfo.curProvCode ? (povInfo.curProvCode | administrativePipe | async) : ''}}  {{povInfo.curCityCode ? (povInfo.curCityCode | administrativePipe | async) : ''}} {{povInfo.curDistrictCode ? (povInfo.curDistrictCode | administrativePipe | async) : ''}} {{userInfo?.pov | povNamePipe | async}}</th>
+        </tr>
+        <tr>
+          <th rowspan="3">报告单位</th>
+          <th rowspan="3">国标编码(县)</th>
+          <th colspan="34">本月（次）应种剂次数</th>
+          <th colspan="35">本月（次）实种剂次数</th>
+        </tr>
+
+        <tr>
+          <th colspan="3">HepB</th>
+          <th rowspan="2" class="v-t">BCG</th>
+          <th colspan="4">PV</th>
+          <th colspan="4">DTP</th>
+          <th rowspan="2" class="v-t">DT</th>
+          <th colspan="2">MR</th>
+          <th colspan="2">MMR</th>
+          <th colspan="2">MM</th>
+          <th colspan="2">MV</th>
+          <th colspan="2">MenA</th>
+          <th colspan="2">MenAC</th>
+          <th colspan="2">JE-l</th>
+          <th colspan="4">JE-i</th>
+          <th rowspan="2" class="v-t">HepA-l</th>
+          <th colspan="2">HepA-i</th>
+          <th colspan="4">HepB</th>
+          <th rowspan="2" class="v-t">BCG</th>
+          <th colspan="4">PV</th>
+          <th colspan="4">DTP</th>
+          <th rowspan="2" class="v-t">DT</th>
+          <th colspan="2">MR</th>
+          <th colspan="2">MMR</th>
+          <th colspan="2">MM</th>
+          <th colspan="2">MV</th>
+          <th colspan="2">MenA</th>
+          <th colspan="2">MenAC</th>
+          <th colspan="2">JE-l</th>
+          <th colspan="4">JE-i</th>
+          <th rowspan="2" class="v-t">HepA-l</th>
+          <th colspan="2">HepA-i</th>
+        </tr>
+
+        <tr>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>及时</th>
+          <th>2</th>
+          <th>3</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>1</th>
+          <th>2</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of list">
+          <td>{{data.unitName}}</td>
+          <td>{{data.unitCode}}</td>
+          <td>
+            {{data.hepbASh}}</td>
+          <td>
+            {{data.hepbBSh}}</td>
+          <td>
+            {{data.hepbCSh}}</td>
+          <td>
+            {{data.bcgSh}}</td>
+          <td>
+            {{data.pvASh}}</td>
+          <td>
+            {{data.pvBSh}}</td>
+          <td>
+            {{data.pvCSh}}</td>
+          <td>
+            {{data.pvDSh}}</td>
+          <td>
+            {{data.dtpASh}}</td>
+          <td>
+            {{data.dtpBSh}}</td>
+          <td>
+            {{data.dtpCSh}}</td>
+          <td>
+            {{data.dtpDSh}}</td>
+          <td>
+            {{data.dtSh}}</td>
+          <td>
+            {{data.mrASh}}</td>
+          <td>
+            {{data.mrBSh}}</td>
+          <td>
+            {{data.mmrASh}}</td>
+          <td>
+            {{data.mmrBSh}}</td>
+          <td>
+            {{data.mmASh}}</td>
+          <td>
+            {{data.mmBSh}}</td>
+          <td>
+            {{data.mvASh}}</td>
+          <td>
+            {{data.mvBSh}}</td>
+          <td>
+            {{data.menaASh}}</td>
+          <td>
+            {{data.menaBSh}}</td>
+          <td>
+            {{data.menacASh}}</td>
+          <td>
+            {{data.menacBSh}}</td>
+          <td>
+            {{data.jelASh}}</td>
+          <td>
+            {{data.jelBSh}}</td>
+          <td>
+            {{data.jeiASh}}</td>
+          <td>
+            {{data.jeiBSh}}</td>
+          <td>
+            {{data.jeiCSh}}</td>
+          <td>
+            {{data.jeiDSh}}</td>
+          <td>
+            {{data.hepalSh}}</td>
+          <td>
+            {{data.hepaiASh}}</td>
+          <td>
+            {{data.hepaiBSh}}</td>
+          <td>
+            {{data.hepbARe}}</td>
+          <td>
+            {{data.hepbAaRe}}</td>
+          <td>
+            {{data.hepbBRe}}</td>
+          <td>
+            {{data.hepbCRe}}</td>
+          <td>
+            {{data.bcgRe}}</td>
+          <td>
+            {{data.pvARe}}</td>
+          <td>
+            {{data.pvBRe}}</td>
+          <td>
+            {{data.pvCRe}}</td>
+          <td>
+            {{data.pvDRe}}</td>
+          <td>
+            {{data.dtpARe}}</td>
+          <td>
+            {{data.dtpBRe}}</td>
+          <td>
+            {{data.dtpCRe}}</td>
+          <td>
+            {{data.dtpDRe}}</td>
+          <td>
+            {{data.dtRe}}</td>
+          <td>
+            {{data.mrARe}}</td>
+          <td>
+            {{data.mrBRe}}</td>
+          <td>
+            {{data.mmrARe}}</td>
+          <td>
+            {{data.mmrBRe}}</td>
+          <td>
+            {{data.mmARe}}</td>
+          <td>
+            {{data.mmBRe}}</td>
+          <td>
+            {{data.mvARe}}</td>
+          <td>
+            {{data.mvBRe}}</td>
+          <td>
+            {{data.menaARe}}</td>
+          <td>
+            {{data.menaBRe}}</td>
+          <td>
+            {{data.menacARe}}</td>
+          <td>
+            {{data.menacBRe}}</td>
+          <td>
+            {{data.jelARe}}</td>
+          <td>
+            {{data.jelBRe}}</td>
+          <td>
+            {{data.jeiARe}}</td>
+          <td>
+            {{data.jeiBRe}}</td>
+          <td>
+            {{data.jeiCRe}}</td>
+          <td>
+            {{data.jeiDRe}}</td>
+          <td>
+            {{data.hepalRe}}</td>
+          <td>
+            {{data.hepaiBRe}}</td>
+          <td>
+            {{data.hepaiBRe}}</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr style="text-align: left;">
+          <td colspan="71">
+            填写说明：乡级防保组织每月5日前汇总上报县级疾病预防控制机构，县级疾病预防控制机构每月10日前录入上报中国免疫规划监测信息管理系统。
+          </td>
+        </tr>
+        <tr style="text-align: left;">
+          <td colspan="71">填报日期：{{currentDate.getFullYear()}}年{{currentDate.getMonth() + 1}}
+            月{{currentDate.getDate()}}日    填报单位(印章)：{{userInfo?.pov | povNamePipe | async}}
+                填报人：{{userInfo?.userCode | povStaffNamePipe | async}}</td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+  </nb-card-body>
+</nb-card>

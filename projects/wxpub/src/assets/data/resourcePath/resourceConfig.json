@@ -1,0 +1,5 @@
+{
+  "imageHost": "https://svs.chinavacc.com.cn:19999/svs/signature/downloadSignatureImg",
+
+  "api": "http://svs.chinavacc.com.cn:19998/"
+}

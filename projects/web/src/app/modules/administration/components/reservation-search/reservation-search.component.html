@@ -1,0 +1,166 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    预约记录查询
+    <div>
+      <button nbButton status="info" (click)="searchData()" [nbSpinner]="loading" [disabled]="loading">查询</button>
+      <button nbButton status="info" (click)="export()" [nbSpinner]="loading" class="ml-2 mr-2">导出报表</button>
+      <button nbButton status="warning" (click)="reset()" [nbSpinner]="loading">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="reservationForm">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">档案编号：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入受种人编号" formControlName="profileCode" id="profileCode">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">姓名：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入受种姓名" formControlName="name" id="name">
+          </div>
+        </div>
+<!--        <div class="col-md-3 row">-->
+<!--          <label id="createBy" class="col-4 col-form-label text-right">创建人：</label>-->
+<!--          <div class="col-8">-->
+<!--            <uea-nb-select-all placeholderText="选择创建人" formControlName="createBy"-->
+<!--                               [valueText]="'number'"-->
+<!--                               [labelText]="'realName'"-->
+<!--                               [options]="userList"></uea-nb-select-all>-->
+<!--            &lt;!&ndash;<nb-select fullWidth placeholder="选择创建人" formControlName="createBy">-->
+<!--              <nb-option *ngFor="let u of userList" [value]="u.userCode">{{ u.name }}</nb-option>-->
+<!--            </nb-select>&ndash;&gt;-->
+<!--          </div>-->
+<!--        </div>-->
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗小类：</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="选择疫苗小类" formControlName="vaccines"
+                               [options]="vacSubClassData"></uea-nb-select-all>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row mt-2">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">预约日期(起)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择预约日期" [nbDatepicker]="reservationStartDatePicker"
+                   formControlName="reservationStartDate" id="reservationStartDate">
+            <nb-datepicker #reservationStartDatePicker
+                           format="YYYY/MM/DD"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">预约日期(止)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择预约日期" [nbDatepicker]="reservationDatePicker"
+                   formControlName="reservationEndDate" id="reservationEndDate">
+            <nb-datepicker #reservationDatePicker
+                           format="YYYY/MM/DD"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right" id="createDateStart">创建日期(起)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择操作日期" [nbDatepicker]="updateDatePicker"
+                   formControlName="createDateStart">
+            <nb-datepicker #updateDatePicker [filter]="filterCreateStartDate" format="YYYY/MM/DD"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right" id="createDateEnd">创建日期(止)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择操作日期" [nbDatepicker]="updateEndDatePicker"
+                   formControlName="createDateEnd">
+            <nb-datepicker #updateEndDatePicker [filter]="filterCreateEndDate" format="YYYY/MM/DD"></nb-datepicker>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label id="status" class="col-4 col-form-label text-right">预约状态：</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="选择预约状态" formControlName="status"
+                               [options]="statusOptions"></uea-nb-select-all>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right" id="channel">预约渠道</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择预约渠道" formControlName="channel"
+                               [options]="reservationTypeOptions"></uea-nb-select-all>
+            <!--            <nb-select fullWidth placeholder="选择预约渠道" formControlName="channel">-->
+            <!--              <nb-option *ngFor="let s of reservationTypeOptions" [value]="s.value">{{ s.label }}</nb-option>-->
+            <!--            </nb-select>-->
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center">
+  <nb-card-body>
+    <nz-table #reservationTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false"
+              [nzData]="listOfData"
+              [(nzPageIndex)]="pageIndex"
+              [nzShowTotal]="totalTemplate"
+              [nzLoading]="loading" [nzTotal]="total"
+              (nzPageIndexChange)="searchData($event)">
+      <thead>
+
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">姓名</th>
+        <th [nzAlign]="'center'">受种人档案编号</th>
+        <th [nzAlign]="'center'">预约日期</th>
+        <th [nzAlign]="'center'">预约时段</th>
+        <th [nzAlign]="'center'">疫苗小类</th>
+        <th [nzAlign]="'center'">预约疫苗</th>
+        <th [nzAlign]="'center'">预约渠道</th>
+<!--        <th [nzAlign]="'center'">最终日期</th>-->
+<!--        <th [nzAlign]="'center'">最终时段</th>-->
+        <th [nzAlign]="'center'">状态</th>
+        <th [nzAlign]="'center'">创建人</th>
+        <th [nzAlign]="'center'">创建时间</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of reservationTable.data; index as i">
+        <td [nzAlign]="'center'">{{(pageIndex - 1) * pageSize + i + 1}}</td>
+        <td [nzAlign]="'center'">{{data.profileName}}</td>
+        <td [nzAlign]="'center'">{{data.profileCode}}</td>
+        <td [nzAlign]="'center'">{{data.finalDate | date:'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">{{ data.workingTime }}</td>
+        <td [nzAlign]="'center'">{{ data.subclassCode | vacSubclassPipe }}</td>
+        <td [nzAlign]="'center'">{{ data.vaccineProduct }}</td>
+        <td [nzAlign]="'center'">{{data.channel | reservationChannelPipe }}</td>
+<!--        <td [nzAlign]="'center'">{{data.finalDate | date:'yyyy-MM-dd'}}</td>-->
+<!--        <td [nzAlign]="'center'">{{ data.finalWorkingTimeSerial | reservationTimePipe | async }}</td>-->
+        <td [nzAlign]="'center'">
+          <nz-tag *ngIf="data.status === '3'" [nzColor]="'#f50'">已作废</nz-tag>
+          <nz-tag *ngIf="data.status === '0'" [nzColor]="'#2db7f5'">待确认</nz-tag>
+          <nz-tag *ngIf="data.status === '1'" [nzColor]="'#87d068'">已确认</nz-tag>
+          <nz-tag *ngIf="data.status === '2'" [nzColor]="'#87d068'">已完成</nz-tag>
+          <nz-tag *ngIf="data.status === '8'" [nzColor]="'#87d068'">接种完成</nz-tag>
+          <nz-tag *ngIf="data.status === '9'" [nzColor]="'#87d068'">已取消</nz-tag>
+          <nz-tag *ngIf="!data.status" [nzColor]="'#f50'">状态异常</nz-tag>
+        <td [nzAlign]="'center'">{{data.createBy | povStaffNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{data.createDate | date: 'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">
+          <a class="mr-2" (click)="addReservation(data)" href="javascript:void(0)">新增预约</a>
+          <a *ngIf="data['status'] !== '3' && data['status'] !== '2'" (click)="deleteReservation(data)"
+             href="javascript:void(0)">作废预约</a>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #totalTemplate>
+  共{{ total }}条数据，当前第{{ pageIndex }}页
+</ng-template>

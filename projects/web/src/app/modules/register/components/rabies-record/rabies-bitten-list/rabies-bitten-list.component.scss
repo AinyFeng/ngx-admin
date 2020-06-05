@@ -1,0 +1,8 @@
+@import '../../../../../@uea/theme/global_theme';
+// @import '../../../../common/global-theme/global_theme';
+
+@include nb-install-component() {
+	.nb-popover {
+		background-color: #c09853;
+	}
+}

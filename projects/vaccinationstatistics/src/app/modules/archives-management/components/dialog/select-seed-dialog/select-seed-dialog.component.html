@@ -1,0 +1,52 @@
+<nz-table #editRowTable nzBordered [nzData]="listOfData"
+          [nzScroll]="{x:'1000px',y:'800px'}"
+          style="width: 100%;"
+          [nzItemRender]="renderItemTemplate">
+  <thead>
+  <tr>
+    <th [nzAlign]="'center'">序号</th>
+    <th [nzAlign]="'center'">疫苗</th>
+    <th [nzAlign]="'center'">厂商</th>
+    <th [nzAlign]="'center'">批号</th>
+    <th [nzAlign]="'center'">有效期</th>
+    <th [nzAlign]="'center'">剂量</th>
+    <th [nzAlign]="'center'">当前库存</th>
+    <th [nzAlign]="'center'">可用库存</th>
+    <th [nzAlign]="'center'">选择</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of editRowTable.data">
+    <td>{{ data.code }}</td>
+    <td>{{ data.vaccine }}</td>
+    <td>{{ data.company }}</td>
+    <td>{{ data.number }}</td>
+    <td>{{ data.validity }}</td>
+    <td>{{ data.dose }}</td>
+    <td>{{ data.dosage }}</td>
+    <td>{{ data.inventory }}</td>
+    <td>{{ data.availableInventory }}</td>
+    <td>
+      <button class="btn btn-sm btn-success" *ngIf="data.select === '1'"
+              (click)="select(data,'1')">新苗
+      </button>
+      <button class="btn btn-sm btn-success" *ngIf="data.select === '2'"
+              (click)="select(data,'2')">旧苗
+      </button>
+      <div *ngIf="data.select === '12'">
+        <button class="btn btn-sm btn-success"
+                (click)="select(data,'1')">新苗
+        </button>
+        <button class="btn btn-sm btn-success"
+                (click)="select(data,'2')">旧苗
+        </button>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
+<ng-template #renderItemTemplate let-type let-page="page">
+  <a *ngIf="type === 'pre'">上一页</a>
+  <a *ngIf="type === 'next'">下一页</a>
+  <a *ngIf="type === 'page'">{{ page }}</a>
+</ng-template>

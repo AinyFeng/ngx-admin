@@ -1,0 +1,8 @@
+<nb-tabset fullWidth (changeTab)="selectTab($event)">
+  <nb-tab [tabTitle]="tem.title" *ngFor="let tem of displayAgreementTemplates;index as i" [id]="agreement + i">
+    <div [innerHTML]="tem.content | keepHtml"></div>
+    <div style="width: 75%; margin: 0 auto;" *ngIf="tem.signature">
+      签字：<img style="width: 300px;" [src]="tem.signature" alt="告知书签字">
+    </div>
+  </nb-tab>
+</nb-tabset>

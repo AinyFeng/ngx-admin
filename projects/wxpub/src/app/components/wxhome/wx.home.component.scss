@@ -1,0 +1,32 @@
+.content-wrap {
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+
+}
+.title{
+  font-size: 20px;
+  margin: 10px 10px 0 10px;
+}
+.banner-wrap{
+  padding: 10px;
+ img{
+   width: 100%;
+   height: auto;
+ }
+}
+.list-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+  margin-top: 30px;
+
+  span{
+    font-size: 18px;
+    color: #666;
+    margin-top: 5px;
+  }
+}
+

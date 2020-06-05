@@ -1,0 +1,17 @@
+@import '../../../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+}
+
+.nb-card-xx {
+  width: 1200px;
+}
+
+.header-title {
+  text-align: center;
+}
+
+.record-body {
+  height: 300px;
+  overflow-y: auto;
+}

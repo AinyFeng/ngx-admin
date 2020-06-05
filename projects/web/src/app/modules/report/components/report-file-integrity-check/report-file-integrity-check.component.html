@@ -1,0 +1,159 @@
+<nb-card accent="info">
+
+  <nb-card-header>
+    基本资料完整性
+    <div>
+      <button nbButton status="success">查询</button>
+      <button nbButton status="primary">导出</button>
+      <button nbButton status="default">返回</button>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <form class="searchForm">
+      <div class="row group-search">
+
+        <div class="form-group col-md-4 row ">
+          <label class="col-md-4">生日：</label>
+          <div class="col-md-8 ">
+            <input nbInput fieldSize="small" placeholder="请选择生日" [nbDatepicker]="birthDatePicker">
+            <nb-rangepicker #birthDatePicker format="yyyy/MM/dd"></nb-rangepicker>
+            <!--<nb-datepicker #reserveDatePicker></nb-datepicker>-->
+          </div>
+        </div>
+        <div class="form-group col-md-4 row ">
+          <label class="col-md-4">建卡时间：</label>
+          <div class="col-md-8 ">
+            <input nbInput fieldSize="small" placeholder="请选择建卡时间" [nbDatepicker]="cardDatePicker">
+            <nb-rangepicker #cardDatePicker format="yyyy/MM/dd"></nb-rangepicker>
+            <!--<nb-datepicker #reserveDatePicker></nb-datepicker>-->
+          </div>
+        </div>
+
+        <div class="form-group col-md-3 row">
+          <label class="cil-md-4">现管单位：</label>
+          <div class="col-md-8 ">
+            <nb-select placeholder="请选择居住类型" size="xsmall">
+              <nb-option value="1">所有</nb-option>
+              <nb-option value="2">本点管理</nb-option>
+            </nb-select>
+          </div>
+        </div>
+
+        <div class="form-group col-md-3 row">
+          <label class="cil-md-4">居住类别：</label>
+          <div class="col-md-8 ">
+            <nb-select placeholder="请选择居住类型" size="xsmall">
+              <nb-option value="1">本地</nb-option>
+              <nb-option value="2">外来</nb-option>
+              <nb-option value="3">流动</nb-option>
+            </nb-select>
+          </div>
+        </div>
+
+        <div class="form-group col-md-3 row">
+          <label class="cil-md-4">区域划分：</label>
+          <div class="col-md-8 ">
+            <nb-select multiple placeholder="请选择区域划分" size="xsmall">
+              <nb-option value="1">翰林社区</nb-option>
+              <nb-option value="2">东山社区</nb-option>
+              <nb-option value="3">博山社区</nb-option>
+            </nb-select>
+          </div>
+        </div>
+
+        <div class="form-group col-md-3 row">
+          <label class="cil-md-4">在册列表：</label>
+          <div class="col-md-8 ">
+            <nb-select multiple placeholder="请选择在册列表" size="xsmall">
+              <nb-option value="1">在册</nb-option>
+              <nb-option value="2">离册</nb-option>
+            </nb-select>
+          </div>
+        </div>
+
+        <div class="form-group col-md-3 row">
+          <label class="cil-md-4">完整性字段：</label>
+          <div class="col-md-8 ">
+            <nb-select multiple placeholder="请选择完整性字段" size="xsmall">
+              <nb-option value="childname">儿童姓名</nb-option>
+              <nb-option value="gender">性别</nb-option>
+              <nb-option value="birthday">出生日期</nb-option>
+              <nb-option value="cardcode">儿童身份证</nb-option>
+              <nb-option value="createoffice">建卡单位</nb-option>
+              <nb-option value="guardianmobile">母亲电话</nb-option>
+              <nb-option value="fatherphone">父亲电话</nb-option>
+              <nb-option value="guardianname">母亲姓名</nb-option>
+              <nb-option value="father">父亲姓名</nb-option>
+              <nb-option value="birthcode">出生证号</nb-option>
+              <nb-option value="guardianidentificationnumber">母亲身份证</nb-option>
+              <nb-option value="fathercard">父亲身份证</nb-option>
+              <nb-option value="address">家庭住址</nb-option>
+            </nb-select>
+          </div>
+        </div>
+
+
+        <!-- <div class="form-group col-md-6">
+          <button nbButton status="success" >查询</button>
+          <button nbButton status="primary" >导出</button>
+          <button nbButton status="default" >返回</button>
+        </div> -->
+
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center">
+
+  <nb-card-body>
+    <nz-table #groupingTable [nzData]="listOfDisplayData" nzBordered nzSize="small" nzSimple="false">
+      <thead>
+        <tr>
+          <th rowspan="2">年度</th>
+          <th rowspan="2">儿童总数</th>
+          <th rowspan="2">完整数</th>
+          <th rowspan="2">完整率</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of groupingTable.data">
+
+        </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+
+  <nb-card-body>
+    <nz-table #groupingTable [nzData]="listOfDisplayData" nzBordered nzSize="small" nzSimple="false">
+      <thead>
+        <tr>
+          <th>儿童编码</th>
+          <th>证件号码</th>
+          <th>出生证号</th>
+          <th>儿童姓名</th>
+          <th>性别</th>
+          <th>户籍类别</th>
+          <th>出生日期</th>
+          <th>出生医院</th>
+          <th>出生体重(克)</th>
+          <th>母亲姓名</th>
+          <th>母亲证件号码</th>
+          <th>母亲手机</th>
+          <th>接种单位</th>
+          <th>建档日期</th>
+          <th>建档人</th>
+          <th>备注</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of groupingTable.data">
+
+        </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

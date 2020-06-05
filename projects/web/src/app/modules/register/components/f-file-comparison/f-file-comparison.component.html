@@ -1,0 +1,170 @@
+<div class="nb-card-container nb-card-xx">
+  <nb-card>
+    <nb-card-header class="nb-card-header-qb">
+      个案对比
+      <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+    </nb-card-header>
+    <nb-card-body>
+      <div nz-row class="record-body">
+        <div nz-row nzGutter="16" class="record-body-header">
+          <div nz-col nzSpan="12">
+            <nz-descriptions [nzTitle]="localTitle" nzBordered nzSize="small" [nzColumn]="2">
+              <ng-template #localTitle>
+                <h6 class="header-title">本地个案</h6>
+              </ng-template>
+              <nz-descriptions-item nzTitle="儿童编码" nzSpan="2">
+                {{localProfile?.profileCode}}
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="儿童姓名">
+                {{localProfile?.name}}
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="性别">
+                {{localProfile?.gender | qbGenderPipe}}
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="出生日期" nzSpan="2">
+                {{localProfile?.birthDate | date: 'yyyy-MM-dd'}}
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="父亲姓名">
+                {{localProfile?.fatherName}}
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="母亲姓名">
+                {{localProfile?.motherName}}
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="通讯地址" nzSpan="2">
+                {{ localProfile?.liveProvCode | administrativePipe | async}}{{ localProfile?.LiveCityCode | administrativePipe | async}}{{ localProfile?.liveDistrictCode | administrativePipe | async}}{{ localProfile?.liveDetail }}
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="现管理单位" nzSpan="2">
+                {{localProfile?.vaccinationPovCode | povNamePipe | async}}
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="最后接种日期">
+                {{localVaccRecord[0]?.vaccinateTime | date: 'yyyy-MM-dd'}}
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="接种剂次数">
+                {{localVaccRecord.length}}
+              </nz-descriptions-item>
+            </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="12">
+            <nz-descriptions [nzTitle]="serverTitle" nzBordered nzSize="small" [nzColumn]="2">
+              <ng-template #serverTitle>
+                <h6 class="header-title">省平台个案</h6>
+              </ng-template>
+              <nz-descriptions-item nzTitle="儿童编码" nzSpan="2">
+                {{serverProfile?.profileCode}}
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="儿童姓名">
+                {{serverProfile?.name}}
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="性别">
+                {{serverProfile?.gender | qbGenderPipe}}
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="出生日期" nzSpan="2">
+                {{serverProfile?.birthDate | date: 'yyyy-MM-dd'}}
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="父亲姓名">
+                {{serverProfile?.fatherName}}
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="母亲姓名">
+                {{serverProfile?.motherName}}
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="通讯地址" nzSpan="2">
+                {{ serverProfile?.liveProvCode | administrativePipe | async}}{{ serverProfile?.LiveCityCode | administrativePipe | async}}{{ serverProfile?.liveDistrictCode | administrativePipe | async}}{{ serverProfile?.liveDetail }}
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="现管理单位" nzSpan="2" >
+                {{serverProfile?.vaccinationPovCode | povNamePipe | async}}
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="最后接种日期">
+                {{serverVaccRecord[0]?.vaccinateTime | date: 'yyyy-MM-dd'}}
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="接种剂次数">
+                {{serverVaccRecord.length}}
+              </nz-descriptions-item>
+            </nz-descriptions>
+          </div>
+        </div>
+        <div nz-row nzGutter="16">
+          <div nz-col nzSpan="12">
+            <nz-table #localData [nzTitle]="localRecordTitle" [nzData]="localVaccRecord" nzSize="small" [nzFrontPagination]="false">
+              <ng-template #localRecordTitle>
+                <h6 class="header-title">本地接种记录</h6>
+              </ng-template>
+              <thead>
+              <tr>
+                <th>疫苗名称</th>
+                <th>针次</th>
+                <th>接种日期</th>
+                <th>批号</th>
+                <th>接种类型</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of localData.data" [className]="data.class">
+                <td>{{data?.vaccineBroadHeadingCode | vacBroadHeadingPipe}}
+                  <!--                {{data?.vaccineSubclassCode}}-->
+                </td>
+                <td>{{data?.vaccinateInjectNumber}}</td>
+                <td>{{data?.vaccinateTime | date: 'yyyy-MM-dd'}}</td>
+                <td>{{data?.vaccineBatchNo}}</td>
+                <td>{{data?.vaccinateType | dicPipe: 'vaccinate_type'}}</td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </div>
+          <div nz-col nzSpan="12">
+            <nz-table #serverData [nzTitle]="serverRecordTitle" [nzData]="serverVaccRecord" nzSize="small"  [nzFrontPagination]="false">
+              <ng-template #serverRecordTitle>
+                <h6 class="header-title">省平台接种记录</h6>
+              </ng-template>
+              <thead>
+              <tr>
+                <th>疫苗名称</th>
+                <th>针次</th>
+                <th>接种日期</th>
+                <th>批号</th>
+                <th>接种类型</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of serverData.data" [className]="data.class">
+                <td>{{data?.vaccineBroadHeadingCode | vacBroadHeadingPipe}}</td>
+                <td>{{data?.vaccinateInjectNumber}}</td>
+                <td>{{data?.vaccinateTime | date: 'yyyy-MM-dd'}}</td>
+                <td>{{data?.vaccineBatchNo}}</td>
+                <td>{{data?.vaccinateType | dicPipe: 'vaccinate_type'}}</td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </div>
+        </div>
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <div nz-row>
+        <div nz-col nzSpan="18">
+          <nb-radio-group [name]="'primary'" [status]="'primary'" [(value)]="isBasedLocal">
+            <nb-radio *ngFor="let option of options"
+                      [checked]="option.checked"
+                      [value]="option.value">
+              {{ option.label }}
+            </nb-radio>
+          </nb-radio-group>
+          <span style="position: relative;">
+            <nb-icon
+              [nbTooltip]="isBasedLocal ? '本地为主：本地数据和省平台数据相同的部分，将不会被省平台数据覆盖；本地数据和省平台数据不相同的部分，省平台数据将覆盖本地数据' : '省平台为主：省平台数据覆盖本地数据'"
+              icon="question-mark-circle-outline" style="position: relative; top: 2px;"></nb-icon>
+            {{isBasedLocal ? '本地为主：本地数据和省平台数据相同的部分，将不会被省平台数据覆盖；本地数据和省平台数据不相同的部分，省平台数据将覆盖本地数据' : '省平台为主：省平台数据覆盖本地数据'}}
+          </span>
+        </div>
+        <div nz-col nzSpan="6" class="text-right">
+          <button status="info" nbButton class="mr-3" (click)="queryCaseProfile()">查询</button>
+          <button *ngIf="!isLocalPov" status="info" nbButton (click)="openModal()" [nbSpinner]="isLoading"
+                  [disabled]="isCommit">导入
+          </button>
+          <button *ngIf="isLocalPov" status="info" nbButton (click)="openModal()" [disabled]="isSame"
+                  [nbSpinner]="isLoading">更新数据
+          </button>
+        </div>
+      </div>
+    </nb-card-footer>
+  </nb-card>
+</div>

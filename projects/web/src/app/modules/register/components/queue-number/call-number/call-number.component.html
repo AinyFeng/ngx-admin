@@ -1,0 +1,44 @@
+<nb-card accent="info" [ngClass]="{'card-height-mini': !collapse, 'card-height-mini-double': collapse}">
+  <div class="call-number mb-3">
+    <div style="width: 100%;">
+      <!--class="flex-1"-->
+      <div class="mt-4 mb-3 header-flex-center">
+        <div>
+          <span class="calling-number">【{{ regQueue ? regQueue?.queueCode + '-' : '无叫号信息' }} {{ regQueue?.profileName }}
+            】</span>
+          <span class="waiting-number">(等待：{{ queueWaiting > 0 ? queueWaiting : 0 }}人)</span>
+        </div>
+        <div>
+          <button [disabled]="callPause || !regQueue" class="mr-3" status="info" nbButton
+                  (click)="callQueueCode()">{{ callBtn }}</button>
+          <button [disabled]="callPause" status="info" nbButton (click)="callNextQueueCode()">{{ callNextBtn }}</button>
+        </div>
+      </div>
+      <div>
+        <nb-select placeholder="选择登记台" class="mr-2" (selectedChange)="selectRegistDeskChange($event)"
+                   [(selected)]="selectedRegistDesk">
+          <nb-option *ngFor="let reg of registDeskOption"
+                     [value]="reg.departmentName + '.' + reg.departmentCode">{{ reg.departmentName }}</nb-option>
+        </nb-select>
+        <span class="mr-2 text-muted">
+        下一号：{{ nextRegQueue ? nextRegQueue.queueCode : '暂无' }} {{ nextRegQueue?.profileName }}
+        </span>
+        <a href="javascript:void(0)" (click)="collapse = !collapse">
+          <span class="cursor-pointer" *ngIf="!collapse">展开<nb-icon pack="eva"
+                                                                    icon="arrow-down-outline"></nb-icon></span>
+          <span class="cursor-pointer" *ngIf="collapse">收起<nb-icon pack="eva" icon="arrow-up-outline"></nb-icon></span>
+        </a>
+      </div>
+    </div>
+    <!--<div>
+      <button [disabled]="callPause || !regQueue" class="mb-3" status="info" nbButton
+              (click)="callQueueCode()">{{ callBtn }}</button>
+      <br>
+      <button [disabled]="callPause" status="info" nbButton (click)="callNextQueueCode()">{{ callNextBtn }}</button>
+    </div>-->
+  </div>
+  <div class="p-2" [ngStyle]="{'visibility': !collapse ? 'hidden' : 'visible'}">
+    <uea-queue-list-drawer (callNumberEvent)="onCallNumber($event)"></uea-queue-list-drawer>
+  </div>
+</nb-card>
+

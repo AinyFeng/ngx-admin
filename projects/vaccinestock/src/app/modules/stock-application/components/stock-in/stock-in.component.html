@@ -1,0 +1,292 @@
+<nz-card style="width:100%;" nzTitle="疫苗入库">
+  <form nz-form [formGroup]="orderForm">
+    <div nz-row [nzGutter]="24">
+      <div nz-row [nzGutter]="24" *ngIf="updateOrderDate?.orderNo">
+        <div nz-col [nzSpan]="12">
+          <nz-form-item class="m-0">
+            <nz-form-label [nzSpan]="4" nzFor="orderNo">订单号</nz-form-label>
+            <nz-form-control [nzSpan]="20">
+              <input type="text" readonly id="orderNo" nz-input [value]="updateOrderDate?.orderNo">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item class="m-0">
+            <nz-form-label [nzSpan]="8" nzFor="orderStatus">订单状态</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+              <input type="text" readonly id="orderStatus"
+                     [value]="updateOrderDate?.orderStatus  | dicPipe: 'pfOrderStatus'" nz-input>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="4" nzRequired nzFor="orderDate">入库日期</nz-form-label>
+          <nz-form-control [nzSpan]="20" nzErrorTip="此项必填">
+            <nz-date-picker nzDateFullCell formControlName="orderDate" id="orderDate"
+                            nzAllowClear="false"
+                            [nzDisabledDate]="disabledDate"
+                            nzPlaceHolder="选择入库日期"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="8" nzRequired nzFor="orderType">类型</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <nz-select formControlName="orderType" id="orderType" readonly nzPlaceHolder="选择类型">
+              <nz-option nzLabel="领取/购进" nzValue="1"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="4" nzRequired>供货单位</nz-form-label>
+          <nz-form-control [nzSpan]="10" nzErrorTip="此项必填">
+            <nz-input-group *ngIf="orderForm.get('supplyorgNameOption').value == '1'" nzSearch
+                            (click)="selectDistrict()"
+                            [nzAddOnAfter]="suffixIconButton">
+              <input readonly type="text" formControlName="supplyorgName" nz-input placeholder="请选择供货单位"/>
+            </nz-input-group>
+            <ng-template #suffixIconButton>
+              <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i>
+              </button>
+            </ng-template>
+            <nz-select (ngModelChange)="selectSupplyorg($event)"
+                       *ngIf="orderForm.get('supplyorgNameOption').value == '2'"
+                       formControlName="supplyorgCode"
+                       nzShowSearch nzAllowClear
+                       nzPlaceHolder="请选择供货单位">
+              <nz-option *ngFor="let m of manufactureOptions" [nzLabel]="m.name" [nzValue]="m.code"></nz-option>
+            </nz-select>
+            <input nz-input type="text" *ngIf="orderForm.get('supplyorgNameOption').value == '3'"
+                   formControlName="supplyorgName"
+                   placeholder="请输入供货单位">
+          </nz-form-control>
+          <nz-form-control nzSpan="10">
+            <nz-radio-group (ngModelChange)="resetSupplyOrg()" style="margin-left: 10px;"
+                            formControlName="supplyorgNameOption">
+              <label *ngFor="let op of supplyorgNameOptions" nz-radio [nzValue]="op.value">{{ op.label }}</label>
+            </nz-radio-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="8" nzFor="distributionUnit">配送单位</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input type="text" nz-input id="distributionUnit" placeholder="请输入配送单位名称"
+                   formControlName="distributionUnit">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="4" nzRequired nzFor="receiveorgName">收货单位</nz-form-label>
+          <nz-form-control [nzSpan]="16" nzErrorTip="此项必填">
+            <input type="text" readonly id="receiveorgName" nz-input placeholder="收货单位"
+                   formControlName="receiveorgName">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="8" nzRequired nzFor="consigneeName">收货单位经手人</nz-form-label>
+          <nz-form-control [nzSpan]="14" nzErrorTip="此项必填">
+            <input type="text" id="consigneeName" nz-input placeholder="输入收货单位经手人" formControlName="consigneeName">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="4" nzRequired
+                         [nzFor]="orderForm.get('transportation').value == '3' ? 'otherTransportation' : 'transportation'">
+            疫苗运输方式
+          </nz-form-label>
+          <nz-form-control [nzSpan]="20" nzErrorTip="此项必填">
+            <nz-radio-group id="transportation" formControlName="transportation">
+              <label *ngFor="let t of transportationOptions" nz-radio [nzValue]="t.value">{{ t.label }}</label>
+            </nz-radio-group>
+            <div class="d-inline-block position-relative">
+              <input type="text"
+                     [ngClass]="{'input-error': orderForm.get('otherTransportation').invalid && orderForm.get('otherTransportation').touched}"
+                     id="otherTransportation"
+                     *ngIf="orderForm.get('transportation').value === '3'"
+                     nz-input
+                     formControlName="otherTransportation">
+              <span
+                *ngIf="orderForm.get('transportation').value == '3' && orderForm.get('otherTransportation').invalid && orderForm.get('otherTransportation').touched"
+                class="msg-error">此项必填</span>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="8" nzRequired
+                         [nzFor]="orderForm.get('refrigerateType').value === '3' ? 'otherRefrigerateType': 'refrigerateType'">
+            疫苗冷藏方式
+          </nz-form-label>
+          <nz-form-control [nzSpan]="14" nzErrorTip="此项必填">
+            <nz-radio-group id="refrigerateType"
+                            formControlName="refrigerateType">
+              <label *ngFor="let r of refrigerateTypeOptions" nz-radio [nzValue]="r.value">{{ r.label }}</label>
+            </nz-radio-group>
+            <div class="d-inline-block position-relative">
+              <input type="text"
+                     [ngClass]="{'input-error': orderForm.get('otherRefrigerateType').invalid && orderForm.get('otherRefrigerateType').touched}"
+                     id="otherRefrigerateType"
+                     *ngIf="orderForm.get('refrigerateType').value === '3'"
+                     nz-input
+                     formControlName="otherRefrigerateType">
+              <span
+                *ngIf="orderForm.get('refrigerateType').value === '3' && orderForm.get('otherRefrigerateType').invalid && orderForm.get('otherRefrigerateType').touched"
+                class="msg-error">此项必填</span>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="4" nzRequired nzFor="vaccineType">疫苗类型</nz-form-label>
+          <nz-form-control [nzSpan]="14" nzErrorTip="此项必填">
+            <nz-radio-group id="vaccineType" formControlName="vaccineType">
+              <label nz-radio nzValue="0">一类</label>
+              <label nz-radio nzValue="1">二类</label>
+            </nz-radio-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row [nzGutter]="24">
+      <div nz-col nzSpan="24">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="2" nzFor="memo">备注信息</nz-form-label>
+          <nz-form-control nzSpan="21">
+          <textarea
+            nz-input
+            id="memo"
+            formControlName="memo"
+            placeholder="请输入备注信息"
+            [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+          ></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+  <nz-divider></nz-divider>
+  <div class="mb-2">
+    <button class="mr-2" nz-button [nzType]="'primary'" (click)="selectBatchNo()">选择批号</button>
+    <button class="mr-2" nz-button [nzType]="'primary'" (click)="selectBatchNo(true)">选择阿里平台批号</button>
+    <button nz-button [nzType]="'primary'" (click)="submitForm()">入库</button>
+    <button class="ml-2 mb-2" nz-button [nzType]="'primary'" (click)="goBack()" *ngIf="updateOrderDate?.orderNo">返回
+    </button>
+    <p class="float-right font-weight-bolder mt-1" *ngIf="!updateOrderDate?.orderNo">合计入库数量：{{ total }}</p>
+  </div>
+  <nz-table nzBordered #batch [nzData]="batchNoData" nzSize="small">
+    <thead>
+    <tr>
+      <th>操作</th>
+      <th>类型</th>
+      <th>疫苗名称</th>
+      <th>属性</th>
+      <th>生产企业</th>
+      <th>批号</th>
+      <th>规格(剂/支/粒)</th>
+      <th>剂量</th>
+      <th>有效日期</th>
+      <th>入库数量</th>
+      <th>成本价格</th>
+      <th>出售价格</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of batch.data">
+      <td><a class="text-delete" (click)="remove(data)" href="javascript:void(0)">移除</a></td>
+      <td>{{data.batchType | dicPipe: 'batchType'}}</td>
+      <td>{{data.vaccName}}</td>
+      <td>
+        <nz-radio-group (ngModelChange)="onBatchNoTypeChange($event, data)" [(ngModel)]="data.type">
+          <label nz-radio nzValue="0">一类</label>
+          <label nz-radio nzValue="1">二类</label>
+        </nz-radio-group>
+      </td>
+      <td>{{data.manufactureName}}</td>
+      <td>{{data.batchNo}}</td>
+      <td>{{data.spec}}</td>
+      <td [title]="data.dose"
+          style="white-space:nowrap;
+             max-width: 200px;
+             overflow:hidden;
+             text-overflow:ellipsis;">{{data.dose}}</td>
+      <td>{{data.outBoundDate | date: 'yyyy-MM-dd'}}</td>
+      <td>
+        <div *ngIf="editId !== (data.batchSerialCode + 'code') || isAli else vaccNumTpl">
+          <div class="cursor-pointer font-weight-bolder" (click)="startEdit(data.batchSerialCode + 'code', $event)">
+            <span [ngClass]="{'text-red': data.vaccNum === 0, 'text-blue': data.vaccNum > 0}">{{ data.vaccNum }}</span>
+          </div>
+        </div>
+        <ng-template #vaccNumTpl>
+          <input class="m-0"
+                 #vaccNumTplInput
+                 (blur)="stopEdit()"
+                 (mouseover)="setFocus(vaccNumTplInput)"
+                 type="number"
+                 [min]="0"
+                 nz-input
+                 [(ngModel)]="data.vaccNum"/>
+        </ng-template>
+      </td>
+      <td>
+        <div *ngIf="editId !== (data.batchSerialCode + 'spec') else originPriceTpl">
+          <div class="cursor-pointer font-weight-bolder" (click)="startEdit(data.batchSerialCode + 'spec', $event)">
+            <span class="text-blue">{{ data.orignPrice | currency: '￥' }}</span>
+          </div>
+        </div>
+        <ng-template #originPriceTpl>
+          <input class="m-0"
+                 #originPriceTplInput
+                 (blur)="stopEdit(data)"
+                 (mouseover)="setFocus(originPriceTplInput)"
+                 type="number"
+                 [min]="0"
+                 nz-input
+                 [(ngModel)]="data.orignPrice"/>
+        </ng-template>
+      </td>
+      <td>
+        <div *ngIf="editId !== (data.batchSerialCode + 'sellPrice') else sellPriceTpl">
+          <div class="cursor-pointer font-weight-bolder"
+               (click)="startEdit(data.batchSerialCode + 'sellPrice', $event)">
+            <span class="text-blue">{{ data.sellPrice | currency: '￥' }}</span>
+          </div>
+        </div>
+        <ng-template #sellPriceTpl>
+          <input class="m-0"
+                 #sellPriceTplInput
+                 (blur)="stopEdit()"
+                 (mouseover)="setFocus(sellPriceTplInput)"
+                 type="number"
+                 [min]="0"
+                 nz-input
+                 [(ngModel)]="data.sellPrice"/>
+        </ng-template>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</nz-card>

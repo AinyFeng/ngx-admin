@@ -1,0 +1,68 @@
+<nz-table
+	#dynamicTable
+	[nzScroll]="fixHeader ? { y: '240px' } : null"
+	[nzData]="listOfDisplayData"
+	[nzBordered]="bordered"
+	[nzSimple]="simple"
+	[nzLoading]="loading"
+	[nzPaginationPosition]="position"
+	[nzShowSizeChanger]="sizeChanger"
+	[nzFrontPagination]="pagination"
+	[nzShowPagination]="pagination"
+	[nzFooter]="footer ? 'Here is Footer' : null"
+	[nzTitle]="title"
+	[nzSize]="size"
+	(nzCurrentPageDataChange)="currentPageDataChange($event)"
+>
+	<thead (nzSortChange)="sort($event)" nzSingleSort>
+		<tr *ngIf="header">
+			<th nzWidth="32px" nzShowExpand *ngIf="expandable"></th>
+			<th
+				*ngIf="checkbox"
+				nzWidth="32px"
+				nzShowCheckbox
+				[(nzChecked)]="allChecked"
+				[nzIndeterminate]="indeterminate"
+				(nzCheckedChange)="checkAll($event)"
+			></th>
+			<th nzWidth="256px" nzShowSort nzSortKey="schoolName">
+				学校名称
+			</th>
+			<th nzWidth="128px" nzShowSort nzSortKey="schoolCode">
+				学校编码
+			</th>
+			<th nzWidth="96px" nzShowSort nzSortKey="sumstudent">
+				学生总数
+			</th>
+			<th nzShowSort nzSortKey="description">
+				说明
+			</th>
+			<th nzWidth="128px">操作</th>
+		</tr>
+	</thead>
+	<tbody>
+		<ng-template ngFor let-data [ngForOf]="dynamicTable.data">
+			<tr>
+				<td nzShowExpand *ngIf="expandable" [(nzExpand)]="data.expand"></td>
+				<td
+					nzShowCheckbox
+					*ngIf="checkbox"
+					[(nzChecked)]="data.checked"
+					(nzCheckedChange)="refreshStatus()"
+				></td>
+				<td>{{ data.schoolName }}</td>
+				<td>{{ data.schoolCode }}</td>
+				<td>{{ data.sumstudent }}</td>
+				<td>{{ data.description }}</td>
+				<td>
+					<button nz-button nzType="primary" nzSize="small" class="mb-1 mr-1">编辑</button>
+					<button nz-button nzType="danger" nzSize="small">删除</button>
+				</td>
+			</tr>
+			<tr [nzExpand]="data.expand && expandable">
+				<td></td>
+				<td [attr.colspan]="checkbox ? 5 : 4">{{ data.description }}</td>
+			</tr>
+		</ng-template>
+	</tbody>
+</nz-table>

@@ -1,0 +1,174 @@
+<div nz-row>
+  <nz-card>
+    <nz-tabset>
+      <nz-tab nzTitle="个案信息查询">
+        <div nz-row>
+          <form nz-form [nzLayout]="'inline'" [formGroup]="searchCondition">
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="8" [nzMd]="8" [nzXs]="24" nzFor="address">地区名称</nz-form-label>
+                  <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24" nzErrorTip="">
+                    <nz-input-group nzSearch nzSize="default" [nzAddOnAfter]="suffixIconButton">
+                      <input id="address" formControlName="address" [value]="this.userInfo.pov | povNamePipe | async "
+                             nzSize="default"
+                             readonly  type="text" nz-input placeholder="请选择"/>
+                    </nz-input-group>
+                    <ng-template #suffixIconButton>
+                      <button nz-button (click)="selectAddress()" nzType="primary" nzSize="default" nzSearch>
+                        <i nz-icon nzType="search"></i>
+                      </button>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="8" [nzMd]="8" [nzXs]="24" nzFor="profileStatusCode">在册情况</nz-form-label>
+                  <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24" nzErrorTip="">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" id="profileStatusCode"
+                               formControlName="profileStatusCode">
+                      <nz-option [nzLabel]="item.label" [nzValue]="item.value"
+                                 *ngFor="let item of residentStatusOpt"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="8" [nzMd]="8" [nzXs]="24" nzFor="residentialType">居住情况</nz-form-label>
+                  <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24" nzErrorTip="">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" id="residentialType"
+                               formControlName="residentialType">
+                      <nz-option [nzLabel]="item.label" [nzValue]="item.value"
+                                 *ngFor="let item of residentialTypeData"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="8" [nzMd]="8" [nzXs]="24" nzFor="fatherName">父亲姓名</nz-form-label>
+                  <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24" nzErrorTip="">
+                    <input nz-input formControlName="fatherName"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="8" [nzMd]="8" [nzXs]="24" nzFor="number">儿童编码</nz-form-label>
+                  <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24" nzErrorTip="">
+                    <input nz-input formControlName="number"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="8" [nzMd]="8" [nzXs]="24" nzFor="name">姓名</nz-form-label>
+                  <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24" nzErrorTip="">
+                    <input nz-input formControlName="name"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="8" [nzMd]="8" [nzXs]="24" nzFor="gender">性别</nz-form-label>
+                  <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24" nzErrorTip="">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" id="gender"
+                               formControlName="gender">
+                      <nz-option [nzLabel]="item.label" [nzValue]="item.value"
+                                 *ngFor="let item of genderOptions"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="8" [nzMd]="8" [nzXs]="24" nzFor="motherName">母亲姓名</nz-form-label>
+                  <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24" nzErrorTip="">
+                    <input nz-input formControlName="motherName"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="8" [nzMd]="8" [nzXs]="24" nzFor="birthStart">出生起始日期</nz-form-label>
+                  <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24" nzErrorTip="">
+                    <nz-date-picker [nzDisabledDate]="disabledbirthStart"  formControlName="birthStart"></nz-date-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="8" [nzMd]="8" [nzXs]="24" nzFor="birthEnd">出生截止日期</nz-form-label>
+                  <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24" nzErrorTip="">
+                    <nz-date-picker  [nzDisabledDate]="disabledbirthEnd"  formControlName="birthEnd"></nz-date-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+            <nz-form-item>
+              <nz-form-control>
+                <button nz-button nzType="primary" class="mr-2"  [nzLoading]="loading" (click)="profileSearch()">查询</button>
+                <button nz-button nzType="primary" class="mr-2" (click)="reset()">重置</button>
+                <button nz-button nzType="primary">导出</button>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+        </div>
+        <div nz-row>
+
+          <nz-table #borderedTable nzBordered [nzPageIndex]="pageIndex" [nzTotal]="total"
+                    [nzItemRender]="renderItemTemplate" [nzLoading]="loading"
+                    [nzFrontPagination]="false" [nzData]="listOfData" (nzPageIndexChange)="profileSearch($event)">
+            <thead>
+            <tr>
+              <th>儿童编码</th>
+              <th>姓名</th>
+              <th>性别</th>
+              <th>出生日期</th>
+              <th>母亲</th>
+              <th>母亲身份证号</th>
+              <th>母亲手机号</th>
+              <th>父亲</th>
+              <th>父亲身份证号</th>
+              <th>父亲手机号</th>
+              <th>现住址</th>
+              <th>居住</th>
+              <th>在册</th>
+              <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of borderedTable.data">
+              <td>{{ data.profileCode }}</td>
+              <td>{{ data.name }}</td>
+              <td>{{ data.gender | dicPipe: 'genderCode'}}</td>
+              <td>{{ data.birthDate | date:'yyyy-MM-dd' }}</td>
+              <td>{{ data.motherName }}</td>
+              <td>{{ data.motherIdCardNo }}</td>
+              <td>{{ data.motherContactPhone }}</td>
+              <td>{{ data.fatherName }}</td>
+              <td>{{ data.fatherIdCardNo }}</td>
+              <td>{{ data.fatherContactPhone }}</td>
+              <td>{{ data.idCardDetail }}</td>
+              <td>{{ data.residentialTypeCode | dicPipe: 'residentialType'}}</td>
+              <td>{{ data.profileStatusCode | dicPipe: 'profileStatus'}}</td>
+              <td><a href="javascript:" class="link-a mr-1" (click)="detail(data)">浏览</a></td>
+            </tr>
+            </tbody>
+          </nz-table>
+          <ng-template #renderItemTemplate let-type let-page="page">
+            <a *ngIf="type === 'pre'">上一页</a>
+            <a *ngIf="type === 'next'">下一页</a>
+            <a *ngIf="type === 'page'">{{ page }}</a>
+          </ng-template>
+        </div>
+      </nz-tab>
+    </nz-tabset>
+  </nz-card>
+</div>

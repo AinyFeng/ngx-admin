@@ -1,0 +1,86 @@
+<nb-card *ngIf="showCard" accent="info">
+	<nb-card-header>
+		<ng-container [ngTemplateOutlet]="callBar"> </ng-container>
+	</nb-card-header>
+</nb-card>
+<ng-container *ngIf="!showCard" [ngTemplateOutlet]="callBar"></ng-container>
+<ng-template #callBar>
+	<div nz-row class="flex" style="align-items: center; display: flex;">
+		<span class="span-title mr-2" style="flex: auto; width:16rem;">
+			【{{
+				(currentQueueItem ? currentQueueItem?.queueCode + '-' : '无信息') +
+					(currentQueueItem ? currentQueueItem?.profileName + getStatus() : '')
+			}}】
+		</span>
+		<div class="ul-btn" style="float: right;">
+			<button
+				nz-button
+				nzType="primary"
+				nzSize="large"
+        [nzLoading]="loading"
+				[disabled]="isCallNumberDisabled"
+				(click)="callNumber($event)"
+				class="mr-2"
+			>
+				叫号
+			</button>
+
+			<button
+				nz-button
+				nzType="primary"
+				nzSize="large"
+        [nzLoading]="loading"
+				(click)="nextNumber($event)"
+				[disabled]="isNextNumberDisabled"
+				class="mr-2"
+			>
+				下一号
+			</button>
+
+			<button nz-button nzType="primary" nzSize="large"
+              [nzLoading]="loading"
+              (click)="passNumber()" class="mr-2">
+				过号
+			</button>
+
+			<nz-select
+				nzSize="large"
+				nzType="primary"
+				nzShowSearch
+				nzPlaceHolder="选择接种科室"
+				[(ngModel)]="selectedDepartmentCode"
+				(ngModelChange)="changeDepartment($event)"
+				class="mr-2"
+			>
+				<nz-option
+					*ngFor="let department of departmentOption"
+					[nzLabel]="department.departmentName"
+					[nzValue]="department.departmentCode"
+				></nz-option>
+			</nz-select>
+
+			<nz-select
+				nzSize="large"
+				nzType="primary"
+				nzShowSearch
+				nzPlaceHolder="选择出库冰箱"
+				[(ngModel)]="selectedFacilityCode"
+				(ngModelChange)="changeFacility($event)"
+				class="mr-2"
+			>
+				<nz-option
+					*ngFor="let facility of coldStorageFacilitiesOption"
+					[nzValue]="facility.facilityCode"
+					[nzLabel]="facility.name"
+				>
+				</nz-option>
+			</nz-select>
+
+			<button nz-button nzType="primary" nzSize="large" (click)="showVaccinateLog()" class="mr-2">
+				接种日志
+			</button>
+
+			<button nz-button nzType="primary" nzSize="large" (click)="breakageOpen()" class="mr-2">报损</button>
+		</div>
+	</div>
+</ng-template>

@@ -1,0 +1,42 @@
+  <a href="javascript:void(0)" debounceClick (debounceClick)="refreshQueue()">立即刷新</a>
+  <div class="row">
+    <div class="col-6">
+      <nz-table #callingQueue [nzFrontPagination]="true"
+                [nzLoading]="lineDataLoading"
+                nzPageSize="5"
+                nzSize="small"
+                nzBordered="false"
+                [nzTitle]="'等待(' + lineData.length + ')：'"
+                [nzShowPagination]="true" [nzData]="lineData">
+        <tbody>
+        <tr *ngFor="let data of callingQueue.data">
+          <td nzAlign="center">{{data.queueCode}}</td>
+          <td nzAlign="center">{{data.profileName}}</td>
+          <td nzAlign="center">
+            <a href="javascript:" class="link-a-highlight" (click)="regDirectlyCall(data)">叫号</a>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </div>
+    <div class="col-6">
+      <nz-table #calledQueue [nzFrontPagination]="true"
+                [nzShowPagination]="true"
+                nzPageSize="5"
+                nzSize="small"
+                nzBordered="false"
+                [nzTitle]="'历史(' + passedQueueData.length + ')：'"
+                [nzLoading]="passedQueueDataLoading"
+                [nzData]="passedQueueData">
+        <tbody>
+        <tr *ngFor="let data of calledQueue.data">
+          <td nzAlign="center">{{data.queueCode}}</td>
+          <td nzAlign="center">{{data.profileName}}</td>
+          <td nzAlign="center">
+            <a href="javascript:void(0)" (click)="reRegCall(data)">叫号</a>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>

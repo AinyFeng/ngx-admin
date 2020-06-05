@@ -1,0 +1,23 @@
+@import '../../../../@uea/theme/global_theme';
+@import '../../../../@uea/theme/global_theme';
+// // @import '../../../common/global-theme/global_theme';
+
+@include nb-install-component() {
+	.form-group .col-md-3,
+	.col-4,
+	.col-8,
+	.col-md-6 {
+		margin: 0 !important;
+	}
+	::ng-deep .ant-table-small > .ant-table-content > .ant-table-body {
+		margin: 0;
+
+		th {
+			background: nb-theme(color-basic-200);
+		}
+
+		.star-required {
+			color: nb-theme(color-danger-500);
+		}
+	}
+}

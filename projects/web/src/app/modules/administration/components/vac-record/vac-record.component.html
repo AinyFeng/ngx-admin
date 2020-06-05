@@ -1,0 +1,216 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    接种记录查询
+    <div>
+      <button nbButton status="info" (click)="searchVacRecord()" [nbSpinner]="loading" nbSpinnerStatus="primary">查询</button>
+      <button nbButton status="info" (click)="export()" [nbSpinner]="loading" nbSpinnerStatus="primary" class="ml-2 mr-2">导出报表</button>
+      <button nbButton status="warning" (click)="replacements()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [@drawer]="hideQueryCondition ? 'hide' : 'show'" [formGroup]="searchCondition">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">姓名：</label>
+          <div class="col-8">
+            <input type="text" class="ml-1" nbInput fullWidth placeholder="请输入受种人姓名"
+                   formControlName="realName" id="realName">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">档案编号：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入受种人档案编号" formControlName="profileCode"
+              id="profileCode">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">接种日期(起)：</label>
+          <div class="col-8">
+            <nz-date-picker style="width: 100%;" nzSize="large"
+                            nzAllowClear="false"
+                            formControlName="startVaccinateTime" nzShowTime
+                            nzFormat="yyyy-MM-dd" nzPlaceHolder="选择创建时间"></nz-date-picker>
+            <!--<input nbInput fullWidth readonly placeholder="请选择接种日期" [nbDatepicker]="vacDatepicker"
+              formControlName="startVaccinateTime" id="startVaccinateTime"
+            >
+            <nb-datepicker #vacDatepicker format="YYYY/MM/DD" [filter]="filterStartVacTimeDate"></nb-datepicker>-->
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">接种日期(止)：</label>
+          <div class="col-8">
+            <nz-date-picker style="width: 100%;" nzSize="large"
+                            nzAllowClear="false"
+                            formControlName="endVaccinateTime" nzShowTime
+                            nzFormat="yyyy-MM-dd" nzPlaceHolder="选择创建时间"></nz-date-picker>
+            <!--<input nbInput fullWidth readonly placeholder="请选择接种日期" [nbDatepicker]="endVacDatepicker"
+              formControlName="endVaccinateTime" id="endVaccinateTime"
+            >
+            <nb-datepicker #endVacDatepicker format="YYYY/MM/DD" [filter]="filterEndVacTimeDate"></nb-datepicker>-->
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">生日(起)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择出生日期" formControlName="startBirthDate" id="startBirthDate"
+              [nbDatepicker]="birthDatePicker">
+            <nb-datepicker #birthDatePicker format="YYYY/MM/DD" [filter]="filterBirthStartDate"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">生日(止)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择出生日期" formControlName="endBirthDate" id="endBirthDate"
+              [nbDatepicker]="endBirthDatePicker">
+            <nb-datepicker #endBirthDatePicker format="YYYY/MM/DD" [filter]="filterBirthEndDate"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">证件号码：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入证件号码" formControlName="idCardNo" id="idCardNo">
+            <uea-show-form-errors [control]="searchCondition.get('idCardNo')"></uea-show-form-errors>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">免疫卡号：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入免疫卡号" formControlName="immunityVacCard"
+              id="immunityVacCard">
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">户口类别：</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择户口类别" formControlName="idTypeCode"
+                               [options]="idType"></uea-nb-select-all>
+            <!--<nb-select multiple placeholder="请选择户口类别" fullWidth outline status="info" formControlName="idTypeCode"
+              id="idTypeCode">
+              <nb-option [value]="item.value" *ngFor="let item of idType">{{item.label}}</nb-option>
+            </nb-select>-->
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗名称：</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择疫苗名称" formControlName="vaccineProductCode"
+                               [options]="vacSubClassData"></uea-nb-select-all>
+            <!--<nb-select multiple placeholder="请选择疫苗名称" fullWidth outline status="info"
+              formControlName="vaccineProductCode" id="vaccineProductCode">
+              <nb-option [value]="item.value" *ngFor="let item of vacSubClassData">{{item.label}}</nb-option>
+            </nb-select>-->
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗批号：</label>
+          <div class="col-8">
+            <input nbInput fullWidth placeholder="请输入疫苗批号" formControlName="vaccineBatchNo" id="vaccineBatchNo">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">排序方式：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择排序方式" fullWidth minlength="100" outline status="info"
+                       formControlName="sortOrder" id="sortOrder">
+              <nb-option value="vaccinateTime">接种时间</nb-option>
+              <nb-option value="profileCode">档案编码</nb-option>
+            </nb-select>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" style="margin-top:1.25rem;">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">是否免费：</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择" formControlName="vaccineType"
+                               [options]="vaccineTypeData"></uea-nb-select-all>
+            <!--<nb-select multiple placeholder="请选择" fullWidth outline status="info" formControlName="vaccineType"
+              id="vaccineType">
+              <nb-option [value]="item.value" *ngFor="let item of vaccineTypeData">{{item.label}}</nb-option>
+            </nb-select>-->
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">剂次：</label>
+          <div class="col-8">
+            <input type="number" [min]="1" [max]="9" fullWidth nbInput placeholder="输入剂次" numberTransfer="1"
+                   formControlName="vaccineSpecification" id="vaccineSpecification">
+          </div>
+        </div>
+        <!-- <div class="col-md-6">
+          <button nbButton status="info"  (click)="searchVacRecord()" [disabled]="loading">查询</button>
+          <button nbButton status="info" >导出报表</button>
+          <button nbButton status="warning" (click)="replacement()">重置</button>
+        </div> -->
+      </div>
+    </form>
+    <div class="text-center">
+      <span class="ml-3 toggle-icon cursor-pointer hover-highlight" (click)="hideQueryCondition = !hideQueryCondition">
+        <nb-icon *ngIf="hideQueryCondition" icon="chevron-circle-down"></nb-icon>
+        <nb-icon *ngIf="!hideQueryCondition" icon="chevron-circle-up"></nb-icon>
+        {{ hideQueryCondition ? '展开条件' : '收起条件' }}
+      </span>
+    </div>
+
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center">
+  <nb-card-body>
+    <nz-table #msgTable [nzData]="listOfData" [nzLoading]="loading" nzBordered nzSize="small" nzSimple="false"
+              [nzTotal]="total" [(nzPageIndex)]="pageIndex" [nzFrontPagination]="false"
+              [nzShowTotal]="totalTemplate"
+              (nzPageIndexChange)="searchVacRecord($event)">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">姓名</th>
+        <th [nzAlign]="'center'">编码</th>
+        <th [nzAlign]="'center'">出生日期</th>
+        <th [nzAlign]="'center'">免疫卡号</th>
+        <th [nzAlign]="'center'">证件号码</th>
+        <!--        <th [nzAlign]="'center'">建卡类型</th>-->
+        <th [nzAlign]="'center'">疫苗名称</th>
+        <th [nzAlign]="'center'">疫苗厂家</th>
+        <th [nzAlign]="'center'">剂次</th>
+        <th [nzAlign]="'center'">接种日期</th>
+        <th [nzAlign]="'center'">接种部位</th>
+        <th [nzAlign]="'center'">疫苗批号</th>
+        <th [nzAlign]="'center'">接种单位</th>
+        <th [nzAlign]="'center'">登记医生</th>
+        <th [nzAlign]="'center'">接种医生</th>
+<!--        <th [nzAlign]="'center'">创建时间</th>-->
+        <th [nzAlign]="'center'">疫苗价格</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data">
+        <td [nzAlign]="'center'">{{data.profileName}}</td>
+        <td [nzAlign]="'center'">{{data.profileCode}}</td>
+        <td [nzAlign]="'center'">{{data.birthDate | date:'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">{{data.immunityVacCard}}</td>
+        <td [nzAlign]="'center'">{{data.idCardNo}}</td>
+        <!--        <td [nzAlign]="'center'">{{data.profileTypeCode | dicPipe: 'profileType'}}</td>-->
+        <td [nzAlign]="'center'">{{data.vaccineProductName}}</td>
+        <td [nzAlign]="'center'">{{data.manufacturerName}}</td>
+        <td [nzAlign]="'center'">{{data.vaccinateInjectNumber}}</td>
+        <td [nzAlign]="'center'">{{data.vaccinateTime | date: 'yyyy-MM-dd HH:mm'}}</td>
+        <td [nzAlign]="'center'">{{data.vaccinatePart | dicPipe:'vaccinatePart'}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineBatchNo}}</td>
+        <td [nzAlign]="'center'">{{data.povName}}</td>
+        <td [nzAlign]="'center'">{{data.vaccinateDoctorName}}</td>
+        <td [nzAlign]="'center'">{{data.regDoctName}}</td>
+<!--        <td [nzAlign]="'center'">{{data.vaccinateTime | date: 'yyyy-MM-dd'}}</td>-->
+        <td [nzAlign]="'center'">{{data.totalAmount}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+<ng-template #totalTemplate>
+  共{{ total }}条数据，当前第{{ pageIndex }}页
+</ng-template>

@@ -1,0 +1,207 @@
+<nz-card style="width:100%;" nzTitle="儿童接种记录">
+  <form nz-form [formGroup]="listForm" class="ant-advanced-search-form">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="address">地区</nz-form-label>
+          <nz-form-control [nzLg]="14" [nzMd]="14" [nzXs]="24">
+            <nz-input-group nzSearch nzSize="default" [nzAddOnAfter]="suffixIconButton">
+              <input id="address" formControlName="address" [value]="this.userInfo.pov | povNamePipe | async "
+                     nzSize="default"
+                     readonly  type="text" nz-input placeholder="请选择"/>
+            </nz-input-group>
+            <ng-template #suffixIconButton>
+              <button nz-button (click)="selectAddress()" nzType="primary" nzSize="default" nzSearch>
+                <i nz-icon nzType="search"></i>
+              </button>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="name">儿童姓名</nz-form-label>
+          <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+            <input
+              nz-input
+              nzSize="default"
+              formControlName="name"
+              id="name"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="injectionTime">接种针次</nz-form-label>
+          <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+            <nz-select nzSize="default" nzShowSearch nzAllowClear nzPlaceHolder="请选择" id="injectionTime"
+                       formControlName="injectionTime">
+              <nz-option [nzLabel]="item.label" [nzValue]="item.value" *ngFor="let item of injections"></nz-option>
+
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="vacAttribute">疫苗属性</nz-form-label>
+          <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+            <nz-select nzSize="default" nzShowSearch nzAllowClear nzPlaceHolder="请选择" id="vacAttribute"
+                       formControlName="vacAttribute">
+              <nz-option nzLabel="一类" nzValue="0"></nz-option>
+              <nz-option nzLabel="二类" nzValue="1"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+    </div>
+    <div nz-row [nzGutter]="24">
+
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="vaccineName">疫苗名称</nz-form-label>
+          <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+            <nz-select nzSize="default" nzShowSearch nzAllowClear nzPlaceHolder="请选择" id="vacSbuClassCode"
+                       formControlName="vacSbuClassCode">
+              <nz-option [nzLabel]="item.label" [nzValue]="item.value" *ngFor="let item of vacSubClassData"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="manufacturerCode">生产企业</nz-form-label>
+          <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+            <nz-select nzSize="default" nzShowSearch nzAllowClear nzPlaceHolder="请选择" id="manufacturerCode"
+                       formControlName="manufacturerCode">
+              <nz-option [nzLabel]="item.name" [nzValue]="item.code" *ngFor="let item of manufactureData"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="vacBroadHeaderCode">疫苗大类</nz-form-label>
+          <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+            <nz-select nzSize="default" nzShowSearch nzAllowClear nzPlaceHolder="请选择" id="vacBroadHeaderCode"
+                       formControlName="vacBroadHeaderCode">
+              <nz-option [nzLabel]="item.broadHeadingName" [nzValue]="item.broadHeadingCode"
+                         *ngFor="let item of vacBroadHeaderData"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="batchNo">批号</nz-form-label>
+          <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+            <input
+              nz-input
+              nzSize="default"
+              formControlName="batchNo"
+              id="batchNo"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+    </div>
+
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="inAndOutStart">起始日期</nz-form-label>
+          <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+            <nz-date-picker nzSize="default" style="width: 120%;"
+                            id="startTime" formControlName="startTime"  [nzDisabledDate]="disabledStartDate"
+                            nzAllowClear="false"
+            ></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="inAndOutEnd">截止日期</nz-form-label>
+          <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+            <nz-date-picker nzSize="default" style="width: 120%;"
+                            nzAllowClear="false"  [nzDisabledDate]="disabledEndDate"
+                            id="endTime" formControlName="endTime"
+            ></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div class="mb-2">
+        <button nz-button [nzType]="'primary'" (click)="queryData()" [disabled]="loading">查询</button>
+        <button nz-button (click)="resetForm()" class="ml-2 mr-2">重置</button>
+        <button nz-button [nzType]="'primary'" class="ml-2 mr-2">导出</button>
+      </div>
+
+
+    </div>
+    <!--<div nz-row>
+      <div nz-col [nzSpan]="24" class="search-area">
+        <button nz-button [nzType]="'primary'" (click)="queryData()" [disabled]="loading">查询</button>
+        <button nz-button (click)="resetForm()" class="ml-2 mr-2">重置</button>
+        <button nz-button [nzType]="'primary'" class="ml-2 mr-2">导出</button>
+      </div>
+    </div>-->
+  </form>
+</nz-card>
+<nz-card style="margin-top: 20px;">
+  <nz-table #msgTable [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false" [nzLoading]="loading"
+            [nzFrontPagination]="false"
+            [nzTotal]="total"
+            [(nzPageIndex)]="pageIndex"
+            [nzShowTotal]="renderItemTemplate"
+            (nzPageIndexChange)="queryData($event)">
+    <thead>
+    <tr>
+      <th [nzAlign]="'center'">编号</th>
+      <th [nzAlign]="'center'">儿童姓名</th>
+      <th [nzAlign]="'center'">儿童编码</th>
+      <th [nzAlign]="'center'">疫苗属性</th>
+      <th [nzAlign]="'center'">疫苗名称</th>
+      <th [nzAlign]="'center'">生产企业</th>
+      <th [nzAlign]="'center'">批号</th>
+      <th [nzAlign]="'center'">针次</th>
+      <th [nzAlign]="'center'">接种部位</th>
+      <th [nzAlign]="'center'">接种日期</th>
+      <th [nzAlign]="'center'">接种单位</th>
+      <th [nzAlign]="'center'">接种医生</th>
+      <th [nzAlign]="'center'">接种类型</th>
+      <th [nzAlign]="'center'">备注</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of msgTable.data; index as i">
+      <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+      <td [nzAlign]="'center'">{{data.profileName}}</td>
+      <td [nzAlign]="'center'">{{data.profileCode}}</td>
+      <td [nzAlign]="'center'">{{data.vaccineType === '0' ? '一类':'二类'}}</td>
+      <td [nzAlign]="'center'">{{data.vaccineProductName}}</td>
+      <td [nzAlign]="'center'">{{data.manufacturerName}}</td>
+      <td [nzAlign]="'center'">{{data.vaccineBatchNo}}</td>
+      <td [nzAlign]="'center'">{{data.vaccinateInjectNumber}}</td>
+      <td [nzAlign]="'center'">{{data.vaccinatePart | dicPipe:'vaccinatePart' }}</td>
+      <td [nzAlign]="'center'">{{data.vaccinateTime | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td [nzAlign]="'center'">{{data.povName}}</td>
+      <td [nzAlign]="'center'">{{data.vaccinateDoctorName}}</td>
+      <td [nzAlign]="'center'">{{data.vaccinateType | dicPipe:'vaccinateType'}}</td>
+      <td [nzAlign]="'center'">{{data.memo}}</td><!--备注没有返回字段-->
+    </tr>
+    </tbody>
+  </nz-table>
+  <ng-template #renderItemTemplate let-type let-page="page">
+    <a *ngIf="type === 'pre'">上一页</a>
+    <a *ngIf="type === 'next'">下一页</a>
+    <a *ngIf="type === 'page'">{{ page }}</a>
+  </ng-template>
+</nz-card>
+
+

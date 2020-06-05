@@ -1,0 +1,138 @@
+// @import '~bootstrap/scss/mixins/_breakpoints';
+// @import '~@nebular/theme/styles/global/_breakpoints';
+// @import '../../../../@uea/theme/global_theme';
+@import '../../../../@uea/theme/global_theme';
+
+
+@include nb-install-component() {
+  ::ng-deep .ant-table-small > .ant-table-content > .ant-table-body {
+    margin: 0;
+
+    th {
+      background: nb-theme(color-basic-200);
+    }
+  }
+
+  .uea-queue-card {
+  }
+
+  nb-tab {
+    &.content-active {
+      padding: 0;
+    }
+  }
+
+  .baseInfo {
+    margin: 0.5rem 0;
+  }
+
+  .orderInfo {
+    margin: 0.5rem 0;
+    // min-height: 207px;
+  }
+
+  .group-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    nb-radio-group {
+      display: flex;
+    }
+
+    :last-child {
+      button {
+        margin-right: 1rem;
+      }
+    }
+  }
+
+  .order-header {
+    display: flex;
+    border: 1px solid nb-theme(color-primary-200);
+    padding: 0.5rem;
+    margin: 0.5rem auto;
+    border-radius: 0.25rem;
+    text-align: left;
+  }
+
+  .vaccine-name {
+    flex-basis: 25%;
+  }
+
+  .order-flex-3 {
+    flex: 3;
+  }
+
+  .order-flex-2 {
+    flex: 2;
+  }
+
+  .order-flex-1 {
+    flex: 1;
+  }
+
+
+  .order-card {
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid nb-theme(color-primary-200);
+    margin: 0.5rem auto;
+
+    &:hover {
+      border: 1px solid nb-theme(color-primary-400);
+    }
+  }
+
+  .order-info {
+    display: flex;
+    align-items: center;
+  }
+  /**
+  订单详情
+   */
+  .order-detail-line {
+    border-top: 1px solid nb-theme(color-primary-200);
+  }
+  /**
+  付款金额
+   */
+  .text-pay {
+    color: nb-theme(color-danger-500);
+  }
+
+  .text-pay-size {
+    font-size: 2rem;
+  }
+
+  .text-transparent-danger {
+    color: nb-theme(color-danger-transparent-500);
+  }
+
+  .text-del {
+    text-decoration: line-through;
+  }
+
+  .login-panel {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    // box-shadow: 0 0 0.5rem nb-theme(color-basic-600); // #919191;
+    display: flex;
+  }
+
+  .inputText {
+    color: #000000;
+  }
+
+  .print-receipt {
+    position: absolute;
+    margin-left: -999rem;
+  }
+  .active {
+    color: nb-theme(color-danger-500);
+  }
+  .text-title {
+    font-size: 1.25rem;
+  }
+}

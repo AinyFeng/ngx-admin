@@ -1,0 +1,135 @@
+<nb-card class="nb-card-container" size="xlarge">
+  <nb-card-header class="nb-card-header-qb">
+    添加禁忌/过敏/病史
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body class="nb-card-body-qb">
+    <nz-spin [nzSpinning]="loading">
+      <nb-alert outline="info"
+                class="mt-3 mb-3 text-center"
+                *ngIf="!loading && data.length === 0">
+        <div class="text-center">
+          <span>没有查到数据，请<a href="javasript:void(0)" (click)="queryMedicalRecord()">重试</a></span>
+        </div>
+      </nb-alert>
+      <div class="d-flex justify-content-between nb-border-bottom mb-3">
+        <div class="d-inline-block illness-title text-center">禁忌</div>
+        <button nbButton status="info" (click)="addRecord(CONTRA)">添加</button>
+      </div>
+      <nz-table #contraTable
+                nzBordered
+                nzNoResult="暂时没有数据"
+                [nzData]="contraData"
+                [nzShowPagination]="false" [nzSize]="'small'">
+        <thead>
+        <tr>
+          <th [nzWidth]="'25%'">禁忌症简述</th>
+          <th [nzWidth]="'40%'">避免接种的制品种类</th>
+          <th>添加日期</th>
+          <th>备注</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of contraTable.data" (mouseover)="select(data)">
+          <td>{{data.description | dicPipe: 'tabooType'}}</td>
+          <td>{{data.avoidVacCode | vaccineSubClassPipe }}</td>
+          <td>{{data.createDate | date: 'yyyy-MM-dd'}}</td>
+          <td>{{ data.memo }}</td>
+          <td>
+            <a href="javascript:void(0)" class="mr-2" [nbPopover]="contentTemplate" [nbPopoverPlacement]="'left'">详情</a>
+            <a href="javascript:void(0)" class="mr-2" (click)="modifyContra(data, CONTRA)">修改</a>
+            <a href="javascript:void(0)" nz-popconfirm nzTitle="确定删除数据吗?" (nzOnConfirm)="deleteData(data, CONTRA)">删除</a>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+
+      <div class="d-flex justify-content-between nb-border-bottom mb-3 mt-4">
+        <div class="d-inline-block illness-title text-center">过敏</div>
+        <button nbButton status="info" (click)="addRecord(ALLERGY)">添加</button>
+      </div>
+      <nz-table #allergyTable
+                nzBordered
+                [nzData]="allergyData"
+                nzNoResult="暂时没有数据"
+                [nzShowPagination]="false" [nzSize]="'small'">
+        <thead>
+        <tr>
+          <th [nzWidth]="'25%'">过敏情况简述</th>
+          <th [nzWidth]="'40%'">避免接种的制品种类</th>
+          <th>添加日期</th>
+          <th>备注</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of allergyTable.data" (mouseover)="select(data)">
+          <td>{{data.description}}</td>
+          <td>{{data.avoidVacCode | vaccineSubClassPipe}}</td>
+          <td>{{data.createDate | date: 'yyyy-MM-dd'}}</td>
+          <td>{{ data.memo }}</td>
+          <td>
+            <a href="javascript:void(0)" class="mr-2" [nbPopover]="contentTemplate" [nbPopoverPlacement]="'left'">详情</a>
+            <a href="javascript:void(0)" class="mr-2" (click)="modifyContra(data, ALLERGY)">修改</a>
+            <a href="javascript:void(0)" nz-popconfirm nzTitle="确定删除数据吗?" (nzOnConfirm)="deleteData(data, ALLERGY)">删除</a>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+
+      <div class="d-flex justify-content-between nb-border-bottom mb-3 mt-4">
+        <div class="d-inline-block illness-title text-center">病史</div>
+        <button nbButton status="info" (click)="addRecord(MEDICAL)">添加</button>
+      </div>
+      <nz-table #medicalTable
+                nzBordered
+                nzNoResult="暂时没有数据"
+                [nzData]="medicalData"
+                [nzShowPagination]="false" [nzSize]="'small'">
+        <thead>
+        <tr>
+          <th [nzWidth]="'25%'">病史简述</th>
+          <th [nzWidth]="'40%'">避免接种的制品种类</th>
+          <th>添加日期</th>
+          <th>备注</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of medicalTable.data" (mouseover)="select(data)">
+          <td>{{data.description}}</td>
+          <td>{{data.avoidVacCode | vaccineSubClassPipe}}</td>
+          <td>{{data.createDate | date: 'yyyy-MM-dd'}}</td>
+          <td>{{ data.memo }}</td>
+          <td>
+            <a href="javascript:void(0)" class="mr-2" [nbPopover]="contentTemplate" [nbPopoverPlacement]="'left'">详情</a>
+            <a href="javascript:void(0)" class="mr-2" (click)="modifyContra(data, MEDICAL)">修改</a>
+            <a href="javascript:void(0)" nz-popconfirm nzTitle="确定删除数据吗?" (nzOnConfirm)="deleteData(data, MEDICAL)">删除</a>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </nz-spin>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button nbButton status="info" (click)="onClose()">关闭</button>
+    </div>
+  </nb-card-footer>
+</nb-card>
+
+<ng-template #contentTemplate>
+  <nb-card class="mb-0">
+    <nb-card-body>
+      <ul style="list-style-type: none; max-width: 380px;">
+<!--        <li><strong>病史编码：</strong>{{ contentData.medicalHistoryCode }}</li>-->
+        <li><strong>病症简述：</strong>{{ contentData.description | dicPipe: 'tabooType'}}</li>
+        <li><strong>避免接种的疫苗种类：</strong>{{ contentData.avoidVacCode | vaccineSubClassPipe }}</li>
+        <li><strong>备 注：</strong>{{ contentData.memo }} </li>
+        <li><strong>创建人：</strong>{{ contentData.createBy | povStaffNamePipe | async }}</li>
+        <li><strong>创建时间：</strong>{{ contentData.createDate | date: 'yyyy-MM-dd HH:mm' }}</li>
+      </ul>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

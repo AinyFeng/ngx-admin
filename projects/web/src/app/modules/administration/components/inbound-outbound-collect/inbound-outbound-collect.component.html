@@ -1,0 +1,104 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    出入库记录汇总
+    <div>
+      <button nbButton status="info" [nbSpinner]="loading" (click)="searchData()">查询</button>
+     <!-- <button nbButton status="info">入库</button>-->
+      <button nbButton status="info" (click)="export()"  [nbSpinner]="loading"  class="ml-2 mr-2">导出</button>
+      <button nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="recordSumForm">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">出入库日期(起)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择日期" [nbDatepicker]="inOrOutDatePicker"
+              formControlName="accessDateStart" id="accessDateStart">
+            <nb-datepicker [filter]="filterStartDate" #inOrOutDatePicker format="YYYY/MM/DD"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">出入库日期(止)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择日期" [nbDatepicker]="inOrOutEndDatePicker"
+              formControlName="accessDateEnd" id="accessDateEnd">
+            <nb-datepicker [filter]="filterEndDate" #inOrOutEndDatePicker format="YYYY/MM/DD"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">类型：</label>
+          <div class="col-8">
+            <nb-select placeholder="类型" fullWidth outline status="info" formControlName="accessType"
+              id="accessType">
+              <nb-option value="1">入库</nb-option>
+              <nb-option value="-1">出库</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗名称：</label>
+          <div class="col-8">
+            <uea-nb-select-all [placeholderText]="'请选择'" [options]="vacSubClassData"  formControlName="subClassData" >
+            </uea-nb-select-all>
+             <!-- <nb-select multiple placeholder="全部" fullWidth outline status="info"
+                         formControlName="subClassData" id="subClassData">
+                <nb-option [value]="null">全选</nb-option>
+                <nb-option [value]="v.value" *ngFor="let v of vacSubClassData">{{v.label}}</nb-option>
+              </nb-select>-->
+
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗批次：</label>
+          <div class="col-8">
+            <input nbInput placeholder="请输入疫苗批次" fullWidth formControlName="vaccineBatchNo" id="vaccineBatchNo">
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow:scroll;">
+  <nb-card-body>
+  <nz-table #msgTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false" [nzData]="listOfData"
+            [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex"
+            (nzPageIndexChange)="searchData($event)" >
+    <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">出入库时间</th>
+        <th [nzAlign]="'center'">类型</th>
+        <th [nzAlign]="'center'">疫苗名称</th>
+        <th [nzAlign]="'center'">生产企业</th>
+        <th [nzAlign]="'center'">疫苗批次</th>
+        <th [nzAlign]="'center'">疫苗剂量</th>
+        <th [nzAlign]="'center'">有效期</th>
+        <th [nzAlign]="'center'">总数量(支)</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index;">
+        <td [nzAlign]="'center'">{{(pageIndex - 1) * pageSize + i + 1}}</td>
+        <td [nzAlign]="'center'">{{data.stockChangeTime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
+        <td [nzAlign]="'center'">{{data.isStockIn == 1 ? '入库':'出库'}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineProductName}}</td>
+        <td [nzAlign]="'center'">{{data.manufacturer}}</td>
+        <td [nzAlign]="'center'">{{data.prodBatchCode}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineSpecification}}</td>
+        <td [nzAlign]="'center'">{{data.loseEfficacyDate | date:"yyyy-MM-dd"}}</td>
+        <td [nzAlign]="'center'">{{data.count}}</td>
+        <td [nzAlign]="'center'">
+          <a  href="javascript:" class="link-a mr-1" (click)="detail(data)">详情</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  </nb-card-body>
+</nb-card>
+

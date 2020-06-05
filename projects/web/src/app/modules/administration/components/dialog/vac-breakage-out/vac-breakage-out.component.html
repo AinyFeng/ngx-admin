@@ -1,0 +1,115 @@
+<nb-card accent="info">
+  <nb-card-header>
+    报损出库
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="breakForm" novalidate>
+
+      <div class="form-group row">
+        <label for="vaccineProductCode" class="col-sm-2 col-form-label text-right">疫苗名称：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="vaccineProductCode" id="vaccineProductCode">
+        </div>
+
+        <label for="vaccineSpecification" class="col-sm-2 col-form-label text-right">产品剂量：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="vaccineSpecification" id="vaccineSpecification">
+        </div>
+
+      </div>
+
+      <div class="form-group row">
+
+        <label for="manufacturerCode" class="col-sm-2 col-form-label text-right">厂商：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="manufacturerCode" id="manufacturerCode" >
+        </div>
+
+        <label for="price" class="col-sm-2 col-form-label text-right">价格：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="price" id="price">
+        </div>
+      </div>
+
+      <div class="form-group row">
+
+
+        <label for="prodBatchCode" class="col-sm-2 col-form-label text-right">批号：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="prodBatchCode" id="prodBatchCode">
+        </div>
+        <label for="count" class="col-sm-2 col-form-label text-right">库存：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="count" id="count">
+        </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="manufacturerCode" class="col-sm-2 col-form-label text-right">部门：</label>
+      <div class="col-sm-4">
+        <input type="text" readonly nbInput fullWidth formControlName="departmentCode" id="departmentCode" [value]="breakForm.get('departmentCode').value| departmentNamePipe | async">
+      </div>
+      <label for="countOut" class="col-sm-2 col-form-label text-right label-required">报损数量(支)：</label>
+      <div class="col-sm-4">
+        <input type="number" fullWidth nbInput [min]="0" [max]="breakage.count" numberTransfer
+               [status]="breakForm.get('countOut').invalid && breakForm.get('countOut').touched ? 'danger' : ''"
+               formControlName="countOut" id="countOut" placeholder="出库数量">
+        <uea-show-form-errors [control]="breakForm.get('countOut')"></uea-show-form-errors>
+      </div>
+
+    </div>
+
+    <div class="form-group row">
+      <label for="breakTime" class="col-sm-2 col-form-label text-right label-required">报损时间：</label>
+      <div class="col-sm-4">
+          <nz-date-picker [nzDisabledDate]="filterHandleDate" style="width: 100%;" nzSize="large" formControlName="breakTime" id="breakTime" nzShowTime
+                          nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择时间"></nz-date-picker>
+        <uea-show-form-errors [control]="breakForm.get('breakTime')"></uea-show-form-errors>
+        </div>
+       <!-- <input fullWidth readonly nbInput  formControlName="breakTime"
+               [status]="breakForm.get('breakTime').invalid && breakForm.get('breakTime').touched ? 'danger' : ''"
+               [nbDatepicker]="datepicker" id="breakTime">
+        <nb-datepicker format="YYYY-MM-DD" [max]="currentDate" #datepicker></nb-datepicker>-->
+
+
+      <label for="stockBy" class="col-sm-2 col-form-label text-right label-required">报损人：</label>
+      <div class="col-sm-4">
+      <!--  <input type="text" fullWidth nbInput
+               [status]="breakForm.get('stockBy').invalid && breakForm.get('stockBy').touched ? 'danger' : ''"
+               formControlName="stockBy" id="stockBy" placeholder="报损人">-->
+        <nb-select placeholder="请选择" status="info" fullWidth formControlName= "stockBy" id = "stockBy" >
+          <<nb-option [value]="v.number" *ngFor="let v of staffOptionSelected">{{v.realName}}</nb-option>
+        </nb-select>
+        <uea-show-form-errors [control]="breakForm.get('stockBy')"></uea-show-form-errors>
+      </div>
+
+    </div>
+
+      <div class="form-group row">
+        <label for="breakType" class="col-sm-2 col-form-label text-right label-required">报损原因：</label>
+        <div class="col-sm-4">
+          <nb-select placeholder="请选择" fullWidth status="info" formControlName="breakType" id="breakType">
+            <nb-option [value]="v.value" *ngFor="let v of breakTypeOptions">{{v.label}}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="breakForm.get('breakType')"></uea-show-form-errors>
+        </div>
+
+      </div>
+
+      <div class="form-group row">
+        <label for="memo" class="col-sm-2 col-form-label text-right">备注：</label>
+        <div class="col-sm-10">
+          <textarea nbInput formControlName="memo" id="memo" fullWidth placeholder="请输入......"></textarea>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerMessage="" nbButton status="info" class="mr-5"
+              (click)="doBreak()">确认
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>

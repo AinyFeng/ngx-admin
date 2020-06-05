@@ -1,0 +1,108 @@
+<nz-card style="width:100%;" nzTitle="疫苗出入库流向图">
+  <form nz-form [formGroup]="queryForm" class="ant-advanced-search-form">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="vaccineSubclassCode">疫苗名称</nz-form-label>
+          <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" id="vaccineSubclassCode"
+                       formControlName="vaccineSubclassCode">
+              <nz-option [nzLabel]="item.label" [nzValue]="item.value" *ngFor="let item of vacSubClassData"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="manufactureCode">生产企业</nz-form-label>
+          <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" id="manufactureCode"
+                       formControlName="manufactureCode">
+              <nz-option [nzLabel]="item.name" [nzValue]="item.code" *ngFor="let item of manufactureData"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="batchNo">批号</nz-form-label>
+          <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+            <input
+              nz-input
+              placeholder="请输入批号"
+              formControlName="batchNo"
+              id="batchNo"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="address">地区</nz-form-label>
+          <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+            <nz-input-group nzSearch nzSize="default" [nzAddOnAfter]="suffixIconButton">
+              <input id="address" formControlName="address" [value]="this.userInfo.pov | povNamePipe | async "
+                     nzSize="default"
+                     readonly  type="text" nz-input placeholder="请选择"/>
+            </nz-input-group>
+            <ng-template #suffixIconButton>
+              <button nz-button (click)="selectAddress()" nzType="primary" nzSize="default" nzSearch>
+                <i nz-icon nzType="search"></i>
+              </button>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="grade">查询范围</nz-form-label>
+          <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+            <nz-checkbox-group formControlName="grade" [(ngModel)]="checkOptionsOne">
+            </nz-checkbox-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="outboundDate">起始日期</nz-form-label>
+          <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+            <nz-date-picker style="width: 100%;" id="outboundDate"
+                            [nzDisabledDate]="disabledOutboundDate"
+                            formControlName="outboundDate"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="outboundDateBreak">截止日期</nz-form-label>
+          <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+            <nz-date-picker style="width: 100%;" id="outboundDateBreak"
+                            [nzDisabledDate]="disabledOutboundDateBreak"
+                            formControlName="outboundDateBreak"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="24" class="search-area">
+        <button nz-button [nzType]="'primary'" (click)="queryData()" [disabled]="loading">查询</button>
+        <button nz-button (click)="resetForm()" class="ml-2 mr-2">重置</button>
+        <button nz-button [nzType]="'primary'" class="mr-2"  [nzLoading]="loading" (click)="showData()">数据显示</button>
+        <button nz-button [nzType]="'primary'" (click)="goBack()">返回</button>
+      </div>
+    </div>
+  </form>
+</nz-card>
+
+<!--<nz-card nz-row>
+  <ng-container>
+    <div echarts [options]="options"></div>
+  </ng-container>
+</nz-card>-->
+
+

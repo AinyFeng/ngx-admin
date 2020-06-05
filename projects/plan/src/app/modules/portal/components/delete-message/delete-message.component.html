@@ -1,0 +1,31 @@
+<nb-card accent="info">
+  <nb-card-header>
+    已删消息
+    <div>
+      <button nbButton status="warning" (click)="completeDelete()">彻底删除</button>
+      <button nbButton status="info" (click)="recover()">恢复</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <nz-table #msgData [nzData]="listOfData" [nzTotal]="total" [nzPageIndex]="pageIndex" [nzPageSize]="pageSize"
+      [nzShowPagination]="false" style="width: 100%;">
+      <thead>
+        <tr>
+          <th></th>
+          <th [nzAlign]="'center'">发送人</th>
+          <th [nzAlign]="'center'">发送内容</th>
+          <th [nzAlign]="'center'">发送时间</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of msgData.data">
+          <td [nzShowCheckbox]="true" [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
+          <td [nzAlign]="'center'">{{data.sender}}</td>
+          <td [nzAlign]="'center'">{{data.content}}</td>
+          <td [nzAlign]="'center'">{{data.sendTime}}</td>
+        </tr>
+      </tbody>
+
+    </nz-table>
+  </nb-card-body>
+</nb-card>

@@ -1,0 +1,110 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    设备类型管理
+    <div>
+      <button nbButton status="info" [nbSpinner]="loading" (click)="searchData()">查询</button>
+      <button nbButton status="info" (click)="editDeviceType(null)" class="ml-2 mr-2">新增</button>
+      <button nbButton status="warning" (click)="reset()">重置</button>
+      <!--<button nbButton status="info">导出报表</button>-->
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="searchTypeForm">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">设备类型编码：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入" formControlName="typeNumber" >
+            <!-- <nb-select placeholder="请选择" fullWidth outline status="info" formControlName="deviceTypeNumber"
+                          id="deviceTypeNumber">
+                 <nb-option [value]="v.value" *ngFor="let v of sourceCodeOptions">{{v.label}}</nb-option>
+               </nb-select>-->
+          </div>
+        </div>
+
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">设备品牌：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入" formControlName="brand" >
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">设备型号：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入" formControlName="model" >
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </nb-card-body>
+</nb-card>
+<nb-card class="text-center" style="overflow:scroll;">
+  <nb-card-body>
+    <nz-table #msgTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false" [nzData]="listOfData"
+              [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex"
+              (nzPageIndexChange)="searchData($event)" >
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">设备类型编码</th>
+        <th [nzAlign]="'center'">设备类型名称</th>
+        <th [nzAlign]="'center'">生产厂商</th>
+        <th [nzAlign]="'center'">型号</th>
+        <th [nzAlign]="'center'">品牌</th>
+        <th [nzAlign]="'center'">冷藏包数量</th>
+        <th [nzAlign]="'center'">冷藏容量</th>
+        <th [nzAlign]="'center'">冷藏容量单位</th>
+        <th [nzAlign]="'center'">冷冻容量</th>
+        <!--  <th [nzAlign]="'center'">电子监测启用日期</th>-->
+        <th [nzAlign]="'center'">冷冻容量单位</th>
+        <th [nzAlign]="'center'">长(m)</th>
+        <th [nzAlign]="'center'">宽(m)</th>
+        <th [nzAlign]="'center'">高(m)</th>
+        <th [nzAlign]="'center'">重量(kg)</th>
+        <th [nzAlign]="'center'">备注</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index;">
+        <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+        <td [nzAlign]="'center'">{{data.typeNumber}}</td>
+        <td [nzAlign]="'center'">{{data.typeName}}</td>
+        <td [nzAlign]="'center'">{{data.manufacturer}}</td>
+        <td [nzAlign]="'center'">{{data.model}}</td>
+        <td [nzAlign]="'center'">{{data.brand}}</td>
+        <td [nzAlign]="'center'">{{data.storageCapacityPackage}}</td>
+        <td [nzAlign]="'center'">{{data.storageCapacity}}</td>
+        <td [nzAlign]="'center'">{{data.storageCapacityUnit}}</td>
+        <td [nzAlign]="'center'">{{data.freezeCapacity}}</td>
+        <td [nzAlign]="'center'">{{data.freezeCubageUnit}}</td>
+        <td [nzAlign]="'center'">{{data.length}}</td>
+        <td [nzAlign]="'center'">{{data.width}}</td>
+        <td [nzAlign]="'center'">{{data.height}}</td>
+        <td [nzAlign]="'center'">{{data.weight}}</td>
+        <td [nzAlign]="'center'">{{data.memo}}</td>
+        <td [nzAlign]="'center'">
+          <button nbButton size="tiny" status="primary" (click)="editDeviceType(data)">编辑</button>&nbsp;
+          <button nbButton size="tiny" status="danger" (click)="openDeleteDialog(deleteDialog, data)">删除</button>
+          <!-- <button nbButton size="tiny" status="warning" (click)="disable(data)">停用</button>-->
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #deleteDialog let-ref="dialogRef">
+  <!--  [ngStyle]="{'width': '1000px'}" -->
+  <nb-card size="small" style="width: 300px;">
+    <nb-card-header>删除设备类型</nb-card-header>
+    <nb-card-body [ngStyle]="{'text-align': 'center'}">
+      是否删除该条设备类型？
+    </nb-card-body>
+    <nb-card-footer [ngStyle]="{'text-align': 'right'}">
+      <button nbButton status="danger" (click)="delete(ref)">删除</button>
+      <button nbButton style="margin-left: 5px;" (click)="ref.close()">关闭</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

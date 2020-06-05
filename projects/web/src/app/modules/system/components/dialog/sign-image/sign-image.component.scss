@@ -1,0 +1,14 @@
+@import '../../../../../@uea/theme/global_theme';
+// @import '../../../../common/global-theme/global_theme';
+@import '../../../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+	.signature-space {
+		width: 300px;
+		height: 300px;
+
+		& > .sign-pic {
+			width: 100%;
+		}
+	}
+}

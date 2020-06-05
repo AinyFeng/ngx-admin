@@ -1,0 +1,80 @@
+<div style="width: 520px;
+    text-align: center;
+    border: 1px solid #eaeaea;
+    margin:0 auto;
+    padding:0;" [id]="printId">
+  <div style="text-align: center; margin-top: 20px; font-size: 22.4px; font-weight: bold; margin-bottom: 4px;">
+    上&nbsp;&nbsp;海&nbsp;&nbsp;市&nbsp;&nbsp;预&nbsp;&nbsp;防&nbsp;&nbsp;接&nbsp;&nbsp;种&nbsp;&nbsp;卡
+    <span style="display: inline-block; font-size: 12.8px;">(2017手填版)</span>
+  </div>
+  <div style="display: flex; justify-content: center; text-align: left; font-size: 12.8px;">
+    <div style="min-width: 100px;">姓名&nbsp;<u>{{ profile?.name }}</u></div>
+    <div style="min-width: 60px;">性别&nbsp;<u style="width: 50px;">{{ profile?.gender | qbGenderPipe }}</u></div>
+    <div style="min-width: 180px;">出生日期&nbsp;<u style="width: 150px;">{{ profile?.birthDate | date:'yyyy年MM月dd日' }}</u></div>
+    <div style="min-width: 150px;">属性&nbsp;&nbsp;&nbsp;&Omicron;&nbsp;本市&nbsp;&nbsp;&radic;&nbsp;外来</div>
+  </div>
+  <div style="display: flex; justify-content: center; text-align: left; font-size: 12.8px;">
+    <div style="min-width: 140px;">父亲姓名<u>{{ profile?.fatherInfo?.name }}</u></div>
+    <div style="min-width: 140px;">母亲姓名&nbsp;<u>{{ profile?.motherInfo?.name }}</u></div>
+    <div style="min-width: 140px;">联系电话&nbsp;<u>{{ profile?.contactPhone }}</u></div>
+  </div>
+  <div style="display: flex; justify-content: center;">
+    <div style="width: 130px; display: inline-block;" *ngFor="let all of tableAll">
+      <table border="1" cellspacing="0" cellpadding="0"
+             style="border-collapse:collapse; border-spacing:0; width: 100%; font-size: 14.4px;">
+        <thead>
+        <tr>
+          <th colspan="2">疫苗种类</th>
+          <th >接种日期</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let t of all">
+          <td *ngIf="t.rowspan" [attr.rowspan]="t.rowspan" [attr.colspan]="t.colspan">
+            <div style="text-align: center;"
+                 *ngIf="t.vaccineBroadHeadingName == '卡介苗'
+                 || t.vaccineBroadHeadingName == '麻风'
+                 || t.vaccineBroadHeadingName == '麻腮风'">
+              {{ t.vaccineBroadHeadingName }}
+            </div>
+            <div style="text-align: center;"
+                 *ngIf="t.vaccineBroadHeadingName == 'HIB'">
+              H<br>I<br>B
+            </div>
+            <div style="text-align: center;"
+                 *ngIf="t.vaccineBroadHeadingName == 'EV71'">
+              EV<br>71
+            </div>
+            <div style="width: 12.8px;
+                  font-size: 12.8px;
+                  line-height: 16px;
+                  margin: 0 auto;"
+                 *ngIf="t.vaccineBroadHeadingName != 'EV71'
+                  && t.vaccineBroadHeadingName != 'HIB'
+                  && t.vaccineBroadHeadingName != '麻腮风'
+                  && t.vaccineBroadHeadingName != '麻风'
+                  && t.vaccineBroadHeadingName != '卡介苗'">
+              {{ t.vaccineBroadHeadingName }}
+            </div>
+          </td>
+          <td style="min-width: 20px; text-align: center;" *ngIf="!t.colspan">
+            <div style="text-align: center;">
+              {{ t.showInjectNumber ? t.vaccinateInjectNumber : '-' }}
+            </div>
+          </td>
+          <td>
+            <div style="text-align: center; font-size: 12px;">
+              {{ t.vaccinateTime }}
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div style="display: flex; justify-content: center;">
+    <div style="border: 1px solid black; height: 34px; width: 520px; text-align: left; font-size: 12px; box-sizing: border-box;">
+      备注（不良反应、过敏史、禁忌证明等）：
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+@import '../../../theme/global_theme';
+
+@include nb-install-component() {
+	::ng-deep nb-card {
+		width: 400px;
+	}
+
+	::ng-deep nb-card-footer {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+}

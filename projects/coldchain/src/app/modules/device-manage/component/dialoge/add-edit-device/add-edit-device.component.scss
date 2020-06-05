@@ -1,0 +1,7 @@
+// 必填项的星号 *
+.label-required::before {
+  content: '*';
+  position: absolute;
+  margin-left: -10px;
+  color: red;
+}

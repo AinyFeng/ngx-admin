@@ -1,0 +1,226 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    系统配置字典
+    <div>
+      <button nbButton status="info" (click)="searchData(true)" class="mr-2">刷新</button>
+      <!--      <button nbButton status="warning" (click)="reset(true)">重置</button>-->
+      <button nbButton (click)="openDialog(dialog)">新增</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <!--    <form [formGroup]="dictForm">
+          <div class="form-group row">
+            <div class="col-md-3 row">
+              <label class="col-4 col-form-label">配置标题：</label>
+              <div class="col-8">
+                <input type="text" nbInput outline fullWidth placeholder="请输入配置标题"
+                       [status]="dictForm.get('title').invalid && dictForm.get('title').touched ? 'danger' : ''"
+                       formControlName="title" id="title"/>
+                <uea-show-form-errors [control]="dictForm.get('title')"></uea-show-form-errors>
+              </div>
+            </div>
+            <div class="col-md-3 row">
+              <label class="col-4 col-form-label">配置项编号：</label>
+              <div class="col-8">
+                <input type="text" nbInput outline fullWidth placeholder="请输入配置项编号"
+                       [status]="dictForm.get('confCode').invalid && dictForm.get('confCode').touched ? 'danger' : ''"
+                       formControlName="confCode" id="confCode"/>
+                <uea-show-form-errors [control]="dictForm.get('confCode')"></uea-show-form-errors>
+              </div>
+            </div>
+            <div class="col-md-3 row">
+              <label class="col-4 col-form-label">分组：</label>
+              <div class="col-8">
+                <input type="text" nbInput outline fullWidth placeholder="请输入分组"
+                       [status]="dictForm.get('confGroup').invalid && dictForm.get('confGroup').touched ? 'danger' : ''"
+                       formControlName="confGroup" id="confGroup"/>
+                <uea-show-form-errors [control]="dictForm.get('confGroup')"></uea-show-form-errors>
+              </div>
+            </div>
+          </div>
+        </form>-->
+
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center">
+  <nb-card-body>
+    <nz-table #groupingTable nzBordered nzSize="middle" nzSimple="false" [nzFrontPagination]="true"
+              [nzData]="listOfData" [nzShowTotal]="totalTemplate"
+              [nzLoading]="loading" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize">
+      <thead>
+
+      <tr>
+        <th>序号</th>
+        <th>配置标题</th>
+        <th>配置名称</th>
+        <!--        <th>配置项编码</th>-->
+        <th>说明</th>
+        <th>分组</th>
+        <th>数据范围</th>
+        <th>默认值</th>
+        <th>可选项</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+
+
+      <tbody>
+      <tr *ngFor="let data of groupingTable.data;index as i">
+        <td>{{ ((i + 1) + (pageIndex - 1) * pageSize)}}</td>
+        <td>{{data?.title}}</td>
+        <td>{{data?.confName}}</td>
+        <!--        <td>{{data?.confCode}}</td>-->
+        <td>{{data?.confDesc}}</td>
+        <td>{{data?.confGroup | sysConfGroupPipe }}</td>
+        <td>{{data?.confScope}}</td>
+        <td>{{data?.defaultValue}}</td>
+        <td>{{data?.confOptions}}</td>
+        <td>
+          <button style="min-width: unset; margin-right: 2px;" nbButton status="warning" size="tiny"
+                  (click)="openDialog(dialog, data)">修改
+          </button>
+          <button style="min-width: unset; margin-left: 3px;" nbButton status="danger" size="tiny"
+                  (click)="openDeleteDialog(deleteDialog, data)">删除
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #totalTemplate>
+  共{{ listOfData.length }}条数据，当前第{{ pageIndex }}页
+</ng-template>
+
+<ng-template #dialog let-ref="dialogRef">
+  <nb-card size="giant" [ngStyle]="{'width': '1000px'}">
+    <nb-card-header>{{ dialogTitle }}</nb-card-header>
+    <nb-card-body [ngStyle]="{'text-align': 'center'}">
+      <form [formGroup]="editDictForm">
+        <div class="form-group row">
+          <label class="col-2 col-form-label text-right">配置标题(中文)：</label>
+          <div class="col-6">
+            <input type="text" nbInput fullWidth
+                   [status]="editDictForm.get('title').invalid && editDictForm.get('title').touched ? 'danger' : ''"
+                   formControlName="title"/>
+            <uea-show-form-errors [control]="editDictForm.get('title')"></uea-show-form-errors>
+          </div>
+          <label class="col-4 col-form-label text-muted text-left">配置项的标题(中文)，比如：是否强制签字</label>
+        </div>
+        <div class="form-group row">
+          <label class="col-2 col-form-label text-right">配置标题(英文)：</label>
+          <div class="col-6">
+            <input type="text" nbInput fullWidth
+                   [status]="editDictForm.get('confName').invalid && editDictForm.get('confName').touched ? 'danger' : ''"
+                   formControlName="confName"/>
+            <uea-show-form-errors [control]="editDictForm.get('confName')"></uea-show-form-errors>
+          </div>
+          <label class="col-4 col-form-label text-muted text-left">配置项的标题(英文)，比如：sign_required</label>
+        </div>
+        <!--        <div class="form-group row">-->
+        <!--          <label class="col-2 col-form-label text-right">配置项编码：</label>-->
+        <!--          <div class="col-6">-->
+        <!--            <input type="text" nbInput fullWidth-->
+        <!--                   [status]="editDictForm.get('confCode').invalid && editDictForm.get('confCode').touched ? 'danger' : ''"-->
+        <!--                   formControlName="confCode"/>-->
+        <!--            <uea-show-form-errors [control]="editDictForm.get('confCode')"></uea-show-form-errors>-->
+        <!--          </div>-->
+        <!--          <label class="col-4 col-form-label text-muted text-left">请输入数字，长度为4个字符，比如：0004</label>-->
+        <!--        </div>-->
+        <div class="form-group row">
+          <label class="col-2 col-form-label text-right">说明：</label>
+          <div class="col-6">
+            <textarea type="text" nbInput fullWidth
+                      [status]="editDictForm.get('confDesc').invalid && editDictForm.get('confDesc').touched ? 'danger' : ''"
+                      formControlName="confDesc"></textarea>
+            <uea-show-form-errors [control]="editDictForm.get('confDesc')"></uea-show-form-errors>
+          </div>
+          <label class="col-4 col-form-label text-left text-muted">请输入对此配置项的描述，比如：登记台是否强制用户签字</label>
+        </div>
+        <div class="form-group row">
+          <label class="col-2 col-form-label text-right">分组：</label>
+          <div class="col-6">
+            <nb-select placeholder="选择分组" fullWidth formControlName="confGroup">
+              <nb-option *ngFor="let g of sysConfGroupOptions" [value]="g.value">{{ g.label }}</nb-option>
+            </nb-select>
+            <uea-show-form-errors [control]="editDictForm.get('confGroup')"></uea-show-form-errors>
+          </div>
+          <label class="col-4 col-form-label text-left text-muted">请选择此配置项的分组信息</label>
+        </div>
+        <div class="form-group row">
+          <label class="col-2 col-form-label text-right">数据范围：</label>
+          <div class="col-6">
+            <input type="text" nbInput fullWidth
+                   [status]="editDictForm.get('confScope').invalid && editDictForm.get('confScope').touched ? 'danger' : ''"
+                   formControlName="confScope"/>
+            <uea-show-form-errors [control]="editDictForm.get('confScope')"></uea-show-form-errors>
+          </div>
+          <label class="col-4 col-form-label text-left text-muted">请输入对此配置项的数据范围，从0开始，比如：在5以内，则输入5</label>
+        </div>
+        <div class="form-group row">
+          <label class="col-2 col-form-label text-right">默认值：</label>
+          <div class="col-6">
+            <input type="text" nbInput fullWidth
+                   [status]="editDictForm.get('defaultValue').invalid && editDictForm.get('defaultValue').touched ? 'danger' : ''"
+                   formControlName="defaultValue"/>
+            <uea-show-form-errors [control]="editDictForm.get('defaultValue')"></uea-show-form-errors>
+          </div>
+          <label class="col-4 col-form-label text-left text-muted">请输入对此配置项的默认值，在数据范围之内，比如：输入1，或者其他默认参数</label>
+        </div>
+        <div class="form-group row">
+          <label class="col-2 col-form-label text-right">可选项：</label>
+          <div class="col-6">
+            <div class="col-12 row" *ngFor="let option of editDictForm.get('confOptions').value;index as i"
+                 style="margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; margin-bottom: 10px;">
+              <label class="col-2 col-form-label text-right" style="float: left; padding-left: 0; padding-right: 0;">选项名称：</label>
+              <div class="col-3" style="float: left; padding-left: 0; padding-right: 0;">
+                <input type="text" nbInput fullWidth
+                       [status]="editDictForm.get(option?.labelControl).invalid && editDictForm.get(option?.labelControl).touched ? 'danger' : ''"
+                       [formControlName]="option?.labelControl"/>
+                <uea-show-form-errors [control]="editDictForm.get(option?.labelControl)"></uea-show-form-errors>
+              </div>
+              <label class="col-2 col-form-label text-right" style="float: left; padding-left: 0; padding-right: 0;">选项值：</label>
+              <div class="col-3" style="float: left; padding-left: 0; padding-right: 0;">
+                <input type="text" nbInput fullWidth
+                       [status]="editDictForm.get(option?.valueControl).invalid && editDictForm.get(option?.valueControl).touched ? 'danger' : ''"
+                       [formControlName]="option?.valueControl"/>
+                <uea-show-form-errors [control]="editDictForm.get(option?.valueControl)"></uea-show-form-errors>
+              </div>
+              <div class="col-2">
+                <nb-icon pack="fas" class="fa fa-minus-circle" status="danger" (click)="removeOption(option, $event)"
+                         style="padding: 8px 15px; font-size: 1.5rem;"></nb-icon>
+              </div>
+            </div>
+            <div class="col-12 row"
+                 style="text-align: center; display: block; margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0;">
+              <button nbButton outline fullWidth (click)="addOptions()">添加</button>
+            </div>
+          </div>
+          <label class="col-4 col-form-label text-left text-muted">请输入对此配置项的可选值，至少包含2项，比如：不签字 - 0， 签字 -
+            1，如果是输入型配置项，请不要配置此项</label>
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer [ngStyle]="{'text-align': 'right'}">
+      <button nbButton *ngIf="dialogTitle === '修改配置词典'" (click)="update(ref)">修改</button>
+      <button nbButton *ngIf="dialogTitle === '新增配置词典'" (click)="insert(ref)">新增</button>
+      <button nbButton style="margin-left: 5px;" (click)="ref.close()">关闭</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #deleteDialog let-ref="dialogRef">
+  <!--  [ngStyle]="{'width': '1000px'}" -->
+  <nb-card size="small" style="width: 300px;">
+    <nb-card-header>删除配置</nb-card-header>
+    <nb-card-body [ngStyle]="{'text-align': 'center'}">
+      是否删除该条配置字典？
+    </nb-card-body>
+    <nb-card-footer [ngStyle]="{'text-align': 'right'}">
+      <button nbButton status="danger" (click)="delete(ref)">删除</button>
+      <button nbButton style="margin-left: 5px;" (click)="ref.close()">关闭</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

@@ -1,0 +1,43 @@
+  <nb-card accent="info">
+    <nb-card-header>
+      已使用详情
+      <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+    </nb-card-header>
+
+    <nb-card-body>
+      <nz-table #msgTable [nzLoading]="loading" [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false">
+        <thead>
+        <tr>
+          <th [nzAlign]="'center'">儿童姓名</th>
+          <th [nzAlign]="'center'">儿童编号</th>
+          <th [nzAlign]="'center'">疫苗名称</th>
+          <th [nzAlign]="'center'">疫苗厂家</th>
+          <th [nzAlign]="'center'">针次</th>
+          <th [nzAlign]="'center'">接种部位</th>
+          <th [nzAlign]="'center'">疫苗批号</th>
+          <th [nzAlign]="'center'">医生姓名</th>
+         <!-- <th [nzAlign]="'center'">疫苗价格</th>-->
+          <th [nzAlign]="'center'">数量(支)</th>
+          <th [nzAlign]="'center'">使用时间</th>
+          <th [nzAlign]="'center'">使用类型</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of msgTable.data">
+          <td [nzAlign]="'center'">{{data.NAME}}</td>
+          <td [nzAlign]="'center'">{{data.nameCode}}</td>
+          <td [nzAlign]="'center'">{{data.vaccProductCode | vacProductNamePipe |async}}</td>
+          <td [nzAlign]="'center'">{{data.manufacturerCode | manufacturePipe}}</td>
+          <td [nzAlign]="'center'">{{data.vaccinateDoseNumber}}</td>
+          <td [nzAlign]="'center'">{{data.vaccinatePart | dicPipe:'injurySite'}}</td>
+          <td [nzAlign]="'center'">{{data.prodBatchCode}}</td>
+          <td [nzAlign]="'center'">{{data.vaccinateDoctorCode | povStaffNamePipe | async}}</td>
+         <!-- <td [nzAlign]="'center'">{{vaccinetInfo.povVaccPrice}}</td>-->
+          <td [nzAlign]="'center'">{{data.count}}</td>
+          <td [nzAlign]="'center'">{{data.time | date:"yyyy-MM-dd"}}</td>
+          <td [nzAlign]="'center'">{{data.type | dicPipe:'stockChangeEvent'}}</td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </nb-card-body>
+  </nb-card>

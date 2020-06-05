@@ -1,0 +1,113 @@
+<form nz-form [formGroup]="queryForm" class="ant-advanced-search-form preventForm" style="margin-bottom: 20px;">
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="vaccineName">疫苗名称</nz-form-label>
+        <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" id="vaccineSubclassCode"
+                     formControlName="vaccineSubclassCode">
+            <nz-option [nzLabel]="item.label" [nzValue]="item.value" *ngFor="let item of vacSubClassData"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="vaccineSubclassCode">生产企业</nz-form-label>
+        <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" id="manufactureCode"
+                     formControlName="manufactureCode">
+            <nz-option [nzLabel]="item.name" [nzValue]="item.code" *ngFor="let item of manufactureData"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="batchNo">批号</nz-form-label>
+        <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+          <input
+            nz-input
+            formControlName="batchNo"
+            id="batchNo"
+
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="outboundDate">出入库(起)</nz-form-label>
+        <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+          <nz-date-picker style="width: 100%;" id="outboundDate" formControlName="outboundDate"
+          ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzLg]="5" [nzMd]="5" [nzXs]="24" nzFor="outboundDateBreak">出入库(止)</nz-form-label>
+        <nz-form-control [nzLg]="11" [nzMd]="11" [nzXs]="24">
+          <nz-date-picker style="width: 100%;" id="outboundDateBreak" formControlName="outboundDateBreak"
+          ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <button nz-button [nzType]="'primary'"  [nzLoading]="loading">导出</button>
+</form>
+<nz-table #editRowTable nzBordered [nzData]="listOfData"
+          [nzFrontPagination]="false"
+          [nzTotal]="total"
+          [nzLoading]="loading"
+          [(nzPageIndex)]="pageIndex"
+          [nzShowTotal]="totalTemplate"
+          (nzPageIndexChange)="queryData($event)"
+          nzSize="small">
+  <thead>
+  <tr>
+    <th [nzAlign]="'center'">编号</th>
+    <th [nzAlign]="'center'">疫苗名称</th>
+    <th [nzAlign]="'center'">生产企业</th>
+    <th [nzAlign]="'center'">规格</th>
+    <th [nzAlign]="'center'">批号</th>
+    <th [nzAlign]="'center'">疫苗属性</th>
+    <th [nzAlign]="'center'">出入库日期</th>
+    <th [nzAlign]="'center'">有效期</th>
+    <th [nzAlign]="'center'">出入库单号</th>
+    <th [nzAlign]="'center'">出入库类型</th>
+    <th [nzAlign]="'center'">供货单位</th>
+    <th [nzAlign]="'center'">收货单位</th>
+    <th [nzAlign]="'center'">成本价</th>
+    <th [nzAlign]="'center'">出售价</th>
+    <th [nzAlign]="'center'">数量</th>
+    <th [nzAlign]="'center'">金额</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of editRowTable.data; index as i">
+    <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+    <td [nzAlign]="'center'">{{data.vaccName}}</td>
+    <td [nzAlign]="'center'">{{data.manufactureName}}</td>
+    <td [nzAlign]="'center'">{{data.spec}}</td>
+    <td [nzAlign]="'center'">{{data.batchNo}}</td>
+    <td [nzAlign]="'center'">{{data.vaccineType | dicPipe: 'vaccineType'}}</td>
+    <td [nzAlign]="'center'">{{data.outBoundDate | date: 'yyyy-MM-dd'}}</td>
+    <td [nzAlign]="'center'">{{data.orderNo}}</td>
+    <td [nzAlign]="'center'">{{data.orderType | dicPipe: 'pfOrdertype'}}</td>
+    <td [nzAlign]="'center'">{{data.supplyorgName}}</td>
+    <td [nzAlign]="'center'">{{data.receiveorgName}}</td>
+    <td [nzAlign]="'center'">{{data.orignPrice}}</td>
+    <td [nzAlign]="'center'">{{data.sellPrice}}</td>
+    <td [nzAlign]="'center'">{{data.vaccNum}}</td>
+    <td [nzAlign]="'center'">{{data.money}}</td>
+  </tr>
+  </tbody>
+</nz-table>
+<ng-template #totalTemplate let-type let-page="page">
+  共{{ total }}条数据，当前第{{ pageIndex }}页
+</ng-template>
+
+

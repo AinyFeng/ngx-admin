@@ -1,0 +1,310 @@
+<div class="nb-card-body-qb">
+  <div class="search-profile text-center" *ngIf="!operationUpdate">
+    <label class="mr-2">自助建档</label>
+    <input nbInput type="text" [(ngModel)]="selfFileCode">
+    <button
+      [disabled]="loading"
+      [nbSpinner]="loading"
+      nbButton status="info" class="ml-4" (click)="searchSelfProfile()">查询
+    </button>
+  </div>
+  <form [formGroup]="profile" novalidate>
+    <div class="form-group row">
+      <label for="name" class="col-sm-2 col-form-label text-right">
+        <span class="star-required">*</span>儿童姓名：</label>
+      <div class="col-sm-3">
+        <input type="text" fullWidth nbInput
+               [status]="profile.get('name').invalid && profile.get('name').touched ? 'danger' : ''"
+               formControlName="name" id="name" placeholder="儿童姓名">
+        <uea-show-form-errors [control]="profile.get('name')"></uea-show-form-errors>
+      </div>
+      <label for="idCardType" class="col-sm-3 col-form-label text-right">证件类型：</label>
+      <div class="col-sm-3">
+        <nb-select (ngModelChange)="onIdCardTypeChange('idCardNo')" fullWidth outline id="idCardType"
+                   formControlName="idCardType" status="info" placeholder="证件类型">
+          <nb-option *ngFor="let c of idCardTypeOptions" [value]="c.value">{{ c.label }}</nb-option>
+        </nb-select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="birthDate" class="col-sm-2 col-form-label text-right label-required">出生日期：</label>
+      <div class="col-sm-3">
+        <!--<input fullWidth readonly nbInput formControlName="birthDate"
+               [status]="profile.get('birthDate').invalid && profile.get('birthDate').touched ? 'danger' : 'basic'"
+               [nbDatepicker]="datepicker" id="birthDate">
+        <nb-datepicker [max]="currentDate" #datepicker format="MM\dd\yyyy"></nb-datepicker>-->
+        <nz-date-picker
+          id="birthDate"
+          class="full-width"
+          nzSize="large"
+          [nzDisabledDate]="filterDate"
+          formControlName="birthDate"
+          nzFormat="yyyy-MM-dd"
+          [ngClass]="{'changeColor': (profile.get('birthDate').invalid && profile.get('birthDate').touched) }"
+        ></nz-date-picker>
+        <uea-show-form-errors [control]="profile.get('birthDate')"></uea-show-form-errors>
+      </div>
+      <label for="gender" class="col-sm-3 col-form-label text-right"><span class="star-required">*</span>儿童性别：</label>
+      <div class="col-sm-3">
+        <nz-radio-group id="gender" class="d-flex" formControlName="gender" (ngModelChange)="changeSexRadio($event)">
+          <label nz-radio *ngFor="let g of genderOptions" [nzValue]="g.value">{{g.label}}</label>
+        </nz-radio-group>
+        <!--<nb-radio-group id="gender" class="d-flex" formControlName="gender">
+          <nb-radio *ngFor="let g of genderOptions" [value]="g.value">
+            {{ g.label }}
+          </nb-radio>
+        </nb-radio-group>-->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="nationCode" class="col-sm-2 col-form-label text-right label-required">民族：</label>
+      <div class="col-sm-3">
+        <nb-select outline status="info" fullWidth id="nationCode" placeholder="民族" formControlName="nationCode">
+          <nb-option *ngFor="let n of nationOptions" [value]="n.code">{{ n.name }}</nb-option>
+        </nb-select>
+      </div>
+      <label for="immunityVacCard" class="col-sm-3 col-form-label label-required text-right">
+        是否新生儿：</label>
+      <div class="col-sm-3">
+        <nb-select fullWidth outline class="d-flex" id="isNewBorn" formControlName="isNewBorn" status="info"
+                   placeholder="证件类型">
+          <nb-option *ngFor="let c of isNewBornOptions" [value]="c.value">{{ c.label }}</nb-option>
+        </nb-select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="immunityVacCard" class="col-sm-2 col-form-label text-right">
+        免疫卡号：</label>
+      <div class="col-sm-4">
+        <!--<nb-radio-group id="selectType" class="d-flex" formControlName="selectType"
+                        (ngModelChange)="changeRadio($event)">
+          <nb-radio *ngFor="let type of selectTypes" [value]="type.value">
+            {{ type.label }}
+          </nb-radio>
+        </nb-radio-group>-->
+        <nz-radio-group id="selectType" class="d-flex" formControlName="selectType"
+                        (ngModelChange)="changeRadio($event)">
+          <label nz-radio *ngFor="let type of selectTypes" [nzValue]="type.value">{{type.label}}</label>
+        </nz-radio-group>
+      </div>
+      <div class="col-sm-5">
+        <div class="d-inline-block w-100" *ngIf="profile.get('selectType').value == 'scan'">
+          <input type="text" nbInput
+                 [status]="profile.get('immunityVacCard').invalid && profile.get('immunityVacCard').touched ? 'danger' : 'basic'"
+                 fullWidth formControlName="immunityVacCard" id="immunityVacCards"
+                 readonly
+                 placeholder="免疫卡号长度为10~20个字符">
+          <uea-show-form-errors [control]="profile.get('immunityVacCard')"></uea-show-form-errors>
+        </div>
+        <div class="d-inline-block w-100" *ngIf="profile.get('selectType').value == 'hand'">
+          <input type="text" nbInput
+                 [status]="profile.get('immunityVacCard').invalid && profile.get('immunityVacCard').touched ? 'danger' : 'basic'"
+                 fullWidth formControlName="immunityVacCard" id="immunityVacCard"
+                 placeholder="免疫卡号长度为10~20个字符">
+          <uea-show-form-errors [control]="profile.get('immunityVacCard')"></uea-show-form-errors>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="idCardNo" class="col-sm-2 col-form-label text-right">证件号码：</label>
+      <div class="col-sm-3">
+        <input type="text" fullWidth
+               [status]="profile.get('idCardNo').invalid && profile.get('idCardNo').touched ? 'danger' : 'basic'"
+               nbInput
+               formControlName="idCardNo" id="idCardNo" placeholder="证件号码">
+        <uea-show-form-errors [control]="profile.get('idCardNo')"></uea-show-form-errors>
+      </div>
+      <label for="residentialTypeCode" class="col-sm-3 col-form-label text-right">
+        <span class="star-required">*</span>
+        居住类型：</label>
+      <div class="col-sm-3">
+        <nb-select fullWidth outline id="residentialTypeCode" formControlName="residentialTypeCode" status="info"
+                   placeholder="户口类别">
+          <nb-option *ngFor="let id of residentialType" [value]="id.value">{{ id.label }}</nb-option>
+        </nb-select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="nationCode" class="col-sm-2 col-form-label text-right">
+        <span class="star-required">*</span>户口地址：</label>
+      <div class="col-sm-10">
+        <nz-cascader nzSize="large" [nzPlaceHolder]="'请选择地址'" [nzOptions]="geoCodeData"
+                     [ngStyle]="{'border': profile.get('idCardAddr').invalid && profile.get('idCardAddr').touched ? '2px solid red' : ''}"
+                     formControlName="idCardAddr"></nz-cascader>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="nationCode" class="col-sm-2 col-form-label text-right"></label>
+      <div class="col-sm-10">
+        <input type="text" nbInput placeholder="请输入地址详细信息"
+               [status]="profile.get('idCardDetail').invalid && profile.get('idCardDetail').touched ? 'danger' : ''"
+               fullWidth formControlName="idCardDetail">
+        <uea-show-form-errors [control]="profile.get('idCardDetail')"></uea-show-form-errors>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="nationCode" class="col-sm-2 col-form-label text-right">
+        居住地址：</label>
+      <div class="col-sm-10">
+        <nz-cascader nzSize="large" [nzPlaceHolder]="'请选择地址'" [nzOptions]="geoCodeData" formControlName="liveAddr">
+        </nz-cascader>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="nationCode" class="col-sm-2 col-form-label text-right"></label>
+      <div class="col-sm-10">
+        <input type="text" nbInput fullWidth placeholder="请输入地址详细信息" formControlName="liveDetail">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="idTypeCode" class="col-sm-2 col-form-label text-right">
+        <span class="star-required">*</span>
+        户口类别：</label>
+      <div class="col-sm-3">
+        <nb-select outline id="idTypeCode" formControlName="idTypeCode" status="info" placeholder="户口属性" fullWidth>
+          <nb-option *ngFor="let id of idType" [value]="id.value">{{ id.label }}</nb-option>
+        </nb-select>
+      </div>
+      <label for="community" class="col-sm-3 col-form-label text-right">
+        <span class="star-required">*</span>所属区块：</label>
+      <div class="col-sm-4">
+        <nb-select outline id="community" formControlName="community" status="info" placeholder="请选择"
+                   fullWidth>
+          <nb-option *ngFor="let b of communityOptions" [value]="b.communityCode">{{ b.communityName }}</nb-option>
+        </nb-select>
+        <uea-show-form-errors [control]="profile.get('community')"></uea-show-form-errors>
+      </div>
+    </div>
+    <!--  <div class="form-group row">
+        <label for="community" class="col-sm-2 col-form-label text-right">
+          <span class="star-required">*</span>所属区块：</label>
+        <div class="col-sm-3">
+          <nb-select outline id="community" formControlName="community" status="info" placeholder="请选择"
+                     fullWidth>
+            <nb-option *ngFor="let b of communityOptions" [value]="b.communityCode">{{ b.communityName }}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="profile.get('community')"></uea-show-form-errors>
+        </div>
+      </div>-->
+    <div class="form-group row">
+      <label for="birthCardNo" class="col-sm-2 col-form-label text-right">出生证号：</label>
+      <div class="col-sm-3">
+        <input nbInput fullWidth type="text" formControlName="birthCardNo" placeholder="出生证号" id="birthCardNo">
+      </div>
+      <label for="birthHospitalCode" class="col-sm-3 col-form-label text-right">出生医院：</label>
+      <div class="col-sm-4">
+        <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixIconButton">
+          <input id="birthHospitalCode"
+                 [value]="profile.get('birthHospitalCode').value | hospitalNamePipe | async"
+                 readonly formControlName="birthHospitalCode" type="text" nz-input placeholder="请选择"/>
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+          <button type="button" (click)="selectPovAndHospital(false)" nz-button nzType="primary" nzSize="large">选择
+          </button>
+        </ng-template>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="birthWeight" class="col-sm-2 col-form-label text-right">出生体重(g)：</label>
+      <div class="col-sm-3">
+        <input fullWidth [min]="0"
+               numberTransfer
+               [status]="profile.get('birthWeight').invalid && profile.get('birthWeight').touched ? 'danger' : ''"
+               nbInput type="number" formControlName="birthWeight" placeholder="出生体重"
+               id="birthWeight">
+        <uea-show-form-errors [control]="profile.get('birthWeight')"></uea-show-form-errors>
+      </div>
+      <label for="parity" class="col-sm-3 col-form-label text-right">
+        <span class="star-required">*</span>胎次：</label>
+      <div class="col-sm-3">
+        <input fullWidth nbInput type="number" [min]="1"
+               numberTransfer="1"
+               [status]="profile.get('parity').invalid && profile.get('parity').touched ? 'danger' : ''"
+               formControlName="parity" placeholder="胎次" id="parity">
+        <uea-show-form-errors [control]="profile.get('parity')"></uea-show-form-errors>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="motherName" class="col-sm-2 col-form-label text-right">
+        <span class="star-required">*</span>母亲姓名：</label>
+      <div class="col-sm-3">
+        <input nbInput fullWidth
+               [status]="profile.get('motherName').invalid && profile.get('motherName').touched ? 'danger' : ''"
+               formControlName="motherName" placeholder="监护人姓名" id="motherName">
+        <uea-show-form-errors [control]="profile.get('motherName')"></uea-show-form-errors>
+      </div>
+      <label for="motherIdCardType" class="col-sm-3 col-form-label text-right">
+        <span class="star-required">*</span>母亲证件类型：</label>
+      <div class="col-sm-3">
+        <nb-select (ngModelChange)="onIdCardTypeChange('motherIdCardNo')" outline fullWidth id="motherIdCardType"
+                   formControlName="motherIdCardType" status="info"
+                   placeholder="证件类型">
+          <nb-option *ngFor="let c of idCardTypeOptions" [value]="c.value">{{ c.label }}</nb-option>
+        </nb-select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="motherContactPhone" class="col-sm-2 col-form-label text-right">
+        <span class="star-required">*</span>母亲联系电话：</label>
+      <div class="col-sm-3">
+        <input nbInput fullWidth
+               [status]="profile.get('motherContactPhone').invalid && profile.get('motherContactPhone').touched ? 'danger' : ''"
+               formControlName="motherContactPhone" placeholder="请输入手机号码" id="motherContactPhone">
+        <uea-show-form-errors [control]="profile.get('motherContactPhone')"></uea-show-form-errors>
+      </div>
+      <label for="motherIdCardNo" class="col-sm-3 col-form-label text-right">
+        <span class="star-required">*</span>母亲证件号码：</label>
+      <div class="col-sm-4">
+        <input type="text" nbInput fullWidth
+               [status]="profile.get('motherIdCardNo').invalid && profile.get('motherIdCardNo').touched ? 'danger' : ''"
+               formControlName="motherIdCardNo" id="motherIdCardNo" placeholder="证件号码">
+        <uea-show-form-errors [control]="profile.get('motherIdCardNo')"></uea-show-form-errors>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="fatherName" class="col-sm-2 col-form-label text-right">
+        父亲姓名：
+      </label>
+      <div class="col-sm-3">
+        <!--nbTooltip="如果填写父亲信息，父亲姓名和联系电话是必填项；删除父亲名字将会删除父亲监护人所有信息" nbTooltipStatus="primary"-->
+        <input nbInput fullWidth
+               [status]="profile.get('fatherName').invalid && profile.get('fatherName').touched ? 'danger' : ''"
+               formControlName="fatherName" placeholder="监护人姓名" id="fatherName">
+        <uea-show-form-errors [control]="profile.get('fatherName')"></uea-show-form-errors>
+      </div>
+      <label for="fatherIdCardType" class="col-sm-3 col-form-label text-right">
+        父亲证件类型：</label>
+      <div class="col-sm-3">
+        <nb-select (ngModelChange)="onIdCardTypeChange('fatherIdCardNo')" outline fullWidth id="fatherIdCardType"
+                   formControlName="fatherIdCardType" status="info"
+                   placeholder="证件类型">
+          <nb-option *ngFor="let c of idCardTypeOptions" [value]="c.value">{{ c.label }}</nb-option>
+        </nb-select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="fatherContactPhone" class="col-sm-2 col-form-label text-right">
+        父亲联系电话：</label>
+      <div class="col-sm-3">
+        <input nbInput fullWidth
+               [status]="profile.get('fatherContactPhone').invalid && profile.get('fatherContactPhone').touched ? 'danger' : ''"
+               formControlName="fatherContactPhone" placeholder="请输入手机号码" id="fatherContactPhone">
+        <uea-show-form-errors [control]="profile.get('fatherContactPhone')"></uea-show-form-errors>
+      </div>
+      <label for="fatherIdCardNo" class="col-sm-3 col-form-label text-right">
+        父亲证件号码：</label>
+      <div class="col-sm-4">
+        <input type="text" nbInput fullWidth
+               [status]="profile.get('fatherIdCardNo').invalid && profile.get('fatherIdCardNo').touched ? 'danger' : ''"
+               formControlName="fatherIdCardNo" id="fatherIdCardNo" placeholder="证件号码">
+        <uea-show-form-errors [control]="profile.get('fatherIdCardNo')"></uea-show-form-errors>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="memo" class="col-sm-2 col-form-label text-right">备注：</label>
+      <div class="col-sm-9">
+        <textarea nbInput formControlName="memo" id="memo" fullWidth placeholder="请输入......"></textarea>
+      </div>
+    </div>
+  </form>
+</div>

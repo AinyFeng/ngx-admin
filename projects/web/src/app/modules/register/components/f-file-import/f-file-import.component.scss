@@ -1,0 +1,56 @@
+@import '../../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+}
+
+.nb-card-container-xxx {
+  width: 1500px;
+}
+
+.nb-card-xx {
+  width: 1200px;
+}
+
+.header-title {
+  text-align: center;
+}
+
+.record-body {
+  height: calc(75vh);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.not-same {
+  td {
+    background-color: rgb(255, 213, 177);
+  }
+}
+
+.select-width-auto ::ng-deep {
+  button.select-button {
+    min-width: auto !important;
+  }
+}
+
+::ng-deep {
+  .ant-descriptions-bordered .ant-descriptions-item-label {
+    font-weight: bolder;
+  }
+
+  .ant-table-thead > tr > th {
+    font-weight: bolder;
+  }
+
+  //.ant-table-tbody > tr > td, .ant-table-thead > tr > th {
+  //  padding: 4px 16px;
+  //}
+  //
+  //.ant-descriptions-bordered.ant-descriptions-small .ant-descriptions-item-content, .ant-descriptions-bordered.ant-descriptions-small .ant-descriptions-item-label {
+  //  padding: 4px 16px;
+  //}
+  //
+  //.ant-table-bordered .ant-table-thead > tr:not(:last-child) > th, .ant-table-placeholder {
+  //  border-bottom: none;
+  //}
+}

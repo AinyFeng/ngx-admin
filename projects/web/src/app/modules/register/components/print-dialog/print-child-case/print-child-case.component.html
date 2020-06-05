@@ -1,0 +1,46 @@
+<nb-card class="nb-card-container-xx">
+  <nb-card-header class="text-center">
+    <h5>儿童接种本档案信息</h5>
+  </nb-card-header>
+  <nb-card-body style="min-height: 500px;" class="">
+    <nb-alert *ngIf="error" class="flex-row" outline="warning" closable (close)="closeAlert()">
+      打印机连接失败，请安装<a href="http://www.lodop.net/download.html" target="_blank">Lodop</a>插件
+    </nb-alert>
+    <uea-child-case-info [printProfileData]="printProfileData" [idType]="chooseType"></uea-child-case-info>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="form-group row">
+      <div class="col-md-5 row">
+        <label class="col-3 col-form-label">证件类型:</label>
+        <div class="col-9">
+          <nb-select placeholder="请选择证件类型" minlength="100" fullWidth outline status="info"
+                     [(selected)]="chooseType">
+            <nb-option [value]="item.value" *ngFor="let item of vaccCertificateType"
+                       (click)="savePrintModel(item.value)">{{item.label}}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="col-md-3 row">
+        <label class="col-6 col-form-label text-right">上页边距(px):</label>
+        <div class="col-6">
+          <input type="number" [min]="0" fullWidth nbInput value="0" [(ngModel)]="marginTop">
+        </div>
+      </div>
+      <div class="col-md-3 row">
+        <label class="col-6 col-form-label text-right">左页边距(px):</label>
+        <div class="col-6">
+          <input type="number" [min]="0" fullWidth nbInput value="0" [(ngModel)]="marginLeft">
+        </div>
+      </div>
+      <div class="col-md-1">
+        <button nbButton status="info" (click)="saveSetting()">保存设置</button>
+      </div>
+    </div>
+    <div class="form-group">
+      <button nbButton status="info" class="mr-3" (click)="print(true)">打印预览</button>
+      <button nbButton status="info" (click)="print(false)">直接打印</button>
+      <button nbButton status="info" (click)="close()" class="float-right">关闭</button>
+    </div>
+  </nb-card-footer>
+</nb-card>
+

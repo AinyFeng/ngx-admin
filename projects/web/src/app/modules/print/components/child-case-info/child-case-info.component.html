@@ -1,0 +1,246 @@
+<div id="mainContent" class="ml-5"
+     *ngIf="idType === 'ah2019bhMade' || idType === 'ah2019Small' || idType === 'ahNation'">
+  <div>
+    <span>儿童编码/Code：</span>
+    <span>{{printProfileData?.profileCode}}</span>
+  </div>
+  <div>
+    <span>身份证号/ID：</span>
+    <span>{{printProfileData?.idCardNo}}</span>
+  </div>
+  <div>
+    <span>出生证号/Number of Birth：</span>
+    <span>{{printProfileData?.birthCardNo}}</span>
+  </div>
+  <div>
+    <span>儿童姓名/Name：</span>
+    <span class="w-25 d-inline-block">{{printProfileData?.name}}</span>
+    <span>性别/Gender：</span>
+    <span>{{printProfileData?.gender | dicPipe: 'genderCode'}}</span>
+  </div>
+  <div>
+    <span class="label-span">出生日期(公历)/Date of Birth：</span>
+    <span>{{printProfileData?.birthDate | date:'yyyy'}}</span>
+    <span>年</span>
+    <span>{{printProfileData?.birthDate | date:'MM'}}</span>
+    <span>月</span>
+    <span>{{printProfileData?.birthDate | date: 'dd'}}</span>
+    <span>日</span>
+  </div>
+  <div>
+    <span>父亲姓名/Father：</span>
+    <span class="w-25 d-inline-block">{{printProfileData?.fatherName}}</span>&nbsp;
+    <span>父亲联系手机/MP：</span>
+    <span>{{printProfileData?.fatherContactPhone}}</span>
+  </div>
+  <div>
+    <span>母亲姓名/Mother：</span>
+    <span class="w-25 d-inline-block">{{printProfileData?.motherName}}</span>&nbsp;
+    <span>母亲联系手机/MP：</span>
+    <span>{{printProfileData?.motherContactPhone}}</span>
+  </div>
+  <div>
+    <span>出生医院/Hospital：</span>
+    <span class="w-25 d-inline-block">{{printProfileData?.birthHospitalCode | hospitalNamePipe | async}}</span>&emsp;
+    <span>出生体重/Weight：</span>
+    <span>{{(printProfileData?.birthWeight)}}</span>
+    <span>克</span>
+  </div>
+  <div>
+    <span>家庭住址/Current Address：</span>
+    <span>{{printProfileData?.liveProvCode | administrativePipe | async}}</span>
+    <span>省</span>
+    <span>{{printProfileData?.liveCityCode | administrativePipe | async}}</span>
+    <span>市</span>
+    <span>{{printProfileData?.liveDistrictCode | administrativePipe | async}}</span>
+    <span>县</span>
+  </div>
+  <div>
+    <span>{{printProfileData?.liveDetail}}</span>
+    <span>乡（镇、街道）</span>
+    <span>&nbsp;</span>
+    <span>村（居委会）</span>
+  </div>
+  <div>
+    <span>户籍住址/Citizenship Address：</span>
+    <span>{{printProfileData?.idCardProvCode | administrativePipe | async}}</span>
+    <span>省</span>
+    <span>{{printProfileData?.idCardCityCode | administrativePipe | async}}</span>
+    <span>市</span>
+    <span>{{printProfileData?.idCardDistrictCode | administrativePipe | async}}</span>
+    <span>县</span>
+  </div>
+  <div>
+    <span>{{printProfileData?.idCardDetail}}</span>
+    <span>乡（镇、街道）</span>
+    <span>&nbsp;</span>
+    <span>村（居委会）</span>
+  </div>
+  <div>
+    <span>过敏史/Allergy：</span>
+    <span
+      class="w-25 d-inline-block">{{printProfileData?.allergyInfo[0]?.description | dicPipe: 'tabooType'}}</span>&emsp;
+    <span>接种禁忌/Contraindication：</span>
+    <span
+      class="w-25 d-inline-block">{{printProfileData?.contraInfo[0]?.cartraindication}}</span>
+  </div>
+  <div>
+    <span>接种单位联系电话/Telephone of Organization：</span>
+    <span>{{printProfileData?.povInfo?.telephone}}</span>
+  </div>
+  <div style="height: 90px;"></div>
+  <div class="float-left">
+    <qrcode class="mr-5" style="display: inline-block;"
+            [qrdata]="printProfileData?.profileCode? printProfileData.profileCode : 'test a code'" [size]="64"
+            [level]="'M'"></qrcode>
+  </div>
+  <div>
+    <div class="stamp">
+      <p class="d-inline-block">
+        <span>发证</span><br>
+        <span>补证</span>
+      </p>
+      <div class="ml-3">
+        <p>{{printProfileData?.povInfo?.name}}</p>
+        <span>单位(签章)/Authority of Issue</span>
+      </div>
+    </div>
+    <div class="stamp">
+      <p>
+        <span>发证</span><br>
+        <span>补证</span>
+      </p>
+      <p class="ml-3">
+        日期/Date of Issue：{{nowDate | date: 'yyyy'}}年{{nowDate | date: 'MM'}}月{{nowDate | date: 'dd'}}日
+      </p>
+    </div>
+  </div>
+
+</div>
+<div class="ml-5" *ngIf="idType === 'ah2016' || idType === 'ah2017' || idType === 'jx2018'">
+  <div>
+    <span>儿童编码：{{printProfileData?.profileCode}}</span>
+  </div>
+  <div>
+    <span>身份证号：{{printProfileData?.idCardNo}}</span>
+  </div>
+  <div>
+    <span>出生证号：{{printProfileData?.birthCardNo}}</span>
+  </div>
+  <div>
+    <span class="w-25 d-inline-block">儿童姓名：{{printProfileData?.name}}</span>
+    <span>性别：{{printProfileData?.gender | dicPipe: 'genderCode'}}</span>
+  </div>
+  <div>
+    <span class="label-span">出生日期：{{printProfileData?.birthDate | date:'yyyy'}}年</span>
+    <span>{{printProfileData?.birthDate | date:'MM'}}月</span>
+    <span>{{printProfileData?.birthDate | date: 'dd'}}日</span>
+    <span>    时</span>
+  </div>
+  <div>
+    <span class="w-25 d-inline-block">出生医院：{{printProfileData?.birthHospitalCode | povNamePipe | async}}</span>&emsp;
+    <span></span>
+    <span>出生体重：{{printProfileData?.birthWeight}}克</span>
+  </div>
+  <div>
+    <span class="w-25 d-inline-block">监护人姓名：{{printProfileData?.motherInfo?.name}}</span>
+    <span>与儿童关系：{{printProfileData?.motherInfo?.relationshipCode | dicPipe: 'familyRelation'}}</span>
+  </div>
+  <div>
+    <span>家庭住址：</span>
+    <span>{{printProfileData?.liveProvCode | administrativePipe | async}}</span>
+    <span>省</span>
+    <span>{{printProfileData?.liveCityCode | administrativePipe | async}}</span>
+    <span>市</span>
+    <span>{{printProfileData?.liveDistrictCode | administrativePipe | async}}</span>
+    <span>县</span>
+    <span>{{printProfileData?.liveDetail}}</span>
+    <span>乡（镇、街道）</span>
+    <p style="width: 44%;">
+      <span class="w-25 d-inline-block"></span>
+      <span>村（居委会）</span>
+    </p>
+  </div>
+  <div>
+    <span>户籍住址：</span>
+    <span>{{printProfileData?.idCardProvCode | administrativePipe | async}}</span>
+    <span>省</span>
+    <span>{{printProfileData?.idCardCityCode | administrativePipe | async}}</span>
+    <span>市</span>
+    <span>{{printProfileData?.idCardDistrictCode | administrativePipe | async}}</span>
+    <span>县</span>
+    <span>{{printProfileData?.idCardDetail}}</span>
+    <span>乡（镇、街道）</span>
+  </div>
+  <div *ngIf="idType === 'jx2018'">
+    <span
+      class="d-inline-block w-25">过敏史：{{printProfileData?.allergyInfo[0]?.description | dicPipe: 'tabooType'}}</span>
+    <span class="w-25 d-inline-block">接种禁忌：{{printProfileData?.contraInfo[0]?.cartraindication}}</span>
+  </div>
+  <!--<div>
+    <span>接种异常反应史/接种禁忌和疫苗针对传染病:</span>
+    <span class="d-inline-block" style="border: 1px solid #000000; width: 5px; height: 5px; text-align: center;">1</span>
+  </div>-->
+  <div *ngIf="idType !== 'jx2018'" style="height: 30px;"></div>
+  <div *ngIf="idType === 'jx2018'">
+    <span>接种单位联系电话：{{printProfileData?.povInfo?.telephone}}</span>
+  </div>
+  <div>
+    <span>接种单位名称和联系电话：{{printProfileData?.povInfo?.name}}  {{printProfileData?.povInfo?.telephone}}</span>
+  </div>
+  <div style="height: 30px;"></div>
+  <div>
+    <qrcode class="mr-5" style="display: inline-block;"
+            [qrdata]="printProfileData?.profileCode? printProfileData.profileCode : 'test a code'" [size]="64"
+            [level]="'M'"></qrcode>
+    <div class="d-inline-block">
+      <p>发证单位(签章)：{{printProfileData?.povInfo?.name}}</p>
+      <p>
+        <span>发证日期：{{nowDate | date: 'yyyy'}}年{{nowDate | date: 'MM'}}月{{nowDate | date: 'dd'}}日</span>
+      </p>
+    </div>
+  </div>
+
+
+</div>
+<div class="ml-5" *ngIf="idType === 'sh2018'">
+  <div class="d-inline-block">
+    <div>姓名/Name：{{printProfileData?.name}}</div>
+    <div>性别/Sex： {{printProfileData?.gender === 'm' ? '&#9745;男/M' : '&#9745;女/F'}}</div>
+    <div>属性/Registered Residence：{{printProfileData?.idCardType === '2' ? '&#9745;本市' : '&#9745;外来'}}</div>
+
+  </div>
+  <div class="float-right">
+    <qrcode class="mr-5" style="display: inline-block;"
+            [qrdata]="printProfileData?.profileCode? printProfileData.profileCode : 'test a code'" [size]="64"
+            [level]="'M'"></qrcode>
+  </div>
+  <div>出生日期/Date of Birth：{{printProfileData?.birthDate | date:'yyyy'}}年{{printProfileData?.birthDate | date:'MM'}}
+    月{{printProfileData?.birthDate | date:'dd'}}日 时
+  </div>
+  <div>身份证号码/ID &nbsp;<span style="letter-spacing:2px;">{{printProfileData?.idCardNo}}</span></div>
+  <p style="font-size: small;">(重要提示:孩子报户口获得身份证号码后,请将孩子的身份证号码填写在上面格子内)</p>
+  <div>护照号码/Passport ID： &nbsp;</div>
+  <div>现住址1/Address1：{{printProfileData?.liveProvCode | administrativePipe | async}}
+    省{{printProfileData?.liveCityCode | administrativePipe | async}}
+    市{{printProfileData?.liveDistrictCode | administrativePipe | async}}县{{printProfileData?.liveDetail}}</div>
+  <div>现住址2/Address2：</div>
+  <div>
+    <span class="w-25 d-inline-block">联系手机1/MP1：{{printProfileData?.fatherInfo?.contactPhone}}</span>
+    <span>固定电话1/FP1：</span>&nbsp;
+  </div>
+  <div>
+    <span class="w-25 d-inline-block">联系手机2/MP2：{{printProfileData?.motherInfo?.contactPhone}}</span>
+    <span>固定电话2/FP2：</span>
+  </div>
+  <div>
+    <span class="w-25 d-inline-block">父亲姓名/Father：{{printProfileData?.fatherInfo?.name}}</span>
+    <span>母亲姓名/Mother：{{printProfileData?.motherInfo?.name}}</span>
+  </div>
+  <div class="text-right">
+    <span>发证单位/Authority of issue：{{printProfileData?.povInfo?.name}}</span>
+  </div>
+  <div class="text-right">
+    <span>发证日期/Date of issue：{{nowDate | date: 'yyyy'}}年{{nowDate | date: 'MM'}}月{{nowDate | date: 'dd'}}日</span>
+  </div>
+</div>

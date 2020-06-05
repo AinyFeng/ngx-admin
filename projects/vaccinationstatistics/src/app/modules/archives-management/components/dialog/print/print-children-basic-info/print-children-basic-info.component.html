@@ -1,0 +1,135 @@
+<body  [id]="printChildrenDetailInfo.id" >
+  <div style="padding: 5px;float:left;width: 25%;">
+    <table style="border-collapse:collapse;table-layout:fixed;border:solid 1px black;">
+      <caption style="font-size: 1.8em; text-align:center;padding:10px 0px;">儿童基本信息</caption>
+      <thead>
+      <tr>
+        <td style="width: 100px; text-align: right ;border:solid 1px black">儿童编码</td>
+        <td style="border:solid 1px black">{{printChildrenDetailInfo.baseInfo?.profileCode}}</td>
+      </tr>
+      <tr>
+        <td style="text-align: right ;border:solid 1px black">儿童身份证</td>
+        <td style="border:solid 1px black">{{printChildrenDetailInfo.baseInfo?.idCardNo}}</td>
+      </tr>
+      <tr>
+        <td style="text-align: right ;border:solid 1px black">出生证号</td>
+        <td style="border:solid 1px black">{{printChildrenDetailInfo.baseInfo?.birthCardNo}}</td>
+      </tr>
+      <tr>
+        <td style="text-align: right ;border:solid 1px black">儿童姓名</td>
+        <td style="border:solid 1px black">{{printChildrenDetailInfo.baseInfo?.name}}</td>
+      </tr>
+      <tr>
+        <td style="text-align: right ;border:solid 1px black">性&emsp;&emsp;别</td>
+        <td style="border:solid 1px black">{{printChildrenDetailInfo.baseInfo?.gender | dicPipe: 'genderCode'}}</td>
+      </tr>
+      <tr>
+        <td style="text-align: right ;border:solid 1px black">出生日期</td>
+        <td style="border:solid 1px black">{{printChildrenDetailInfo.baseInfo?.birthDate| date:'yyyy-MM-dd'}}</td>
+      </tr>
+      <tr>
+        <td style="text-align: right ;border:solid 1px black">出生医院</td>
+        <td style="border:solid 1px black">{{printChildrenDetailInfo.baseInfo?.birthHospitalCode | povNamePipe | async}}</td>
+      </tr>
+      <tr>
+        <td style="text-align: right ;border:solid 1px black">出生体重(g)</td>
+        <td style="border:solid 1px black">{{printChildrenDetailInfo.baseInfo?.birthWeight}}</td>
+      </tr>
+      <tr>
+        <td style="text-align: right ;border:solid 1px black">区域划分</td>
+        <td style="border:solid 1px black">{{printChildrenDetailInfo.baseInfo?.community | dicPipe:'belongDistrict'}}</td>
+      </tr>
+      <tr>
+        <td style="text-align: right ;border:solid 1px black">母亲姓名</td>
+        <td style="border:solid 1px black">{{printChildrenDetailInfo.baseInfo?.motherName}}</td>
+      </tr>
+      <tr>
+        <td style="text-align: right ;border:solid 1px black">手机号码</td>
+        <td style="border:solid 1px black">{{printChildrenDetailInfo.baseInfo?.motherContactPhone}}</td>
+      </tr>
+      <tr>
+        <td style="text-align: right ;border:solid 1px black">母亲身份证</td>
+        <td style="border:solid 1px black">{{printChildrenDetailInfo.baseInfo?.motherIdCardNo}}</td>
+      </tr>
+      <tr>
+        <td style="text-align: right ;border:solid 1px black">家庭住址</td>
+        <td style="border:solid 1px black">{{printChildrenDetailInfo.baseInfo?.liveDetail}}</td>
+      </tr>
+      <tr>
+        <td style="text-align: right ;border:solid 1px black">户籍地址</td>
+        <td style="border:solid 1px black">{{printChildrenDetailInfo.baseInfo?.idCardDetail}}</td>
+      </tr>
+      <tr>
+        <td style="text-align: right ;border:solid 1px black">接种单位</td>
+        <td style="border:solid 1px black">
+          {{printChildrenDetailInfo.baseInfo?.vaccinationPovCode | povNamePipe | async}}
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: right ;border:solid 1px black">在册情况</td>
+        <td style="border:solid 1px black">
+          {{printChildrenDetailInfo.baseInfo?.profileStatusCode| dicPipe: 'profileStatus'}}
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: right ;border:solid 1px black">备注</td>
+        <td style="border:solid 1px black">{{printChildrenDetailInfo.baseInfo?.memo}}</td>
+      </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+  <div class=" col-sm-5 " style="padding: 5px;  float: right; width: 70%;">
+    <table style="border-collapse:collapse;table-layout:fixed;border:solid 1px black;">
+      <caption style="font-size: 1.8em; text-align:center;padding:10px 0px;">已接种疫苗</caption>
+      <thead>
+      <tr>
+        <!--	<th >疫苗种类</th> -->
+        <th style="text-align:center;width: 18%;border:solid 1px black">疫苗名称</th>
+        <th style="text-align:center;border:solid 1px black">批号</th>
+        <th width="12%" style="text-align:center;border:solid 1px black">生产厂商</th>
+        <!-- <th>疫苗价格</th> -->
+        <th width="10%" style="text-align:center;border:solid 1px black">针次</th>
+        <th style="text-align:center;border:solid 1px black">接种部位</th>
+        <th style="text-align:center;border:solid 1px black">疫苗价格</th>
+        <th width="10%" style="text-align:center;border:solid 1px black">接种日期</th>
+        <!-- 							<th><span class="ib">接种</span><span class="ib">部位</span></th> -->
+        <th style="text-align:center;border:solid 1px black">接种医生</th>
+        <th width="16%" style="text-align:center;border:solid 1px black;">接种单位</th>
+      </tr>
+      </thead>
+      <tbody id="recordTbody">
+        <tr *ngFor="let data of printChildrenDetailInfo.vaccineRecord;">
+          <td style="text-align:center;border:solid 1px black">
+            {{ data.vaccineProductName }}
+          </td>
+          <td style="text-align:center;border:solid 1px black">
+            {{ data.vaccineBatchNo }}
+          </td>
+          <td style="text-align:center;border:solid 1px black">
+            {{ data.manufacturerName }}
+          </td>
+          <td style="text-align:center;border:solid 1px black">
+            {{ data.vaccinateInjectNumber }}
+          </td>
+          <td style="text-align:center;border:solid 1px black">
+            {{ data.vaccinatePart  | dicPipe:'vaccinatePart'}}
+          </td>
+          <td style="text-align:center;border:solid 1px black">
+            {{ data.totalAmount }}
+          </td>
+          <td style="text-align:center;border:solid 1px black">
+            {{ data.vaccinateTime | date: 'yyyy-MM-dd HH:mm:ss'}}
+          </td>
+          <td style="text-align:center;border:solid 1px black">
+            {{ data.regDoctName }}
+          </td>
+          <td style="text-align:center;border:solid 1px black">
+            {{ data.povName }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>

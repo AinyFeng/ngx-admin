@@ -1,0 +1,145 @@
+<nz-table #diseaseTable
+          [nzSize]="'small'"
+          [nzScroll]="{'y': '500px'}"
+          [nzData]="vacRecordsDataBaseTable"
+          [nzFrontPagination]="false" [nzShowPagination]="false" nzBordered style="width: 100%;">
+  <thead>
+  <tr>
+    <th [nzWidth]="7 * evenWid + 'px'" [nzAlign]="'center'">疾病大类</th>
+    <th [nzWidth]="2 * evenWid + 'px'" [nzAlign]="'center'">针次</th>
+    <th [nzWidth]="4 * evenWid + 'px'" [nzAlign]="'center'">接种时间</th>
+    <th [nzWidth]="4 * evenWid + 'px'" [nzAlign]="'center'">接种医生</th>
+    <th [nzWidth]="7 * evenWid + 'px'" [nzAlign]="'center'">操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let vac of diseaseTable.data; index as i">
+    <td [nzAlign]="'center'" *ngIf="vac.rowspan" [rowSpan]="vac.rowspan">
+      {{ vac.categoryName }}
+    </td>
+    <td [nzAlign]="'center'" class="position-relative">
+      <img *ngIf="vac.dataSourceType === '2'" class="record-flag" [src]="'/assets/icons/register/add_records.svg'"
+           alt="补录疫苗">
+      {{ vac.vaccinateInjectNumber }}</td>
+    <td [nzAlign]="'center'">{{ vac.vaccinateTime | date: 'yyyy-MM-dd' }}</td>
+    <td [nzAlign]="'center'">{{ vac.vaccinateDoctorCode | povStaffNamePipe | async }}</td>
+    <td [nzAlign]="'center'">
+      <div *ngIf="profile">
+        <a href="javascript:void(0)" class="mr-1" *ngIf="vac.dataSourceType === '2'"
+           (click)="updateRecord(vac)">修改</a>
+        <a href="javascript:void(0)" class="mr-1" *ngIf="vac.vaccinateTime !== null" (mouseover)="showDetail(vac)"
+           nbPopoverPlacement="left" [nbPopover]="detailTemplate">详情</a>
+        <a href="javascript:void(0)" class="mr-1" *ngIf="vac.reserved === '1'"
+           (mouseover)="setReservationDetail(vac)"
+           class="mr-2"
+           nbPopoverPlacement="left" [nbPopover]="reservationDetailTemplate">已预约</a>
+        <a href="javascript:void(0)" *ngIf="vac.rowspan" (click)="queryAgreement(vac)">告知书</a>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
+
+<ng-template #detailTemplate>
+  <nb-card class="mb-0">
+    <nb-card-body>
+      <table class="table-borderless">
+        <tbody>
+        <tr>
+          <th>疫苗名称</th>
+          <td>{{ showDetailVac?.vaccineProductCode | vacProductNamePipe | async}}</td>
+        </tr>
+        <tr>
+          <th>疫苗大类</th>
+          <td>{{ showDetailVac?.vaccineBroadHeadingCode | vacBroadHeadingPipe }}</td>
+        </tr>
+        <tr>
+          <th>疫苗小类</th>
+          <td>{{ showDetailVac?.vaccineSubclassCode | vacSubclassPipe }}</td>
+        </tr>
+        <tr>
+          <th>疫苗批号</th>
+          <td>{{ showDetailVac?.vaccineBatchNo }}</td>
+        </tr>
+        <tr>
+          <th>疫苗厂家</th>
+          <td>{{ showDetailVac?.vaccineManufactureCode | manufacturePipe }}</td>
+        </tr>
+        <tr>
+          <th>疫苗价格</th>
+          <td>{{ showDetailVac?.vaccineType }}</td>
+        </tr>
+        <tr>
+          <th>电子监管码</th>
+          <td>{{ showDetailVac?.electronicSupervisionCode }}</td>
+        </tr>
+        <tr>
+          <th>接种时间</th>
+          <td>{{ showDetailVac?.vaccinateTime | date: 'yyyy-MM-dd HH:mm' }}</td>
+        </tr>
+        <tr>
+          <th>接种状态</th>
+          <td>{{ showDetailVac?.vaccinateStatus | dicPipe: 'vaccinateStatus' }}</td>
+        </tr>
+        <tr>
+          <th>接种单位</th>
+          <td>{{ showDetailVac?.actualVaccinatePovCode | povNamePipe | async}}</td>
+        </tr>
+        <tr>
+          <th>接种科室</th>
+          <td>{{ showDetailVac?.vaccinateDepartmentCode }}</td>
+        </tr>
+        <tr>
+          <th>接种医生</th>
+          <td>{{ showDetailVac?.vaccinateDoctorCode }}</td>
+        </tr>
+        <tr>
+          <th>针次</th>
+          <td>{{ showDetailVac?.vaccinateInjectNumber }}</td>
+        </tr>
+        <tr>
+          <th>剂序</th>
+          <td>{{ showDetailVac?.vaccinateDoseNumber }}</td>
+        </tr>
+        <tr>
+          <th>接种支数</th>
+          <td>{{ showDetailVac?.vaccinateCount }}</td>
+        </tr>
+        <tr>
+          <th>接种途径</th>
+          <td>{{ showDetailVac?.vaccinateWay | dicPipe: 'vaccinateWay' }}</td>
+        </tr>
+        <tr>
+          <th>接种部位</th>
+          <td>{{ showDetailVac?.vaccinatePart | dicPipe: 'vaccinatePart' }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #reservationDetailTemplate>
+  <nb-card class="mb-0">
+    <nb-card-body>
+      <table class="table table-borderless">
+        <tbody>
+        <tr>
+          <th>预约时间：</th>
+          <td>{{ reservationDetail?.reservationDate | date: 'yyyy-MM-dd' }}</td>
+        </tr>
+        <tr>
+          <th>有效期至：</th>
+          <td>{{ reservationDetail?.finalDate | date: 'yyyy-MM-dd' }}</td>
+        </tr>
+        <tr>
+          <th>预约渠道：</th>
+          <td>{{ reservationDetail?.channel | reservationChannelPipe }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+

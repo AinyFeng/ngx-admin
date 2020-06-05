@@ -1,0 +1,59 @@
+<!-- <nz-card (click)="doClick()" [ngClass]="{ off: card.on === false }" nzHoverable="true">
+	<div class="icon-container">
+		<div class="icon status-{{ card.type }}">
+			<ng-content></ng-content>
+		</div>
+	</div>
+	<div class="details">
+		<div class="title">{{ card.title }}</div>
+	</div>
+</nz-card> -->
+
+<nz-card nzHoverable [nzCover]="coverTemplate" (click)="doClick()" [ngClass]="{ off: card.on === false }">
+	<nz-card-meta [nzTitle]="titleTemplate"></nz-card-meta>
+</nz-card>
+<ng-template #coverTemplate>
+	<div class="icon-container">
+		<div class="icon status-{{ card.type }}">
+			<ng-content></ng-content>
+		</div>
+	</div>
+</ng-template>
+<ng-template #titleTemplate>
+	<div class="title">{{ card.title }}</div>
+</ng-template>
+
+<!-- <nb-card (click)="doClick()" [ngClass]="{ 'off': card.on === false }">
+  <div class="icon-container">
+    <div class="icon status-{{ card.type }}">
+      <ng-content></ng-content>
+    </div>
+  </div>
+  <div class="details">
+    <div class="title">{{ card.title }}</div>
+    <div class="status">{{ card | json }}</div>
+  </div>
+</nb-card> -->
+
+<!-- <nb-flip-card>
+	<nb-card-front>
+		<nb-card (click)="doClick()" [ngClass]="{ off: card.on === false }">
+			<div class="icon-container">
+				<div class="icon status-{{ card.type }}">
+					<ng-content></ng-content>
+				</div>
+			</div>
+			<div class="details">
+				<div class="title">{{ card.title }}</div>
+			</div>
+		</nb-card>
+	</nb-card-front>
+	<nb-card-back>
+		<nb-card>
+			<div class="details">
+				<div class="title">{{ card.title }}</div>
+				<div class="status">{{ card.link }}</div>
+			</div>
+		</nb-card>
+	</nb-card-back>
+</nb-flip-card> -->

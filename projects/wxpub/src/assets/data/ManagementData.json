@@ -1,0 +1,117 @@
+{
+  "linedPayData": [
+    {
+      "name": "云天河",
+      "money": "123.3",
+      "vaccineName": "破伤风"
+    },
+    {
+      "name": "云天河",
+      "money": "123.3",
+      "vaccineName": "破伤风"
+    },
+    {
+      "name": "云天河",
+      "money": "123.3",
+      "vaccineName": "破伤风"
+    },
+    {
+      "name": "云天河",
+      "money": "123.3",
+      "vaccineName": "破伤风"
+    },
+    {
+      "name": "云天河",
+      "money": "123.3",
+      "vaccineName": "破伤风"
+    },
+    {
+      "name": "云天河",
+      "money": "123.3",
+      "vaccineName": "破伤风"
+    },
+    {
+      "name": "云天河",
+      "money": "123.3",
+      "vaccineName": "破伤风"
+    }
+  ],
+  "waitingData": [
+    {
+      "number": "1018",
+      "name": "韩菱纱",
+      "status": "排号中",
+      "price": "80.8"
+    },
+    {
+      "number": "1019",
+      "name": "柳梦璃",
+      "status": "排号中",
+      "price": "150.8"
+    }
+  ],
+  "childBaseInfo": [
+    {
+      "immuneNumber": "241653186131654",
+      "childName": "韩菱纱",
+      "age": "18岁7个月",
+      "gender": "女",
+      "cardID": "145785200104068520",
+      "guardian": "父亲姓名：韩寒"
+    },
+    {
+      "immuneNumber": "145248369436468",
+      "childName": "柳梦璃",
+      "age": "16岁4个月",
+      "gender": "女",
+      "cardID": "62547351200306231420",
+      "guardian": "父亲姓名：柳延斌"
+    }
+  ],
+  "finishData": [
+    {
+      "number": "012",
+      "name": "云天河",
+      "status": "已完成",
+      "price": "40.8"
+    },
+    {
+      "number": "011",
+      "name": "姜成",
+      "status": "已完成",
+      "price": "130.8"
+    },
+    {
+      "number": "011",
+      "name": "黄皓",
+      "status": "已完成",
+      "price": "190.8"
+    }
+  ],
+  "vaccinesInfo": [
+    {
+      "vaccineName": "乙肝-康泰-1ml-D-普酵60ug液预",
+      "manufacturers_batch_apartment": "长春百科_20190504_1",
+      "specification": "1ml",
+      "price": "80.5"
+    },
+    {
+      "vaccineName": "灰苗-北生-0.5ml-D-Vero15+45+45DU液西",
+      "manufacturers_batch_apartment": "长春百科_20190504_1",
+      "specification": "0.5ml",
+      "price": "84.6"
+    },
+    {
+      "vaccineName": "灰苗-北生-1ml-L-二倍体1+3型液西",
+      "manufacturers_batch_apartment": "长春百科_20190504_1",
+      "specification": "1ml",
+      "price": "72.5"
+    },
+    {
+      "vaccineName": "水痘-上生-0.5ml-L-二倍体3.3Lg冻预",
+      "manufacturers_batch_apartment": "长春百科_20190504_1",
+      "specification": "2ml",
+      "price": "98.9"
+    }
+  ]
+}

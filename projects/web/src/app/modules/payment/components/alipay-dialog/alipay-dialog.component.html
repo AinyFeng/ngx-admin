@@ -1,0 +1,19 @@
+<nb-card>
+  <nb-card-header class="text-center">
+    扫描支付条码
+    <span class="cursor-pointer float-right" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="form-group row">
+      <label class="col-md-5 col-form-label text-right">支付宝回执码：</label>
+      <div class="col-md-7">
+        <input type="text" nbInput placeholder="请输入支付宝回执码" [(ngModel)]="receiptCode">
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton status="info" class="float-right mr-2" (click)="submit()">确定</button>
+    <button nbButton status="info" class="float-right mr-2" (click)="onClose()">取消</button>
+  </nb-card-footer>
+</nb-card>
+

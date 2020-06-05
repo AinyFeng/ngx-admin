@@ -1,0 +1,57 @@
+{
+  "compileOnSave": false,
+  "angularCompilerOptions": {
+    "enableIvy": true,
+    "strictMetadataEmit": true,
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+    "generateCodeForLibraries": true,
+    "trace": true,
+    "disableExpressionLowering": true,
+    "preserveWhitespaces": true,
+    "allowEmptyCodegenFiles": true,
+    "enableSummariesForJit": true,
+    "skipMetadataEmit": true
+  },
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "module": "esnext",
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom",
+      "esnext.asynciterable"
+    ],
+    "paths": {
+      "@tod/uea-auth-lib": [
+        "dist/uea-auth-lib",
+        // "projects/lib/src/public_api"
+      ],
+      "@tod/uea-base-lib": [
+        "dist/uea-base-lib"
+      ],
+      "@tod/svs-common-lib": [
+        "dist/svs-common-lib",
+        // "projects/svs-common-lib/src/public_api"
+      ],
+      "@tod/ngx-webstorage": [
+        "dist/ngx-webstorage",
+        // "projects/ngx-webstorage/src/public_api"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "tslint-language-service"
+      }
+    ]
+  }
+}

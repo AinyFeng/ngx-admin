@@ -1,0 +1,54 @@
+.wx-content {
+  padding: 10px;
+}
+
+h5.title {
+  text-align: center;
+}
+
+.content-item {
+  margin-top: 20px;
+}
+
+.am-checkbox-agree {
+  margin-left: 0 !important;
+
+  a {
+    font-size: 14px;
+  }
+}
+
+.sign-pad-wrap {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  z-index: 10000;
+
+}
+
+
+.sign-img {
+  position: fixed;
+  //top: 0;
+  height: 180px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+
+  img{
+    height: 100px;
+    display: block;
+    margin: 0 auto;
+  }
+  .sign-pad{
+    position: absolute;
+    bottom: 20px;
+  }
+  .sign-btn{
+    margin-bottom: 40px;
+  }
+}

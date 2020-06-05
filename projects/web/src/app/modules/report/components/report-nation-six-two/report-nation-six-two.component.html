@@ -1,0 +1,139 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    第二类疫苗接种情况报表6-2
+    <div>
+      <button nbButton status="success" (click)="queryData()" [disabled]="loading" [nbSpinner]="loading">统计</button>
+      <button nbButton status="success" class="ml-2 mr-2" (click)="printSixTwo(true, 'sixTwo')" [disabled]="loading"
+              [nbSpinner]="loading">打印
+      </button>
+      <button nbButton status="success" (click)="reportSixTow()" [disabled]="loading" [nbSpinner]="loading">上报</button>
+      <button nbButton status="success"  class="ml-2 mr-2">重新统计</button>
+      <button nbButton status="primary" (click)="exportSixTow()" [disabled]="loading" [nbSpinner]="loading">导出</button>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">年月：</label>
+          <div class="col-8 ">
+            <nz-month-picker
+              class="full-width"
+              nzFormat="yyyy-MM"
+              nzSize="large"
+              nzShowTime
+              nzAllowClear="false"
+              id="yearAndMonth"
+              formControlName="yearAndMonth"
+              nzPlaceHolder="请选择年月"
+            ></nz-month-picker>
+            <!--<nb-select placeholder="请选择年份" fullWidth outline status="info" formControlName="years" id="years">
+              <nb-option [value]="item.value" *ngFor="let item of years">{{item.label}}</nb-option>
+            </nb-select>-->
+          </div>
+        </div>
+        <!--<div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">月份：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择月份" fullWidth outline status="info" formControlName="months" id="months">
+              <nb-option [value]="item.value" *ngFor="let item of months">{{item.label}}</nb-option>
+            </nb-select>
+          </div>
+        </div>-->
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center">
+  <nb-card-body>
+    <nz-table #groupingTable [nzData]="listOfData" nzBordered nzSimple="false" [nzFooter]="footer" [nzLoading]="loading"
+              [nzFrontPagination]="false" [(nzPageIndex)]="pageIndex" (nzPageIndexChange)="queryData($event)">
+      <thead>
+        <tr>
+          <th colspan="4"><h4>{{year}}年{{month}}月常规免疫接种情况汇总表</h4></th>
+        </tr>
+        <tr>
+          <th colspan="4">
+            <h6>{{povInfo.curProvCode ? (povInfo.curProvCode | administrativePipe | async) : ''}}  {{povInfo.curCityCode ? (povInfo.curCityCode | administrativePipe | async) : ''}} {{povInfo.curDistrictCode ? (povInfo.curDistrictCode | administrativePipe | async) : ''}} {{userInfo?.pov | povNamePipe | async}}</h6>
+          </th>
+        </tr>
+        <tr>
+          <th [nzAlign]="'center'">疫苗名称</th>
+          <th [nzAlign]="'center'">接种针次数</th>
+          <th [nzAlign]="'center'">疫苗名称</th>
+          <th [nzAlign]="'center'">接种针次数</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of groupingTable.data">
+          <td [nzAlign]="'center'">{{data[0].vaccName}}</td>
+          <td [nzAlign]="'center'">{{data[0].vaccNum}}</td>
+          <td [nzAlign]="'center'" *ngIf="data[1]">{{data[1].vaccName}}</td>
+          <td [nzAlign]="'center'" *ngIf="data[1]">{{data[1].vaccNum}}</td>
+          <td [nzAlign]="'center'" *ngIf="!data[1]"></td>
+          <td [nzAlign]="'center'" *ngIf="!data[1]"></td>
+        </tr>
+      </tbody>
+      <ng-template #footer>
+        <tr>
+          <td>
+            填写说明：本表用于全人群第二类疫苗接种情况报告；乡级防保组织每月5日前汇总上报县级疾病预防控制机构，县级疾病预防控制机构每月10日前录入上报国家信息管理平台。
+          </td>
+        </tr>
+        <tr>
+          <td [nzAlign]="'left'">
+            填报日期：{{currentDate.getFullYear()}}年{{currentDate.getMonth() + 1}}月{{currentDate.getDate()}}日
+               填报单位：{{userInfo?.pov | povNamePipe | async}}     填报人：{{userInfo?.userCode | povStaffNamePipe | async}}
+          </td>
+        </tr>
+      </ng-template>
+    </nz-table>
+    <div id="sixTwo" style="position: absolute; margin-left: 999rem;">
+      <table border="1" cellspacing="0" cellpadding="0"
+             style="border-collapse:collapse; border-spacing:0; width: 100%; font-size: 14.4px; text-align: center;">
+        <thead>
+        <tr>
+          <th colspan="4"><h3>{{year}}年{{month}}月常规免疫接种情况汇总表</h3></th>
+        </tr>
+        <tr>
+          <th colspan="4">
+            <h4>{{povInfo.curProvCode ? (povInfo.curProvCode | administrativePipe | async) : ''}}  {{povInfo.curCityCode ? (povInfo.curCityCode | administrativePipe | async) : ''}} {{povInfo.curDistrictCode ? (povInfo.curDistrictCode | administrativePipe | async) : ''}} {{userInfo?.pov | povNamePipe | async}}</h4>
+          </th>
+        </tr>
+        <tr>
+          <th>疫苗名称</th>
+          <th>接种针次数</th>
+          <th>疫苗名称</th>
+          <th>接种针次数</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of listOfData">
+          <td>{{data[0].vaccName}}</td>
+          <td>{{data[0].vaccNum}}</td>
+          <td *ngIf="data[1]">{{data[1].vaccName}}</td>
+          <td *ngIf="data[1]">{{data[1].vaccNum}}</td>
+          <td *ngIf="!data[1]"></td>
+          <td *ngIf="!data[1]"></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr style="text-align: left;">
+          <td colspan="4">
+            填写说明：本表用于全人群第二类疫苗接种情况报告；乡级防保组织每月5日前汇总上报县级疾病预防控制机构，县级疾病预防控制机构每月10日前录入上报国家信息管理平台。
+          </td>
+        </tr>
+        <tr style="text-align: left;">
+          <td colspan="4">
+            填报日期：{{currentDate.getFullYear()}}年{{currentDate.getMonth() + 1}}月{{currentDate.getDate()}}日
+               填报单位：{{userInfo?.pov | povNamePipe | async}}     填报人：{{userInfo?.userCode | povStaffNamePipe | async}}
+          </td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+  </nb-card-body>
+</nb-card>

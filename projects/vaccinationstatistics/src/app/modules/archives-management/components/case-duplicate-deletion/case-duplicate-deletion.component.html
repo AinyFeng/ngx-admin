@@ -1,0 +1,124 @@
+<div nz-row>
+  <nz-card>
+    <nz-tabset>
+      <nz-tab nzTitle="个案查重删除">
+        <div nz-row>
+          <form nz-form [nzLayout]="'inline'" [formGroup]="queryForm">
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="12">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="3" [nzMd]="3" [nzXs]="24" nzFor="address">地区名称</nz-form-label>
+                  <nz-form-control [nzLg]="8" [nzMd]="8" [nzXs]="24">
+                    <nz-input-group nzSearch nzSize="default" [nzAddOnAfter]="suffixIconButton">
+                      <input id="address" formControlName="address" [value]="this.userInfo.pov | povNamePipe | async "
+                             nzSize="default"
+                             readonly  type="text" nz-input placeholder="请选择"/>
+                    </nz-input-group>
+                    <ng-template #suffixIconButton>
+                      <button nz-button (click)="selectAddress()" nzType="primary" nzSize="default" nzSearch>
+                        <i nz-icon nzType="search"></i>
+                      </button>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="3" [nzMd]="3" [nzXs]="24" nzFor="exportPage">导出页码</nz-form-label>
+                  <nz-form-control [nzLg]="19" [nzMd]="19" [nzXs]="24">
+                    <input nz-input formControlName="exportPageStart" style="width: 70px;"/>
+                    ~
+                    <input nz-input formControlName="exportPageEnd" style="width: 70px;"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="12">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="3" [nzMd]="3" [nzXs]="24" nzFor="repeaConditions">重复条件</nz-form-label>
+                  <nz-form-control [nzLg]="19" [nzMd]="19" [nzXs]="24">
+                    <label nz-checkbox  formControlName="name">儿童姓名</label>
+                    <label nz-checkbox  formControlName="motherName">母亲姓名</label>
+                    <label nz-checkbox  formControlName="fatherName">父亲姓名</label>
+                    <label nz-checkbox  formControlName="fatherOrMatherName">母亲姓名或父亲姓名</label>
+                    <label nz-checkbox  formControlName="birthDate">出生日期</label>
+                    <label nz-checkbox  formControlName="gender">儿童性别</label>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item nzFlex>
+                  <nz-form-label [nzLg]="3" [nzMd]="3" [nzXs]="24" nzFor="birthDay">出生日期</nz-form-label>
+                  <nz-form-control [nzLg]="19" [nzMd]="19" [nzXs]="24">
+                    <nz-date-picker [nzDisabledDate]="disabledbirthStart"
+                                    formControlName="birthStart"></nz-date-picker>
+                    至
+                    <nz-date-picker [nzDisabledDate]="disabledbirthEnd" formControlName="birthEnd"></nz-date-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+
+            <nz-form-item>
+              <nz-form-control>
+                <button nz-button nzType="primary" (click)="query()" class="mr-2"  [nzLoading]="loading">查询</button>
+                <button nz-button nzType="primary" (click)="reset()" class="mr-2" >重置</button>
+                <button nz-button nzType="primary">导出</button>
+              </nz-form-control>
+            </nz-form-item>
+
+          </form>
+        </div>
+        <div nz-row>
+          <nz-table #borderedTable nzBordered [nzPageIndex]="pageIndex" [nzTotal]="total"
+                    [nzItemRender]="renderItemTemplate" [nzLoading]="loading"
+                    [nzFrontPagination]="false" [nzData]="listOfData" (nzPageIndexChange)="query($event)">
+            <thead>
+            <tr>
+              <th>儿童编码</th>
+              <th>免疫卡号</th>
+              <th>名字</th>
+              <th>性别</th>
+              <th>出生日期</th>
+              <th>母亲姓名</th>
+              <th>母亲身份证号</th>
+              <th>父亲姓名</th>
+              <th>父亲身份证号</th>
+              <th>现住址</th>
+              <th>居住属性</th>
+              <th>在册情况</th>
+              <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of borderedTable.data">
+              <td>{{ data.profileCode }}</td>
+              <td>{{ data.immunityVacCard }}</td>
+              <td>{{ data.name }}</td>
+              <td>{{ data.gender | dicPipe: 'genderCode' }}</td>
+              <td>{{ data.birthDate | date:'yyyy-MM-dd'  }}</td>
+              <td>{{ data.motherName }}</td>
+              <td>{{ data.motherIdCardNo }}</td>
+              <td>{{ data.fatherName }}</td>
+              <td>{{ data.fatherIdCardNo }}</td>
+              <td>{{ data.idCardDetail }}</td>
+              <td>{{ data.residentialType | dicPipe: 'residentialType' }}</td>
+              <td>{{ data.profileStatus | dicPipe: 'profileStatus' }}</td>
+              <td><a href="javascript:" class="link-a mr-1" (click)="detail(data)">浏览</a>
+                <a href="javascript:"  class="link-a mr-1" (click)="delete(data)">服务器删除</a>
+              </td>
+            </tr>
+            </tbody>
+          </nz-table>
+          <ng-template #renderItemTemplate let-type let-page="page">
+            <a *ngIf="type === 'pre'">上一页</a>
+            <a *ngIf="type === 'next'">下一页</a>
+            <a *ngIf="type === 'page'">{{ page }}</a>
+          </ng-template>
+        </div>
+      </nz-tab>
+    </nz-tabset>
+  </nz-card>
+</div>
+

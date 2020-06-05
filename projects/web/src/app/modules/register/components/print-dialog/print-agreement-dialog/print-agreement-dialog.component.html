@@ -1,0 +1,21 @@
+<nb-card class="nb-card-container-xx" style="overflow-y: scroll;">
+  <nb-card-header>
+    打印入告知书
+  </nb-card-header>
+  <nb-card-body style="min-height: 500px; max-height: 600px;">
+    <nb-alert *ngIf="error" class="flex-row" outline="warning" closable (close)="closeAlert()">
+      打印机连接失败，请安装<a href="http://www.lodop.net/download.html" target="_blank">Lodop</a>插件
+    </nb-alert>
+    <div id="singleAgreement">
+      <div [innerHTML]="agreementTemplate.content | keepHtml"></div>
+      <div style="width: 75%; margin: 0 auto;" *ngIf="signInfo">
+        签字：<img style="width: 300px;" [src]="signInfo" [alt]="altMsg">
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton status="info" class="mr-3" (click)="print(true)">打印预览</button>
+    <button nbButton status="info" (click)="print(false)">直接打印</button>
+    <button nbButton status="info" (click)="onClose()" class="float-right">关闭</button>
+  </nb-card-footer>
+</nb-card>

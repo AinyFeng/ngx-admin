@@ -1,0 +1,222 @@
+<nb-card accent="info">
+  <nb-card-header>
+    系统用户
+    <div class="col-md-4" style="text-align: right;">
+      <button nbButton status="info" (click)="searchData(true)">查询</button>
+      <button nbButton status="info">导出报表</button>
+      <button nbButton status="warning" (click)="reset()">重置</button>
+      <button nbButton (click)="openDialog(dialog)">新增</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="userForm">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">用户名称：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth
+                   [status]="userForm.get('userName').invalid && userForm.get('userName').touched ? 'danger' : ''"
+                   formControlName="userName" id="userName"/>
+            <uea-show-form-errors [control]="userForm.get('userName')"></uea-show-form-errors>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">昵称：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth
+                   [status]="userForm.get('nickName').invalid && userForm.get('nickName').touched ? 'danger' : ''"
+                   formControlName="nickName" id="nickName"/>
+            <uea-show-form-errors [control]="userForm.get('nickName')"></uea-show-form-errors>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">登录名：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth
+                   [status]="userForm.get('loginName').invalid && userForm.get('loginName').touched ? 'danger' : ''"
+                   formControlName="loginName" id="loginName"/>
+            <uea-show-form-errors [control]="userForm.get('loginName')"></uea-show-form-errors>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">手机号码：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth
+                   [status]="userForm.get('phone').invalid && userForm.get('phone').touched ? 'danger' : ''"
+                   formControlName="phone" id="phone"/>
+            <uea-show-form-errors [control]="userForm.get('phone')"></uea-show-form-errors>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">账户状态：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择是否可用" formControlName="accountStatus" fullWidth outline status="info">
+              <nb-option [value]="''">全部</nb-option>
+              <nb-option [value]="'1'">可用</nb-option>
+              <nb-option [value]="'0'">不可用</nb-option>
+            </nb-select>
+            <uea-show-form-errors [control]="userForm.get('accountStatus')"></uea-show-form-errors>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center">
+  <nb-card-body>
+    <nz-table #groupingTable nzBordered nzSize="middle" nzSimple="false" [nzFrontPagination]="false"
+              [nzData]="listOfData"
+              [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
+              (nzPageIndexChange)="searchData(false)" (nzPageSizeChange)="searchData(true)">
+      <thead>
+
+      <tr>
+        <th>序号</th>
+        <th>用户名</th>
+        <th>昵称</th>
+        <th>登录名</th>
+<!--        <th>登录密码</th>-->
+<!--        <th>头像</th>-->
+        <th>手机号码</th>
+        <th>账户状态</th>
+        <th>备注</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+
+
+      <tbody>
+      <tr *ngFor="let data of groupingTable.data;index as i">
+        <td>{{ ((i + 1) + (pageIndex - 1) * pageSize)}}</td>
+        <td>{{data?.userName}}</td>
+        <td>{{data?.nickName}}</td>
+        <td>{{data?.loginName}}</td>
+<!--        <td>{{data?.pwd}}</td>-->
+<!--        <td>{{data?.head}}</td>-->
+        <td>{{data?.phone}}</td>
+        <td>{{data?.accountStatus == '1' ? '可用' : '不可用'}}</td>
+        <td>{{data?.memo}}</td>
+        <td>
+          <button style="min-width: unset; margin-right: 2px;" nbButton status="warning" size="tiny"
+                  (click)="openDialog(dialog, data)">修改
+          </button>
+          <!--          <button style="min-width: unset; margin-left: 3px;"  nbButton status="danger"  size="tiny" (click)="openDialog(deleteDialog, data)">删除</button>-->
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+<ng-template #dialog let-ref="dialogRef">
+  <nb-card size="giant" [ngStyle]="{'width': '600px'}">
+    <nb-card-header>{{ dialogTitle }}</nb-card-header>
+    <nb-card-body [ngStyle]="{'text-align': 'center'}">
+      <form [formGroup]="editUserForm">
+        <div class="form-group row">
+          <label class="col-4 col-form-label text-right">用户名称：</label>
+          <div class="col-6">
+            <input type="text" nbInput outline fullWidth
+                   [status]="editUserForm.get('userName').invalid && editUserForm.get('userName').touched ? 'danger' : ''"
+                   formControlName="userName"/>
+            <uea-show-form-errors [control]="editUserForm.get('userName')"></uea-show-form-errors>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-4 col-form-label text-right">用户昵称：</label>
+          <div class="col-6">
+            <input type="text" nbInput outline fullWidth
+                   [status]="editUserForm.get('nickName').invalid && editUserForm.get('nickName').touched ? 'danger' : ''"
+                   formControlName="nickName"/>
+            <uea-show-form-errors [control]="editUserForm.get('nickName')"></uea-show-form-errors>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-4 col-form-label text-right">登录名：</label>
+          <div class="col-6">
+            <input type="text" nbInput outline fullWidth
+                   [status]="editUserForm.get('loginName').invalid && editUserForm.get('loginName').touched ? 'danger' : ''"
+                   formControlName="loginName"/>
+            <uea-show-form-errors [control]="editUserForm.get('loginName')"></uea-show-form-errors>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-4 col-form-label text-right">密码：</label>
+          <div class="col-6">
+            <input type="password" nbInput outline fullWidth (ngModelChange)="updateConfirmValidator()"
+                   [status]="editUserForm.get('pwd').invalid && editUserForm.get('pwd').touched ? 'danger' : ''"
+                   formControlName="pwd"/>
+            <uea-show-form-errors [control]="editUserForm.get('pwd')"></uea-show-form-errors>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-4 col-form-label text-right">确认密码：</label>
+          <div class="col-6">
+            <input type="password" nbInput outline fullWidth
+                   [status]="editUserForm.get('checkPwd').invalid && editUserForm.get('checkPwd').touched ? 'danger' : ''"
+                   formControlName="checkPwd"/>
+            <uea-show-form-errors [control]="editUserForm.get('checkPwd')"></uea-show-form-errors>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-4 col-form-label text-right">头像：</label>
+          <div class="col-6">
+            <input type="text" nbInput outline fullWidth
+                   [status]="editUserForm.get('head').invalid && editUserForm.get('head').touched ? 'danger' : ''"
+                   formControlName="head"/>
+            <uea-show-form-errors [control]="editUserForm.get('head')"></uea-show-form-errors>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-4 col-form-label text-right">手机号码：</label>
+          <div class="col-6">
+            <input type="text" nbInput outline fullWidth
+                   [status]="editUserForm.get('phone').invalid && editUserForm.get('phone').touched ? 'danger' : ''"
+                   formControlName="phone"/>
+            <uea-show-form-errors [control]="editUserForm.get('phone')"></uea-show-form-errors>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-4 col-form-label text-right">账户状态：</label>
+          <div class="col-6">
+            <nb-select placeholder="请选择是否可用" formControlName="accountStatus" fullWidth outline status="info">
+              <nb-option disabled [value]="''">全部</nb-option>
+              <nb-option [value]="'1'">可用</nb-option>
+              <nb-option [value]="'0'">不可用</nb-option>
+            </nb-select>
+            <uea-show-form-errors [control]="editUserForm.get('accountStatus')"></uea-show-form-errors>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-4 col-form-label text-right">备注：</label>
+          <div class="col-6">
+            <input type="text" nbInput outline fullWidth
+                   [status]="editUserForm.get('memo').invalid && editUserForm.get('memo').touched ? 'danger' : ''"
+                   formControlName="memo"/>
+            <uea-show-form-errors [control]="editUserForm.get('memo')"></uea-show-form-errors>
+          </div>
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer [ngStyle]="{'text-align': 'right'}">
+      <button nbButton *ngIf="dialogTitle === '修改用户'" (click)="update(ref)">修改</button>
+      <button nbButton *ngIf="dialogTitle === '新增用户'" (click)="insert(ref)">新增</button>
+      <button nbButton style="margin-left: 5px;" (click)="ref.close()">关闭</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #deleteDialog let-deleteRef="dialogRef">
+  <nb-card size="medium">
+    <nb-card-header>{{'删除用户'}}</nb-card-header>
+    <nb-card-body [ngStyle]="{'text-align': 'center'}">
+
+    </nb-card-body>
+    <nb-card-footer [ngStyle]="{'text-align': 'right'}">
+      <button nbButton (click)="deleteRef.close()">关闭</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

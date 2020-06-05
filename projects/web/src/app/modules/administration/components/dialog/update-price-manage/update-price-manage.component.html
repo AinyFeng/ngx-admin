@@ -1,0 +1,55 @@
+<nb-card class="nb-card-container">
+  <nb-card-header class="nb-card-header-qb">
+    修改门诊调价
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row mb-4">
+        <div class="row col-md-6">
+          <label class="col-form-label col-4 text-right">产品名称:</label>
+          <div class="col-8">
+            <input type="text" readonly nbInput fullWidth formControlName="vacProductCode" id="vacProductCode"
+                   [value]="form.get('vacProductCode').value">
+            <!--<nb-select fullWidth outline status="info" formControlName="vacProductCode" id="vacProductCode">
+              <nb-option [value]="v.value" *ngFor="let v of vacSubClassData">{{v.label}}</nb-option>
+            </nb-select>-->
+          </div>
+        </div>
+        <div class="row col-md-6">
+          <label class="col-form-label col-4 text-right">批次号:</label>
+          <div class="col-8">
+            <input type="text" nbInput outline fullWidth readonly
+                   formControlName="batchNo" id="batchNo"/>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="row col-md-6">
+          <label class="col-form-label col-4 text-right">成本价格:</label>
+          <div class="col-8">
+            <input type="text" nbInput outline fullWidth readonly
+                   formControlName="purchasePrice" id="purchasePrice"/>
+          </div>
+        </div>
+        <div class="row col-md-6">
+          <label class="col-form-label col-4 text-right">预售价格:</label>
+          <div class="col-8">
+            <input type="number" nbInput outline fullWidth
+                   [min]="0"
+                   [max]="10000000"
+                   numberTransfer
+                   formControlName="povVaccPrice" id="povVaccPrice"/>
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button nbButton status="info" (click)="submitInfo()">保存</button>
+    </div>
+  </nb-card-footer>
+</nb-card>
+
+

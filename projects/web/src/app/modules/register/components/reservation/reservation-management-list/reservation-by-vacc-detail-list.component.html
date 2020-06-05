@@ -1,0 +1,45 @@
+<nb-card size="giant" class="nb-card-container-x">
+  <nb-card-header class="nb-card-header-qb">
+    预约明细
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <p><strong>每一个工作日只能有一个有效的预约记录，新的预约记录会使得当日已有的预约记录失效</strong></p>
+    <nz-table
+      nzHideOnSinglePage
+      nzSize="small"
+      #res [nzData]="reservationData">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">已预约日期</th>
+        <th [nzAlign]="'center'">预约时段</th>
+        <th [nzAlign]="'center'">疫苗种类</th>
+        <th [nzAlign]="'center'">针次</th>
+        <!--        <th [nzAlign]="'center'">价格</th>-->
+        <th [nzAlign]="'center'">来源</th>
+        <th [nzAlign]="'center'">预约状态</th>
+        <th>创建时间</th>
+        <!--        <th [nzAlign]="'center'">操作</th>-->
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of res.data">
+        <td [nzAlign]="'center'">{{data.reservationDate | date: 'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">{{data.workingTime ? data.workingTime : '未指定'}}</td>
+        <td [nzAlign]="'center'">{{data.broadHeadingCode ? (data.broadHeadingCode | vacBroadHeadingPipe) : '未指定'}}</td>
+        <td [nzAlign]="'center'">{{ data.vaccinateInjectNumber ? data.vaccinateInjectNumber : '未指定' }}</td>
+        <!--        <td [nzAlign]="'center'">-->
+        <!--          <nz-tag [nzColor]="data.price === 0 ? '#87d068' : '#f50'">{{ data.price === 0 ? '免费' : '自费' }}</nz-tag>-->
+        <!--        </td>-->
+        <td [nzAlign]="'center'">{{data.channel === '1' ? '人工预约' : '网上预约'}}</td>
+        <td [nzAlign]="'center'">
+          <nz-tag [nzColor]="data.status == '3' ? '#ff3d71' : '#87d068'">
+            {{ data.status | dicPipe: 'reservationStatus' }}
+          </nz-tag>
+        </td>
+        <td>{{ data.createDate | date: 'yyyy-MM-dd HH:mm' }}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

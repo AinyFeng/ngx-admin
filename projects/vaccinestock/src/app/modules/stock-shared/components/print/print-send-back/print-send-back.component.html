@@ -1,0 +1,66 @@
+<div [id]="printSendBackInfo.id">
+  <div style="padding: 0 50px;">
+    <p
+      style="text-align: center; font-size: 1.5em; margin: 18px 0 8px;">{{printSendBackInfo ? printSendBackInfo.orderInfo.supplyorgName : ''}}{{printSendBackInfo.orderInfo.vaccineType | dicPipe: 'vaccineType'}}
+      疫苗退回单</p>
+    <div style="width: 100%; line-height: 28px; display: flex; justify-content: space-between; align-items: center;">
+      <span>
+        收货单位：{{printSendBackInfo ? printSendBackInfo.orderInfo.receiveorgName : ''}}
+      </span>
+      <span>
+        出库日期：{{today.getFullYear()}}年{{today.getMonth() + 1}}月{{today.getDate()}}日
+      </span>
+
+    </div>
+    <div style="line-height: 28px;">
+      出入库单号：{{printSendBackInfo.orderInfo.orderNo}}
+    </div>
+    <table border="1" cellspacing="0" cellpadding="0"
+           style="border-collapse:collapse; border-spacing:0; width: 100%; font-size: 14.4px; text-align: center;">
+      <tr>
+        <th>序</th>
+        <th>产品名称</th>
+        <th>规格</th>
+        <th>单位</th>
+        <th>生产厂家</th>
+        <th>批号</th>
+        <th>有效期</th>
+        <th>数量</th>
+        <th *ngIf="printSendBackInfo.orderInfo.vaccineType== '1'" >单价</th>
+        <th *ngIf="printSendBackInfo.orderInfo.vaccineType== '1'" >金额</th>
+        <th>备注</th>
+      </tr>
+      <tr *ngFor="let data of printSendBackInfo.vaccineInfo; index as i">
+        <td>{{i + 1}}</td>
+        <td>{{data.vaccName}}</td>
+        <td>{{data.dose}}</td>
+        <td>{{data.spec}}</td>
+        <td>{{data.manufactureName}}</td>
+        <td>{{data.batchNo}}</td>
+        <td>{{data.loseEfficacyDate | date: 'yyyy-MM-dd'}}</td>
+        <td>{{data.vaccNum ? data.vaccNum : 0}}</td>
+        <td *ngIf="printSendBackInfo.orderInfo.vaccineType== '1'">
+          <span *ngIf="data.vaccineType !== null">￥</span>{{data.sellPrice ? data.sellPrice : 0}}</td>
+        <td *ngIf="printSendBackInfo.orderInfo.vaccineType== '1'">
+          <span *ngIf="data.vaccineType !== null">-￥</span>{{data.vaccNum * data.sellPrice ? data.vaccNum * data.sellPrice : (data.vaccineType == null ? ' ' : 0)}}
+        </td>
+        <td>{{data.memo}}</td>
+      </tr>
+      <tr>
+        <td colspan="1" class="text-right">合计</td>
+        <td colspan="7" *ngIf="printSendBackInfo.orderInfo.vaccineType== '0'">{{printSendBackInfo.priceSum.sumNum ? printSendBackInfo.priceSum.sumNum : 0}}</td>
+        <td colspan="9" *ngIf="printSendBackInfo.orderInfo.vaccineType== '1'">-￥{{printSendBackInfo.priceSum.priceSum ? printSendBackInfo.priceSum.priceSum : 0}}</td>
+      </tr>
+    </table>
+    <div style="margin: 5px auto; display: flex; justify-content: space-between; align-items: center;">
+      <p style="width: 25%;">&nbsp;&nbsp;&nbsp;制单: <span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+      <p style="width: 25%;">&nbsp;&nbsp;&nbsp;&nbsp;审核: <span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+      <p style="width: 25%;">&nbsp;&nbsp;&nbsp;&nbsp;发货: <span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+      <p style="width: 25%;">&nbsp;&nbsp;&nbsp;&nbsp;验收: <span
+        style="width: 50%; display:inline-block; border-bottom: 1px solid #000;"></span></p>
+    </div>
+  </div>
+</div>

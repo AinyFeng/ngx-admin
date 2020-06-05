@@ -1,0 +1,52 @@
+<div class="row">
+	<div class="col-lg-2 col-md-12">
+		<nb-card accent="info" size="giant">
+			<nb-card-header>
+				<div>
+					所属学校班级
+				</div>
+			</nb-card-header>
+			<nb-card-body>
+				<uea-select-school [treeData]="nodes" (_onSelectNode)="onSelectClassNode($event)"></uea-select-school>
+			</nb-card-body>
+		</nb-card>
+	</div>
+	<div class="col-lg-10 col-md-12">
+		<nb-card accent="info" size="giant">
+			<nb-card-header>
+				接种信息
+				<input
+					nz-input
+					style="width:12rem;"
+					type="text"
+					debounceClick
+					[disableKeyUp]="false"
+					(debounceClick)="searchProfile()"
+					class="mr-2 ml-4"
+					[(ngModel)]="searchContent"
+					[disabled]="loading"
+					placeholder="请输入姓名、编码搜索"
+				/>
+				<button
+					nz-button
+					nzType="primary"
+					debounceClick
+					[disabled]="loading"
+					[nbSpinner]="loading"
+					nbSpinnerStatus="info"
+					nbSpinnerMessage=""
+					class="mr-2"
+					(debounceClick)="searchProfile()"
+				>
+					搜索
+				</button>
+				<button nz-button nzType="primary" class="mr-2" (click)="importStudents()">导入</button>
+				<button nz-button nzType="primary" (click)="exportStudents()">导出</button>
+			</nb-card-header>
+
+			<nb-card-body>
+				<uea-veexaminetable-component [title]="detailTitle"></uea-veexaminetable-component>
+			</nb-card-body>
+		</nb-card>
+	</div>
+</div>

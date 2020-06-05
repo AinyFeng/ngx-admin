@@ -1,0 +1,644 @@
+<div nz-row>
+  <nz-card>
+    <nz-tabset [(nzSelectedIndex)]="tabIndex">
+      <nz-tab nzTitle="产科建档">
+        <div nz-row>
+          <form nz-form [formGroup]="saveForm">
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="creatNo" [nzSm]="4" [nzXs]="24">建卡编号</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <input nz-input formControlName="creatNo" id="creatNo" placeholder="请输入微信自助建卡后4位建卡编号"/>
+                    <span style="color: red">输入完毕后回车可自动填入信息</span>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="childName" [nzSm]="4" [nzXs]="24" nzRequired>儿童姓名</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <input nz-input formControlName="childName" id="childName"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="birthNo" [nzSm]="4" [nzXs]="24">出生证号</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <input nz-input formControlName="birthNo" id="birthNo"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="gender" [nzSm]="4" [nzXs]="24" nzRequired>性别</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <nz-radio-group formControlName="gender" id="gender">
+                      <label nz-radio nzValue="A">男</label>
+                      <label nz-radio nzValue="B">女</label>
+                    </nz-radio-group>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="birthDate" [nzSm]="4" [nzXs]="24" nzRequired>出生日期</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <nz-date-picker formControlName="birthDate" id="birthDate"></nz-date-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="weight" [nzSm]="4" [nzXs]="24" nzRequired>体重（g）</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <input nz-input formControlName="weight" id="weight" placeholder="请填写体重,单位克"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="birthNum" [nzSm]="4" [nzXs]="24" nzRequired>胎次</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <input nz-input formControlName="birthNum" id="birthNum" placeholder="请填写胎次,如“1"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="bornHospital" [nzSm]="4" [nzXs]="24">出生医院</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <nz-tree-select id="bornHospital"
+                                    style="width: 175px"
+                                    [nzNodes]="nodes"
+                                    nzShowSearch
+                                    nzPlaceHolder="---请选择---"
+                                    formControlName="bornHospital">
+                    </nz-tree-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="national" [nzSm]="4" [nzXs]="24" nzRequired>民族</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="---请选择---"
+                               style="width: 175px"
+                               id="national"
+                               formControlName="national">
+                      <nz-option nzLabel="汉族" nzValue="1">汉族</nz-option>
+                      <nz-option nzLabel="蒙古族" nzValue="2">蒙古族</nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="motherName" [nzSm]="4" [nzXs]="24" nzRequired>母亲姓名</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <input nz-input formControlName="motherName" id="motherName"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="fatherName" [nzSm]="4" [nzXs]="24">父亲姓名</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <input nz-input formControlName="fatherName" id="fatherName"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="HBsAg_M" [nzSm]="4" [nzXs]="24">HBsAg_M</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <nz-radio-group formControlName="HBsAg_M" id="HBsAg_M">
+                      <label nz-radio nzValue="A">阴性</label>
+                      <label nz-radio nzValue="B">弱阳性</label>
+                      <label nz-radio nzValue="C">阳性</label>
+                      <label nz-radio nzValue="D">未查</label>
+                    </nz-radio-group>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="HBsAg_F" [nzSm]="4" [nzXs]="24">HBsAg_F</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <nz-radio-group formControlName="HBsAg_F" id="HBsAg_F">
+                      <label nz-radio nzValue="A">阴性</label>
+                      <label nz-radio nzValue="B">弱阳性</label>
+                      <label nz-radio nzValue="C">阳性</label>
+                      <label nz-radio nzValue="D">未查</label>
+                    </nz-radio-group>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="motherId" [nzSm]="4" [nzXs]="24" nzRequired>母亲身份证</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <input nz-input formControlName="motherId" id="motherId"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="fatherId" [nzSm]="4" [nzXs]="24">父亲身份证</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <input nz-input formControlName="fatherId" id="fatherId"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="motherPhone" [nzSm]="4" [nzXs]="24" nzRequired>母亲电话</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <input nz-input formControlName="motherPhone" id="motherPhone"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="fatherPhone" [nzSm]="4" [nzXs]="24">父亲电话</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <input nz-input formControlName="fatherPhone" id="fatherPhone"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="idType" [nzSm]="4" [nzXs]="24" nzRequired>户口类别</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="---请选择---"
+                               style="width: 175px"
+                               id="idType"
+                               formControlName="idType">
+                      <nz-option nzLabel="本县" nzValue="1">本县</nz-option>
+                      <nz-option nzLabel="本市" nzValue="2">本市</nz-option>
+                      <nz-option nzLabel="本省" nzValue="3">本省</nz-option>
+                      <nz-option nzLabel="外省" nzValue="4">外省</nz-option>
+                      <nz-option nzLabel="境外" nzValue="5">境外</nz-option>
+                      <nz-option nzLabel="港澳台" nzValue="6">港澳台</nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="residentialTypeCode" [nzSm]="4" [nzXs]="24" nzRequired>居住属性</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="---请选择---"
+                               style="width: 175px"
+                               id="residentialTypeCode"
+                               formControlName="residentialTypeCode">
+                      <nz-option nzLabel="本地" nzValue="1">本地</nz-option>
+                      <nz-option nzLabel="流动" nzValue="2">流动</nz-option>
+                      <nz-option nzLabel="临时" nzValue="3">临时</nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="householdAddress" [nzSm]="4" [nzXs]="24" nzRequired>家庭住址</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <nz-tree-select
+                      style="width: 175px"
+                      [nzNodes]="nodes"
+                      nzShowSearch
+                      nzPlaceHolder="---请选择---"
+                      id="householdAddress"
+                      formControlName="householdAddress">
+                    </nz-tree-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="registrationAddress" [nzSm]="4" [nzXs]="24">户籍地址</nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <nz-tree-select
+                      style="width: 175px"
+                      [nzNodes]="nodes"
+                      nzShowSearch
+                      id="registrationAddress"
+                      nzPlaceHolder="---请选择---"
+                      formControlName="registrationAddress">
+                    </nz-tree-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="householdAddressDetail" [nzSm]="4" [nzXs]="24"
+                                 [nzNoColon]="true"></nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <input nz-input formControlName="householdAddressDetail" id="householdAddressDetail"
+                           PlaceHolder="请输入家庭详细地址"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item style="margin-bottom: 0px;">
+                  <nz-form-label nzFor="registrationAddressDetail" [nzSm]="4" [nzXs]="24"
+                                 [nzNoColon]="true"></nz-form-label>
+                  <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+                    <input nz-input formControlName="registrationAddressDetail" id="registrationAddressDetail"
+                           PlaceHolder="请输入户籍详细地址"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <nz-divider nzOrientation="left" style="margin-bottom: 0px;color: red"
+                          nzText="①：点击填写疫苗批号并回车； ②：选择疫苗； ③：选择接种日期、接种部位、新旧苗（多剂次疫苗，默认新苗），填写接种人员">
+              </nz-divider>
+            </div>
+
+            <nb-card-body>
+              <nz-table
+                #borderedTable1 nzBordered [nzItemRender]="renderItemTemplate"
+                [nzFrontPagination]="false" [nzData]="vaccineDetail">
+                <thead>
+                <tr>
+                  <th [nzAlign]="'center'">疫苗名称</th>
+                  <th [nzAlign]="'center'">疫苗批号</th>
+                  <th [nzAlign]="'center'">有效期</th>
+                  <th [nzAlign]="'center'">生产企业</th>
+                  <th [nzAlign]="'center'">接种日期</th>
+                  <th [nzAlign]="'center'">新旧苗</th>
+                  <th [nzAlign]="'center'">接种部位</th>
+                  <th [nzAlign]="'center'">接种单位</th>
+                  <th [nzAlign]="'center'">接种人员</th>
+                  <th [nzAlign]="'center'">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let data of borderedTable1.data">
+                  <td [nzAlign]="'center'">{{data.vaccineSubclassName}}</td>
+                  <td [nzAlign]="'center'">
+                    <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
+                      <input type="text" nz-input placeholder="请选择疫苗" readonly="readonly"
+                             value="{{data.vaccineBatchNo}}"/>
+                    </nz-input-group>
+                    <ng-template #suffixButton>
+                      <button nz-button nzType="primary" (click)="selectSeeed(data)" nzSearch>选苗</button>
+                    </ng-template>
+                  </td>
+                  <td [nzAlign]="'center'">{{data.validity}}</td>
+                  <td [nzAlign]="'center'">{{data.manufactureData}}</td>
+                  <td [nzAlign]="'center'">
+                    <nz-date-picker formControlName="VaccinateDate"></nz-date-picker>
+                  </td>
+                  <td [nzAlign]="'center'">{{data.selectType}}</td>
+                  <td [nzAlign]="'center'">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="---请选择---"
+                               style="width: 175px"
+                               formControlName="vaccinatePart">
+                      <nz-option nzLabel="本地" nzValue="1">本地</nz-option>
+                      <nz-option nzLabel="流动" nzValue="2">流动</nz-option>
+                      <nz-option nzLabel="临时" nzValue="3">临时</nz-option>
+                    </nz-select>
+                  </td>
+                  <td [nzAlign]="'center'">{{data.actualVaccinatePovCode}}</td>
+                  <td [nzAlign]="'center'">
+                    <input type="text" nz-input formControlName="vaccinateDoctorCode" value="111111111"/>
+                  </td>
+                  <td [nzAlign]="'center'">
+                    <button nz-button [nzSize]="'small'" nzType="default">清空</button>
+                    <button nz-button [nzSize]="'small'" nzType="default">查看告知书</button>
+                  </td>
+                </tr>
+                </tbody>
+              </nz-table>
+            </nb-card-body>
+
+            <div nz-col [nzSpan]="12">
+              <nz-form-item>
+                <nz-form-label nzFor="accessType" [nzLg]="10" [nzXs]="24" [nzNoColon]="true" style="color: red">
+                  如未能完成接种，请注明原因
+                </nz-form-label>
+                <nz-form-control [nzLg]="5" [nzXs]="24" nzErrorTip="">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="---请选择---"
+                             style="width: 175px"
+                             formControlName="reason">
+                    <nz-option nzLabel="本地" nzValue="1">本地</nz-option>
+                    <nz-option nzLabel="流动" nzValue="2">流动</nz-option>
+                    <nz-option nzLabel="临时" nzValue="3">临时</nz-option>
+                  </nz-select>
+                </nz-form-control>
+                <nz-form-control [nzLg]="5" [nzXs]="24" nzErrorTip="">
+                  <input type="text" nz-input placeholder="" value="111111111"/>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <nz-form-item nz-row class="register-area">
+              <nz-form-control [nzSpan]="14" [nzOffset]="6">
+                <button nz-button nzType="primary" [disabled]="!saveForm.valid">保存</button>
+                <button nz-button nzType="default" type="button">重置</button>
+                <button nz-button nzType="default" type="button" (click)="close()">关闭</button>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+        </div>
+      </nz-tab>
+      <nz-tab nzTitle="建档列表">
+        <div nz-row>
+          <form nz-form [nzLayout]="'inline'" [formGroup]="queryForm" (ngSubmit)="query()">
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label nzFor="address" [nzLg]="7" [nzMd]="5" [nzXs]="24">地区</nz-form-label>
+                  <nz-form-control nzErrorTip="" [nzLg]="12" [nzMd]="12" [nzXs]="24">
+                    <nz-tree-select
+                      style="width: 175px"
+                      [nzNodes]="nodes"
+                      nzShowSearch
+                      nzPlaceHolder="---请选择---"
+                      formControlName="address">
+                    </nz-tree-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label nzFor="temporaryCode" [nzLg]="7" [nzMd]="5" [nzXs]="24">临时编码</nz-form-label>
+                  <nz-form-control nzErrorTip="" [nzLg]="12" [nzMd]="12" [nzXs]="24">
+                    <nz-input-group nzPrefixIcon="">
+                      <input formControlName="temporaryCode" nz-input placeholder=""/>
+                    </nz-input-group>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label nzFor="childName" [nzLg]="7" [nzMd]="5" [nzXs]="24">儿童姓名</nz-form-label>
+                  <nz-form-control nzErrorTip="" [nzLg]="12" [nzMd]="12" [nzXs]="24">
+                    <input formControlName="childName" nz-input placeholder=""/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label nzFor="motherName" [nzLg]="7" [nzMd]="5" [nzXs]="24">母亲姓名</nz-form-label>
+                  <nz-form-control nzErrorTip="">
+                    <input formControlName="motherName" nz-input placeholder=""/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label nzFor="createDate" [nzLg]="7" [nzMd]="5" [nzXs]="24">建档起始日期</nz-form-label>
+                  <nz-form-control nzErrorTip="">
+                    <nz-date-picker formControlName="createDate"></nz-date-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label nzFor="endDate" [nzLg]="7" [nzMd]="5" [nzXs]="24">建档截止日期</nz-form-label>
+                  <nz-form-control nzErrorTip="">
+                    <nz-date-picker formControlName="endDate"></nz-date-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label nzFor="motherId" [nzLg]="7" [nzMd]="5" [nzXs]="24">母亲身份证</nz-form-label>
+                  <nz-form-control nzErrorTip="">
+                    <input formControlName="motherId" nz-input placeholder=""/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label nzFor="vaccineType" [nzLg]="7" [nzMd]="5" [nzXs]="24">户口类别</nz-form-label>
+                  <nz-form-control nzErrorTip="">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="---请选择---"
+                               style="width: 175px"
+                               formControlName="idType">
+                      <nz-option nzLabel="本县" nzValue="1">本县</nz-option>
+                      <nz-option nzLabel="本市" nzValue="0">本市</nz-option>
+                      <nz-option nzLabel="本省" nzValue="0">本省</nz-option>
+                      <nz-option nzLabel="外省" nzValue="0">外省</nz-option>
+                      <nz-option nzLabel="境外" nzValue="0">境外</nz-option>
+                      <nz-option nzLabel="港澳台" nzValue="0">港澳台</nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label nzFor="checkPrint" [nzLg]="7" [nzMd]="5" [nzXs]="24">是否已打印</nz-form-label>
+                  <nz-form-control nzErrorTip="">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="---请选择---"
+                               style="width: 175px"
+                               formControlName="checkPrint">
+                      <nz-option nzLabel="是" nzValue="1">是</nz-option>
+                      <nz-option nzLabel="否" nzValue="0">否</nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label nzFor="bedNo" [nzLg]="7" [nzMd]="5" [nzXs]="24">床号</nz-form-label>
+                  <nz-form-control nzErrorTip="">
+                    <input formControlName="bedNo" nz-input placeholder=""/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label nzFor="hospitalNo" [nzLg]="7" [nzMd]="5" [nzXs]="24">住院号</nz-form-label>
+                  <nz-form-control nzErrorTip="">
+                    <input formControlName="hospitalNo" nz-input placeholder=""/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="6">
+                <nz-form-item nzFlex>
+                  <nz-form-label nzFor="residentialTypeCode" [nzLg]="7" [nzMd]="5" [nzXs]="24">居住属性</nz-form-label>
+                  <nz-form-control nzErrorTip="">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="---请选择---"
+                               style="width: 175px"
+                               formControlName="residentialTypeCode">
+                      <nz-option nzLabel="本地" nzValue="1">本地</nz-option>
+                      <nz-option nzLabel="流动" nzValue="2">流动</nz-option>
+                      <nz-option nzLabel="临时" nzValue="3">临时</nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              >
+            </div>
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="10">
+                <nz-form-item>
+                  <nz-form-control>
+                    <button nz-button nzType="primary">查询</button>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div nz-row>
+          <nz-table #borderedTable2 nzBordered [nzPageIndex]="1" [nzTotal]="500" [nzItemRender]="renderItemTemplate"
+                    [nzFrontPagination]="false" [nzData]="dataSet">
+            <thead>
+            <tr>
+              <th>临时儿童编码</th>
+              <th>儿童姓名</th>
+              <th>出生医院</th>
+              <th>性别</th>
+              <th>出生日期</th>
+              <th>出生体重（g）</th>
+              <th>母亲姓名</th>
+              <th>建档日期</th>
+              <th>母亲手机号</th>
+              <th>母亲身份证号</th>
+              <th>转诊单号</th>
+              <th>接种数</th>
+              <th>备注</th>
+              <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of borderedTable2.data">
+              <td>{{ data.code }}</td>
+              <td>{{ data.name }}</td>
+              <td>{{ data.standard }}</td>
+              <td>{{ data.count }}</td>
+              <td>{{ data.coefficient }}</td>
+              <td>{{ data.type }}</td>
+              <td>{{ data.remark }}</td>
+              <td>{{ data.time }}</td>
+              <td>{{ data.time }}</td>
+              <td>{{ data.time }}</td>
+              <td>{{ data.time }}</td>
+              <td>{{ data.time }}</td>
+              <td>{{ data.time }}</td>
+              <td>
+                <button nz-button nzSize="small" nzType="primary">操作</button>
+              </td>
+            </tr>
+            </tbody>
+          </nz-table>
+          <ng-template #renderItemTemplate let-type let-page="page">
+            <a *ngIf="type === 'pre'">上一页</a>
+            <a *ngIf="type === 'next'">下一页</a>
+            <a *ngIf="type === 'page'">{{ page }}</a>
+          </ng-template>
+        </div>
+      </nz-tab>
+      <nz-tab nzTitle="新生儿报表">
+        <div nz-row>
+          <form nz-form [nzLayout]="'inline'" [formGroup]="newQueryForm">
+            <nz-form-item>
+              <nz-form-label nzFor="address">地区</nz-form-label>
+              <nz-form-control nzErrorTip="">
+                <nz-tree-select
+                  style="width: 175px"
+                  [nzNodes]="nodes"
+                  nzShowSearch
+                  nzPlaceHolder="---请选择---"
+                  formControlName="address">
+                </nz-tree-select>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label nzFor="birthDateStart">出生日期(起)</nz-form-label>
+              <nz-form-control nzErrorTip="">
+                <nz-date-picker formControlName="birthDateStart"></nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label nzFor="birthDateEnd">出生日期(止)</nz-form-label>
+              <nz-form-control nzErrorTip="">
+                <nz-date-picker formControlName="birthDateEnd"></nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-control>
+                <button nz-button nzType="primary">查询</button>
+                <button nz-button nzType="primary">导出</button>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+        </div>
+        <div nz-row>
+          <nz-table #borderedTable nzBordered [nzPageIndex]="1" [nzTotal]="500" [nzItemRender]="renderItemTemplate"
+                    [nzFrontPagination]="false" [nzData]="newdataSet">
+            <thead>
+            <tr>
+              <th [nzAlign]="'center'" rowspan="3">单位名称（医院）</th>
+              <th [nzAlign]="'center'" colspan="4">新生儿出生情况</th>
+              <th [nzAlign]="'center'" colspan="12">疫苗接种情况</th>
+              <th [nzAlign]="'center'" rowspan="3">备注</th>
+            </tr>
+            <tr>
+              <th colspan="3">出生数</th>
+              <th rowspan="2">本年度累计出生数</th>
+              <th colspan="6">首针乙肝疫苗</th>
+              <th colspan="6">卡介苗</th>
+            </tr>
+            <tr>
+              <th>本市</th>
+              <th>外市</th>
+              <th>小计</th>
+              <th>禁忌症数</th>
+              <th>接种数</th>
+              <th>接种率（%）</th>
+              <th>24小时内接种数</th>
+              <th>及时接种数</th>
+              <th>本年度累计接种针次</th>
+              <th>禁忌症数</th>
+              <th>接种数</th>
+              <th>接种率（%）</th>
+              <th>24小时内接种数</th>
+              <th>及时接种数</th>
+              <th>本年度累计接种针次</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of borderedTable.data">
+              <td>{{ data.code }}</td>
+              <td>{{ data.name }}</td>
+              <td>{{ data.standard }}</td>
+              <td>{{ data.count }}</td>
+              <td>{{ data.coefficient }}</td>
+              <td>{{ data.type }}</td>
+              <td>{{ data.remark }}</td>
+              <td>{{ data.time }}</td>
+              <td>{{ data.time }}</td>
+              <td>{{ data.time }}</td>
+              <td>{{ data.time }}</td>
+              <td>{{ data.time }}</td>
+              <td>{{ data.time }}</td>
+              <td>{{ data.time }}</td>
+              <td>{{ data.time }}</td>
+              <td>{{ data.time }}</td>
+              <td>{{ data.time }}</td>
+              <td>{{ data.time }}</td>
+            </tr>
+            </tbody>
+          </nz-table>
+          <ng-template #renderItemTemplate let-type let-page="page">
+            <a *ngIf="type === 'pre'">上一页</a>
+            <a *ngIf="type === 'next'">下一页</a>
+            <a *ngIf="type === 'page'">{{ page }}</a>
+          </ng-template>
+        </div>
+      </nz-tab>
+    </nz-tabset>
+  </nz-card>
+</div>

@@ -1,0 +1,106 @@
+<nb-card accent="info">
+  <nb-card-header>
+    预约管理
+    <div>
+      <button nbButton status="info">查询</button>
+      <button nbButton status="info">导出报表</button>
+      <button nbButton status="warning">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form class="searchForm">
+      <div class="row group-search">
+        <div class="col-md-3">
+          <label>受种者编号：</label>
+          <input type="text" nbInput fieldSize="small" placeholder="请输入儿童编号">
+        </div>
+
+        <div class="col-md-3">
+          <label>受种者姓名：</label>
+          <input type="text" nbInput fieldSize="small" placeholder="请输入儿童编号">
+        </div>
+        <div class="col-md-3">
+          <label>受种者条码：</label>
+          <input type="text" nbInput fieldSize="small" placeholder="请输入儿童编号">
+        </div>
+        <div class="col-md-3">
+          <label>所属地块：</label>
+          <nb-select multiple placeholder="请选择所属地块" minlength="100" outline status="default">
+            <nb-option value="001">崧泽村</nb-option>
+            <nb-option value="002">长临</nb-option>
+            <nb-option value="003">镇中小区</nb-option>
+            <nb-option value="004">万科锦源</nb-option>
+            <nb-option value="005">万科晶源</nb-option>
+          </nb-select>
+        </div>
+        <div class="col-md-3">
+          <label>在册类别：</label>
+          <nb-select multiple placeholder="请选择在册类别" minlength="100" outline status="default">
+            <nb-option value="001">在册</nb-option>
+            <nb-option value="002">离册</nb-option>
+            <nb-option value="003">自动迁出</nb-option>
+          </nb-select>
+        </div>
+        <div class="col-md-3">
+          <label>预约时间：</label>
+          <input nbInput fieldSize="small" placeholder="请选择预约时间" [nbDatepicker]="reserveDatePicker">
+          <nb-rangepicker #reserveDatePicker format="yyyy/MM/dd"></nb-rangepicker>
+          <!--<nb-datepicker #reserveDatePicker></nb-datepicker>-->
+
+        </div>
+        <div class="col-md-3">
+          <label>预约时段：</label>
+          <nb-select multiple placeholder="请选择预约时段" outline status="default">
+            <nb-option value="08:00-09:00">08:00-09:00</nb-option>
+            <nb-option value="09:00-10:00">09:00-10:00</nb-option>
+            <nb-option value="10:00-11:00">10:00-11:00</nb-option>
+            <nb-option value="14:00-15:00">14:00-15:00</nb-option>
+            <nb-option value="15:00-16:00">15:00-16:00</nb-option>
+          </nb-select>
+        </div>
+        <div class="col-md-3">
+          <label>出生日期：</label>
+          <input type="text" nbInput fieldSize="small" placeholder="请输入结束时间" [nbDatepicker]="birthDatePicker">
+          <nb-rangepicker #birthDatePicker format="yyyy/MM/dd"></nb-rangepicker>
+        </div>
+
+        <!-- <div>
+           <label >疫苗名称：</label>
+           <nz-select
+             class="form-control"
+             [nzMaxTagCount]="10"
+             [nzMaxTagPlaceholder]="tagPlaceHolder"
+             nzMode="multiple"
+             nzPlaceHolder="请选择疫苗"
+             [(ngModel)]="listOfSelectedValue"
+             [ngModelOptions]="{standalone: true}"
+           >
+             <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+           </nz-select>
+           <ng-template #tagPlaceHolder let-selectedList> and {{ listOfSelectedValue.length }} more selected </ng-template>
+         </div>-->
+
+        <div class="col-md-3">
+          <label>疫苗名称：</label>
+          <nb-select multiple placeholder="请选择疫苗名称" outline status="default">
+            <nb-option [value]="0101">卡介苗</nb-option>
+            <nb-option [value]="0201">乙肝酿酒</nb-option>
+            <nb-option [value]="0202">乙肝汉逊</nb-option>
+            <nb-option [value]="0203">乙肝CHO</nb-option>
+            <nb-option [value]="0301">脊灰减毒</nb-option>
+            <nb-option [value]="0302">脊灰灭活</nb-option>
+          </nb-select>
+        </div>
+
+        <!-- <div class="col-md-6">
+          <button nbButton status="info" >查询</button>
+          <button nbButton status="info" >导出报表</button>
+          <button nbButton status="warning" >重置</button>
+        </div> -->
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center">
+</nb-card>

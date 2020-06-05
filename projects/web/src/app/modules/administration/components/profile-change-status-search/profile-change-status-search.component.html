@@ -1,0 +1,158 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    在册变更查询
+    <div>
+      <button nbButton status="info" (click)="searchData()" [nbSpinner]="loading">查询</button>
+      <button nbButton status="info" (click)="export()"  [nbSpinner]="loading" class="ml-2 mr-2">导出报表</button>
+      <button nbButton status="warning" (click)="replacement()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="residentSearch">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">姓名：</label>
+          <div class="col-8">
+            <input nbInput placeholder="请输入姓名" fullWidth formControlName="name" id="name">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">档案编码：</label>
+          <div class="col-8">
+            <input nbInput placeholder="请输入档案编码" fullWidth formControlName="profileCode" id="profileCode">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">出生日期(起)：</label>
+          <div class="col-8 ">
+            <input nbInput fullWidth readonly class="ml-1" placeholder="请选择生日" [nbDatepicker]="birthDatePicker"
+                   formControlName="birthStart" id="birthStart">
+            <nb-datepicker #birthDatePicker format="YYYY/MM/DD" [filter]="filterBirthStartDate"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">出生日期(止)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly class="ml-1" placeholder="请选择生日" [nbDatepicker]="birthEndPicker"
+                   formControlName="birthEnd" id="birthEnd">
+            <nb-datepicker #birthEndPicker format="YYYY/MM/DD" [filter]="filterBirthEndDate"></nb-datepicker>
+          </div>
+        </div>
+
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">变更日期(起)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly class="ml-1" placeholder="请选择变更日期" [nbDatepicker]="updateStartDatepicker"
+                   formControlName="changeStartDate" id="changeStartDate">
+            <nb-datepicker #updateStartDatepicker format="YYYY/MM/DD" [filter]="filterChangeStartDate"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">变更日期(止)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly class="ml-1" placeholder="请选择变更日期" [nbDatepicker]="updateDatepicker"
+                   formControlName="changeEndDate" id="changeEndDate">
+            <nb-datepicker #updateDatepicker format="YYYY/MM/DD" [filter]="filterChangeEndDate"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">现在册状态：</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择在册状态" formControlName="curProfileStatus"
+                               [options]="profileStatusChange"></uea-nb-select-all>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">原在册状态：</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择原在册状态" formControlName="preProfileStatus"
+                               [options]="profileStatusChange"></uea-nb-select-all>
+          </div>
+        </div>
+
+        <!--<div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">变更备注：</label>
+          <div class="col-8">
+            <input nbInput placeholder="备注" fullWidth formControlName="memo" id="memo">
+          </div>
+        </div>-->
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">变更原因：</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择变更原因" formControlName="changeReason"
+                               [options]="profileStatusChangeReason"></uea-nb-select-all>
+          </div>
+        </div>
+      </div>
+    </form>
+
+
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow: scroll;">
+  <nb-card-body>
+    <nz-table #msgTable [nzData]="listOfData" nzBordered [nzLoading]="loading" [nzTotal]="total"
+              [nzFrontPagination]="false" [nzPageSize]="pageSize" nzSize="small"
+              [nzPageIndex]="pageIndex"
+              (nzPageIndexChange)="searchData($event)">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">档案编码</th>
+        <th [nzAlign]="'center'">姓名</th>
+        <th [nzAlign]="'center'">性别</th>
+        <th [nzAlign]="'center'">出生日期</th>
+        <!--      <th [nzAlign]="'center'">父亲姓名</th>-->
+        <!--      <th [nzAlign]="'center'">母亲姓名</th>-->
+        <th [nzAlign]="'center'">手机号码</th>
+        <th [nzAlign]="'center'">家庭住址</th>
+        <th [nzAlign]="'center'">建档日期</th>
+        <th [nzAlign]="'center'">现区域划分</th>
+        <th [nzAlign]="'center'">变更时间</th>
+        <th [nzAlign]="'center'">原在册情况</th>
+        <th [nzAlign]="'center'">现在册情况</th>
+        <th [nzAlign]="'center'">变更前门诊</th>
+        <th [nzAlign]="'center'">变更后门诊</th>
+        <th [nzAlign]="'center'">变更原因</th>
+        <th [nzAlign]="'center'">变更备注</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index;">
+        <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+        <td [nzAlign]="'center'">{{data.profileCode}}</td>
+        <td [nzAlign]="'center'">{{data.name}}</td>
+        <td [nzAlign]="'center'">{{data.gender | dicPipe:'genderCode'}}</td>
+        <td [nzAlign]="'center'">{{data.birthDate | date:'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">{{data.contactPhone}}</td>
+        <td [nzAlign]="'center'">
+          {{ data.idCardProvCode | administrativePipe | async }}{{ data.idCardCityCode | administrativePipe | async }}{{ data.idCardDistrictCode | administrativePipe | async }}
+          <br>{{ data.idCardDetail | administrativePipe | async }}
+        </td>
+        <td [nzAlign]="'center'">{{data.createDate | date:'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">{{data.community | communityNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{data.changeDate | date:'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">
+          {{data.preProfileStatus | dicPipe:'profileStatusChange'}}
+          <br>
+          ({{ data.preProfileStatus | dicPipe: 'profileStatus' }})
+        </td>
+        <td [nzAlign]="'center'">
+          {{data.curProfileStatus | dicPipe:'profileStatusChange'}}
+          <br>
+          ({{ data.preProfileStatus | dicPipe: 'profileStatus' }})
+        </td>
+        <td [nzAlign]="'center'">{{data.prePov | povNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{data.curPov | povNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{data.changeReason | dicPipe:'profileStatusChangeReason'}}</td>
+        <td [nzAlign]="'center'">{{data.memo}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

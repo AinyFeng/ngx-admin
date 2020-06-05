@@ -1,0 +1,49 @@
+<div nz-row nzGutter="16" style="height: 100%;">
+  <div nz-col nzSpan="6" class="display-col">
+    <div class="chart-container main-col background-gray">
+      <div class="position-absolute top-left"></div>
+      <div class="position-absolute top-right"></div>
+      <div class="position-absolute bottom-left"></div>
+      <div class="position-absolute bottom-right"></div>
+      <uea-profile-incomplete [searchDistrictCode]="searchDistrictCode" [userInfo]="userInfo"></uea-profile-incomplete>
+    </div>
+
+    <div class="chart-container sub-col background-gray">
+      <div class="position-absolute top-left"></div>
+      <div class="position-absolute top-right"></div>
+      <div class="position-absolute bottom-left"></div>
+      <div class="position-absolute bottom-right"></div>
+      <uea-profile-dup-component [searchDistrictCode]="searchDistrictCode"
+                                 [userInfo]="userInfo"></uea-profile-dup-component>
+    </div>
+  </div>
+  <div nz-col nzSpan="12" class="display-col">
+    <div class="chart-container main-col">
+      <uea-map-center [userInfo]="userInfo" [searchDistrictCode]="searchDistrictCode"></uea-map-center>
+    </div>
+    <div class="chart-container sub-col background-gray">
+      <div class="position-absolute top-left"></div>
+      <div class="position-absolute top-right"></div>
+      <div class="position-absolute bottom-left"></div>
+      <div class="position-absolute bottom-right"></div>
+      <uea-business-volume [searchDistrictCode]="searchDistrictCode" [userInfo]="userInfo"></uea-business-volume>
+    </div>
+  </div>
+  <div nz-col nzSpan="6" class="display-col">
+    <div class="chart-container main-col background-gray">
+      <div class="position-absolute top-left"></div>
+      <div class="position-absolute top-right"></div>
+      <div class="position-absolute bottom-left"></div>
+      <div class="position-absolute bottom-right"></div>
+      <uea-vaccine-inventory [searchDistrictCode]="searchDistrictCode" [userInfo]="userInfo"></uea-vaccine-inventory>
+    </div>
+    <div class="chart-container sub-col background-gray">
+      <div class="position-absolute top-left"></div>
+      <div class="position-absolute top-right"></div>
+      <div class="position-absolute bottom-left"></div>
+      <div class="position-absolute bottom-right"></div>
+      <uea-vaccinated-rate [searchDistrictCode]="searchDistrictCode" [userInfo]="userInfo"></uea-vaccinated-rate>
+    </div>
+  </div>
+</div>
+

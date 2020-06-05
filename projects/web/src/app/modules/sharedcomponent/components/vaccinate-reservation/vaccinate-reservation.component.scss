@@ -1,0 +1,38 @@
+@import '../../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+	.timeRange {
+		background: nb-theme(color-basic-200);
+		border-radius: 0.25rem;
+		height: 400px;
+		border: 1px solid nb-theme(color-basic-500);
+	}
+	.container-appointment {
+		width: 1100px;
+	}
+
+	.age-select {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.vac-panel {
+		border: 1px solid nb-theme(color-basic-500);
+		border-radius: 0.25rem;
+		background: nb-theme(color-basic-200);
+
+		& > .vac-header {
+			border-bottom: 1px solid nb-theme(color-basic-500);
+		}
+	}
+
+	.vac-panel ~ .vac-panel {
+		margin-top: 1rem;
+	}
+
+	.vac-list {
+		min-height: 100px;
+		max-height: 460px;
+		overflow: auto;
+	}
+}

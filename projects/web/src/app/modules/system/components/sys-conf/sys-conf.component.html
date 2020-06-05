@@ -1,0 +1,44 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    系统配置
+    <div>
+      <button nbButton status="info" (click)="saveConf()" class="mr-2">保存</button>
+      <button nbButton status="warning" (click)="refresh()">刷新</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body class="text-center">
+<!--    <nb-alert outline="info" *ngIf="showInfo" (close)="closeAlert()" closable>修改成功，立即生效</nb-alert>-->
+    <form>
+      <div class="form-group row">
+        <ng-container *ngFor="let option of sysConfData;index as i">
+          <ng-container>
+            <div class="col-6 mt-0 mb-5 ml-0 mr-0">
+              <div class="row">
+                <label class="col-3 col-form-label text-right">{{option?.title}}：</label>
+                <div class="col-7" style="text-align: left;">
+                  <div class="row">
+                    <input *ngIf="option.confOptions.length === 0" [(ngModel)]="option.defaultValue"
+                           [ngModelOptions]="{standalone: true}" type="text" nbInput outline fullWidth/>
+                    <nb-radio-group *ngIf="option.confOptions.length === 2" [name]="option.confName + i"
+                                    [(ngModel)]="option.defaultValue" [ngModelOptions]="{standalone: true}">
+                      <nb-radio *ngFor="let conf of option.confOptions" [value]="conf.value"
+                                style="display: inline-block;">
+                        {{ conf.label }}
+                      </nb-radio>
+                    </nb-radio-group>
+                    <nb-select *ngIf="option.confOptions.length > 2" [(ngModel)]="option.defaultValue"
+                               [ngModelOptions]="{standalone: true}" fullWidth outline status="info">
+                      <nb-option *ngFor="let conf of option.confOptions"
+                                 [value]="conf.value">{{ conf.label }}</nb-option>
+                    </nb-select>
+                  </div>
+                  <div class="row mt-2">{{option.confDesc}}</div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>

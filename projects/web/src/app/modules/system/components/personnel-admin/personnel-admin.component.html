@@ -1,0 +1,77 @@
+<nb-card accent="info">
+  <nb-card-header>
+    医护人员信息管理
+    <div>
+      <button nbButton status="info" (click)="search()" [disabled]="loading">查询</button>
+      <button nbButton status="info" (click)="addAdmin()">用户新增</button>
+      <button nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <div class="col-md-4 row">
+          <label class="col-4 col-form-label text-right">姓名：</label>
+          <div class="col-8">
+            <input type="text"
+                   inputNoSpace
+                   nbInput fullWidth formControlName="realName" id="realName">
+          </div>
+        </div>
+        <div class="col-md-4 row">
+          <label class="col-4 col-form-label text-right">手机号码：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth
+                   inputNoSpace
+                   [status]="form.get('telephone').invalid && form.get('telephone').touched ? 'danger' : ''"
+                   formControlName="telephone" id="telephone">
+            <uea-show-form-errors [control]="form.get('telephone')"></uea-show-form-errors>
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+<nb-card>
+  <nb-card-body>
+    <nz-table #adminInfo [nzData]="adminData"
+              [nzLoading]="loading"
+              nzBordered
+              nzSimple="false"
+              nzSize="small"
+              [nzFrontPagination]="true"
+    >
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">归属科室</th>
+        <th [nzAlign]="'center'">登录名</th>
+        <th [nzAlign]="'center'">姓名</th>
+        <th [nzAlign]="'center'">手机号码</th>
+        <th [nzAlign]="'center'">备注</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr *ngFor="let d of adminInfo.data">
+        <td [nzAlign]="'center'">{{d.departmentCode | departmentNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{d.realName}}</td>
+        <td [nzAlign]="'center'">{{d.realName}}</td>
+        <td [nzAlign]="'center'">{{d.telephone}}</td>
+        <td [nzAlign]="'center'">{{d.memo}}</td>
+        <td [nzAlign]="'center'">
+          <a href="javascript:" class="ml-2" (click)="changeStaffInfo(d)">修改</a>
+          <a href="javascript:" class="ml-2" (click)="deleteStaffInfo(d)">删除</a>
+          <a href="javascript:" class="ml-2" *ngIf="!d.signatureImageUrl" (click)="sign(d)">签字</a>
+          <a href="javascript:" class="ml-2 alert-danger-qb" *ngIf="d.signatureImageUrl" (click)="resign(d)">重新签字</a>
+          <a href="javascript:" class="ml-2 text-success" [ngClass]="" *ngIf="d.signatureImageUrl"
+             (click)="checkSign(d)">已签字</a>
+          <!--  <button nbButton status="primary" size="tiny" (click)="sign(d)">签字</button>
+            <button nbButton status="warning" size="tiny" (click)="resign(d)">重新签字</button>
+            <button nbButton status="success" size="tiny" (click)="checkSign(d)">查看签字</button>-->
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

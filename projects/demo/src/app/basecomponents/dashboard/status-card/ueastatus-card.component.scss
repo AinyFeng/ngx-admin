@@ -1,0 +1,72 @@
+$uea-card-padding: 0.625rem;
+
+nz-card {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 5rem;
+	overflow: visible;
+
+	.icon-container {
+		height: 100%;
+		padding: $uea-card-padding 0 $uea-card-padding $uea-card-padding;
+	}
+
+	.icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 4.75rem;
+		height: 3.75rem;
+		font-size: 1rem; //3.75rem;
+		border-radius: 0.25rem;
+		transition: width 0.4s ease;
+		transform: translate3d(0, 0, 0);
+		transform-style: preserve-3d;
+		-webkit-transform-style: preserve-3d;
+		backface-visibility: hidden;
+		-webkit-backface-visibility: hidden;
+		// color: nb-theme(text-control-color);
+
+		// @each $status in nb-get-statuses() {
+		// 	&.status-#{$status} {
+		// 		$left-color: nb-theme(button-hero-#{$status}-left-background-color);
+		// 		$right-color: nb-theme(button-hero-#{$status}-right-background-color);
+		// 		background-image: linear-gradient(to right, $left-color, $right-color);
+		// 		color: nb-theme(button-hero-#{$status}-text-color);
+
+		// 		&:hover {
+		// 			$left-hover-color: nb-theme(button-hero-#{$status}-hover-left-background-color);
+		// 			$right-hover-color: nb-theme(button-hero-#{$status}-hover-right-background-color);
+		// 			background-image: linear-gradient(to right, $left-hover-color, $right-hover-color);
+		// 		}
+		// 	}
+		// }
+	}
+
+	&.off {
+		color: nb-theme(text-hint-color);
+
+		.status,
+		.title,
+		.icon {
+			color: nb-theme(text-hint-color);
+		}
+	}
+
+	.details {
+		height: 100%;
+		width: 100%;
+		padding: $uea-card-padding;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.title {
+		margin: 0;
+		// font-family: nb-theme(text-heading-6-font-family);
+		font-size: 1.2rem;
+		font-weight: 600;
+	}
+}

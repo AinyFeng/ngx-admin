@@ -1,0 +1,100 @@
+{
+  "develop": {
+    "status": "on",
+    "pulsar1": {
+      "pulsarUrl": "wss:svs.chinavacc.com.cn:19999/ws/v2/reader/non-persistent/",
+      "pulsarUrlBak": "wss:svs.chinavacc.com.cn:19999/ws/v2/reader/non-persistent/",
+      "pulsarNameSpace": "default",
+      "registWaitTopicShared": "regist_wait_topic_shared",
+      "registPassTopicShared": "regist_pass_topic_shared",
+      "registWaitTopic": "regist_wait_topic",
+      "registPassTopic": "regist_pass_topic",
+      "payWaitTopicShared": "pay_wait_topic_shared",
+      "payWaitTopic": "pay_wait_topic",
+      "payPassTopicShared": "pay_pass_topic_shared",
+      "payPassTopic": "pay_pass_topic",
+      "vaccinateWaitTopicShared": "vaccinate_wait_topic_shared",
+      "vaccinateWaitTopic": "vaccinate_wait_topic",
+      "vaccinateCalledTopicShared": "vaccinate_called_topic_shared",
+      "vaccinateCalledTopic": "vaccinate_called_topic"
+    },
+    "user": {
+      "manager": {
+        "name": "朱院长",
+        "userCode": "54831456440",
+        "department": "98277245155541269",
+        "pov": "3406040802",
+        "povName": "古饶镇赵集卫生院",
+        "profileCode": "9bcfc107e606410faf248c61af8f5e55",
+        "status": "在线",
+        "picture": "assets/images/lee.png"
+      },
+      "register": {
+        "name": "邓医生",
+        "userCode": "54831456447",
+        "department": "98277245155541269",
+        "pov": "3406040802",
+        "povName": "古饶镇赵集卫生院",
+        "profileCode": "9bcfc107e606410faf248c61af8f5e55",
+        "status": "在线",
+        "picture": "assets/images/nick.png"
+      },
+      "vaccinate": {
+        "name": "妲护士",
+        "userCode": "54831456448",
+        "department": "98277245155541270",
+        "pov": "3406040802",
+        "povName": "古饶镇赵集卫生院",
+        "profileCode": "13709ebbe0584efeacad961c5b8731c7",
+        "status": "在线",
+        "picture": "assets/images/eva.png"
+      },
+      "pay": {
+        "name": "焦会计",
+        "userCode": "5483145649",
+        "department": "98277245155541271",
+        "pov": "3406040802",
+        "povName": "古饶镇赵集卫生院",
+        "profileCode": "b259b744149c43589ad08cb89ea57627",
+        "status": "在线",
+        "picture": "assets/images/jack.png"
+      }
+    },
+    "profile": {
+      "id": 34,
+      "profileCode": "c958d553f3c543c79bcc9f458693aba3",
+      "idCardNo": 110101200103076876,
+      "idCardType": "1",
+      "birthCardNo": "",
+      "name": "高圆圆",
+      "gender": "f",
+      "birthDate": 983931173000,
+      "birthHospitalCode": "",
+      "birthWeight": 1255,
+      "profileTypeCode": "1",
+      "createDate": 1562577411000,
+      "createBy": "创建人",
+      "createPov": "创建人的POV",
+      "createSource": "pov建档",
+      "liveProvCode": "北京",
+      "liveCityCode": "北京市",
+      "liveDistrictCode": "海淀区",
+      "liveDetail": "中关村大街",
+      "idCardProvCode": "北京",
+      "idCardCityCode": "北京市",
+      "idCardDistrictCode": "海淀区",
+      "idCardDetail": "中关村大街",
+      "nationCode": "汉族",
+      "parity": 1,
+      "profileStatusCode": "未上传",
+      "idTypeCode": "1",
+      "residentialTypeCode": "01",
+      "belongDistrictCode": "01",
+      "contactPhone": "15214563698",
+      "lastModifyDate": 1562577411000,
+      "vaccinationPovCode": "接种POV编码",
+      "uploadStatusCode": "01",
+      "memo": "备注"
+    }
+  }
+}

@@ -1,0 +1,364 @@
+<nz-card style="width:100%;" nzTitle="疫苗订单信息">
+  <div nz-row>
+    <form nz-form [nzLayout]="'inline'" [formGroup]="queryForm" class="preventForm">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzFor="orderNo">订单号</nz-form-label>
+            <nz-form-control nzErrorTip="">
+              <input nz-input formControlName="orderNo" readonly="readonly" style="width: 180px"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzFor="orderStatus">订单状态</nz-form-label>
+            <nz-form-control nzErrorTip="">
+              <nz-select formControlName="orderStatus" id="orderStatus" style="width: 165px">
+                <nz-option [nzLabel]="queryForm.get('orderStatus').value | dicPipe: 'pfOrderStatus'"
+                           [nzValue]="queryForm.get('orderStatus').value"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-item>
+              <nz-form-label nzFor="orderDate">出入库日期</nz-form-label>
+              <nz-form-control nzErrorTip="">
+                <nz-date-picker nzDateFullCell formControlName="orderDate" id="orderDate"
+                                nzAllowClear="false"
+                                nzFormat="yyyy-MM-dd"
+                                readonly
+                                nzShowTime></nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzFor="orderType">类型</nz-form-label>
+            <nz-form-control nzErrorTip="">
+              <nz-select formControlName="orderType" id="orderType" style="width: 165px">
+                <nz-option [nzLabel]="queryForm.get('orderType').value | dicPipe: 'pfOrdertype'"
+                           [nzValue]="queryForm.get('orderType').value"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="24"
+           *ngIf="orderInfo.orderType == '9' ||
+              orderInfo.orderType == '7' ||
+               orderInfo.orderType == '8'">
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzFor="supplyorgName">供货单位</nz-form-label>
+            <nz-form-control nzErrorTip="">
+              <input nz-input formControlName="supplyorgName" readonly="readonly"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-item *ngIf="orderInfo.orderType == '9' || orderInfo.orderType == '7'">
+              <nz-form-label nzFor="consignorName">供货单位经手人</nz-form-label>
+              <nz-form-control nzErrorTip="">
+                <input nz-input formControlName="consignorName" readonly="readonly"/>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item *ngIf="orderInfo.orderType == '8'">
+              <nz-form-label nzFor="distributionUnit">配送单位</nz-form-label>
+              <nz-form-control nzErrorTip="">
+                <input nz-input formControlName="distributionUnit" readonly="readonly"/>
+              </nz-form-control>
+            </nz-form-item>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="24"
+           *ngIf="orderInfo.orderType == '9' ||
+              orderInfo.orderType == '7' ||
+              orderInfo.orderType == '0' ||
+               orderInfo.orderType == '8'">
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-item *ngIf="orderInfo.orderType == '9' ||
+               orderInfo.orderType == '7' ||
+                orderInfo.orderType == '8'">
+              <nz-form-label nzFor="receiveorgName">收货单位</nz-form-label>
+              <nz-form-control nzErrorTip="">
+                <input nz-input formControlName="receiveorgName" readonly="readonly"/>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item *ngIf="orderInfo.orderType == '0'">
+              <nz-form-label nzFor="createorgName">使用单位</nz-form-label>
+              <nz-form-control nzErrorTip="">
+                <input nz-input formControlName="createorgName" readonly="readonly"/>
+              </nz-form-control>
+            </nz-form-item>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-item *ngIf="orderInfo.orderType == '9' ||
+               orderInfo.orderType == '7' ||
+                orderInfo.orderType == '8'">
+              <nz-form-label nzFor="consigneeName">收货单位经手人</nz-form-label>
+              <nz-form-control nzErrorTip="">
+                <input nz-input formControlName="consigneeName" readonly="readonly"/>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item *ngIf="orderInfo.orderType == '0'">
+              <nz-form-label nzFor="writtenBy">填报人</nz-form-label>
+              <nz-form-control nzErrorTip="">
+                <input nz-input formControlName="writtenBy" readonly="readonly"/>
+              </nz-form-control>
+            </nz-form-item>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="24"
+           *ngIf="orderInfo.orderType == '9' ||
+               orderInfo.orderType == '7' ||
+               orderInfo.orderType == '8' ||
+               orderInfo.orderType == '0'">
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzFor="transportation">疫苗运输工具</nz-form-label>
+            <nz-form-control nzErrorTip="">
+              <nz-radio-group id="transportation" formControlName="transportation">
+                <label nz-radio [nzValue]="r.value"
+                       *ngFor="let r of transportationOptions"
+                >{{r.label}}</label>
+                <div class="d-inline-block position-relative">
+                  <input type="text" nz-input
+                         *ngIf="queryForm.get('transportation').value === '3'"
+                         formControlName="otherTransportation">
+                </div>
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzFor="refrigerateType">疫苗冷藏方式</nz-form-label>
+            <nz-form-control nzErrorTip="">
+              <nz-radio-group id="refrigerateType" formControlName="refrigerateType"
+              >
+                <label *ngFor="let r of refrigerateTypeOptions" nz-radio [nzValue]="r.value">{{ r.label }}</label>
+                <div class="d-inline-block position-relative">
+                  <input type="text"
+                         nz-input
+                         *ngIf="queryForm.get('refrigerateType').value === '3'"
+                         formControlName="otherRefrigerateType">
+                </div>
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzFor="vaccineType">疫苗类型</nz-form-label>
+            <nz-form-control nzErrorTip="" readonly="readonly">
+              <nz-radio-group formControlName="vaccineType">
+                <label nz-radio nzValue="0">第一类</label>
+                <label nz-radio nzValue="1">第二类</label>
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+          <nz-form-item>
+            <nz-form-label nzFor="memo">备注信息</nz-form-label>
+            <nz-form-control nzErrorTip="">
+              <textarea rows="3" cols="100" nz-input formControlName="memo" readonly="readonly"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div nz-row>
+    <nz-table #borderedTable nzBordered
+              [nzFrontPagination]="false" [nzData]="dataSet">
+      <thead>
+      <tr>
+        <th>疫苗名称/注射器类型</th>
+        <th>疫苗属性</th>
+        <th>疫苗生产企业</th>
+        <th>批号</th>
+        <th>批签发证号</th>
+        <th>规格(剂/支或粒)</th>
+        <th>剂量</th>
+        <th>有效日期</th>
+        <th>数量</th>
+        <th>出库价</th>
+        <th>成本价</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of borderedTable.data">
+        <td>{{ data.vaccName }}</td>
+        <td>{{ data.vaccineType | dicPipe: 'vaccineType' }}</td>
+        <td>{{ data.manufactureName }}</td>
+        <td>{{ data.batchNo }}</td>
+        <td>{{ data.certifiCode }}</td>
+        <td>{{ data.spec }}</td>
+        <td>{{ data.dose }}</td>
+        <td>{{ data.loseEfficacyDate | date: 'yyyy-MM-dd' }}</td>
+        <td>{{ data.vaccNum }}</td>
+        <td>{{ data.sellPrice }}</td>
+        <td>{{ data.orignPrice }}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+    <div>
+      <nz-alert *ngIf="error" class="mt-3 mb-3" nzType="info" [nzMessage]="template"
+                (close)="closeAlert()"></nz-alert>
+      <ng-template #template>
+        <div class="text-center">
+          打印机连接失败，请安装<a href="http://www.lodop.net/download.html" target="_blank">Lodop</a>插件
+        </div>
+      </ng-template>
+    </div>
+    <button nz-button nzType="primary" class="mr-3" (click)="printOrderInfo(true)">打印</button>
+    <button nz-button nzType="primary" class="mr-3" *ngIf="orderInfo.orderType == '9'" (click)="printSendBack(true)">
+      退回单打印
+    </button>
+    <button nz-button nzType="primary" class="mr-3"
+            *ngIf="orderInfo.orderType == '7' && orderInfo.orderStatus !== '8' "
+            (click)="printOutbound(true)">出库单打印
+    </button>
+    <button nz-button nzType="primary" class="mr-3" (click)="goBack()">返回</button>
+    <button nz-button nzType="primary" class="mr-3"
+            *ngIf="orderInfo.orderStatus == '11' && orderInfo.vaccineType == '1'"
+            (click)="sureInvoice(true)">确认开票
+    </button>
+    <button nz-button nzType="primary" class="mr-3"
+            *ngIf="orderInfo.orderStatus == '11' && orderInfo.vaccineType == '1'"
+            (click)="sureInvoice(false)">开票失败
+    </button>
+    <button nz-button nzType="primary" class="mr-3" *ngIf="orderInfo.orderStatus == '13'" (click)="approve(true)">审批通过
+    </button>
+    <button nz-button nzType="primary" class="mr-3"
+            *ngIf="orderInfo.orderStatus == '13' && orderInfo.vaccineType == '1' &&
+            (orderInfo.orderType == '5' || orderInfo.orderType == '7')"
+            (click)="skipBilling()">通过并跳过开票
+    </button>
+    <button nz-button nzType="primary" class="mr-3" *ngIf="orderInfo.orderStatus == '13'" (click)="approve(false)">
+      审批不通过
+    </button>
+
+    <button nz-button nzType="primary" class="mr-3" *ngIf="orderInfo.orderStatus == '4'" (click)="sureWarehouse('0')">
+      出库确认
+    </button>
+    <button nz-button nzType="primary" class="mr-3" *ngIf="orderInfo.orderStatus == '4'" (click)="sureWarehouse('1')">
+      出库失败
+    </button>
+    <button nz-button nzType="primary" class="mr-3"
+            *ngIf="orderInfo.orderStatus == '8' || orderInfo.orderStatus == '14'" (click)="warehousing('0')">
+      <span>入库确认</span>
+    </button>
+    <button nz-button nzType="primary" class="mr-3" *ngIf="orderInfo.orderType  == '8' && orderInfo.orderStatus == '8' "
+            (click)="warehousing('1')">入库失败
+    </button>
+    <button nz-button nzType="primary" class="mr-3" *ngIf="orderInfo.orderType == '7' && orderInfo.orderStatus == '8'"
+            (click)="warehousing('2')">退回
+    </button>
+    <button nz-button nzType="primary" class="mr-3"
+            *ngIf="orderInfo.orderType == '7' && (orderInfo.orderStatus == '6' || orderInfo.orderStatus == '7')"
+            (click)="printInvoices(true)"
+    >补打发票
+    </button>
+    <button nz-button nzType="primary" class="mr-3" *ngIf="orderInfo.isPay == '0'" (click)="pay()">确认收款</button>
+    <nz-modal
+      [(nzVisible)]="isVisible"
+      [nzTitle]="modalTitle"
+      [nzContent]="modalContent"
+      [nzFooter]="modalFooter"
+      (nzOnCancel)="handleCancel()"
+    >
+      <ng-template #modalTitle>
+        信息
+      </ng-template>
+      <ng-template #modalContent>
+        <div align="center">
+          <span>收款日期：</span>
+          <nz-date-picker id="payDate" [(ngModel)]="payDate"></nz-date-picker>
+          <br>
+          <span>成本总价：</span>
+          <input nz-input [(ngModel)]="priceSum.costSum" style="width: 165px" readonly="readonly"/>
+          <br>
+          <span>出库总价：</span>
+          <input nz-input [(ngModel)]="priceSum.priceSum" style="width: 165px" readonly="readonly"/>
+          <br>
+          <span>收款金额：</span>
+          <input type="number" fullWidth [min]="0" nz-input [(ngModel)]="payment" style="width: 165px"/>
+        </div>
+      </ng-template>
+      <ng-template #modalFooter>
+        <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading">确认付款</button>
+        <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+      </ng-template>
+    </nz-modal>
+    <div class="text-right">
+      成本总金额：{{priceSum ? priceSum.costSum : 0}} / 售价总金额：{{priceSum ? priceSum.priceSum : 0}} /
+      总数量：{{priceSum ? priceSum.sumNum : 0}}
+    </div>
+  </div>
+</nz-card>
+<!--订单打印-->
+<uea-print-approval-order-info #printOrderDetail
+                               style="position: absolute; margin-left: -999rem;"
+                               [printOrderData]="printOrderData"></uea-print-approval-order-info>
+<!--出库单打印-->
+<uea-print-stock-out #printStockOut
+                     *ngIf="orderInfo.orderType === '7'"
+                     style="position: absolute; margin-left: -9999rem;"
+                     [printStockOutInfo]="printStockOutInfo"
+></uea-print-stock-out>
+<!--退回单打印-->
+<uea-print-send-back #printSendBackOrder
+                     *ngIf="orderInfo.orderType === '9'"
+                     style="position: absolute; margin-left: -1200rem;"
+                     [printSendBackInfo]="printSendBackInfo"
+></uea-print-send-back>
+<!--补打发票-->
+<uea-print-invoices #printInvoices
+                    *ngIf="orderInfo.orderType == '7' &&
+                    (orderInfo.orderStatus == '6' || orderInfo.orderStatus == '7' || orderInfo.orderStatus == '11')"
+                    style="position: absolute; margin-left: -1200rem;"
+                    [printInvoicesInfo]="printInvoicesInfo"
+></uea-print-invoices>
+<!--报废单打印-->
+<uea-print-scrap-order #printScrapOrder
+                       style="position: absolute; margin-left: -1999rem;"
+                       *ngIf="orderInfo.orderType === '2'"
+                       [printScrapOrderInfo]="printScrapOrderInfo"
+></uea-print-scrap-order>
+<!--使用单打印-->
+<uea-print-use-order #printUseOrder
+                       style="position: absolute; margin-left: -1999rem;"
+                       *ngIf="orderInfo.orderType === '0'"
+                       [printUseOrderInfo]="printUseOrderInfo"
+></uea-print-use-order>
+<!--报损单打印-->
+<uea-print-breakage-order #printBreakageOrder
+                          *ngIf="orderInfo.orderType === '6'"
+                          style="position: absolute; margin-left: -1400rem;"
+                          [printBreakageInfo]="printBreakageInfo"
+></uea-print-breakage-order>
+<!--入库单打印-->
+<uea-print-stock-in #printStockInOrder
+                          *ngIf="orderInfo.orderType === '8'"
+                          style="position: absolute; margin-left: -1400rem;"
+                          [printStockInInfo]="printStockInInfo"
+></uea-print-stock-in>

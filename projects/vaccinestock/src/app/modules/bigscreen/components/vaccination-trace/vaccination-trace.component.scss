@@ -1,0 +1,164 @@
+@import '../../big.screen';
+
+/*.main {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  overflow: hidden;
+  color: #ffffff;
+
+  .item-left, .item-right {
+    flex: 1;
+    height: 100%;
+  }
+
+  .item-middle {
+    flex: 2;
+    height: 100%;
+  }
+}*/
+
+.middle-top {
+  input {
+    width: 50%;
+    height: 38px;
+    line-height: 36px;
+    padding: 0.25rem;
+  }
+
+  button {
+    text-align: center;
+    width: 80px;
+    border: none;
+    height: 38px;
+    line-height: 38px;
+    border-radius: 4px;
+  }
+}
+
+/*
+.sub-title {
+  color: white;
+}
+
+.chart-container {
+  border-radius: 4px;
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.display-col {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.main-col {
+  flex: 1;
+}
+
+.sub-col {
+  flex: 1;
+}
+
+.background-gray {
+  background-color: #25344d;
+}
+*/
+
+.sub-title {
+  color: white;
+}
+
+.chart-container {
+  border-radius: 4px;
+  position: relative;
+}
+
+.chart-container ~ .chart-container {
+  margin-top: 16px;
+}
+
+.display-col {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.main-col {
+  flex: 3;
+}
+
+.main-col1 {
+  flex: 3;
+  overflow-y: auto;
+}
+
+.sub-col {
+  flex: 2;
+}
+
+.background-gray {
+  background-color: #25344d;
+}
+.title-explain {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+
+  span {
+    font-size: 17px;
+    //font-weight: lighter;
+  }
+}
+
+.baseInfo {
+  border-radius: 0.4rem;
+  color: #ffffff;
+  position: relative;
+}
+
+.hideText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box; /*下面三条缺一不可 可以生成 '...' 主要针对谷歌浏览器 */
+  -webkit-line-clamp: 1; //表示行数
+  -webkit-box-orient: vertical; //表示纵向
+}
+
+table th, table td {
+  vertical-align: middle;
+}
+.table-native {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  border-spacing: 0;
+  border: 1px solid #ebeef5;
+  color: #ffffff;
+
+  tr:hover {
+    background-color: #1a2b44;
+  }
+  th, td {
+    border-bottom: 1px solid #ebeef5;
+    border-right: 1px solid #ebeef5;
+  }
+
+  .table-tbody td {
+    vertical-align: middle;
+    text-align: center;
+    height: 30px;
+    //color: #606266;
+    color: #ffffff;
+  }
+
+  .table-header th {
+    font-size: 15px;
+    text-align: center;
+    height: 50px;
+    //background-color: #f5f7fa;
+    //color: #606266;
+    color: #ffffff;
+  }
+}

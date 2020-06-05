@@ -1,0 +1,124 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    库存盘点
+    <div>
+      <button class="mr-2" nbButton status="info" [nbSpinner]="loading" (click)="export()" >导出</button>
+      <button class="mr-2" nbButton status="warning" (click)="reset()">重置</button>
+      <button class="mr-2" nbButton status="info" (click)="toSearch()">查询</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">统计日期(起)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly formControlName="startDate" placeholder="请选择统计日期"
+                   [nbDatepicker]="startDatePicker">
+            <nb-datepicker #startDatePicker [filter]="disabledStartDate" [max]="date"
+                           format="YYYY-MM-DD"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">统计日期(止)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly formControlName="endDate" placeholder="请选择统计日期"
+                   [nbDatepicker]="endDatePicker">
+            <nb-datepicker #endDatePicker [filter]="disabledEndDate" [max]="date" format="YYYY-MM-DD"></nb-datepicker>
+          </div>
+        </div>
+
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗名称：</label>
+          <div class="col-8">
+            <uea-nb-select-all [placeholderText]="'请选择'" [options]="vacSubClassData"
+                               formControlName="vaccineSubclassCode" id="vaccineSubclassCode">
+            </uea-nb-select-all>
+          </div>
+        </div>
+
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗批次编号：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入编号" formControlName="prodBatchCode" id="prodBatchCode">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">科室：</label>
+          <div class="col-8">
+            <!-- <input type="text" nbInput fullWidth placeholder="请输入编号" formControlName="departmentCode" id="departmentCode">-->
+            <nb-select placeholder="请选择" fullWidth outline status="info" formControlName="departmentCode"
+                       id="departmentCode">
+              <nb-option [value]="v.departmentCode" *ngFor="let v of departmentOptions">{{v.departmentName}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <!-- <div class="col-md-3 row">
+           <label class="col-1 col-form-label text-right"></label>
+           <div class="col-8">
+             <nb-checkbox class="ml-2" (checkedChange)="checkedDay($event)" formControlName="day"
+                          id="day">日盘点
+             </nb-checkbox>
+             <nb-checkbox class="ml-2" (checkedChange)="checkedMonth($event)" formControlName="month"
+                          id="month">月盘点
+             </nb-checkbox>
+           </div>
+         </div>-->
+      </div>
+
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow:scroll;">
+  <nb-card-body>
+    <nz-table #msgTable nzBordered nzSize="small" nzSimple="false" [nzData]="listOfData"
+              [nzLoading]="loading" [(nzPageIndex)]="pageIndex">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">疫苗批号</th>
+        <th [nzAlign]="'center'">产品名称</th>
+        <th [nzAlign]="'center'">生产厂商</th>
+        <th [nzAlign]="'center'">所属科室</th>
+        <th [nzAlign]="'center'">期初库存(支)</th>
+        <th [nzAlign]="'center'">期末库存(支)</th>
+        <th [nzAlign]="'center'">报损出库(支)</th>
+        <th [nzAlign]="'center'">门诊内调剂出库总量(支)</th>
+        <th [nzAlign]="'center'">门诊内调剂入库总量(支)</th>
+        <th [nzAlign]="'center'">批量接种出库总量(支)</th>
+        <th [nzAlign]="'center'">批量接种入库总量(支)</th>
+        <th [nzAlign]="'center'">省市平台出库总量(支)</th>
+        <th [nzAlign]="'center'">省市平台入库总量(支)</th>
+        <th [nzAlign]="'center'">其它入库总量(支)</th>
+        <th [nzAlign]="'center'">其它出库总量(支)</th>
+        <th [nzAlign]="'center'">免疫接种出库总量(支)</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index;">
+        <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+        <td [nzAlign]="'center'">{{data.prodBatchCode}}</td>
+        <td [nzAlign]="'center'">{{data.productCode | vacProductNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{data.manufacturerName}}</td>
+        <td [nzAlign]="'center'">{{data.departmentCode| departmentNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{data.beginningStock}}</td>
+        <td [nzAlign]="'center'">{{data.closingStock}}</td>
+        <td [nzAlign]="'center'">{{data.breakageOut}}</td>
+        <td [nzAlign]="'center'">{{data.allotOut}}</td>
+        <td [nzAlign]="'center'">{{data.allotIn}}</td>
+        <td [nzAlign]="'center'">{{data.massVaccinateOut}}</td>
+        <td [nzAlign]="'center'">{{data.massVaccinateIn}}</td>
+        <td [nzAlign]="'center'">{{data.cdcOut}}</td>
+        <td [nzAlign]="'center'">{{data.cdcIn}}</td>
+        <td [nzAlign]="'center'">{{data.otherIn}}</td>
+        <td [nzAlign]="'center'">{{data.otherOut}}</td>
+        <td [nzAlign]="'center'">{{data.vaccinateOut}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

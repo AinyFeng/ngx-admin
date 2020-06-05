@@ -1,0 +1,113 @@
+<nz-table
+	#dynamicTable
+	[nzScroll]="fixHeader ? { y: '240px' } : null"
+	[nzData]="listOfData"
+	[nzBordered]="bordered"
+	[nzSimple]="simple"
+	[nzLoading]="loading"
+	[nzPaginationPosition]="position"
+	[nzShowSizeChanger]="sizeChanger"
+	[nzFrontPagination]="pagination"
+	[nzShowPagination]="pagination"
+	[nzFooter]="footer ? 'Here is Footer' : null"
+	[nzTitle]="null"
+	[nzSize]="size"
+	[nzWidthConfig]="widthConfig"
+	(nzCurrentPageDataChange)="currentPageDataChange($event)"
+>
+	<thead>
+		<tr>
+			<th colspan="24">
+				<h4>{{ year }}年{{ month + 1 }}月{{ title }}</h4>
+			</th>
+		</tr>
+		<tr>
+			<th colspan="24">
+				<h6>
+					{{ povInfo.curProvCode ? (povInfo.curProvCode | administrativePipe | async) : '' }}
+					{{ povInfo.curCityCode ? (povInfo.curCityCode | administrativePipe | async) : '' }}
+					{{ povInfo.curDistrictCode ? (povInfo.curDistrictCode | administrativePipe | async) : '' }}
+					{{ userInfo?.pov | povNamePipe | async }}
+				</h6>
+			</th>
+		</tr>
+		<tr *ngIf="header">
+			<th rowspan="2" nzLeft="0px" nzRight="0px" nzAlign="center">
+				班级
+			</th>
+			<th rowspan="2" nzRight="0px" nzAlign="center">
+				入托入学或转入人数
+			</th>
+			<th rowspan="2" nzRight="0px" nzAlign="center">
+				实查验人数
+			</th>
+			<th rowspan="2" nzRight="0px" nzAlign="center">
+				无证人数
+			</th>
+			<th rowspan="2" nzRight="0px" nzAlign="center">
+				已补证人数
+			</th>
+			<th rowspan="2" nzRight="0px" nzAlign="center">
+				需补种人次数
+			</th>
+			<th rowspan="2" nzRight="0px" nzAlign="center">
+				已补种人次数
+			</th>
+			<th colspan="2" nzRight="0px" nzAlign="center">乙肝疫苗</th>
+			<th colspan="2" nzRight="0px" nzAlign="center">脊灰疫苗</th>
+			<th colspan="2" nzRight="0px" nzAlign="center">百白破疫苗</th>
+			<th colspan="2" nzRight="0px" nzAlign="center">百破疫苗</th>
+			<th colspan="2" nzRight="0px" nzAlign="center">麻疹类疫苗</th>
+			<th colspan="2" nzRight="0px" nzAlign="center">乙脑疫苗</th>
+			<th colspan="2" nzRight="0px" nzAlign="center">流脑疫苗</th>
+			<th colspan="2" nzRight="0px" nzAlign="center">甲肝疫苗</th>
+		</tr>
+		<tr>
+			<th nzRight="0px">需补种人次数</th>
+			<th nzRight="0px">已补种人次数</th>
+			<th nzRight="0px">需补种人次数</th>
+			<th nzRight="0px">已补种人次数</th>
+			<th nzRight="0px">需补种人次数</th>
+			<th nzRight="0px">已补种人次数</th>
+			<th nzRight="0px">需补种人次数</th>
+			<th nzRight="0px">已补种人次数</th>
+			<th nzRight="0px">需补种人次数</th>
+			<th nzRight="0px">已补种人次数</th>
+			<th nzRight="0px">需补种人次数</th>
+			<th nzRight="0px">已补种人次数</th>
+			<th nzRight="0px">需补种人次数</th>
+			<th nzRight="0px">已补种人次数</th>
+			<th nzRight="0px">需补种人次数</th>
+			<th nzRight="0px">已补种人次数</th>
+		</tr>
+	</thead>
+	<tbody>
+		<ng-template ngFor let-data [ngForOf]="dynamicTable.data">
+			<tr>
+				<td>{{ data.name }}</td>
+				<td>{{ data.gender }}</td>
+				<td>{{ data.birthdate }}</td>
+				<td>{{ data.city }}</td>
+				<td>{{ data.district }}</td>
+				<td>{{ data.pov }}</td>
+				<td>{{ data.school }}</td>
+				<td>{{ data.classes }}</td>
+				<td>{{ data.entrytime }}</td>
+				<td>{{ data.done }}</td>
+				<td>{{ data.unreceived }}</td>
+				<td>{{ data.mobile }}</td>
+				<td>{{ data.importtime }}</td>
+				<td>{{ data.gender }}</td>
+				<td>{{ data.birthdate }}</td>
+				<td>{{ data.city }}</td>
+				<td>{{ data.district }}</td>
+				<td>{{ data.pov }}</td>
+				<td>{{ data.school }}</td>
+				<td>{{ data.classes }}</td>
+				<td>{{ data.entrytime }}</td>
+				<td nzRight="0px">{{ data.done }}</td>
+				<td nzRight="0px">{{ data.unreceived }}</td>
+			</tr>
+		</ng-template>
+	</tbody>
+</nz-table>

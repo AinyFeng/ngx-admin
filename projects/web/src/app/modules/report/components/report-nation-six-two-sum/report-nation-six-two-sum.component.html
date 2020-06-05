@@ -1,0 +1,130 @@
+<nb-card class="card-search">
+  <nb-card-header class="header-flex-center">
+    常规免疫接种情况6-2汇总表
+    <div>
+      <button nbButton status="success" (click)="queryData()" [disabled]="loading" [nbSpinner]="loading">统计</button>
+      <button nbButton status="success" class="ml-2 mr-2" (click)="printSixTwoSum(true, 'sixTwoSum')"
+              [disabled]="loading" [nbSpinner]="loading">打印
+      </button>
+<!--      <button nbButton status="success">预览全部</button>-->
+      <button nbButton status="primary" (click)="exportSum()" class="ml-2" [nbSpinner]="loading" [disabled]="loading">
+        导出
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form>
+      <div class="form-group row">
+        <div class="col-md-8 row">
+          <div class="col-md-3">
+            <nb-select placeholder="请选择年份" fullWidth outline [(selected)]="year">
+              <nb-option [value]="item.value" *ngFor="let item of years">{{item.label}}</nb-option>
+            </nb-select>
+          </div>
+          <span class="text-center middle-span">年</span>
+          <div class="col-md-3">
+            <nb-select placeholder="请选择月份" fullWidth outline [(selected)]="monthStart">
+              <nb-option [value]="item.value" *ngFor="let item of months">{{item.label}}</nb-option>
+            </nb-select>
+          </div>
+          <span class="text-center middle-span">月~</span>
+          <div class="col-md-3">
+            <nb-select placeholder="请选择月份" fullWidth outline [(selected)]="monthEnd">
+              <nb-option [value]="item.value" *ngFor="let item of months">{{item.label}}</nb-option>
+            </nb-select>
+          </div>
+          <span class="text-center middle-span">月</span>
+        </div>
+        <!--<div class="col-md-4 middle-span">
+
+        </div>-->
+      </div>
+      <div class="form-group row">
+        <div class="input-group col-md-7 row">
+          <label class="pl-3 middle-span m-0">疫苗名称：</label>
+          <input type="text" class="form-control" name="selectName" placeholder="请选择疫苗"
+                 [(ngModel)]="selectedVaccine.selectName" [disabled]="true">
+          <input type="hidden" class="form-control" name="selectCode" [(ngModel)]="selectedVaccine.selectCode">
+          <span class="input-group-append">
+              <button class="btn btn-primary btn-sm input-group-text" (click)="selectVac()">
+                选择疫苗
+              </button>
+          </span>
+        </div>
+        <!-- <div class="col-md-5 middle-span">
+           <nb-checkbox class="col-sm-4" (checkedChange)="showZero($event)" [checked]="zero">显示零值</nb-checkbox>
+         </div>-->
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center">
+  <nb-card-body>
+    <nz-table #groupingTable [nzData]="listOfData"
+              [nzLoading]="loading"
+              nzBordered nzSize="small" nzSimple="false"
+              [nzFrontPagination]="false">
+      <thead>
+        <tr>
+          <th colspan="4" [nzAlign]="'center'">{{year}}年{{monthStart}}月~{{monthEnd}}月常规免疫接种情况汇总表</th>
+        </tr>
+        <tr>
+          <th colspan="4" [nzAlign]="'center'">
+            {{povInfo.curProvCode ? (povInfo.curProvCode | administrativePipe | async) : ''}}  {{povInfo.curCityCode ? (povInfo.curCityCode | administrativePipe | async) : ''}} {{povInfo.curDistrictCode ? (povInfo.curDistrictCode | administrativePipe | async) : ''}} {{userInfo?.pov | povNamePipe | async}}
+          </th>
+        </tr>
+        <tr>
+          <th [nzAlign]="'center'" class="w240">疫苗名称</th>
+          <th [nzAlign]="'center'" class="w110">接种剂次数</th>
+          <th [nzAlign]="'center'" class="w240">疫苗名称</th>
+          <th [nzAlign]="'center'" class="w110">接种剂次数</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of groupingTable.data">
+          <td [nzAlign]="'center'">{{data[0].vaccName}}</td>
+          <td [nzAlign]="'center'">{{data[0].vaccNum}}</td>
+          <td [nzAlign]="'center'" *ngIf="data[1]">{{data[1].vaccName}}</td>
+          <td [nzAlign]="'center'" *ngIf="data[1]">{{data[1].vaccNum}}</td>
+          <td [nzAlign]="'center'" *ngIf="!data[1]"></td>
+          <td [nzAlign]="'center'" *ngIf="!data[1]"></td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <div id="sixTwoSum" style="position: absolute; margin-left: 999rem;">
+      <table border="1" cellspacing="0" cellpadding="0"
+             style="border-collapse:collapse; border-spacing:0; width: 100%; font-size: 14.4px; text-align: center;">
+        <!--        <caption>常规免疫接种情况6-2汇总表</caption>-->
+        <thead>
+        <tr>
+          <th colspan="4">{{year}}年{{monthStart}}月~{{monthEnd}}月常规免疫接种情况汇总表</th>
+        </tr>
+        <tr>
+          <th colspan="4">
+            {{povInfo.curProvCode ? (povInfo.curProvCode | administrativePipe | async) : ''}}  {{povInfo.curCityCode ? (povInfo.curCityCode | administrativePipe | async) : ''}} {{povInfo.curDistrictCode ? (povInfo.curDistrictCode | administrativePipe | async) : ''}} {{userInfo?.pov | povNamePipe | async}}
+          </th>
+        </tr>
+        <tr>
+          <th>疫苗名称</th>
+          <th>接种剂次数</th>
+          <th>疫苗名称</th>
+          <th>接种剂次数</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor="let data of listOfData">
+          <td>{{data[0].vaccName}}</td>
+          <td>{{data[0].vaccNum}}</td>
+          <td *ngIf="data[1]">{{data[1].vaccName}}</td>
+          <td *ngIf="data[1]">{{data[1].vaccNum}}</td>
+          <td *ngIf="!data[1]"></td>
+          <td *ngIf="!data[1]"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </nb-card-body>
+</nb-card>

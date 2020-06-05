@@ -1,0 +1,102 @@
+<nz-card style="width:100%;" nzTitle="订单信息列表">
+  <form nz-form [formGroup]="approvalForm">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="6">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="8" nzFor="inDate">出入开始日期</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-date-picker nzDateFullCell formControlName="startDate" id="startDate"
+                            nzAllowClear="false"
+                            [nzDisabledDate]="disabledDate"
+            ></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="8" nzFor="inDate">出入截止日期</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-date-picker nzDateFullCell formControlName="endDate" id="endDate"
+                            nzAllowClear="false"
+                            [nzDisabledDate]="disabledDate"
+            ></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <!--<div nz-col [nzSpan]="6">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="8" nzFor="distributionUnit">疫苗批号</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input type="text" nz-input id="batchNo"
+                   formControlName="batchNo">
+          </nz-form-control>
+        </nz-form-item>
+      </div>-->
+      <div nz-col [nzSpan]="6">
+        <nz-form-item class="m-0">
+          <nz-form-label [nzSpan]="8" nzFor="distributionUnit">出入库单号</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input type="text" nz-input id="oddNumber"
+                   formControlName="oddNumber">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+  <div class="mb-2">
+    <button class="mr-2" nz-button [nzType]="'primary'" (click)="queryData()">查询</button>
+    <button class="mr-2" nz-button [nzType]="'primary'" (click)="resetForm()">重置</button>
+  </div>
+  <nz-table nzBordered #batch
+            [nzFrontPagination]="false"
+            [nzTotal]="total"
+            [(nzPageIndex)]="pageIndex"
+            [nzShowTotal]="totalTemplate"
+            (nzPageIndexChange)="queryData($event)"
+            [nzData]="batchNoData" nzSize="small">
+    <thead>
+    <tr>
+      <th [nzAlign]="'center'" nzShowCheckbox
+          [(nzChecked)]="isAllDisplayDataChecked"
+          [nzIndeterminate]="isIndeterminate"
+          (nzCheckedChange)="checkAll($event)"></th>
+      <th [nzAlign]="'center'">操作</th>
+      <th [nzAlign]="'center'">类型</th>
+      <th [nzAlign]="'center'">疫苗类型</th>
+      <th [nzAlign]="'center'">订单号</th>
+      <th [nzAlign]="'center'">订单状态</th>
+      <th [nzAlign]="'center'">是否付款</th>
+      <th [nzAlign]="'center'">出入库日期</th>
+      <th [nzAlign]="'center'">供货单位</th>
+      <th [nzAlign]="'center'">收货单位</th>
+      <th [nzAlign]="'center'">录入单位</th>
+      <th [nzAlign]="'center'">创建日期</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of batch.data">
+      <td [nzAlign]="'center'" nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
+      <td [nzAlign]="'center'">
+        <a href="javascript:" (click)="checkDetail(data)">查看</a>
+      </td>
+      <td [nzAlign]="'center'">{{data.orderType | dicPipe: 'pfOrdertype'}}</td>
+      <td [nzAlign]="'center'">{{data.vaccineType | dicPipe: 'vaccineType'}}</td>
+      <td [nzAlign]="'center'">{{data.orderNo}}</td>
+      <td [nzAlign]="'center'">{{data.orderStatus | dicPipe: 'pfOrderStatus'}}</td>
+      <td [nzAlign]="'center'">{{data.isPay}}</td>
+      <td [nzAlign]="'center'">{{data.orderDate | date: 'yyyy-MM-dd'}}</td>
+      <td [nzAlign]="'center'">{{data.supplyorgName}}</td>
+      <td [nzAlign]="'center'">{{data.receiveorgName}}</td>
+      <td [nzAlign]="'center'">{{data.createorgName}}</td>
+      <td [nzAlign]="'center'">{{data.createDate | date: 'yyyy-MM-dd'}}</td>
+    </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-type let-page="page">
+  <!--<a *ngIf="type === 'pre'">上一页</a>
+  <a *ngIf="type === 'next'">下一页</a>
+  <a *ngIf="type === 'page'">{{ page }}</a>-->
+  共{{ total }}条数据，当前第{{ pageIndex }}页
+</ng-template>
+

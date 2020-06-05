@@ -1,0 +1,71 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    门诊调价管理
+    <div>
+      <button nbButton status="info" (click)="search()" [nbSpinner]="loading" class="mr-2">查询</button>
+      <button nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-card-body>
+      <form [formGroup]="form">
+        <div class="form-group row">
+          <div class="col-md-3 row">
+            <label class="col-4 col-form-label text-right">疫苗名称:</label>
+            <div class="col-8">
+              <uea-nb-select-all placeholderText="请选择疫苗名称" formControlName="vacProductCode"
+                                 [options]="vacSubClassData"></uea-nb-select-all>
+            </div>
+          </div>
+          <div class="col-md-3 row">
+            <label class="col-4 col-form-label text-right">批号:</label>
+            <div class="col-8">
+              <input type="text" nbInput fullWidth placeholder="请输入疫苗批号" formControlName="batchNo"
+                     id="batchNo">
+            </div>
+          </div>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card-body>
+</nb-card>
+<nb-card>
+  <nb-card-body>
+    <nz-table #adminInfo [nzData]="listData"
+              [nzLoading]="loading"
+              nzBordered nzSize="small" nzSimple="false"
+              [nzTotal]="total"
+              [(nzPageIndex)]="pageIndex"
+              [nzFrontPagination]="false"
+              (nzPageIndexChange)="search($event)">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">疫苗名称</th>
+        <!--        <th [nzAlign]="'center'">流水号</th>-->
+        <th [nzAlign]="'center'">批次号</th>
+        <th [nzAlign]="'center'">成本价<span class="sub-title">(元)</span></th>
+        <th [nzAlign]="'center'">预售价<span class="sub-title">(元)</span></th>
+        <th [nzAlign]="'center'">修改人员</th>
+        <th [nzAlign]="'center'">修改时间</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let d of adminInfo.data">
+        <td [nzAlign]="'center'">{{d.vaccineProductName}}</td>
+        <!--        <td [nzAlign]="'center'">{{d.povVaccPriceSerial}}</td>-->
+        <td [nzAlign]="'center'">{{d.prodBatchNumber}}</td>
+        <td [nzAlign]="'center'">{{d.purchasePrice}}</td>
+        <td [nzAlign]="'center'">{{d.povVaccPrice}}</td>
+        <td [nzAlign]="'center'">{{d.lastModifyBy | povStaffNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{d.lastModifyTime | date: 'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">
+          <a href="javascript:" class="link-a mr-1" (click)="changeInfo(d)">修改</a>
+          <!--             <a href="javascript:" class="link-a" (click)="deleteInfo(d)">删除</a>-->
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+

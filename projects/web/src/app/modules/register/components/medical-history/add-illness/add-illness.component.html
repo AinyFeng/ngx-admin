@@ -1,0 +1,37 @@
+<nb-card size="giant" class="nb-card-container-xs">
+  <nb-card-header class="nb-card-header-qb">
+    添加记录 -- {{ profile?.name ? profile.name : '' }}
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="form-group" *ngIf="type === '1'">
+      <label class="col-form-label label-required">禁忌症简述</label>
+      <nb-select fullWidth placeholder="选择禁忌症" [(selected)]="selectContra">
+        <nb-option *ngFor="let o of contraOpt" [value]="o.value">{{ o.label }}</nb-option>
+      </nb-select>
+    </div>
+    <div class="form-group" *ngIf="type === '2'">
+      <label class="col-form-label label-required">过敏症简述</label>
+      <input nbInput fullWidth placeholder="过敏症简述" [(ngModel)]="allergyDesc">
+    </div>
+    <div class="form-group" *ngIf="type === '3'">
+      <label class="col-form-label label-required">病史简述</label>
+      <input nbInput fullWidth placeholder="病史简述" [(ngModel)]="medicalDesc">
+    </div>
+    <div class="form-group">
+      <label class="col-form-label label-required">避免接种的制品种类</label>
+      <nb-select multiple fullWidth placeholder="选择避免接种的制品种类" [(selected)]="selectAvoid">
+        <nb-option *ngFor="let o of avoidOpt" [value]="o.value">{{ o.label }}</nb-option>
+      </nb-select>
+    </div>
+    <div class="form-group">
+      <label for="memo" class="col-form-label">备注</label>
+      <textarea id="memo" fullWidth nbInput [(ngModel)]="memo"></textarea>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button nbButton status="info" class="mr-3" (click)="onSubmit()">保存</button>
+    </div>
+  </nb-card-footer>
+</nb-card>

@@ -1,0 +1,22 @@
+<form nz-form [formGroup]="dateForm">
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="24">
+      <nz-form-item class="m-0">
+        <nz-form-label [nzSpan]="6">{{title}}</nz-form-label>
+        <nz-form-control [nzSpan]="18">
+          <nz-date-picker nzDateFullCell
+                          nzAllowClear="false"
+                          nzFormat="yyyy-MM-dd HH:mm:ss"
+                          formControlName="outInDate"
+                          [nzDisabledDate]="disabledDate"
+                          id="outInDate"
+                          (ngModelChange)="changeTime()"
+                          readonly
+                          nzShowTime></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</form>
+
+

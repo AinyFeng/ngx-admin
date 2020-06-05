@@ -1,0 +1,116 @@
+<nb-card accent="info">
+  <nb-card-header>
+    <span>编辑冷链设备信息</span>
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="modifyOrAddFrom" novalidate>
+      <div class="form-group row">
+        <label for="facilityNumber" class="col-sm-2 col-form-label text-right label-required">设备编码：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="请输入" formControlName="facilityNumber" id="facilityNumber" >
+          <!--<uea-show-form-errors [control]="modifyOrAddFrom.get('facilityCode')"></uea-show-form-errors>-->
+        </div>
+
+        <label for="name" class="col-sm-2 col-form-label text-right label-required">设备名称：</label>
+        <div class="col-sm-4">
+          <input type="text" nbInput fullWidth formControlName="请输入" formControlName="name" id="name" >
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('name')"></uea-show-form-errors>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="sourceCode" class="col-sm-2 col-form-label text-right label-required">经费来源：</label>
+        <div class="col-sm-4">
+          <nb-select placeholder="请选择" fullWidth outline status="info" formControlName="sourceCode"
+                     id="sourceCode">
+            <nb-option [value]="v.value" *ngFor="let v of sourceCodeOptions">{{v.label}}</nb-option>
+          </nb-select>
+          <!--<uea-show-form-errors [control]="modifyOrAddFrom.get('sourceCode')"></uea-show-form-errors>-->
+        </div>
+
+        <label for="deviceTypeName" class="col-sm-2 col-form-label text-right label-required">设备类型：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="请输入" formControlName="deviceTypeName" id="deviceTypeName" >
+         <!-- <uea-show-form-errors [control]="modifyOrAddFrom.get('deviceTypeCode')"></uea-show-form-errors>-->
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="brand" class="col-sm-2 col-form-label text-right label-required">设备品牌：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="请输入" formControlName="brand" id="brand" >
+         <!-- <uea-show-form-errors [control]="modifyOrAddFrom.get('brand')"></uea-show-form-errors>-->
+        </div>
+
+        <label for="model" class="col-sm-2 col-form-label text-right label-required">设备型号：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="请输入" formControlName="model" id="model" >
+         <!-- <uea-show-form-errors [control]="modifyOrAddFrom.get('model')"></uea-show-form-errors>-->
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="manufactureDate" class="col-sm-2 col-form-label text-right label-required">生产日期：</label>
+        <div class="col-sm-4">
+        <input fullWidth readonly nbInput placeholder="请选择日期"  formControlName="manufactureDate"
+                id="manufactureDate">
+       <!-- <nb-datepicker format="YYYY-MM-DD"  #manufactureDatepicker></nb-datepicker>-->
+       <!-- <uea-show-form-errors [control]="modifyOrAddFrom.get('manufactureDate')"></uea-show-form-errors>-->
+        </div>
+
+        <label for="useStartDate" class="col-sm-2 col-form-label text-right label-required">启用日期：</label>
+        <div class="col-sm-4">
+          <input fullWidth readonly nbInput placeholder="请选择日期"  formControlName="useStartDate"
+                  id="useStartDate">
+          <!--<nb-datepicker format="YYYY-MM-DD"  #useStartDatepicker></nb-datepicker>-->
+        <!--  <uea-show-form-errors [control]="modifyOrAddFrom.get('useStartDate')"></uea-show-form-errors>-->
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="storageCapacity" class="col-sm-2 col-form-label text-right">冷藏容积：</label>
+        <div class="col-sm-4">
+          <input type="number" readonly [min]="0" numberTransfer nbInput fullWidth formControlName="请输入" formControlName="storageCapacity" id="storageCapacity" >
+         <!-- <uea-show-form-errors [control]="modifyOrAddFrom.get('storageCapacity')"></uea-show-form-errors>-->
+        </div>
+
+        <label for="freezeCapacity" class="col-sm-2 col-form-label text-right">冷冻容积：</label>
+        <div class="col-sm-4">
+          <input type="number" readonly [min]="0" numberTransfer nbInput fullWidth formControlName="请输入" formControlName="freezeCapacity" id="freezeCapacity" >
+         <!-- <uea-show-form-errors [control]="modifyOrAddFrom.get('freezeCapacity')"></uea-show-form-errors>-->
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="facilityStatus" class="col-sm-2 col-form-label text-right label-required">设备运转状态：</label>
+        <div class="col-sm-4">
+          <nb-select placeholder="请选择" fullWidth outline status="info" formControlName="facilityStatus"
+                     id="facilityStatus">
+            <nb-option [value]="v.value" *ngFor="let v of facilityStatusOptions">{{v.label}}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('facilityStatus')"></uea-show-form-errors>
+        </div>
+
+        <label for="belongDepartmentCode" class="col-sm-2 col-form-label text-right label-required">所属科室：</label>
+        <div class="col-sm-4">
+          <nb-select placeholder="请选择" fullWidth outline status="info" formControlName="belongDepartmentCode"
+                     id="belongDepartmentCode">
+            <nb-option [value]="v.departmentCode" *ngFor="let v of departmentOptions">{{v.departmentName}}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('belongDepartmentCode')"></uea-show-form-errors>
+        </div>
+
+      </div>
+
+    </form>
+
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerMessage="" nbButton status="info" class="mr-5"
+              (click)="save()">保存
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>

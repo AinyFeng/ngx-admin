@@ -1,0 +1,117 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    疫苗库存查询
+    <div>
+      <button nbButton status="info" (click)="searchData()" [nbSpinner]="loading">查询</button>
+      <button nbButton status="info" (click)="export()"  [nbSpinner]="loading" class="ml-2 mr-2">导出库存</button>
+      <!--<button nbButton status="success">合并库存</button>-->
+      <button nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="vacStockForm">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗名称：</label>
+          <div class="col-8">
+           <!-- <nb-select placeholder="请选择疫苗名称" fullWidth outline status="info" formControlName="vacBroadHeadingCode"
+                       id="vacBroadHeadingCode">
+              <nb-option [value]="v.broadHeadingCode" *ngFor="let v of vacBroadHeadingData">{{v.broadHeadingFullName}}</nb-option>
+            </nb-select>-->
+            <uea-nb-select-all [placeholderText]="'请选择'" [options]="vacSubClassData"  formControlName="subClassData" >
+            </uea-nb-select-all>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">批号：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入批号" formControlName="batchCode" id="batchCode">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">生产企业：</label>
+          <div class="col-8">
+            <nb-select fullWidth placeholder="请选择" status="info" formControlName="manufacturerCode" id="manufacturerCode">
+              <nb-option [value]="v.code" *ngFor="let v of manufactureData">{{v.name}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗类型：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择疫苗类型" fullWidth outline status="info" formControlName="vaccineType"
+                       id="vaccineType">
+              <nb-option [value]="v.value" *ngFor="let v of vaccineTypeData">{{v.label}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">科室：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择科室" fullWidth outline status="info" formControlName="departmentCode"
+                       id="departmentCode">
+              <nb-option [value]="v.departmentCode" *ngFor="let v of departmentSelect">{{v.departmentName}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-1 col-form-label text-right"></label>
+          <div class="col-8">
+            <nb-checkbox (checkedChange)="toggle($event)" formControlName="maintainZeroInventory"
+                         id="maintainZeroInventory">维护0库存
+            </nb-checkbox>
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow-x: scroll;">
+  <nb-card-body>
+  <nz-table #msgTable [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false" [nzLoading]="loading"
+            [nzFrontPagination]="false"
+            [nzTotal]="total"
+            [nzPageIndex]="pageIndex"
+            (nzPageIndexChange)="searchData($event)">
+    <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">疫苗名称</th>
+        <th [nzAlign]="'center'">产品名称</th>
+        <th [nzAlign]="'center'">批号</th>
+        <th [nzAlign]="'center'">生产企业</th>
+        <th [nzAlign]="'center'">剂量</th>
+        <th [nzAlign]="'center'">类型</th>
+        <th [nzAlign]="'center'">签批发号</th>
+        <th [nzAlign]="'center'">库存(支)</th>
+        <th [nzAlign]="'center'">价格</th>
+        <th [nzAlign]="'center'">设备名称</th>
+        <th [nzAlign]="'center'">归属科室</th>
+        <th [nzAlign]="'center'">有效期</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index;">
+        <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+        <td [nzAlign]="'center'">{{data.vaccineSubclassCode | vacSubclassPipe}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineProductName}}</td>
+        <td [nzAlign]="'center'">{{data.prodBatchCode}}</td>
+        <td [nzAlign]="'center'">{{data.manufacturerCode | manufacturePipe}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineSpecification}}</td>
+        <td [nzAlign]="'center'">{{data.type | dicPipe:'vaccineType'}}</td>
+        <td [nzAlign]="'center'">{{data.issuedBatchNo}}</td>
+        <td [nzAlign]="'center'">{{data.count}}</td>
+        <td [nzAlign]="'center'">{{data.price}}</td>
+        <td [nzAlign]="'center'">{{data.facilityName}}</td>
+        <td [nzAlign]="'center'">{{data.departmentName}}</td>
+        <td [nzAlign]="'center'">{{data.loseEfficacyDate | date: 'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'"> <a  href="javascript:" class="link-a mr-1" (click)="breakageOut(data)">报损出库</a></td>
+      </tr>
+    </tbody>
+  </nz-table>
+  </nb-card-body>
+</nb-card>

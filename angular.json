@@ -1,0 +1,1693 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "uea-auth-lib": {
+      "root": "projects/uea-auth-lib",
+      "sourceRoot": "projects/uea-auth-lib/src",
+      "projectType": "library",
+      "prefix": "uea",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/uea-auth-lib/tsconfig.lib.json",
+            "project": "projects/uea-auth-lib/package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/uea-auth-lib/ng-package.prod.json",
+              "styles": []
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/uea-auth-lib/tsconfig.lib.json",
+              "projects/uea-auth-lib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "web": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/web",
+      "sourceRoot": "projects/web/src",
+      "prefix": "uea",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/web",
+            "index": "projects/web/src/index.html",
+            "main": "projects/web/src/main.ts",
+            "polyfills": "projects/web/src/polyfills.ts",
+            "tsConfig": "projects/web/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/web/src/favicon.ico",
+              "projects/web/src/assets",
+              "projects/web/src/silent-refresh.html",
+              "projects/web/src/manifest.webmanifest"
+            ],
+            "styles": [
+              "projects/web/src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/typeface-exo/index.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "node_modules/socicon/css/socicon.css",
+              "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
+              "node_modules/ionicons/dist/scss/ionicons.scss",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/angular-notifier/styles.scss",
+              "node_modules/angular-notifier/styles.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/pace-js/pace.min.js",
+              "node_modules/echarts/dist/echarts.min.js",
+              "node_modules/echarts/dist/extension/bmap.min.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/web/src/environments/environment.ts",
+                  "with": "projects/web/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "10MB",
+                  "maximumError": "10MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "10kb",
+                  "maximumError": "15kb"
+                }
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "projects/web/ngsw-config.json"
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "web:build",
+            "proxyConfig": "proxy.conf.json",
+            "host": "0.0.0.0",
+            "port": 19999,
+            "ssl": true,
+            "sslKey": "",
+            "sslCert": "",
+            "servePath": "",
+            "disableHostCheck": true,
+            "hmr": false,
+            "liveReload": true,
+            "optimization": false,
+            "aot": false,
+            "sourceMap": true,
+            "vendorChunk": true,
+            "commonChunk": true,
+            "verbose": false,
+            "progress": true
+          },
+          "headers": {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+            "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "web:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "web:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/web/src/test.ts",
+            "polyfills": "projects/web/src/polyfills.ts",
+            "tsConfig": "projects/web/tsconfig.spec.json",
+            "karmaConfig": "projects/web/karma.conf.js",
+            "assets": [
+              "projects/web/src/favicon.ico",
+              "projects/web/src/assets",
+              "projects/web/src/silent-refresh.html",
+              "projects/web/src/manifest.webmanifest"
+            ],
+            "styles": [
+              "projects/web/src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/typeface-exo/index.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "node_modules/socicon/css/socicon.css",
+              "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
+              "node_modules/ionicons/dist/scss/ionicons.scss",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/ng-zorro-antd-mobile/src/ng-zorro-antd-mobile.min.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/pace-js/pace.min.js",
+              "node_modules/echarts/dist/echarts.min.js",
+              "node_modules/echarts/dist/extension/bmap.min.js"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/web/tsconfig.app.json",
+              "projects/web/tsconfig.spec.json",
+              "projects/web/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/web/e2e/protractor.conf.js",
+            "devServerTarget": "web:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "web:serve:production"
+            }
+          }
+        }
+      }
+    },
+    "demo": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "less"
+        }
+      },
+      "root": "projects/demo",
+      "sourceRoot": "projects/demo/src",
+      "prefix": "uea",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "deployUrl": "/incubation/demo/",
+            "outputPath": "dist/demo",
+            "index": "projects/demo/src/index.html",
+            "main": "projects/demo/src/main.ts",
+            "polyfills": "projects/demo/src/polyfills.ts",
+            "tsConfig": "projects/demo/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/demo/src/favicon.ico",
+              "projects/demo/src/assets",
+              "projects/demo/src/silent-refresh.html",
+              "projects/demo/src/manifest.webmanifest",
+              "projects/demo/src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              }
+            ],
+            "styles": [
+              "projects/demo/src/styles.less",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/demo/src/environments/environment.ts",
+                  "with": "projects/demo/src/environments/environment.prod.ts"
+                }
+              ],
+              "deployUrl": "/incubation/demo/",
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "6mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "projects/demo/ngsw-config.json"
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "demo:build",
+            "proxyConfig": "proxy.conf.json",
+            "host": "0.0.0.0",
+            "port": 19990,
+            "ssl": true,
+            "sslKey": "",
+            "sslCert": "",
+            "deployUrl": "/incubation/demo/",
+            "servePath": "/incubation/demo/",
+            "disableHostCheck": true,
+            "hmr": false,
+            "liveReload": true,
+            "optimization": false,
+            "aot": true,
+            "sourceMap": true,
+            "vendorChunk": true,
+            "commonChunk": true,
+            "verbose": false,
+            "progress": true
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "demo:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "demo:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/demo/src/test.ts",
+            "polyfills": "projects/demo/src/polyfills.ts",
+            "tsConfig": "projects/demo/tsconfig.spec.json",
+            "karmaConfig": "projects/demo/karma.conf.js",
+            "assets": [
+              "projects/demo/src/favicon.ico",
+              "projects/demo/src/assets",
+              "projects/demo/src/silent-refresh.html",
+              "projects/demo/src/manifest.webmanifest"
+            ],
+            "styles": [
+              "projects/demo/src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.css"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/demo/tsconfig.app.json",
+              "projects/demo/tsconfig.spec.json",
+              "projects/demo/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "projects/demo/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/demo/e2e/protractor.conf.js",
+            "devServerTarget": "demo:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "demo:serve:production"
+            }
+          }
+        }
+      }
+    },
+    "svs-common-lib": {
+      "projectType": "library",
+      "root": "projects/svs-common-lib",
+      "sourceRoot": "projects/svs-common-lib/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/svs-common-lib/tsconfig.lib.json",
+            "project": "projects/svs-common-lib/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/svs-common-lib/ng-package.json",
+              "styles": []
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/svs-common-lib/src/test.ts",
+            "tsConfig": "projects/svs-common-lib/tsconfig.spec.json",
+            "karmaConfig": "projects/svs-common-lib/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/svs-common-lib/tsconfig.lib.json",
+              "projects/svs-common-lib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "ngx-webstorage": {
+      "projectType": "library",
+      "root": "projects/ngx-webstorage",
+      "sourceRoot": "projects/ngx-webstorage/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-webstorage/tsconfig.lib.json",
+            "project": "projects/ngx-webstorage/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/ngx-webstorage/ng-package.json",
+              "styles": []
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-webstorage/src/test.ts",
+            "tsConfig": "projects/ngx-webstorage/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-webstorage/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-webstorage/tsconfig.lib.json",
+              "projects/ngx-webstorage/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "projects/ngx-webstorage"
+            ]
+          }
+        }
+      }
+    },
+    "wxpub": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "less"
+        }
+      },
+      "root": "projects/wxpub",
+      "sourceRoot": "projects/wxpub/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "deployUrl": "/wxpub/",
+            "outputPath": "dist/wxpub",
+            "index": "projects/wxpub/src/index.html",
+            "main": "projects/wxpub/src/main.ts",
+            "polyfills": "projects/wxpub/src/polyfills.ts",
+            "tsConfig": "projects/wxpub/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/wxpub/src/favicon.ico",
+              "projects/wxpub/src/assets",
+              "projects/wxpub/src/manifest.webmanifest",
+              "projects/wxpub/src/silent-refresh.html"
+            ],
+            "styles": [
+              "projects/wxpub/src/styles.less",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "deployUrl": "/wxpub/",
+              "fileReplacements": [
+                {
+                  "replace": "projects/wxpub/src/environments/environment.ts",
+                  "with": "projects/wxpub/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "6mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "projects/wxpub/ngsw-config.json"
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "deployUrl": "/wxpub/",
+            "browserTarget": "wxpub:build",
+            "proxyConfig": "proxy.conf.json",
+            "host": "0.0.0.0",
+            "port": 19991,
+            "ssl": true,
+            "sslKey": "",
+            "sslCert": "",
+            "servePath": "/wxpub/",
+            "disableHostCheck": true,
+            "liveReload": true,
+            "optimization": false,
+            "aot": false,
+            "sourceMap": true,
+            "vendorChunk": true,
+            "commonChunk": true,
+            "verbose": false,
+            "progress": true
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "wxpub:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "wxpub:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/wxpub/src/test.ts",
+            "polyfills": "projects/wxpub/src/polyfills.ts",
+            "tsConfig": "projects/wxpub/tsconfig.spec.json",
+            "karmaConfig": "projects/wxpub/karma.conf.js",
+            "assets": [
+              "projects/wxpub/src/favicon.ico",
+              "projects/wxpub/src/assets",
+              "projects/wxpub/src/manifest.webmanifest",
+              "projects/wxpub/src/silent-refresh.html"
+            ],
+            "styles": [
+              "projects/wxpub/src/styles.less"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/wxpub/tsconfig.app.json",
+              "projects/wxpub/tsconfig.spec.json",
+              "projects/wxpub/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/wxpub/e2e/protractor.conf.js",
+            "devServerTarget": "wxpub:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "wxpub:serve:production"
+            }
+          }
+        }
+      }
+    },
+    "vaccinestock": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/vaccinestock",
+      "sourceRoot": "projects/vaccinestock/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "deployUrl": "/saas/stock/",
+            "outputPath": "dist/vaccinestock",
+            "index": "projects/vaccinestock/src/index.html",
+            "main": "projects/vaccinestock/src/main.ts",
+            "polyfills": "projects/vaccinestock/src/polyfills.ts",
+            "tsConfig": "projects/vaccinestock/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/vaccinestock/src/favicon.ico",
+              "projects/vaccinestock/src/assets",
+              "projects/vaccinestock/src/silent-refresh.html",
+              "projects/vaccinestock/src/manifest.webmanifest"
+            ],
+            "styles": [
+              "projects/vaccinestock/src/app/@uea/theme/base-theme/styles.scss",
+              "projects/vaccinestock/src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/typeface-exo/index.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "node_modules/socicon/css/socicon.css",
+              "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
+              "node_modules/ionicons/dist/scss/ionicons.scss",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/angular-notifier/styles.scss",
+              "node_modules/animate.css/animate.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/pace-js/pace.min.js",
+              "node_modules/echarts/dist/echarts.min.js",
+              "node_modules/echarts/dist/extension/bmap.min.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/vaccinestock/src/environments/environment.ts",
+                  "with": "projects/vaccinestock/src/environments/environment.prod.ts"
+                }
+              ],
+              "deployUrl": "/saas/stock/",
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "8mb",
+                  "maximumError": "8mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "projects/vaccinestock/ngsw-config.json"
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "vaccinestock:build",
+            "host": "0.0.0.0",
+            "port": 19994,
+            "ssl": true,
+            "proxyConfig": "proxy.conf.json",
+            "sslKey": "",
+            "sslCert": "",
+            "deployUrl": "/saas/stock/",
+            "servePath": "/saas/stock/",
+            "disableHostCheck": true,
+            "hmr": false,
+            "liveReload": true,
+            "optimization": false,
+            "aot": false,
+            "sourceMap": true,
+            "vendorChunk": true,
+            "commonChunk": true,
+            "verbose": false,
+            "progress": true
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "vaccinestock:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "vaccinestock:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/vaccinestock/src/test.ts",
+            "polyfills": "projects/vaccinestock/src/polyfills.ts",
+            "tsConfig": "projects/vaccinestock/tsconfig.spec.json",
+            "karmaConfig": "projects/vaccinestock/karma.conf.js",
+            "assets": [
+              "projects/vaccinestock/src/favicon.ico",
+              "projects/vaccinestock/src/assets",
+              "projects/vaccinestock/src/silent-refresh.html",
+              "projects/vaccinestock/src/manifest.webmanifest"
+            ],
+            "styles": [
+              "projects/vaccinestock/src/app/@uea/theme/base-theme/styles.scss",
+              "projects/vaccinestock/src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/typeface-exo/index.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "node_modules/socicon/css/socicon.css",
+              "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
+              "node_modules/ionicons/dist/scss/ionicons.scss",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "node_modules/font-awesome/css/font-awesome.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/pace-js/pace.min.js",
+              "node_modules/echarts/dist/echarts.min.js",
+              "node_modules/echarts/dist/extension/bmap.min.js"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/vaccinestock/tsconfig.app.json",
+              "projects/vaccinestock/tsconfig.spec.json",
+              "projects/vaccinestock/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/vaccinestock/e2e/protractor.conf.js",
+            "devServerTarget": "vaccinestock:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "vaccinestock:serve:production"
+            }
+          }
+        }
+      }
+    },
+    "plan": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/plan",
+      "sourceRoot": "projects/plan/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "deployUrl": "/saas/plan/",
+            "outputPath": "dist/plan",
+            "index": "projects/plan/src/index.html",
+            "main": "projects/plan/src/main.ts",
+            "polyfills": "projects/plan/src/polyfills.ts",
+            "tsConfig": "projects/plan/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/plan/src/favicon.ico",
+              "projects/plan/src/assets",
+              "projects/plan/src/manifest.webmanifest",
+              "projects/plan/src/silent-refresh.html"
+            ],
+            "styles": [
+              "projects/plan/src/app/@uea/theme/base-theme/styles.scss",
+              "projects/plan/src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/typeface-exo/index.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "node_modules/socicon/css/socicon.css",
+              "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
+              "node_modules/ionicons/dist/scss/ionicons.scss",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "node_modules/font-awesome/css/font-awesome.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/pace-js/pace.min.js",
+              "node_modules/echarts/dist/echarts.min.js",
+              "node_modules/echarts/dist/extension/bmap.min.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/plan/src/environments/environment.ts",
+                  "with": "projects/plan/src/environments/environment.prod.ts"
+                }
+              ],
+              "deployUrl": "/saas/plan/",
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "7mb",
+                  "maximumError": "7mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "projects/plan/ngsw-config.json"
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "plan:build",
+            "host": "0.0.0.0",
+            "port": 19996,
+            "ssl": true,
+            "proxyConfig": "proxy.conf.json",
+            "sslKey": "",
+            "sslCert": "",
+            "deployUrl": "/saas/plan/",
+            "servePath": "/saas/plan/",
+            "disableHostCheck": true,
+            "hmr": false,
+            "liveReload": true,
+            "optimization": false,
+            "aot": false,
+            "sourceMap": true,
+            "vendorChunk": true,
+            "commonChunk": true,
+            "verbose": false,
+            "progress": true
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "plan:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "plan:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/plan/src/test.ts",
+            "polyfills": "projects/plan/src/polyfills.ts",
+            "tsConfig": "projects/plan/tsconfig.spec.json",
+            "karmaConfig": "projects/plan/karma.conf.js",
+            "assets": [
+              "projects/plan/src/favicon.ico",
+              "projects/plan/src/assets",
+              "projects/plan/src/manifest.webmanifest",
+              "projects/plan/src/silent-refresh.html"
+            ],
+            "styles": [
+              "projects/plan/src/app/@uea/theme/base-theme/styles.scss",
+              "projects/plan/src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/typeface-exo/index.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "node_modules/socicon/css/socicon.css",
+              "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
+              "node_modules/ionicons/dist/scss/ionicons.scss",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "node_modules/font-awesome/css/font-awesome.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/pace-js/pace.min.js",
+              "node_modules/echarts/dist/echarts.min.js",
+              "node_modules/echarts/dist/extension/bmap.min.js"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/plan/tsconfig.app.json",
+              "projects/plan/tsconfig.spec.json",
+              "projects/plan/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/plan/e2e/protractor.conf.js",
+            "devServerTarget": "plan:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "plan:serve:production"
+            }
+          }
+        }
+      }
+    },
+    "coldchain": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/coldchain",
+      "sourceRoot": "projects/coldchain/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "deployUrl": "/saas/coldchain/",
+            "outputPath": "dist/coldchain",
+            "index": "projects/coldchain/src/index.html",
+            "main": "projects/coldchain/src/main.ts",
+            "polyfills": "projects/coldchain/src/polyfills.ts",
+            "tsConfig": "projects/coldchain/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/coldchain/src/favicon.ico",
+              "projects/coldchain/src/assets",
+              "projects/coldchain/src/silent-refresh.html",
+              "projects/coldchain/src/manifest.webmanifest",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              }
+            ],
+            "styles": [
+              "projects/coldchain/src/app/@uea/theme/base-theme/styles.scss",
+              "projects/coldchain/src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/typeface-exo/index.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "node_modules/socicon/css/socicon.css",
+              "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
+              "node_modules/ionicons/dist/scss/ionicons.scss",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "node_modules/font-awesome/css/font-awesome.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/pace-js/pace.min.js",
+              "node_modules/echarts/dist/echarts.min.js",
+              "node_modules/echarts/dist/extension/bmap.min.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/coldchain/src/environments/environment.ts",
+                  "with": "projects/coldchain/src/environments/environment.prod.ts"
+                }
+              ],
+              "deployUrl": "/saas/coldchain/",
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "7mb",
+                  "maximumError": "7mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "projects/coldchain/ngsw-config.json"
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "coldchain:build",
+            "host": "0.0.0.0",
+            "port": 19997,
+            "ssl": true,
+            "proxyConfig": "proxy.conf.json",
+            "deployUrl": "/saas/coldchain/",
+            "sslKey": "",
+            "sslCert": "",
+            "servePath": "/saas/coldchain/",
+            "disableHostCheck": true,
+            "hmr": false,
+            "liveReload": true,
+            "optimization": false,
+            "aot": false,
+            "sourceMap": true,
+            "vendorChunk": true,
+            "commonChunk": true,
+            "verbose": false,
+            "progress": true
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "coldchain:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "coldchain:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/coldchain/src/test.ts",
+            "polyfills": "projects/coldchain/src/polyfills.ts",
+            "tsConfig": "projects/coldchain/tsconfig.spec.json",
+            "karmaConfig": "projects/coldchain/karma.conf.js",
+            "assets": [
+              "projects/coldchain/src/favicon.ico",
+              "projects/coldchain/src/assets",
+              "projects/coldchain/src/silent-refresh.html",
+              "projects/coldchain/src/manifest.webmanifest",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              }
+            ],
+            "styles": [
+              "projects/coldchain/src/app/@uea/theme/base-theme/styles.scss",
+              "projects/coldchain/src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/typeface-exo/index.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "node_modules/socicon/css/socicon.css",
+              "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
+              "node_modules/ionicons/dist/scss/ionicons.scss",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "node_modules/font-awesome/css/font-awesome.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/pace-js/pace.min.js",
+              "node_modules/echarts/dist/echarts.min.js",
+              "node_modules/echarts/dist/extension/bmap.min.js"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/coldchain/tsconfig.app.json",
+              "projects/coldchain/tsconfig.spec.json",
+              "projects/coldchain/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/coldchain/e2e/protractor.conf.js",
+            "devServerTarget": "coldchain:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "coldchain:serve:production"
+            }
+          }
+        }
+      }
+    },
+    "vaccinationstatistics": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/vaccinationstatistics",
+      "sourceRoot": "projects/vaccinationstatistics/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "deployUrl": "/saas/statistics/",
+            "outputPath": "dist/vaccinationstatistics",
+            "index": "projects/vaccinationstatistics/src/index.html",
+            "main": "projects/vaccinationstatistics/src/main.ts",
+            "polyfills": "projects/vaccinationstatistics/src/polyfills.ts",
+            "tsConfig": "projects/vaccinationstatistics/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/vaccinationstatistics/src/favicon.ico",
+              "projects/vaccinationstatistics/src/assets",
+              "projects/vaccinationstatistics/src/silent-refresh.html",
+              "projects/vaccinationstatistics/src/manifest.webmanifest"
+            ],
+            "styles": [
+              "projects/vaccinationstatistics/src/app/@uea/theme/base-theme/styles.scss",
+              "projects/vaccinationstatistics/src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/typeface-exo/index.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "node_modules/socicon/css/socicon.css",
+              "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
+              "node_modules/ionicons/dist/scss/ionicons.scss",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "node_modules/font-awesome/css/font-awesome.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/pace-js/pace.min.js",
+              "node_modules/echarts/dist/echarts.min.js",
+              "node_modules/echarts/dist/extension/bmap.min.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/vaccinationstatistics/src/environments/environment.ts",
+                  "with": "projects/vaccinationstatistics/src/environments/environment.prod.ts"
+                }
+              ],
+              "deployUrl": "/saas/statistics/",
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "7mb",
+                  "maximumError": "7mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "projects/vaccinationstatistics/ngsw-config.json"
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "vaccinationstatistics:build",
+            "host": "0.0.0.0",
+            "port": 19995,
+            "ssl": true,
+            "proxyConfig": "proxy.conf.json",
+            "sslKey": "",
+            "sslCert": "",
+            "deployUrl": "/saas/statistics/",
+            "servePath": "/saas/statistics/",
+            "disableHostCheck": true,
+            "hmr": false,
+            "liveReload": true,
+            "optimization": false,
+            "aot": false,
+            "sourceMap": true,
+            "vendorChunk": true,
+            "commonChunk": true,
+            "verbose": false,
+            "progress": true
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "vaccinationstatistics:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "vaccinationstatistics:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/vaccinationstatistics/src/test.ts",
+            "polyfills": "projects/vaccinationstatistics/src/polyfills.ts",
+            "tsConfig": "projects/vaccinationstatistics/tsconfig.spec.json",
+            "karmaConfig": "projects/vaccinationstatistics/karma.conf.js",
+            "assets": [
+              "projects/vaccinationstatistics/src/favicon.ico",
+              "projects/vaccinationstatistics/src/assets",
+              "projects/vaccinationstatistics/src/silent-refresh.html",
+              "projects/vaccinationstatistics/src/manifest.webmanifest"
+            ],
+            "styles": [
+              "projects/vaccinationstatistics/src/app/@uea/theme/base-theme/styles.scss",
+              "projects/vaccinationstatistics/src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/typeface-exo/index.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "node_modules/socicon/css/socicon.css",
+              "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
+              "node_modules/ionicons/dist/scss/ionicons.scss",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "node_modules/font-awesome/css/font-awesome.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/pace-js/pace.min.js",
+              "node_modules/echarts/dist/echarts.min.js",
+              "node_modules/echarts/dist/extension/bmap.min.js"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/vaccinationstatistics/tsconfig.app.json",
+              "projects/vaccinationstatistics/tsconfig.spec.json",
+              "projects/vaccinationstatistics/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/vaccinationstatistics/e2e/protractor.conf.js",
+            "devServerTarget": "vaccinationstatistics:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "vaccinationstatistics:serve:production"
+            }
+          }
+        }
+      }
+    },
+    "obstetricvaccination": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/obstetricvaccination",
+      "sourceRoot": "projects/obstetricvaccination/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "deployUrl": "/pov/obstetric/",
+            "outputPath": "dist/obstetricvaccination",
+            "index": "projects/obstetricvaccination/src/index.html",
+            "main": "projects/obstetricvaccination/src/main.ts",
+            "polyfills": "projects/obstetricvaccination/src/polyfills.ts",
+            "tsConfig": "projects/obstetricvaccination/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/obstetricvaccination/src/favicon.ico",
+              "projects/obstetricvaccination/src/assets",
+              "projects/obstetricvaccination/src/silent-refresh.html",
+              "projects/obstetricvaccination/src/manifest.webmanifest"
+            ],
+            "styles": [
+              "projects/obstetricvaccination/src/styles.scss",
+              "projects/obstetricvaccination/src/app/@uea/theme/base-theme/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/typeface-exo/index.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "node_modules/socicon/css/socicon.css",
+              "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
+              "node_modules/ionicons/dist/scss/ionicons.scss",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "node_modules/font-awesome/css/font-awesome.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/pace-js/pace.min.js",
+              "node_modules/echarts/dist/echarts.min.js",
+              "node_modules/echarts/dist/extension/bmap.min.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/obstetricvaccination/src/environments/environment.ts",
+                  "with": "projects/obstetricvaccination/src/environments/environment.prod.ts"
+                }
+              ],
+              "deployUrl": "/pov/obstetric/",
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "7mb",
+                  "maximumError": "7mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "projects/obstetricvaccination/ngsw-config.json"
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "obstetricvaccination:build",
+            "deployUrl": "/pov/obstetric/",
+            "servePath": "/pov/obstetric/",
+            "host": "0.0.0.0",
+            "port": 19993,
+            "ssl": true,
+            "proxyConfig": "proxy.conf.json",
+            "sslKey": "",
+            "sslCert": ""
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "obstetricvaccination:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "obstetricvaccination:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/obstetricvaccination/src/test.ts",
+            "polyfills": "projects/obstetricvaccination/src/polyfills.ts",
+            "tsConfig": "projects/obstetricvaccination/tsconfig.spec.json",
+            "karmaConfig": "projects/obstetricvaccination/karma.conf.js",
+            "assets": [
+              "projects/obstetricvaccination/src/favicon.ico",
+              "projects/obstetricvaccination/src/assets",
+              "projects/obstetricvaccination/src/silent-refresh.html",
+              "projects/obstetricvaccination/src/manifest.webmanifest"
+            ],
+            "styles": [
+              "projects/obstetricvaccination/src/styles.scss",
+              "projects/obstetricvaccination/src/app/@uea/theme/base-theme/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/typeface-exo/index.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "node_modules/socicon/css/socicon.css",
+              "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
+              "node_modules/ionicons/dist/scss/ionicons.scss",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "node_modules/font-awesome/css/font-awesome.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/pace-js/pace.min.js",
+              "node_modules/echarts/dist/echarts.min.js",
+              "node_modules/echarts/dist/extension/bmap.min.js"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/obstetricvaccination/tsconfig.app.json",
+              "projects/obstetricvaccination/tsconfig.spec.json",
+              "projects/obstetricvaccination/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/obstetricvaccination/e2e/protractor.conf.js",
+            "devServerTarget": "obstetricvaccination:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "obstetricvaccination:serve:production"
+            }
+          }
+        }
+      }
+    },
+    "vaccinationexamine": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/vaccinationexamine",
+      "sourceRoot": "projects/vaccinationexamine/src",
+      "prefix": "uea",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "deployUrl": "/saas/examine/",
+            "outputPath": "dist/vaccinationexamine",
+            "index": "projects/vaccinationexamine/src/index.html",
+            "main": "projects/vaccinationexamine/src/main.ts",
+            "polyfills": "projects/vaccinationexamine/src/polyfills.ts",
+            "tsConfig": "projects/vaccinationexamine/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/vaccinationexamine/src/favicon.ico",
+              "projects/vaccinationexamine/src/assets",
+              "projects/vaccinationexamine/src/manifest.webmanifest",
+              "projects/vaccinationexamine/src/silent-refresh.html"
+            ],
+            "styles": [
+              "projects/vaccinationexamine/src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/typeface-exo/index.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "node_modules/socicon/css/socicon.css",
+              "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
+              "node_modules/ionicons/dist/scss/ionicons.scss",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "node_modules/font-awesome/css/font-awesome.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/pace-js/pace.min.js",
+              "node_modules/echarts/dist/echarts.min.js",
+              "node_modules/echarts/dist/extension/bmap.min.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/vaccinationexamine/src/environments/environment.ts",
+                  "with": "projects/vaccinationexamine/src/environments/environment.prod.ts"
+                }
+              ],
+              "deployUrl": "/saas/examine/",
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "8mb",
+                  "maximumError": "8mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "projects/vaccinationexamine/ngsw-config.json"
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "vaccinationexamine:build",
+            "host": "0.0.0.0",
+            "port": 19992,
+            "ssl": true,
+            "proxyConfig": "proxy.conf.json",
+            "sslKey": "",
+            "sslCert": "",
+            "deployUrl": "/saas/examine/",
+            "servePath": "/saas/examine/",
+            "disableHostCheck": true,
+            "hmr": false,
+            "liveReload": true,
+            "optimization": false,
+            "aot": false,
+            "sourceMap": true,
+            "vendorChunk": true,
+            "commonChunk": true,
+            "verbose": false,
+            "progress": true
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "vaccinationexamine:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "vaccinationexamine:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/vaccinationexamine/src/test.ts",
+            "polyfills": "projects/vaccinationexamine/src/polyfills.ts",
+            "tsConfig": "projects/vaccinationexamine/tsconfig.spec.json",
+            "karmaConfig": "projects/vaccinationexamine/karma.conf.js",
+            "assets": [
+              "projects/vaccinationexamine/src/favicon.ico",
+              "projects/vaccinationexamine/src/assets",
+              "projects/vaccinationexamine/src/manifest.webmanifest",
+              "projects/vaccinationexamine/src/silent-refresh.html"
+            ],
+            "styles": [
+              "projects/vaccinationexamine/src/app/@uea/theme/base-theme/styles.scss",
+              "projects/vaccinationexamine/src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/typeface-exo/index.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "node_modules/socicon/css/socicon.css",
+              "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
+              "node_modules/ionicons/dist/scss/ionicons.scss",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "node_modules/font-awesome/css/font-awesome.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/pace-js/pace.min.js",
+              "node_modules/echarts/dist/echarts.min.js",
+              "node_modules/echarts/dist/extension/bmap.min.js"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/vaccinationexamine/tsconfig.app.json",
+              "projects/vaccinationexamine/tsconfig.spec.json",
+              "projects/vaccinationexamine/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/vaccinationexamine/e2e/protractor.conf.js",
+            "devServerTarget": "vaccinationexamine:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "vaccinationexamine:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "web",
+  "schematics": {
+    "@schematics/angular:component": {
+      "prefix": "uea",
+      "styleext": "scss"
+    },
+    "@schematics/angular:directive": {
+      "prefix": "uea"
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
+}

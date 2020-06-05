@@ -1,0 +1,85 @@
+<nb-card size="xlarge" class="nb-card-container-sm">
+  <nb-card-header class="nb-card-header-qb">
+    AEFI不良反应反馈 -- {{ profile?.name ? profile.name : '' }}
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-alert outline="primary" class="flex-row" *ngIf="dataSource.count() == 0 && updateData && !loading">
+      没有查到数据，请 <a href="javascript:" (click)="queryVacRecordByCode()">重试</a>
+    </nb-alert>
+    <form [formGroup]="aefiForm">
+      <div class="form-group row">
+        <label class="col-form-label col-2 text-right">选择接种记录</label>
+        <div class="col-3">
+          <button [disabled]="updateData" nbButton status="info" outline (click)="openDialog()">选择</button>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-12">
+
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="aefiDate" class="col-form-label col-2 text-right">异常发生时间</label>
+        <div class="col-3">
+          <nz-date-picker id="aefiDate" formControlName="aefiDate" nzFormat="yyyy-MM-dd HH:mm:ss"
+                          [nzDisabledDate]="disabledDate" [nzDisabledTime]="disabledTime"
+                          (ngModelChange)="selectAefiDate()"
+                          [nzShowTime]="true">
+          </nz-date-picker>
+        </div>
+        <label for="period" class="col-form-label col-3 text-right">与接种间隔时间</label>
+        <div class="col-3">
+          <input id="period" formControlName="period" fullWidth nbInput readonly placeholder="间隔时间">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="aefiType" class="col-form-label col-2 text-right">选择AEFI编码</label>
+        <div class="col-9">
+          <nb-select id="aefiType" fullWidth placeholder="选择AEFI编码" formControlName="aefiCode">
+            <nb-option *ngFor="let a of aefiCodeOptions" [value]="a.aefiCode">{{ a.fullName }}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-form-label col-2 text-right">异常反应描述</label>
+        <div class="col-10">
+          <textarea nbInput fullWidth formControlName="reaction" rows="3" placeholder="请填写异常反应的描述"></textarea>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-form-label col-2 text-right">上传照片
+          <i nbTooltip="最多上传3张照片，每张照片大小不超过2MB，格式为：jpeg/jpg/png" nz-icon nzType="question-circle"
+             nzTheme="outline"></i></label>
+        <div class="col-10">
+          <div *ngIf="picList.length != 0">
+            <ul style="list-style-type: none;">
+              <li *ngFor="let name of picList;let i = index">
+                <a target="_blank" [href]="name"
+                   [title]="name">图片：{{ name.toString().substring(name.toString().lastIndexOf('/')) }}</a> --- <a
+                href="javascript:" (click)="deleteFileByName(name)">删除</a>
+              </li>
+            </ul>
+          </div>
+
+          <nz-upload *ngIf="picList.length == 0" [nzAction]="uploadUrl" nzListType="picture-card" nzName="files"
+                     [nzBeforeUpload]="beforeUpload" [(nzFileList)]="picUploadList"
+                     [nzShowButton]="picUploadList.length < 3"
+                     [nzShowUploadList]="showUploadList" [nzRemove]="deleteFile" [nzPreview]="handlePreview">
+            <i nz-icon nzType="plus"></i>
+            <div class="ant-upload-text">上传</div>
+          </nz-upload>
+          <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null"
+                    (nzOnCancel)="previewVisible = false">
+            <ng-template #modalContent>
+              <img [src]="previewImage" [ngStyle]="{ width: '100%' }"/>
+            </ng-template>
+          </nz-modal>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer class="text-center">
+    <button nbButton status="info" (click)="onSubmit()" [nbSpinner]="loading" nbSpinnerStatus="info">保存</button>
+  </nb-card-footer>
+</nb-card>

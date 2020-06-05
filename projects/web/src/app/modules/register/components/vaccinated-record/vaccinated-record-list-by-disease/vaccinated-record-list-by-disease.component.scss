@@ -1,0 +1,12 @@
+@import '../../../../../@uea/theme/global_theme';
+
+
+@include nb-install() {
+  .record-flag {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+  }
+}

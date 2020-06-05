@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+.text-red {
+  color: red;
+  border-bottom: 1px dotted red;
+}
+
+.text-blue {
+  color: blue;
+  border-bottom: 1px dotted blue;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-error {
+  color: #f5222d;
+}
+
+.msg-error {
+  color: #f5222d;
+  position: absolute;
+  left: 0;
+  top: 26px;
+}

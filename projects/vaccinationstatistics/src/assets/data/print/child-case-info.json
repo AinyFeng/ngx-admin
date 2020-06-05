@@ -1,0 +1,986 @@
+{
+  "ah2019bhMade": {
+    "imgBgWidth": 790,
+    "imgBgHeight": 1092,
+    "caseImage": "'<img border='0' src='../../../../../../assets/images/vaccinationRecord/ah2019baoheMade/ah2019包河制000个案信息.jpg'>'",
+    "profileCode": [
+      682,
+      732,
+      127,
+      20
+    ],
+    "idCardNo": [
+      699,
+      687,
+      140,
+      20
+    ],
+    "birthCardNo": [
+      752,
+      646,
+      159,
+      20
+    ],
+    "name": [
+      705,
+      609,
+      78,
+      20
+    ],
+    "gender": [
+      928,
+      606,
+      60,
+      20
+    ],
+    "years": [
+      781,
+      573,
+      51,
+      20
+    ],
+    "month": [
+      878,
+      573,
+      42,
+      20
+    ],
+    "day": [
+      967,
+      573,
+      37,
+      20
+    ],
+    "fatherName": [
+      709,
+      535,
+      70,
+      20
+    ],
+    "fatherContactPhone": [
+      915,
+      535,
+      101,
+      20
+    ],
+    "motherName": [
+      707,
+      497,
+      80,
+      20
+    ],
+    "motherContactPhone": [
+      915,
+      497,
+      110,
+      20
+    ],
+    "hospital": [
+      710,
+      463,
+      115,
+      20
+    ],
+    "birthWeight": [
+      917,
+      461,
+      85,
+      20
+    ],
+    "liveProvCode": [
+      759,
+      420,
+      85,
+      20
+    ],
+    "liveCityCode": [
+      862,
+      420,
+      58,
+      20
+    ],
+    "liveDistrictCode": [
+      951,
+      420,
+      67,
+      20
+    ],
+    "liveDetail": [
+      614,
+      385,
+      111,
+      20
+    ],
+    "idCardProvCode": [
+      779,
+      351,
+      80,
+      20
+    ],
+    "idCardCityCode": [
+      886,
+      351,
+      75,
+      20
+    ],
+    "idCardDistrictCode": [
+      967,
+      351,
+      69,
+      20
+    ],
+    "idCardDetail": [
+      603,
+      312,
+      110,
+      20
+    ],
+    "allergies": [
+      690,
+      276,
+      100,
+      20
+    ],
+    "contraindication": [
+      925,
+      276,
+      110,
+      20
+    ],
+    "telephone": [
+      862,
+      237,
+      147,
+      20
+    ],
+    "newYears": [
+      921,
+      97,
+      49,
+      20
+    ],
+    "newMonth": [
+      964,
+      97,
+      44,
+      20
+    ],
+    "newDay": [
+      996,
+      97,
+      47,
+      20
+    ],
+    "povName": [
+      813,
+      156,
+      116,
+      20
+    ]
+  },
+  "ah2019Small": {
+    "imgBgWidth": 529,
+    "imgBgHeight": 809,
+    "caseImage": "'<img border='0' src='../../../../../../assets/images/vaccinationRecord/ah2019Small/ah2019(小)个案信息000.jpg'>'",
+    "profileCode": [
+      511,
+      501,
+      137,
+      20
+    ],
+    "idCardNo": [
+      500,
+      475,
+      150,
+      20
+    ],
+    "birthCardNo": [
+      559,
+      449,
+      137,
+      20
+    ],
+    "name": [
+      514,
+      423,
+      100,
+      20
+    ],
+    "gender": [
+      706,
+      423,
+      74,
+      20
+    ],
+    "years": [
+      590,
+      401,
+      45,
+      20
+    ],
+    "month": [
+      658,
+      400,
+      43,
+      20
+    ],
+    "day": [
+      701,
+      401,
+      47,
+      20
+    ],
+    "fatherName": [
+      517,
+      379,
+      79,
+      20
+    ],
+    "fatherContactPhone": [
+      688,
+      376,
+      120,
+      20
+    ],
+    "motherName": [
+      519,
+      352,
+      69,
+      20
+    ],
+    "motherContactPhone": [
+      692,
+      350,
+      110,
+      20
+    ],
+    "hospital": [
+      522,
+      327,
+      100,
+      20
+    ],
+    "birthWeight": [
+      714,
+      322,
+      78,
+      20
+    ],
+    "liveProvCode": [
+      563,
+      301,
+      49,
+      20
+    ],
+    "liveCityCode": [
+      647,
+      298,
+      50,
+      20
+    ],
+    "liveDistrictCode": [
+      727,
+      301,
+      51,
+      20
+    ],
+    "liveDetail": [
+      432,
+      275,
+      115,
+      20
+    ],
+    "idCardProvCode": [
+      572,
+      245,
+      46,
+      20
+    ],
+    "idCardCityCode": [
+      643,
+      248,
+      48,
+      20
+    ],
+    "idCardDistrictCode": [
+      708,
+      244,
+      45,
+      20
+    ],
+    "idCardDetail": [
+      434,
+      227,
+      115,
+      20
+    ],
+    "allergies": [
+      506,
+      194,
+      74,
+      20
+    ],
+    "contraindication": [
+      707,
+      194,
+      70,
+      20
+    ],
+    "telephone": [
+      652,
+      172,
+      132,
+      20
+    ],
+    "newYears": [
+      694,
+      71,
+      40,
+      20
+    ],
+    "newMonth": [
+      731,
+      72,
+      32,
+      20
+    ],
+    "newDay": [
+      756,
+      73,
+      31,
+      20
+    ],
+    "povName": [
+      604,
+      110,
+      100,
+      20
+    ]
+  },
+  "ah2016": {
+    "imgBgWidth": 529,
+    "imgBgHeight": 794,
+    "caseImage": "'<img border='0' src='../../../../../../assets/images/vaccinationRecord/ah2016/ah20160001个案信息.jpg'>'",
+    "profileCode": [
+      453,
+      486,
+      164,
+      20
+    ],
+    "idCardNo": [
+      453,
+      465,
+      152,
+      20
+    ],
+    "birthCardNo": [
+      453,
+      437,
+      155,
+      20
+    ],
+    "name": [
+      453,
+      410,
+      110,
+      20
+    ],
+    "gender": [
+      605,
+      410,
+      62,
+      20
+    ],
+    "years": [
+      453,
+      383,
+      43,
+      20
+    ],
+    "month": [
+      498,
+      383,
+      32,
+      20
+    ],
+    "day": [
+      535,
+      384,
+      32,
+      20
+    ],
+    "motherName": [
+      461,
+      334,
+      85,
+      20
+    ],
+    "relationShip": [
+      619,
+      330,
+      53,
+      20
+    ],
+    "hospital": [
+      454,
+      360,
+      90,
+      20
+    ],
+    "birthWeight": [
+      606,
+      358,
+      68,
+      20
+    ],
+    "liveProvCode": [
+      448,
+      304,
+      48,
+      20
+    ],
+    "liveCityCode": [
+      501,
+      303,
+      47,
+      20
+    ],
+    "liveDistrictCode": [
+      556,
+      305,
+      48,
+      20
+    ],
+    "liveDetail": [
+      604,
+      305,
+      100,
+      20
+    ],
+    "idCardProvCode": [
+      450,
+      255,
+      47,
+      20
+    ],
+    "idCardCityCode": [
+      504,
+      255,
+      48,
+      20
+    ],
+    "idCardDistrictCode": [
+      557,
+      255,
+      48,
+      20
+    ],
+    "idCardDetail": [
+      602,
+      255,
+      100,
+      20
+    ],
+    "injectUnit": [
+      610,
+      111,
+      110,
+      20
+    ],
+    "telephone": [
+      625,
+      165,
+      105,
+      20
+    ],
+    "newYears": [
+      574,
+      79,
+      45,
+      20
+    ],
+    "newMonth": [
+      658,
+      80,
+      28,
+      20
+    ],
+    "newDay": [
+      619,
+      79,
+      29,
+      20
+    ],
+    "povName": [
+      516,
+      165,
+      118,
+      20
+    ]
+  },
+  "ah2017": {
+    "imgBgWidth": 529,
+    "imgBgHeight": 771,
+    "caseImage": "'<img border='0' src='../../../../../../assets/images/vaccinationRecord/ah2017/ah20170001个案信息.jpg'>'",
+    "profileCode": [
+      486,
+      504,
+      161,
+      20
+    ],
+    "idCardNo": [
+      485,
+      477,
+      154,
+      20
+    ],
+    "birthCardNo": [
+      485,
+      451,
+      130,
+      20
+    ],
+    "name": [
+      486,
+      421,
+      76,
+      20
+    ],
+    "gender": [
+      646,
+      419,
+      58,
+      20
+    ],
+    "years": [
+      486,
+      395,
+      43,
+      20
+    ],
+    "month": [
+      538,
+      396,
+      31,
+      20
+    ],
+    "day": [
+      571,
+      396,
+      34,
+      20
+    ],
+    "motherName": [
+      503,
+      348,
+      80,
+      20
+    ],
+    "relationShip": [
+      668,
+      346,
+      44,
+      20
+    ],
+    "hospital": [
+      486,
+      370,
+      106,
+      20
+    ],
+    "birthWeight": [
+      652,
+      373,
+      54,
+      20
+    ],
+    "liveProvCode": [
+      492,
+      322,
+      48,
+      20
+    ],
+    "liveCityCode": [
+      539,
+      316,
+      48,
+      20
+    ],
+    "liveDistrictCode": [
+      600,
+      317,
+      48,
+      20
+    ],
+    "liveDetail": [
+      645,
+      319,
+      100,
+      20
+    ],
+    "idCardProvCode": [
+      485,
+      266,
+      48,
+      20
+    ],
+    "idCardCityCode": [
+      542,
+      268,
+      48,
+      20
+    ],
+    "idCardDistrictCode": [
+      601,
+      267,
+      48,
+      20
+    ],
+    "idCardDetail": [
+      644,
+      267,
+      100,
+      20
+    ],
+    "injectUnit": [
+      556,
+      175,
+      105,
+      20
+    ],
+    "telephone": [
+      666,
+      174,
+      100,
+      20
+    ],
+    "newYears": [
+      616,
+      86,
+      41,
+      20
+    ],
+    "newMonth": [
+      661,
+      87,
+      30,
+      20
+    ],
+    "newDay": [
+      704,
+      87,
+      28,
+      20
+    ],
+    "povName": [
+      647,
+      116,
+      111,
+      20
+    ]
+  },
+  "ahNation": {
+    "imgBgWidth": 790,
+    "imgBgHeight": 1074,
+    "caseImage": "'<img border='0' src='../../../../../../assets/images/vaccinationRecord/ahNation/ahNation0001个案信息.jpg'>'",
+    "profileCode": [
+      677,
+      734,
+      158,
+      20
+    ],
+    "idCardNo": [
+      662,
+      693,
+      157,
+      20
+    ],
+    "birthCardNo": [
+      745,
+      656,
+      154,
+      20
+    ],
+    "name": [
+      683,
+      620,
+      90,
+      20
+    ],
+    "gender": [
+      953,
+      615,
+      54,
+      20
+    ],
+    "years": [
+      783,
+      577,
+      49,
+      20
+    ],
+    "month": [
+      876,
+      577,
+      36,
+      20
+    ],
+    "day": [
+      931,
+      579,
+      37,
+      20
+    ],
+    "fatherName": [
+      682,
+      543,
+      75,
+      20
+    ],
+    "fatherContactPhone": [
+      915,
+      541,
+      100,
+      20
+    ],
+    "motherName": [
+      684,
+      507,
+      79,
+      20
+    ],
+    "motherContactPhone": [
+      916,
+      508,
+      100,
+      20
+    ],
+    "hospital": [
+      695,
+      467,
+      100,
+      20
+    ],
+    "birthWeight": [
+      944,
+      465,
+      47,
+      20
+    ],
+    "liveProvCode": [
+      745,
+      429,
+      48,
+      20
+    ],
+    "liveCityCode": [
+      856,
+      428,
+      48,
+      20
+    ],
+    "liveDistrictCode": [
+      943,
+      425,
+      48,
+      20
+    ],
+    "liveDetail": [
+      571,
+      392,
+      100,
+      20
+    ],
+    "idCardProvCode": [
+      745,
+      350,
+      48,
+      20
+    ],
+    "idCardCityCode": [
+      856,
+      353,
+      48,
+      20
+    ],
+    "idCardDistrictCode": [
+      943,
+      351,
+      48,
+      20
+    ],
+    "idCardDetail": [
+      572,
+      319,
+      100,
+      20
+    ],
+    "allergies": [
+      669,
+      275,
+      94,
+      20
+    ],
+    "contraindication": [
+      940,
+      273,
+      93,
+      20
+    ],
+    "telephone": [
+      856,
+      238,
+      122,
+      20
+    ],
+    "newYears": [
+      925,
+      94,
+      43,
+      20
+    ],
+    "newMonth": [
+      971,
+      94,
+      38,
+      20
+    ],
+    "newDay": [
+      1006,
+      94,
+      33,
+      20
+    ],
+    "povName": [
+      801,
+      157,
+      131,
+      20
+    ]
+  },
+  "sh2018": {
+    "imgBgWidth": 788,
+    "imgBgHeight": 1073,
+    "caseImage": "'<img border='0' src='../../../../../../assets/images/vaccinationRecord/sh2018/sh20180001个案信息.jpg'>'",
+    "name": [
+      654,
+      690,
+      105,
+      20
+    ],
+    "man": [
+      634,
+      656,
+      24,
+      20
+    ],
+    "woman": [
+      692,
+      659,
+      19,
+      20
+    ],
+    "years": [
+      716,
+      602,
+      38,
+      20
+    ],
+    "month": [
+      820,
+      603,
+      27,
+      20
+    ],
+    "day": [
+      777,
+      600,
+      27,
+      20
+    ],
+    "fatherName": [
+      683,
+      382,
+      110,
+      20
+    ],
+    "fatherContactPhone": [
+      673,
+      440,
+      118,
+      20
+    ],
+    "motherName": [
+      913,
+      382,
+      114,
+      20
+    ],
+    "motherContactPhone": [
+      675,
+      414,
+      115,
+      20
+    ],
+    "liveProvCode": [
+      693,
+      493,
+      45,
+      20
+    ],
+    "liveCityCode": [
+      750,
+      493,
+      48,
+      20
+    ],
+    "liveDistrictCode": [
+      794,
+      494,
+      46,
+      20
+    ],
+    "liveDetail": [
+      845,
+      496,
+      130,
+      20
+    ],
+    "newYears": [
+      880,
+      324,
+      39,
+      20
+    ],
+    "newMonth": [
+      939,
+      323,
+      34,
+      20
+    ],
+    "newDay": [
+      984,
+      321,
+      25,
+      20
+    ],
+    "povName": [
+      816,
+      354,
+      147,
+      20
+    ],
+    "selfCity": [
+      745,
+      629,
+      19,
+      20
+    ],
+    "otherCity": [
+      799,
+      628,
+      21,
+      20
+    ]
+  }
+}

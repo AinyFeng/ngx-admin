@@ -1,0 +1,14 @@
+<nb-card>
+  <nb-card-header>
+    扫描接种本或身份证
+    <span class="cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="form-group row">
+      <label for="code" class="col-md-5 col-form-label">扫描接种证条码或者身份证件：</label>
+      <div class="col-md-7">
+        <input id="code" type="text" nbInput placeholder="请输入接种本编码/条码" [(ngModel)]="childCode">
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

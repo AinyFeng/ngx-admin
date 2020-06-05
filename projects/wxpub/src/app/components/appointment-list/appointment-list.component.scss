@@ -1,0 +1,18 @@
+.list-item {
+  background: #ffffff;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.cell-wrap {
+  flex-direction: column;
+}
+
+.bottom-btn {
+  display: flex;
+  justify-content: space-around;
+}
+
+.item-info {
+  color: #666666;
+}

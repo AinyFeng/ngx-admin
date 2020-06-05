@@ -1,0 +1,12 @@
+<div nz-row>
+  <nz-card>
+    <nz-tabset [(nzSelectedIndex)]="tabIndex">
+      <nz-tab nzTitle="计划上报配置列表" >
+        <uea-plan-config-list [(tabIndex)]="tabIndex" (dataChange)="data = $event"></uea-plan-config-list>
+      </nz-tab>
+      <nz-tab nzTitle="计划上报配置添加" (nzClick)="data = null">
+        <uea-plan-config-form [(tabIndex)]="tabIndex" [data]="data"></uea-plan-config-form>
+      </nz-tab>
+    </nz-tabset>
+  </nz-card>
+</div>

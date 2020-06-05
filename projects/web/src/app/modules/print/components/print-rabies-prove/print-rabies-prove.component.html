@@ -1,0 +1,38 @@
+<nb-card class="nb-card-container">
+  <nb-card-header class="text-center">
+    打印证明
+  </nb-card-header>
+  <nb-card-body id="prove" style="margin: 0 auto;">
+    <nb-alert *ngIf="error" class="flex-row" outline="warning" closable (close)="closeAlert()">
+      打印机连接失败，请安装<a href="http://www.lodop.net/download.html" target="_blank">Lodop</a>插件
+    </nb-alert>
+    <div style="text-align: center; text-indent: 2em; font-size: 20px; line-height: 40px;">
+      证明
+    </div>
+    <div style="text-indent: 2em; font-size: 20px; line-height: 40px;">
+      <span>姓名：{{profile?.name}}</span><i style="margin-right:30px;"></i>
+      <span>性别：{{profile?.gender | dicPipe: 'genderCode'}}</span><i style="margin-right:30px;"></i>
+      <span>年龄：{{isChild ? (profile?.age ? profile?.age : 0) + '岁' + (profile?.month ? profile?.month : 0) + '月龄' : profile?.age}}</span>
+    </div>
+    <div style="text-indent: 2em; font-size: 20px; line-height: 40px;">
+      身份证号码：{{profile?.idCardNo}}
+    </div>
+    <div style="text-indent: 2em; font-size: 20px; line-height: 40px;">
+      <span>于{{rabiesInfo?.injuryDate | date: 'yyyy-MM-dd HH:mm'}}
+        被{{rabiesInfo?.animal | dicPipe: 'animal'}}{{rabiesInfo?.injuryType | dicPipe: 'injuryType'}}</span><span>部位：{{rabiesInfo?.injurySite | dicPipe: 'injurySite'}}</span>
+    </div>
+    <div style="text-indent: 2em; font-size: 20px; line-height: 40px;">
+      于{{rabiesInfo?.handleDate | date: 'yyyy-MM-dd HH:mm'}}到{{povInfo?.name}}注射狂犬疫苗。
+    </div>
+    <div style="text-align: center; text-indent: 2em; font-size: 20px; line-height: 40px;">特此证明。</div>
+    <div style="text-align: right; text-indent: 2em; font-size: 20px; line-height: 40px;">{{nowDate | date: 'yyyy'}}
+      年{{nowDate | date: 'MM'}}月{{nowDate | date: 'dd'}}日
+    </div>
+  </nb-card-body>
+  <nb-card-footer class="text-center">
+    <button nbButton status="info" (click)="print(true)">打印预览</button>
+    <button nbButton status="info" (click)="print(false)" class="ml-2 mr-2">直接打印</button>
+    <button nbButton status="info" (click)="close()">关闭</button>
+  </nb-card-footer>
+</nb-card>
+

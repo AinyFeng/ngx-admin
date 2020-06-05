@@ -1,0 +1,13 @@
+@import '../../../../../@uea/theme/global_theme';
+// @import '../../../../common/global-theme/global_theme';
+
+@include nb-install-component() {
+	::ng-deep nb-radio-group {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.error-msg {
+		color: nb-theme(color-danger-500);
+	}
+}

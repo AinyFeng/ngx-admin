@@ -1,0 +1,13 @@
+@import '../../../@uea/theme/global_theme';
+// @import '../../common/global-theme/global_theme';
+// @import '../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+	.star-required {
+		color: nb-theme(color-danger-500);
+	}
+
+	.alert-danger-qb {
+		color: nb-theme(color-danger-500);
+	}
+}

@@ -1,0 +1,150 @@
+<nz-card style="width: 100%;" nzTitle="库存盘点">
+  <form nz-form [formGroup]="stockSearchForm" class="ant-advanced-search-form">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="8">
+        <nz-form-item class="m-0">
+          <nz-form-label nzSpan="8">疫苗/注射器</nz-form-label>
+          <nz-form-control nzSpan="16">
+            <nz-select nzShowSearch nzAllowClear formControlName="containerType" nzPlaceHolder="请选择">
+              <nz-option *ngFor="let c of containerTypeOptions" [nzLabel]="c.label" [nzValue]="c.value"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item class="m-0">
+          <nz-form-label nzSpan="8">疫苗类型</nz-form-label>
+          <nz-form-control nzSpan="16">
+            <nz-select nzShowSearch nzAllowClear formControlName="vaccineType" nzPlaceHolder="请选择">
+              <nz-option nzLabel="一类" nzValue="0"></nz-option>
+              <nz-option nzLabel="二类" nzValue="1"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item class="m-0">
+          <nz-form-label nzSpan="8">疫苗批号</nz-form-label>
+          <nz-form-control nzSpan="16">
+            <input type="text" nz-input formControlName="batchno">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item class="m-0">
+          <nz-form-label nzSpan="8">疫苗名称</nz-form-label>
+          <nz-form-control nzSpan="16">
+            <nz-select nzShowSearch nzAllowClear formControlName="vaccineSubclassCode" nzPlaceHolder="请选择">
+              <nz-option *ngFor="let s of subclassCodeOptions" [nzLabel]="s.label" [nzValue]="s.value"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item class="m-0">
+          <nz-form-label nzSpan="8">疫苗生产企业</nz-form-label>
+          <nz-form-control nzSpan="16">
+            <nz-select nzShowSearch nzAllowClear formControlName="manufactureCode" nzPlaceHolder="请选择">
+              <nz-option *ngFor="let m of manufactureOptions" [nzLabel]="m.name" [nzValue]="m.code"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="8">
+        <nz-form-item class="m-0">
+          <nz-form-label nzSpan="8">维护0库存</nz-form-label>
+          <nz-form-control nzSpan="16">
+            <nz-radio-group formControlName="maintainNum">
+              <label nz-radio nzValue="1">否</label>
+              <label nz-radio nzValue="0">是</label>
+            </nz-radio-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+    </div>
+  </form>
+  <div class="mb-2">
+    <button class="mr-2" nz-button (click)="queryStock()" [nzLoading]="loading" nzType="primary">查询</button>
+    <button class="mr-2" nz-button (click)="addStockCheckPlan()" nzType="primary">新增盘点计划</button>
+    <button nz-button nzType="primary" (click)="modifyStock()" [nzLoading]="loading">保存已修改库存</button>
+  </div>
+  <nz-table #stock
+            [nzFrontPagination]="false"
+            [nzShowTotal]="totalTemplate"
+            [nzTotal]="total"
+            [nzLoading]="loading"
+            (nzPageIndexChange)="queryStock($event)"
+            [nzData]="stockData" nzSize="small">
+    <thead>
+    <tr>
+      <th nzShowCheckbox
+          [(nzChecked)]="isAllDisplayDataChecked"
+          [nzIndeterminate]="isIndeterminate"
+          (nzCheckedChange)="checkAll($event)"
+      ></th>
+      <th>编号</th>
+      <th>名称</th>
+      <th>属性</th>
+      <th>生产企业</th>
+      <th>批号</th>
+      <th>批签发证号</th>
+      <th>规格(剂/支/粒)</th>
+      <th>剂量</th>
+      <th>剂型</th>
+      <th>有效期</th>
+      <th>成本价</th>
+      <th>实际库存</th>
+      <th>可用库存</th>
+      <th>在途库存</th>
+      <th>盘点库存</th>
+      <th>盘点数量</th>
+      <th>修改说明</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of stock.data; index as i">
+      <td nzShowCheckbox
+          [(nzChecked)]="data.checked"
+          (nzCheckedChange)="addInventoryPlanData($event, data)"></td>
+      <td>{{ (i + 1) + (pageIndex - 1) * pageSize }}</td>
+      <td>{{data.vaccName}}</td>
+      <td>{{data.vaccineType | dicPipe: 'vaccineType'}}</td>
+      <td>{{ data.manufactureName }}</td>
+      <td>{{ data.batchNo }}</td>
+      <td>{{ data.certifiCode }}</td>
+      <td>{{ data.spec }}</td>
+      <td>{{ data.dose | dicPipe: 'pfVaccineSpecification' }}</td>
+      <td>{{ data.doseType }}</td>
+      <td>{{ data.outBoundDate | date: 'yyyy-MM-dd' }}</td>
+      <td>{{ data.orignPrice | currency: '￥' }}</td>
+      <td>{{ data.storeNum }}</td>
+      <td>{{ data.storenumF }}</td>
+      <td>{{ data.sumWay }}</td>
+      <td>
+        <input numberTransfer [ngClass]="{'input-error': data.storenumF + (data.modifyStoreNum - data.storeNum) < 0 }"
+               style="width: 100px;" type="number"
+               [(ngModel)]="data.modifyStoreNum" nz-input>
+        <p class="m-0" *ngIf="data.storenumF + (data.modifyStoreNum - data.storeNum) < 0" style="color: #f5222d;">
+          当前可用库存不足,请重新输入</p>
+      </td>
+      <td>
+        <span
+          *ngIf="data.modifyStoreNum - data.storeNum !== 0">
+          {{ data.modifyStoreNum - data.storeNum }}
+          <span style="color: #00d68f;" *ngIf="data.modifyStoreNum > data.storeNum">(盘盈)</span>
+          <span style="color: #ff3d71;" *ngIf="data.modifyStoreNum < data.storeNum">(盘亏)</span>
+        </span>
+      </td>
+      <td>
+        <input style="width: 100px;" nz-input type="text" [(ngModel)]="data.memo" placeholder="修改说明">
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+
+  <ng-template #totalTemplate>
+    共{{ total }}条数据，当前第{{ pageIndex }}页
+  </ng-template>
+</nz-card>

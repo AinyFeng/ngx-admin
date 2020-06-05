@@ -1,0 +1,68 @@
+<nb-card class="nb-card-container" size="xlarge">
+  <nb-card-header class="nb-card-header-qb">
+    不接种疫苗列表
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body [nbSpinner]="loading" nbSpinnerStatus="info">
+    <nb-alert outline="info"
+              class="mt-3 mb-3 text-center"
+              *ngIf="!loading && rejectVaccineData.length === 0">
+      <div class="text-center">
+        <span>没有查到不接种列表数据，请<a href="javasript:" (click)="queryRejectVaccine()">重试</a></span>
+      </div>
+    </nb-alert>
+    <div class="text-right mb-3">
+      <button (click)="addRejectVaccine()" status="info" nbButton><span><i class="fas fa-plus"></i></span>添加不接种疫苗
+      </button>
+    </div>
+    <nz-table #vaccine [nzData]="rejectVaccineData">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">疫苗产品名称</th>
+        <th [nzAlign]="'center'">疫苗小类名称</th>
+        <th [nzAlign]="'center'">制造商</th>
+        <th [nzAlign]="'center'">是否进口</th>
+        <th [nzAlign]="'center'">疫苗英文名称</th>
+        <th [nzAlign]="'center'">备注</th>
+        <th [nzAlign]="'center'">失效日期</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let d of vaccine.data">
+        <td [nzAlign]="'center'">{{ d.vaccineProductName}}</td>
+        <td [nzAlign]="'center'">{{ d.vaccineSubclassName}}</td>
+        <td [nzAlign]="'center'">{{ d.manufacturer}}</td>
+        <td [nzAlign]="'center'">{{ d.isImport }}</td>
+        <td [nzAlign]="'center'">{{ d.vaccineEngName}}</td>
+        <td [nzAlign]="'center'">{{ d.memo}}</td>
+        <td [nzAlign]="'center'">{{ d.lose_efficacy_date | date: 'yyyy-MM-dd HH:mm'}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+  <nb-card-footer class="text-center">
+    <button (click)="onClose()" status="info" nbButton>关闭</button>
+  </nb-card-footer>
+</nb-card>
+
+<!--<ng-template #contentTemplate>
+  <nb-card class="mb-0">
+    <nb-card-body>
+      <ul style="list-style-type: none;">
+        <li>咬伤时间：{{ contentData.injuryDate | date: 'yyyy-MM-dd HH:mm' }}</li>
+        <li>咬伤部位：{{ contentData.injurySite | dicPipe: 'injurySite' }}</li>
+        <li>受伤方式：{{ contentData.injuryType | dicPipe: 'injuryType' }}</li>
+        <li>动物名称：{{ contentData.animal | dicPipe: 'animal' }}</li>
+        <li>处理时间：{{ contentData.handleDate | date: 'yyyy-MM-dd HH:mm'}}</li>
+        <li>处理地点：{{ contentData.handlePlace | dicPipe: 'handlePlace' }}</li>
+        <li>免疫类型：{{ contentData.immuneType | dicPipe: 'immuneType' }}</li>
+        <li>暴露级别：{{ contentData.exposureLevel | dicPipe: 'exposureLevel' }}</li>
+        <li>是否接种狂犬病人免疫球蛋白：{{ contentData.hriVaccinated == '1' ? '已接种' : '未接种' }}</li>
+        <li>患者体重：{{ contentData.weight }}</li>
+        <li>是否超过48小时：{{ contentData.over48H == '1' ? '是' : '否' }}</li>
+        <li>患者档案编号：{{ contentData.profileCode }}</li>
+      </ul>
+    </nb-card-body>
+  </nb-card>
+</ng-template>-->
+

@@ -1,0 +1,11 @@
+<nb-card class="nb-card-container">
+  <nb-card-body>
+    <div id="rabiesAgreement" [innerHTML]="rabiesAgreementTemplate[0].content | keepHtml"
+         style="height: 750px; overflow-y: auto;"></div>
+  </nb-card-body>
+  <nb-card-footer class="d-flex">
+    <button nbButton status="info" (click)="print(true)">打印预览</button>
+    <button nbButton status="info" (click)="print(false)">直接打印</button>
+    <button nbButton status="info" (click)="close()">关闭</button>
+  </nb-card-footer>
+</nb-card>

@@ -1,0 +1,29 @@
+// @import '../../../../../@uea/theme/global_theme';
+// // @import '../../../../common/global-theme/global_theme';
+
+@import '../../../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+	nb-card {
+		width: 100%;
+		display: flex;
+	}
+
+	.dropdown-width {
+		width: 190px;
+	}
+	.active {
+		color: nb-theme(color-danger-500);
+	}
+
+  .record-flag {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+  }
+  //::ng-deep .titleHeader {
+  //  background-color: #fafafa!important;
+  //}
+}

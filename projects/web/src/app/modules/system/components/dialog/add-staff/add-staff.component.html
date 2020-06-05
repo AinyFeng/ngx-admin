@@ -1,0 +1,107 @@
+<nb-card size="large" class="nb-card-container">
+  <nb-card-header>
+    {{updateStaffData ? '修改用户' : '新增用户'}}
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="staffForm">
+      <div class="form-group row">
+        <label class="col-form-label col-sm-2 text-right">
+          <span class="star-required">*</span>姓名：</label>
+        <div class="col-sm-3">
+          <input type="text" nbInput outline fullWidth
+                 [status]="staffForm.get('realName').invalid && staffForm.get('realName').touched ? 'danger' : ''"
+                 formControlName="realName" id="realName"/>
+          <uea-show-form-errors [control]="staffForm.get('realName')"></uea-show-form-errors>
+        </div>
+        <label class="col-form-label col-sm-3 text-right">
+          <span class="star-required">*</span>归属科室：</label>
+        <div class="col-sm-3">
+          <nb-select placeholder="请选择归属科室" fullWidth outline status="info"
+                     formControlName="departmentCode"
+                     id="departmentCode">
+            <nb-option [value]="option.departmentCode"
+                       *ngFor="let option of departmentOptions">{{option.departmentName}}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-form-label col-sm-2 text-right">
+          <span class="star-required">*</span>角色类型：</label>
+        <div class="col-sm-3">
+          <nb-select placeholder="请选择角色类型" fullWidth outline status="info"
+                     formControlName="roleType"
+                     id="roleType">
+            <nb-option [value]="option.value"
+                       *ngFor="let option of allRoleTypes">{{option.label}}</nb-option>
+          </nb-select>
+        </div>
+        <label class="col-form-label col-sm-3 text-right">
+          <span class="star-required">*</span>在职状态：</label>
+        <div class="col-sm-3">
+          <nb-select placeholder="请选择在职状态" fullWidth outline status="info"
+                     formControlName="staffStatus"
+                     id="staffStatus">
+            <nb-option [value]="option.value"
+                       *ngFor="let option of workingStatus">{{option.label}}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="birthday" class="col-sm-2 col-form-label text-right">出生日期：</label>
+        <div class="col-sm-3">
+          <input fullWidth readonly nbInput formControlName="birthday" placeholder="请选择生日"
+                 [nbDatepicker]="datepicker" id="birthday">
+          <nb-datepicker format="YYYY/MM/DD" [max]="currentDate" #datepicker></nb-datepicker>
+        </div>
+        <label for="idCard" class="col-sm-3 col-form-label text-right">身份证号码：</label>
+        <div class="col-sm-3">
+          <input type="text" fullWidth
+                 nbInput
+                 formControlName="idCard" id="idCard" placeholder="证件号码">
+          <!--          <uea-show-form-errors [control]="staffForm.get('idCard')"></uea-show-form-errors>-->
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-form-label col-sm-2 text-right">
+          <span class="star-required">*</span>入职时间：</label>
+        <div class="col-sm-3">
+          <input nbInput fullWidth readonly [nbDatepicker]="entryTimePicker" placeholder="请选择入职时间"
+                 formControlName="entryTime" id="entryTime"
+                 [status]="staffForm.get('entryTime').invalid && staffForm.get('entryTime').touched ? 'danger' : ''">
+          <nb-datepicker #entryTimePicker format="YYYY/MM/DD" [filter]="filterBirthStartDate"></nb-datepicker>
+          <uea-show-form-errors [control]="staffForm.get('entryTime')"></uea-show-form-errors>
+        </div>
+        <label class="col-form-label col-sm-3 text-right">离职时间：</label>
+        <div class="col-sm-3">
+          <input nbInput fullWidth readonly [nbDatepicker]="leaveTimePicker" placeholder="请选择离职时间"
+                 formControlName="leaveTime" id="leaveTime">
+          <nb-datepicker #leaveTimePicker format="YYYY/MM/DD" [filter]="filterBirthEndDate"></nb-datepicker>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-form-label col-sm-2 text-right">邮箱地址：</label>
+        <div class="col-sm-3">
+          <input type="email" nbInput outline fullWidth
+                 formControlName="email" id="email">
+        </div>
+        <label class="col-form-label col-sm-3 text-right">手机号码：</label>
+        <div class="col-sm-3">
+          <input type="text" nbInput fullWidth
+                 [status]="staffForm.get('telephone').invalid && staffForm.get('telephone').touched ? 'danger' : ''"
+                 formControlName="telephone" id="telephone">
+          <uea-show-form-errors [control]="staffForm.get('telephone')"></uea-show-form-errors>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-form-label col-sm-2 text-right">备注：</label>
+        <div class="col-sm-9">
+          <textarea nbInput formControlName="memo" id="memo" fullWidth placeholder="请输入......"></textarea>
+        </div>
+      </div>
+    </form>
+    <div class="text-center">
+      <button nbButton status="info" (click)="saveStaffInfo()">保存</button>
+    </div>
+  </nb-card-body>
+</nb-card>

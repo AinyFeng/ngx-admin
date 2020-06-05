@@ -1,0 +1,43 @@
+<nb-card accent="info">
+  <nb-card-header>
+    接收消息
+    <div>
+      <button nbButton status="info">全部阅读</button>
+      <button nbButton status="warning" (click)="deleteMsg()">删除</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <nz-table #msgData [nzData]="data" [nzLoading]="loading" (nzCurrentPageDataChange)="currentPageDataChange($event)">
+      <thead>
+        <tr>
+          <th nzShowExpand></th>
+          <!--        <th-->
+          <!--          nzShowCheckbox-->
+          <!--          [nzIndeterminate]="indeterminate"-->
+          <!--          [(nzChecked)]="allChecked"-->
+          <!--          (nzCheckedChange)="checkAll($event)"-->
+          <!--        ></th>-->
+          <th></th>
+          <th [nzAlign]="'center'">发送人</th>
+          <th [nzAlign]="'center'">发送内容</th>
+          <th [nzAlign]="'center'">发送时间</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-template ngFor let-data [ngForOf]="msgData.data">
+          <tr>
+            <td nzShowExpand [(nzExpand)]="mapOfExpandData[data.id]"></td>
+            <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
+            <td [nzAlign]="'center'">{{data.sender}}</td>
+            <td [nzAlign]="'center'">{{data.content}}</td>
+            <td [nzAlign]="'center'">{{data.sendTime}}</td>
+          </tr>
+          <tr [nzExpand]="mapOfExpandData[data.id]">
+            <td></td>
+            <td colspan="3" [nzAlign]="'center'">{{data.description}}</td>
+          </tr>
+        </ng-template>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

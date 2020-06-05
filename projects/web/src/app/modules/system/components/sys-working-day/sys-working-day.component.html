@@ -1,0 +1,78 @@
+<nb-card accent="info">
+  <nb-card-header>
+    工作日配置
+    <div>
+      <button nbButton status="info" (click)="searchData()">查询</button>
+      <button nbButton status="info">导出报表</button>
+      <button nbButton status="warning" (click)="reset()">重置</button>
+      <button nbButton status="warning" (click)="addForm()">新增</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="workingForm">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">是否可用：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择是否可用" fullWidth outline status="info" formControlName="useAble" id="useAble">
+              <!--              <nb-option value="">全部</nb-option>-->
+              <nb-option value="1">可用</nb-option>
+              <nb-option value="0">不可用</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">周期：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择是否可用" fullWidth outline status="info" formControlName="workingRound"
+                       id="workingRound">
+              <!--              <nb-option value="null">全部</nb-option>-->
+              <nb-option *ngFor="let op of workingRoundOptions" [value]="op.value">{{op.label}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center">
+  <nb-card-body>
+    <nz-table #groupingTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false"
+              [nzData]="listOfData"
+              [nzPageIndex]="pageIndex"
+              [nzLoading]="loading" [nzTotal]="total"
+              (nzPageIndexChange)="searchData($event)">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">周期</th>
+        <th [nzAlign]="'center'">周期中的次序</th>
+        <th [nzAlign]="'center'">pov编号</th>
+        <th [nzAlign]="'center'">是否可用</th>
+        <th [nzAlign]="'center'">创建时间</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let i=index; let data of groupingTable.data">
+        <td [nzAlign]="'center'">{{i + 1}}</td>
+        <td [nzAlign]="'center'">{{data.workingRound | dicPipe:'workingRound'}}</td>
+        <td [nzAlign]="'center'">{{data.workingDay | workDayPipe }}</td>
+        <td [nzAlign]="'center'">{{data.povCode}}</td>
+        <td [nzAlign]="'center'">{{data.useAble == '0' ? '不可用' : '可用'}}</td>
+        <td [nzAlign]="'center'">{{ data.createDate | date: 'yyyy-MM-dd HH:mm' }}</td>
+        <td [nzAlign]="'center'">
+          <button class="btn btn-sm btn-success" *ngIf="data.useAble === '0'"
+                  (click)="setUseAble(data.workingDaySerial, '1')">启用
+          </button>
+          <button class="btn btn-sm btn-primary" *ngIf="data.useAble === '1'"
+                  (click)="setUseAble(data.workingDaySerial, '0')">停用
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

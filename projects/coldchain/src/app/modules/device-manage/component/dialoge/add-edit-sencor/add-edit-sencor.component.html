@@ -1,0 +1,222 @@
+<form  nz-form [formGroup]="modifyOrAddFrom" >
+  <div class="form-group row">
+    <label for="device" class="col-sm-2 col-form-label text-right label-required">所属设备：</label>
+    <div class="col-sm-4">
+     <!-- <input nz-input nzSize="large"  type="text" placeholder="请输入" formControlName="facilityCode" id="facilityCode" >-->
+      <nz-select formControlName="device" id="device" (ngModelChange)="selectFacilityCode($event)" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+        <nz-option *ngFor="let v of deviceOptions"  [nzLabel]="v.facilityName + v.factoryNum" [nzValue]="v.facilityName + v.factoryNum"></nz-option>
+      </nz-select>
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('device')"></uea-show-form-errors>
+    </div>
+    <!--所属设备MAC地址（监测设备的mac地址）-->
+    <label for="gwMac" class="col-sm-2 col-form-label text-right label-required">所属检测仪：</label>
+    <div class="col-sm-4">
+      <nz-select formControlName="gwMac" id="gwMac" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+        <nz-option *ngFor="let v of gwMacOptions"  [nzLabel]="v.gwMac" [nzValue]="v.gwMac"></nz-option>
+      </nz-select>
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('gwMac')"></uea-show-form-errors>
+    </div>
+  </div>
+
+  <div class="form-group row">
+
+    <label class="col-sm-2 col-form-label text-right label-required">类别：</label>
+    <div class="col-sm-4">
+      <nz-select formControlName="sensorType" id="sensorType" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+        <nz-option *ngFor="let v of sensorTypeOptions"  [nzLabel]="v.label" [nzValue]="v.value"></nz-option>
+      </nz-select>
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('sensorType')"></uea-show-form-errors>
+    </div>
+
+    <label class="col-sm-2 col-form-label text-right label-required">型号：</label>
+    <div class="col-sm-4">
+      <nz-select formControlName="modelNumber" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+        <nz-option *ngFor="let v of modelNumberOptions"  [nzLabel]="v.label" [nzValue]="v.value"></nz-option>
+      </nz-select>
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('modelNumber')"></uea-show-form-errors>
+    </div>
+
+  </div>
+
+  <div class="form-group row">
+
+    <label for="sensorName" class="col-sm-2 col-form-label text-right label-required">传感器名称：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="text" placeholder="请输入" formControlName="sensorName" id="sensorName" >
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('sensorName')"></uea-show-form-errors>
+    </div>
+
+    <label class="col-sm-2 col-form-label text-right label-required">传感器编号：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="text" placeholder="请输入" formControlName="sensorMac" id="sensorMac" >
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('sensorMac')"></uea-show-form-errors>
+    </div>
+  </div>
+
+  <div class="form-group row">
+
+    <label class="col-sm-2 col-form-label text-right label-required">温度上限：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="number" numberTransfer
+             formControlName="upperTemp" id="upperTemp" placeholder="请输入">
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('upperTemp')"></uea-show-form-errors>
+    </div>
+
+    <label class="col-sm-2 col-form-label text-right label-required">温度下限：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="number" numberTransfer
+             formControlName="lowerTemp" id="lowerTemp" placeholder="请输入">
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('lowerTemp')"></uea-show-form-errors>
+    </div>
+  </div>
+
+  <div class="form-group row">
+
+    <label for="upperHumidity" class="col-sm-2 col-form-label text-right label-required">湿度上限：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="number" numberTransfer
+             formControlName="upperHumidity" id="upperHumidity" placeholder="请输入">
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('upperHumidity')"></uea-show-form-errors>
+    </div>
+
+    <label class="col-sm-2 col-form-label text-right label-required">湿度下限：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="number" numberTransfer
+             formControlName="lowerHumidity" id="lowerHumidity" placeholder="请输入">
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('lowerHumidity')"></uea-show-form-errors>
+    </div>
+  </div>
+
+  <div class="form-group row">
+
+    <label class="col-sm-2 col-form-label text-right label-required">测量周期(分钟)：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+             formControlName="measureInterval" id="measureInterval" placeholder="请输入">
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('measureInterval')"></uea-show-form-errors>
+    </div>
+
+    <label class="col-sm-2 col-form-label text-right label-required">通道号：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="text" placeholder="请输入" >
+      <!--<uea-show-form-errors [control]="modifyOrAddFrom.get('factoryNum')"></uea-show-form-errors>-->
+    </div>
+
+  </div>
+
+  <div class="form-group row">
+
+    <label class="col-sm-2 col-form-label text-right label-required">温度报警周期(分钟)：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+             formControlName="temperatureAlarmInterval" id="temperatureAlarmInterval" placeholder="请输入">
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('temperatureAlarmInterval')"></uea-show-form-errors>
+    </div>
+
+    <label for="humidityAlarmInterval" class="col-sm-2 col-form-label text-right">湿度报警周期(分钟)：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+             formControlName="humidityAlarmInterval" id="humidityAlarmInterval" placeholder="请输入">
+     <!-- <uea-show-form-errors [control]="modifyOrAddFrom.get('humidityAlarmInterval')"></uea-show-form-errors>-->
+    </div>
+
+  </div>
+
+
+  <div class="form-group row">
+
+    <label class="col-sm-2 col-form-label text-right label-required">断电报警周期(分钟)：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+             formControlName="powerOffAlarmInterval" id="powerOffAlarmInterval" placeholder="请输入">
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('powerOffAlarmInterval')"></uea-show-form-errors>
+    </div>
+
+    <label for="humidityAlarmInterval" class="col-sm-2 col-form-label text-right">延迟报警次数：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+             formControlName="delayAlarmCount" id="delayAlarmCount" placeholder="请输入">
+      <!-- <uea-show-form-errors [control]="modifyOrAddFrom.get('humidityAlarmInterval')"></uea-show-form-errors>-->
+    </div>
+
+  </div>
+
+  <div class="form-group row">
+
+    <label class="col-sm-2 col-form-label text-right label-required">多级报警次数：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+             formControlName="multiAlarmCount" id="multiAlarmCount" placeholder="请输入">
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('multiAlarmCount')"></uea-show-form-errors>
+    </div>
+
+    <label for="temperatureCheckValue" class="col-sm-2 col-form-label text-right label-required">温度校正值：</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+             formControlName="temperatureCheckValue" id="temperatureCheckValue" placeholder="请输入">
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('temperatureCheckValue')"></uea-show-form-errors>
+    </div>
+
+  </div>
+
+  <div class="form-group row">
+
+    <label class="col-sm-2 col-form-label text-right label-required">多级报警类型：</label>
+    <div class="col-sm-4">
+      <nz-select formControlName="multiAlarmType" id="multiAlarmType" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+        <nz-option *ngFor="let v of multiAlarmTypeOptions"  [nzLabel]="v.label" [nzValue]="v.value"></nz-option>
+      </nz-select>
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('multiAlarmType')"></uea-show-form-errors>
+    </div>
+
+    <label class="col-sm-2 col-form-label text-right label-required">忽略报警：</label>
+    <div class="col-sm-4">
+      <nz-select formControlName="ignoreAlarm" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+        <nz-option *ngFor="let v of ignoreAlarmOptions"  [nzLabel]="v.label" [nzValue]="v.value"></nz-option>
+      </nz-select>
+      <uea-show-form-errors [control]="modifyOrAddFrom.get('ignoreAlarm')"></uea-show-form-errors>
+    </div>
+
+  </div>
+
+
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label text-right">科室：</label>
+    <div class="col-sm-4">
+      <nz-select formControlName="departmentCode" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+        <nz-option *ngFor="let v of departmentSelect"  [nzLabel]="v.departmentName" [nzValue]="v.departmentCode"></nz-option>
+      </nz-select>
+    </div>
+
+    <label class="col-sm-2 col-form-label text-right"
+           nz-checkbox formControlName="lowVoltageAlarm" id="lowVoltageAlarm">低电量报警</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+             formControlName="lowVoltageValue" id="lowVoltageValue" placeholder="电量低于(V)">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label text-right" nz-checkbox formControlName="status" id="status">启用</label>
+    <div class="col-sm-4">
+      <label nz-checkbox formControlName="voiceAlarm" id="voiceAlarm">启用语音报警</label>
+    </div>
+
+    <label class="col-sm-2 col-form-label text-right"
+           nz-checkbox formControlName="interruptAlarm" id="interruptAlarm">设备中断报警</label>
+    <div class="col-sm-4">
+      <input nz-input nzSize="large" type="number" [min]="0" numberTransfer
+             formControlName="interruptInterval" id="interruptInterval" placeholder="中断时间大于(分钟)">
+    </div>
+  </div>
+
+
+</form>
+<div class="text-right">
+  <button nz-button [nzLoading]="loading" nzType="primary" (click)="saveOrEdit()">保存</button>
+  <button nz-button nzType="default" (click)="onClose()">取消</button>
+</div>
+
+
+
+

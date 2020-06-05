@@ -1,0 +1,180 @@
+<nb-card [ngClass]="{'mb-0' : styleD, '' : style}" accent="info">
+  <nb-card-header class="header-flex-center">
+    出入库记录明细
+    <div *ngIf="!isDialog">
+      <button nbButton status="info" (click)="searchData()" [nbSpinner]="loading">查询</button>
+      <button nbButton status="info" (click)="export()"  [nbSpinner]="loading"  class="ml-2 mr-2">导出</button>
+      <button nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+    <span *ngIf="isDialog" class="float-right mr-3 cursor-pointer" (click)="ref.close(true)"><i
+      class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body *ngIf="!isDialog">
+    <form [formGroup]="recordDetailForm">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">出入库日期(起)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择日期" [nbDatepicker]="accessDatePicker"
+                   formControlName="accessDateStart" id="accessDateStart">
+            <nb-datepicker [filter]="filterStartDate" #accessDatePicker format="YYYY/MM/DD"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">出入库日期(止)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择日期" [nbDatepicker]="accessDateEndPicker"
+                   formControlName="accessDateEnd" id="accessDateEnd">
+            <nb-datepicker [filter]="filterEndDate" #accessDateEndPicker format="YYYY/MM/DD"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">类型：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择" fullWidth outline status="info" formControlName="accessType" id="accessType">
+              <nb-option [value]="1">入库</nb-option>
+              <nb-option [value]="-1">出库</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗名称：</label>
+          <div class="col-8">
+            <uea-nb-select-all [placeholderText]="'请选择'" [options]="vacSubClassData" formControlName="subClassData">
+            </uea-nb-select-all>
+            <!--   <nb-select  multiple placeholder="全部" fullWidth outline status="info"
+                 formControlName="subClassData" id="subClassData">
+                 <nb-option [value]="null">全选</nb-option>
+                 <nb-option [value]="v.value" *ngFor="let v of vacSubClassData">{{v.label}}</nb-option>
+               </nb-select>-->
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">业务类型：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择业务类型" fullWidth outline status="info" formControlName="stockEventSerial"
+                       id="stockEventSerial">
+              <nb-option [value]="v.value" *ngFor="let v of stockEventData">{{v.label}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗批次：</label>
+          <div class="col-8">
+            <input type="text" nbInput placeholder="请输入疫苗批次" fullWidth formControlName="batchCode" id="batchCode">
+          </div>
+        </div>
+        <div class="col-md-3 ml-3">
+          <nb-checkbox formControlName="automated" id="automated">显示自动出入库</nb-checkbox>
+        </div>
+
+        <div *ngIf="isDialog" class="col-md-3 ml-3">
+          <button nbButton status="info" (click)="searchData()">查询</button>
+          <button nbButton status="warning" (click)="reset()">重置</button>
+        </div>
+
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-body *ngIf="isDialog">
+    <nz-table #msgTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false" [nzData]="listOfData"
+              [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex"
+              (nzPageIndexChange)="searchData($event)">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">出入库时间</th>
+        <th [nzAlign]="'center'">类型</th>
+        <th [nzAlign]="'center'">业务</th>
+        <th [nzAlign]="'center'">疫苗名称</th>
+        <th [nzAlign]="'center'">生产企业</th>
+        <th [nzAlign]="'center'">疫苗批次</th>
+        <th [nzAlign]="'center'">疫苗剂量</th>
+        <th [nzAlign]="'center'">有效期</th>
+        <th [nzAlign]="'center'">数量(支)</th>
+        <th [nzAlign]="'center'">归属科室</th>
+       <!-- <th [nzAlign]="'center'">出入库单号</th>-->
+        <th [nzAlign]="'center'">操作人</th>
+        <th [nzAlign]="'center'">备注</th>
+       <!-- <th [nzAlign]="'center'">操作</th>-->
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index">
+        <td [nzAlign]="'center'">{{(pageIndex - 1) * pageSize + i + 1}}</td>
+        <td [nzAlign]="'center'">{{data.stockChangeTime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
+        <td [nzAlign]="'center'">{{data.isStockIn == 1 ? '入库' : '出库'}}</td>
+        <td [nzAlign]="'center'">{{data.stockChangeEvent | dicPipe:'stockChangeEvent'}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineProductName}}</td>
+        <td [nzAlign]="'center'">{{data.manufacturer}}</td>
+        <td [nzAlign]="'center'">{{data.batchNo}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineSpecification}}</td>
+        <td [nzAlign]="'center'">{{data.loseEfficacyDate | date:"yyyy-MM-dd"}}</td>
+        <td [nzAlign]="'center'">{{data.count}}</td>
+        <td [nzAlign]="'center'">{{data.departmentCode | departmentNamePipe | async}}</td>
+       <!-- <td [nzAlign]="'center'">{{data.acceptanceSerial}}</td>-->
+        <td [nzAlign]="'center'">{{data.stockChangeBy | povStaffNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{data.stockEventSerial | stockInoutMemoPipe:data.stockChangeEvent | async }}</td>
+       <!-- <td [nzAlign]="'center'">
+          <div *ngIf="data.stockChangeEvent != 5 && data.stockChangeEvent != 1">
+            <a href="javascript:" class="link-a mr-1" (click)="discussAndModify(data)">合议</a>
+          </div>
+        </td>-->
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow: scroll;" *ngIf="!isDialog">
+  <nb-card-body>
+    <nz-table #msgTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false" [nzData]="listOfData"
+              [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex"
+              (nzPageIndexChange)="searchData($event)">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">出入库时间</th>
+        <th [nzAlign]="'center'">类型</th>
+        <th [nzAlign]="'center'">业务</th>
+        <th [nzAlign]="'center'">疫苗名称</th>
+        <th [nzAlign]="'center'">生产企业</th>
+        <th [nzAlign]="'center'">疫苗批次</th>
+        <th [nzAlign]="'center'">疫苗剂量</th>
+        <th [nzAlign]="'center'">有效期</th>
+        <th [nzAlign]="'center'">数量(支)</th>
+        <th [nzAlign]="'center'">归属科室</th>
+       <!-- <th [nzAlign]="'center'">出入库单号</th>-->
+        <th [nzAlign]="'center'">操作人</th>
+        <th [nzAlign]="'center'">备注</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;let i = index">
+        <td [nzAlign]="'center'">{{(pageIndex - 1) * pageSize + i + 1}}</td>
+        <td [nzAlign]="'center'">{{data.stockChangeTime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
+        <td [nzAlign]="'center'">{{data.isStockIn == 1 ? '入库' : '出库'}}</td>
+        <td [nzAlign]="'center'">{{data.stockChangeEvent | dicPipe:'stockChangeEvent'}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineProductName}}</td>
+        <td [nzAlign]="'center'">{{data.manufacturer}}</td>
+        <td [nzAlign]="'center'">{{data.batchNo}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineSpecification}}</td>
+        <td [nzAlign]="'center'">{{data.loseEfficacyDate | date:"yyyy-MM-dd"}}</td>
+        <td [nzAlign]="'center'">{{data.count}}</td>
+        <td [nzAlign]="'center'">{{data.departmentCode | departmentNamePipe | async}}</td>
+       <!-- <td [nzAlign]="'center'">{{data.acceptanceSerial}}</td>-->
+        <td [nzAlign]="'center'">{{data.stockChangeBy | povStaffNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{data.stockEventSerial | stockInoutMemoPipe:data.stockChangeEvent | async }}</td>
+        <td [nzAlign]="'center'">
+          <div *ngIf="data.stockChangeEvent != 5 && data.stockChangeEvent != 1">
+            <a href="javascript:" class="link-a mr-1" (click)="discussAndModify(data)">合议</a>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

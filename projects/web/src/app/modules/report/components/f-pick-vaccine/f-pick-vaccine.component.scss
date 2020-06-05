@@ -1,0 +1,12 @@
+// @import '~bootstrap/scss/mixins/_breakpoints';
+// @import '~@nebular/theme/styles/global/_breakpoints';
+@import '../../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+	.card-vaccine-picker {
+		width: 700px;
+	}
+	label.customised-control {
+		padding-right: 0.375rem;
+	}
+}

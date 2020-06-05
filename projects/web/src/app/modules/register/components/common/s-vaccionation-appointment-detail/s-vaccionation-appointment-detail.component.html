@@ -1,0 +1,42 @@
+<div class="reservationDetail">
+  <nb-card >
+    <nb-card-header class="nb-card-header-qb">
+      预约详情
+      <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+    </nb-card-header>
+    <nb-card-body>
+      <table class="table detailTable">
+        <tbody>
+        <tr>
+          <th>疫苗名称：</th>
+          <td>{{ reservationDetail.vacName }}</td>
+        </tr>
+        <tr>
+          <th>疫苗价格：</th>
+          <td>{{ reservationDetail.price }}</td>
+        </tr>
+        <tr>
+          <th>针次：</th>
+          <td>{{ reservationDetail.injectionTimes }}</td>
+        </tr>
+        <tr>
+          <th>预约日期：</th>
+          <td>{{ reservationDetail.reservationDate }}</td>
+        </tr>
+        <tr>
+          <th>预约时段：</th>
+          <td>{{ reservationDetail.reservationTime }}</td>
+        </tr>
+        <tr>
+          <th>来源：</th>
+          <td>{{ reservationDetail.source }}</td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="text-center p-3">
+        <button nbButton status="info" outline (click)="onClose()">取消预约</button>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</div>
+

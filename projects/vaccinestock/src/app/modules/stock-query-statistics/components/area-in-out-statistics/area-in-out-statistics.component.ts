@@ -1,0 +1,218 @@
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {NzMessageService, NzModalService} from 'ng-zorro-antd';
+
+import {
+  VaccineSubclassInitService,
+  VaccManufactureDataService,
+  VaccBroadHeadingDataService,
+  QueryStatisticsService,
+  DicDataService,
+  LOCAL_STORAGE,
+  SelectDistrictComponent
+} from '@tod/svs-common-lib';
+import {LocalStorageService} from '@tod/ngx-webstorage';
+import {take} from 'rxjs/operators';
+
+@Component({
+  selector: 'uea-area-in-out-statistics',
+  templateUrl: './area-in-out-statistics.component.html',
+  styleUrls: ['./area-in-out-statistics.component.scss']
+})
+export class AreaInOutStatisticsComponent implements OnInit {
+
+  queryForm: FormGroup;
+  listOfData: any = [];
+  total = 0;
+  pageIndex = 1;
+  pageSize = 10;
+  loading = false;
+
+  // 查询范围
+  checkOptionsOne = [
+    {label: '市', value: '20', checked: false},
+    {label: '县', value: '30', checked: false},
+    {label: '乡', value: '40,50', checked: false}
+  ];
+  // 疫苗小类
+  vacSubClassData = [];
+  // 疫苗大类
+  vacBroadHeaderData = [];
+  // 生产企业
+  manufactureData = [];
+  // 树的组织
+  treeData: any = [];
+  selectedNode: any;
+
+  constructor(
+    private fb: FormBuilder,
+    private vacSubClassSvc: VaccineSubclassInitService,
+    private manufaSvc: VaccManufactureDataService,
+    private modalSvc: NzModalService,
+    private msg: NzMessageService,
+    private vacBroadHeaderSvc: VaccBroadHeadingDataService,
+    private api: QueryStatisticsService,
+    private localSt: LocalStorageService,
+  ) {
+  }
+
+  ngOnInit() {
+    // 获取组织树数据
+    this.treeData = this.localSt.retrieve(LOCAL_STORAGE.PLATEFORM_TREE_DATA);
+    // 获取小类编码
+    this.vacSubClassData = this.vacSubClassSvc.getVaccineSubClassData();
+    // 获取生产企业
+    this.manufactureData = this.manufaSvc.getVaccProductManufactureData();
+    // 获取疫苗大类
+    this.vacBroadHeaderData = this.vacBroadHeaderSvc.getVaccBoradHeadingData();
+
+    this.queryForm = this.fb.group({
+      address: [null, [Validators.required]], // 地区编码
+      areaCoding: [null], // 地区编码
+      grade: [null], // 查询范围
+      batchNo: [null], // 疫苗批号
+      containerType: [null], // 疫苗or 注射器
+      vaccineSubclassCode: [null], // 疫苗小类名称
+      manufactureCode: [null], // 生产企业
+      vaccineType: [null], // 疫苗类型 0 一类 1 二类
+      broadHeadingCode: [null], // 疫苗大类名称
+    });
+    // this.queryData();
+  }
+
+  // 查询数据
+  queryData(page = 1) {
+    for (const i in this.queryForm.controls) {
+      if (this.queryForm.controls[i]) {
+        this.queryForm.controls[i].markAsDirty();
+        this.queryForm.controls[i].updateValueAndValidity();
+      }
+    }
+    if (this.queryForm.invalid) {
+      this.modalSvc.warning({
+        nzTitle: '提示',
+        nzContent: '请将查询条件填写完整',
+        nzMaskClosable: true
+      });
+      return;
+    }
+    if (this.loading) return;
+    this.pageIndex = page;
+    const params = {
+      grade: null,
+      areaCoding: this.queryForm.get('areaCoding').value ? this.queryForm.get('areaCoding').value : null,
+      vaccineSubclassCode: this.queryForm.get('vaccineSubclassCode').value ? this.queryForm.get('vaccineSubclassCode').value : null,
+      manufactureCode: this.queryForm.get('manufactureCode').value ? this.queryForm.get('manufactureCode').value : null,
+      vaccineType: this.queryForm.get('vaccineType').value ? this.queryForm.get('vaccineType').value : null,
+      batchno: this.queryForm.get('batchNo').value ? this.queryForm.get('batchNo').value : null,
+      containerType: this.queryForm.get('containerType').value ? this.queryForm.get('containerType').value : null,
+      broadHeadingCode: this.queryForm.get('broadHeadingCode').value ? this.queryForm.get('broadHeadingCode').value : null,
+      pageEntity: {
+        page: this.pageIndex,
+        pageSize: this.pageSize
+      }
+    };
+    if (this.queryForm.get('grade').value) {
+      const grade = this.queryForm.get('grade').value;
+      let range = [];
+      grade.filter(item => item.checked === true).forEach(item => {
+        if (item.value.length > 2) {
+          range.push(item.value.substr(0, 2));
+          range.push(item.value.substr(3));
+        } else {
+          range.push(item.value);
+        }
+      });
+      params['grade'] = range;
+    }
+    console.log('参数', params);
+    this.loading = true;
+    this.listOfData = [];
+    this.api.queryNearlyEffectiveAndCount(params, resp => {
+      console.log('结果', resp);
+      this.loading = false;
+      if (!resp || resp[0].code !== 0 || !resp[0].hasOwnProperty('data')) {
+        return;
+      }
+      this.listOfData = resp[0].data;
+      if (!resp || resp[1].code !== 0 || !resp[1].hasOwnProperty('data')) {
+        return;
+      }
+      this.total = resp[1].data[0].count;
+    });
+  }
+
+  // 重置
+  resetForm() {
+    const checkOptionsOne = this.checkOptionsOne;
+    this.queryForm.reset({
+      orderStatus: []
+    });
+    this.queryForm.get('grade').setValue(checkOptionsOne);
+  }
+
+  // 选择地区
+  selectAddress(): void {
+    const modal = this.modalSvc.create({
+      nzTitle: '选择机构',
+      nzContent: SelectDistrictComponent,
+      nzComponentParams: {
+        treeData: this.treeData,
+        hideSearchInput: false,
+        // unSelectedNodeKey: 'organizationType'
+      },
+      nzBodyStyle: {
+        height: '500px',
+        overflow: 'auto'
+      },
+      nzFooter: [
+        {
+          label: '确定',
+          type: 'primary',
+          onClick: comp => {
+            modal.close(comp.selectedNode);
+          }
+        },
+        {
+          label: '取消',
+          type: 'default',
+          onClick: () => modal.close()
+        }
+      ]
+    });
+
+    // 订阅关闭时获取的数值
+    modal.afterClose.pipe(take(1)).subscribe(res => {
+      if (res) {
+        this.selectedNode = res;
+        this.queryForm.get('address').patchValue(res.title);
+        /**
+         * 说明是POV及市疾控
+         * 直接按照key值作为查询条件
+         */
+        if (res['organizationType'] === '2') {
+          this.queryForm.get('areaCoding').patchValue(res.key);
+        }
+        /**
+         * 说明是行政区划数据
+         */
+        if (res['organizationType'] === '1') {
+          // 省
+          if (res['organizationGrade'] === '10') {
+            const provinceCode = res.key.substr(0, 2);
+            this.queryForm.get('areaCoding').patchValue(provinceCode);
+          } else if (res['organizationGrade'] === '20') {
+            // 市
+            const cityCode = res.key.substr(0, 4);
+            this.queryForm.get('areaCoding').patchValue(cityCode);
+          } else {
+            // 区县
+            this.queryForm.get('areaCoding').patchValue(res.key);
+          }
+        }
+      }
+    });
+
+  }
+
+}

@@ -1,0 +1,91 @@
+<nb-card accent='info'>
+
+  <nb-card-header>
+    二类疫苗预售报表
+    <div>
+      <button nbButton status="success">查询</button>
+      <button nbButton status="success">打印</button>
+      <button nbButton status="primary">导出</button>
+      <button nbButton status="default">返回</button>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <form class="searchForm">
+      <div class="row group-search">
+
+        <div class="form-group col-md-3 row ">
+          <label class="col-md-4">年份：</label>
+          <div class="col-md-8 ">
+            <nb-select placeholder="请选择年份" size="xsmall">
+              <nb-option value="2016">2016年</nb-option>
+              <nb-option value="2017">2017年</nb-option>
+              <nb-option value="2018">2018年</nb-option>
+              <nb-option value="2019">2019年</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="form-group col-md-3 row">
+          <label class="col-md-4">月份：</label>
+          <div class="col-md-8">
+            <nb-select placeholder="请选择月份" size="xsmall">
+              <nb-option value="1">1月</nb-option>
+              <nb-option value="2">2月</nb-option>
+              <nb-option value="3">3月</nb-option>
+              <nb-option value="4">4月</nb-option>
+              <nb-option value="5">5月</nb-option>
+              <nb-option value="6">6月</nb-option>
+              <nb-option value="7">7月</nb-option>
+              <nb-option value="8">8月</nb-option>
+              <nb-option value="9">9月</nb-option>
+              <nb-option value="10">10月</nb-option>
+              <nb-option value="11">11月</nb-option>
+              <nb-option value="12">12月</nb-option>
+            </nb-select>
+          </div>
+        </div>
+
+        <!-- <div class="form-group col-md-12">
+          <button nbButton status="success" >查询</button>
+          <button nbButton status="success" >打印</button>
+          <button nbButton status="primary" >导出</button>
+          <button nbButton status="default" >返回</button>
+        </div> -->
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card accent="info">
+
+  <nb-card-body>
+    <nz-table #groupingTable [nzData]="listOfDisplayData" nzBordered nzSize="small" nzSimple="false">
+      <thead>
+        <tr>
+          <th colspan="8" style="font-size:28px;">2019年5月淮北市疾控中心淮海路接种门诊1二类疫苗预售报表</th>
+        </tr>
+        <tr>
+          <th rowspan="2">序号</th>
+          <th rowspan="2">疫苗名称</th>
+          <th rowspan="2">规格</th>
+          <th rowspan="2">生产企业</th>
+          <th rowspan="2">批号</th>
+          <th rowspan="2">单价<br>（不含冷链<br>及服务费）</th>
+          <th colspan="2" rowspan="1">本期发生</th>
+        </tr>
+        <tr>
+          <th>数量</th>
+          <th>预售总额</th>
+        </tr>
+      </thead>
+
+
+      <tbody>
+        <tr *ngFor="let data of groupingTable.data">
+
+        </tr>
+      </tbody>
+
+    </nz-table>
+  </nb-card-body>
+</nb-card>

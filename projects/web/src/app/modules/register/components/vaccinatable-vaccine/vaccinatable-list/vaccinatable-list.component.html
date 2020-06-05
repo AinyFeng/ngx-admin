@@ -1,0 +1,57 @@
+<nb-card accent="info" size="giant">
+  <nb-card-header class="header-flex-center">
+    <span style="font-size: 1rem;">可接种疫苗</span>
+    <div>
+      <button nbButton status="info" (click)="openDialog('addToVaccinateQueue')">接种登记</button>
+      <button nbButton class="ml-2 mr-2" status="info" (click)="openDialog('customAddToVaccinateQueue')">自定义接种登记
+      </button>
+      <button status="info" outline nbButton (click)="disableVaccine()">不接种记录</button>
+      <button status="info" outline nbButton (click)="flushVaccineModel()" class="ml-2">刷新模型</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body class="overflow-auto">
+
+    <nz-table #vac [nzData]="recommendedVacData"
+              nzSize="small"
+              [nzNoResult]="noDataText ? noDataText : '暂无数据'"
+              [nzLoading]="loading" nzBordered [nzShowPagination]="true"
+              nzPageSize="10" style="width: 100%;">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">疫苗产品</th>
+        <th [nzAlign]="'center'">针次</th>
+<!--        <th [nzAlign]="'center'">可接种时间</th>-->
+        <th [nzAlign]="'center'">价格</th>
+        <th [nzAlign]="'center'">库存</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let v of vac.data">
+        <td [nzAlign]="'left'">
+          <nb-checkbox [disabled]="v['count'] <= 0" [(checked)]="v.checked"
+                       status="primary">
+            {{ v.vaccineSubclassName }}
+          </nb-checkbox>
+        </td>
+        <td [nzAlign]="'center'">{{ v.vaccOrder === 99 ? '加强针' : v.vaccOrder }}</td>
+<!--        <td>{{ v.earliestVaccDate | date: 'yyyy-MM-dd' }}<br>至<br>{{ v.latestVaccDate | date: 'yyyy-MM-dd' }}</td>-->
+        <td [nzAlign]="'center'">
+          <nz-tag class="d-block" *ngFor="let p of v.price" [nzColor]=" p === '0' ? '#87d068' : '#f50'">
+            {{ p === '0' ? '免费' : '自费' }}
+          </nz-tag>
+        </td>
+        <td [nzAlign]="'center'">
+          <a *ngIf="v.count > 0" href="javascript:void(0)">{{ v.count }}</a>
+          <span *ngIf="v.count <= 0" class="text-muted">0</span>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+    <div *ngIf="recommendedVacData.length == 0 && profile && !loading" class="text-center">
+      <a href="javascript:void(0)" (click)="flushVaccineModel()">刷新模型</a>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<uea-regist-info #printRegisterRef style="position: absolute; margin-left: -999rem;"
+                 [data]="printRegisterInfo"></uea-regist-info>

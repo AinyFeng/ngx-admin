@@ -1,0 +1,75 @@
+<nb-card accent="info">
+  <nb-card-header>
+    报表上报记录
+    <div>
+      <button nbButton status="primary" (click)="queryReportRecord()">查询</button>
+      <button nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">上报时间:</label>
+          <div class="col-8 ">
+            <input nbInput fullWidth readonly placeholder="请选择上报时间" [nbDatepicker]="reportDatePicker"
+                   formControlName="submissionTime" id="submissionTime"
+                   [status]="form.get('submissionTime').invalid && form.get('submissionTime').touched ? 'danger' : ''">
+            <nb-datepicker #reportDatePicker format="YYYY/MM/DD"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">上报人:</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入上报人" formControlName="name" id="name">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">上报科室号:</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择上报科室号" fullWidth outline status="info" formControlName="povCode" id="povCode">
+              <nb-option [value]="item.departmentCode"
+                         *ngFor="let item of departmentOption">{{item.departmentName}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">状态:</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择上报状态" fullWidth outline status="info" formControlName="status" id="status">
+              <nb-option [value]="item.value" *ngFor="let item of reportStatus">{{item.label}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center">
+  <nb-card-body>
+    <nz-table #groupingTable [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false"
+              [nzLoading]="loading"
+              [nzFrontPagination]="false">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">上报内容</th>
+        <th [nzAlign]="'center'">上报时间</th>
+        <th [nzAlign]="'center'">上报人员</th>
+        <th [nzAlign]="'center'">上报门诊</th>
+        <th [nzAlign]="'center'">上报状态</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of groupingTable.data">
+        <td [nzAlign]="'center'">{{data.content}}</td>
+        <td [nzAlign]="'center'">{{data.date | date: 'yyyy-MM-dd'}}</td>
+        <td [nzAlign]="'center'">{{data.peo}}</td>
+        <td [nzAlign]="'center'">{{data.pov | povNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{data.status === '1' ? '成功' : data.status === '0' ? '失败' : ''}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+

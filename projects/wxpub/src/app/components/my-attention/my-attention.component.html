@@ -1,0 +1,10 @@
+<!--我的关注-->
+<div class="wx-content-margin">
+  <div class="list-item weui-cells" *ngFor="let item of listData">
+    <h5>{{item.profileName || ''}}</h5>
+    <div class="title-detail title">档案编号: <span class="title-info">{{item.profileCode || ''}}</span></div>
+    <div class="title-detail title">出生日期：<span class="title-info">{{item.birthDate}}</span></div>
+  </div>
+
+  <div class="add-btn" routerLink="/associaChild">添加</div>
+</div>

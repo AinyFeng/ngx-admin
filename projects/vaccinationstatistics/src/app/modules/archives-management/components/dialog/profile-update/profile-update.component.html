@@ -1,0 +1,335 @@
+<div>
+  <form nz-form [formGroup]="saveForm">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="profileCode" [nzSm]="6" [nzXs]="24" [nzRequired]="isChild">儿童编码</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="此项必填">
+            <input nz-input formControlName="profileCode" id="profileCode" placeholder=""/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="name" [nzSm]="6" [nzXs]="24" [nzRequired]="isChild" >儿童姓名</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="此项必填">
+            <input nz-input formControlName="name" id="name" placeholder=""/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="birthCardNo" [nzSm]="6" [nzXs]="24" [nzRequired]="!isChild" >出生证号</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="birthCardNo" id="birthCardNo"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="idCardNo" [nzSm]="6" [nzXs]="24">身份证号</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="idCardNo" id="idCardNo"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="gender" [nzSm]="6" [nzXs]="24" [nzRequired]="isChild">性别</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="此项必填">
+            <nz-radio-group id="gender" formControlName="gender">
+              <label *ngFor="let t of genderOptions" nz-radio [nzValue]="t.value">{{ t.label }}</label>
+            </nz-radio-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="birthDate" [nzSm]="6" [nzXs]="24" [nzRequired]="isChild">出生日期</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="此项必填">
+            <nz-date-picker formControlName="birthDate" [nzShowTime]="true" id="birthDate"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="birthHospitalCode" [nzSm]="6" [nzXs]="24">出生医院编码</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="birthHospitalCode" id="birthHospitalCode" placeholder=""/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="birthWeight" [nzSm]="6" [nzXs]="24">出生体重(kg)</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="birthWeight" id="birthWeight" placeholder=""/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="motherName" [nzSm]="6" [nzXs]="24" [nzRequired]="isChild">母亲姓名</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="此项必填">
+            <input nz-input formControlName="motherName" id="motherName"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="motherContactPhone" [nzSm]="6" [nzXs]="24" [nzRequired]="isChild">母亲手机</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="此项必填">
+            <input nz-input formControlName="motherContactPhone" id="motherContactPhone"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="motherIdCardNo" [nzSm]="6" [nzXs]="24" [nzRequired]="isChild">母亲身份证</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="此项必填">
+            <input nz-input formControlName="motherIdCardNo" id="motherIdCardNo"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="parity" [nzSm]="6" [nzXs]="24">孩次</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="parity" id="parity"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="createBy" [nzSm]="6" [nzXs]="24">创建者</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="createBy" id="createBy"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="createDate" [nzSm]="6" [nzXs]="24">创建日期</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <nz-date-picker formControlName="createDate" id="createDate" [nzShowTime]="true"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="liveProvCode" [nzSm]="6" [nzXs]="24" [nzRequired]="isChild">省(居住)</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="此项必填">
+            <input nz-input formControlName="liveProvCode" id="liveProvCode"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="liveCityCode" [nzSm]="6" [nzXs]="24" [nzRequired]="isChild">市(居住)</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="此项必填">
+            <input nz-input formControlName="liveCityCode" id="liveCityCode"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="liveDistrictCode" [nzSm]="6" [nzXs]="24">县(居住)</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="liveDistrictCode" id="liveDistrictCode"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="liveDetail" [nzSm]="6" [nzXs]="24">详细地址(居住)</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="liveDetail" id="liveDetail"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="idCardProvCode" [nzSm]="6" [nzXs]="24" [nzRequired]="isChild">省(户口)</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="此项必填">
+            <input nz-input formControlName="idCardProvCode" id="idCardProvCode"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="idCardCityCode" [nzSm]="6" [nzXs]="24" [nzRequired]="isChild">市(户口)</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="此项必填">
+            <input nz-input formControlName="idCardCityCode" id="idCardCityCode"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="idCardDistrictCode" [nzSm]="6" [nzXs]="24">县(户口)</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="idCardDistrictCode" id="idCardDistrictCode"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="idCardDetail" [nzSm]="6" [nzXs]="24">详细地址(户口)</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="idCardDetail" id="idCardDetail"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="idTypeCode" [nzSm]="6" [nzXs]="24">户口属性</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="idTypeCode" id="idTypeCode"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="residentialTypeCode" [nzSm]="6" [nzXs]="24">居住属性</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="residentialTypeCode" id="residentialTypeCode"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="community" [nzSm]="6" [nzXs]="24">区域划分</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="community" id="community"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="contactAddress" [nzSm]="6" [nzXs]="24">通讯地址</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="contactAddress" id="contactAddress"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="nationCode" [nzSm]="6" [nzXs]="24">民族编码</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="nationCode" id="nationCode"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="profileStatusCode" [nzSm]="6" [nzXs]="24">在册情况</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="profileStatusCode" id="profileStatusCode"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="VaccinatePovCode" [nzSm]="6" [nzXs]="24">接种单位编码</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="VaccinatePovCode" id="vaccinatePovCode"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="fatherName" [nzSm]="6" [nzXs]="24">父亲姓名</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="fatherName" id="fatherName"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="fatherContactPhone" [nzSm]="6" [nzXs]="24">父亲手机</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="fatherContactPhone" id="fatherContactPhone"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="fatherIdCardNo" [nzSm]="6" [nzXs]="24">父亲身份证号</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="fatherIdCardNo" id="fatherIdCardNo"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="profileCodeTopTen" [nzSm]="6" [nzXs]="24">儿童编码前十位</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="profileCodeTopTen" id="profileCodeTopTen"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="checkCode" [nzSm]="6" [nzXs]="24">建档编号</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="checkCode" id="checkCode"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item style="margin-bottom: 0px;">
+          <nz-form-label nzFor="memo" [nzSm]="6" [nzXs]="24">备注</nz-form-label>
+          <nz-form-control [nzSm]="10" [nzXs]="24" nzErrorTip="">
+            <input type="text" nbInput formControlName="memo" placeholder="备注">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <nz-form-item nz-row class="register-area">
+      <nz-form-control [nzSpan]="14" [nzOffset]="6">
+        <button nz-button nzType="primary" (click)="submitForm()">保存</button>
+        <button nz-button nzType="default" type="button">重置</button>
+        <button nz-button nzType="default" type="button" (click)="close()">返回</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>

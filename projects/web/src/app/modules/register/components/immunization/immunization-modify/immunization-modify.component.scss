@@ -1,0 +1,7 @@
+// @import '../../../../common/global-theme/global_theme';
+@import '../../../../../@uea/theme/global_theme';
+@include nb-install-component() {
+  .prevent {
+    pointer-events: none;
+  }
+}

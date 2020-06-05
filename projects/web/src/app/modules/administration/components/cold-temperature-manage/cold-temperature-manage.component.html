@@ -1,0 +1,84 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    冷链温度管理
+    <div>
+      <button nbButton status="info">查询</button>
+      <button nbButton status="info" class="ml-2 mr-2">添加</button>
+      <button nbButton status="info">删除</button>
+      <button nbButton status="info" class="ml-2 mr-2">修改</button>
+      <button nbButton status="info">导出</button>
+      <button nbButton status="warning" class="ml-2">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form>
+      <div class="form-group row">
+        <div class="col-md-4 row">
+          <label class="col-4 col-form-label text-right">设备名称：</label>
+          <div class="col-8">
+            <nb-select multiple placeholder="请选择设备名称" fullWidth outline status="info" class="ml-1">
+              <nb-option value="1">全部</nb-option>
+              <nb-option value="2">中型冷库</nb-option>
+              <nb-option value="3">车</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-4 row">
+          <label class="col-4 col-form-label text-right">日期(起)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择日期" [nbDatepicker]="choseDatePicker">
+            <nb-datepicker #choseDatePicker format="YYYY/MM/DD"></nb-datepicker>
+          </div>
+        </div>
+        <div class="col-md-4 row">
+          <label class="col-4 col-form-label text-right">日期(起)：</label>
+          <div class="col-8">
+            <input nbInput fullWidth readonly placeholder="请选择日期" [nbDatepicker]="choseDateEndPicker">
+            <nb-datepicker #choseDateEndPicker format="YYYY/MM/DD"></nb-datepicker>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="form-group row">
+        <div class="col-md-12 ml-5">
+          <button nbButton status="info" >查询</button>
+          <button nbButton status="info" >添加</button>
+          <button nbButton status="info" >删除</button>
+          <button nbButton status="info" >修改</button>
+          <button nbButton status="info" >导出</button>
+          <button nbButton status="warning">重置</button>
+        </div>
+      </div> -->
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow: scroll;">
+  <nb-card-body>
+    <nz-table #groupingTable [nzData]="listOfDisplayData" nzBordered nzSize="small" nzSimple="false">
+      <thead>
+        <tr>
+          <th rowspan="2" [nzAlign]="'center'">测温日期</th>
+          <th rowspan="2" [nzAlign]="'center'">星期</th>
+          <th rowspan="2" [nzAlign]="'center'">设备名称</th>
+          <th colspan="2">上午</th>
+          <th colspan="2">下午</th>
+          <th rowspan="2" [nzAlign]="'center'">记录人</th>
+          <th rowspan="2" [nzAlign]="'center'">备注</th>
+          <th rowspan="2" [nzAlign]="'center'">操作</th>
+        </tr>
+        <tr>
+          <th [nzAlign]="'center'">冷藏</th>
+          <th [nzAlign]="'center'">冷冻</th>
+          <th [nzAlign]="'center'">冷藏</th>
+          <th [nzAlign]="'center'">冷冻</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of groupingTable.data">
+
+        </tr>
+      </tbody>
+
+    </nz-table>
+  </nb-card-body>
+</nb-card>

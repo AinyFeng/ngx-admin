@@ -1,0 +1,91 @@
+<nb-card class="nb-card-container-sm">
+  <nb-card-header class="nb-card-header-qb">
+    修改学校信息
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="schoolForm">
+      <div class="form-group row">
+        <label class="col-form-label col-md-4 text-right label-required">
+          <span class="star-required"></span>学校编码：</label>
+        <div class="col-md-4">
+          <input type="text" nbInput outline fullWidth
+                 [status]="schoolForm.get('schoolCode').invalid && schoolForm.get('schoolCode').touched ? 'danger' : ''"
+                 formControlName="schoolCode" id="schoolCode"/>
+          <uea-show-form-errors [control]="schoolForm.get('schoolCode')"></uea-show-form-errors>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-form-label col-md-4 text-right">
+          <span class="star-required"></span>单位全称：</label>
+        <div class="col-md-4">
+          <input type="text" nbInput outline fullWidth
+                 [status]="schoolForm.get('unitFullName').invalid && schoolForm.get('unitFullName').touched ? 'danger' : ''"
+                 formControlName="unitFullName" id="unitFullName">
+          <uea-show-form-errors [control]="schoolForm.get('unitFullName')"></uea-show-form-errors>
+        </div>
+      </div>
+      <!--<div class="form-group row">
+        <label class="col-form-label col-md-4 text-right label-required">
+          <span class="star-required"></span>单位简称：</label>
+        <div class="col-md-4">
+          <input type="text" nbInput outline fullWidth
+                 [status]="schoolForm.get('unitName').invalid && schoolForm.get('unitName').touched ? 'danger' : ''"
+                 formControlName="unitName" id="unitName">
+          <uea-show-form-errors [control]="schoolForm.get('unitName')"></uea-show-form-errors>
+        </div>
+      </div>-->
+      <div class="form-group row">
+        <label class="col-form-label col-md-4 text-right label-required">
+          <span class="star-required"></span>地址：</label>
+        <div class="col-md-4">
+          <input type="text" nbInput outline fullWidth
+                 [status]="schoolForm.get('address').invalid && schoolForm.get('address').touched ? 'danger' : ''"
+                 formControlName="address" id="address">
+          <uea-show-form-errors [control]="schoolForm.get('address')"></uea-show-form-errors>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-form-label col-md-4 text-right">
+          <span class="star-required"></span>联系人：</label>
+        <div class="col-md-4">
+          <input type="text" nbInput outline fullWidth
+                 [status]="schoolForm.get('contact').invalid && schoolForm.get('contact').touched ? 'danger' : ''"
+                 formControlName="contact" id="contact">
+          <uea-show-form-errors [control]="schoolForm.get('contact')"></uea-show-form-errors>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-form-label col-md-4 text-right">
+          <span class="star-required"></span>联系电话：</label>
+        <div class="col-md-4">
+          <input type="text" nbInput outline fullWidth
+                 [status]="schoolForm.get('contactNumber').invalid && schoolForm.get('contactNumber').touched ? 'danger' : ''"
+                 formControlName="contactNumber" id="contactNumber">
+          <uea-show-form-errors [control]="schoolForm.get('contactNumber')"></uea-show-form-errors>
+        </div>
+      </div>
+      <!--<div class="form-group row">
+        <label class="col-form-label col-md-4 text-right">
+          <span class="star-required"></span>手机：</label>
+        <div class="col-md-4">
+          <input type="text" nbInput outline fullWidth
+                 [status]="schoolForm.get('telphone').invalid && schoolForm.get('telphone').touched ? 'danger' : ''"
+                 formControlName="telphone" id="telphone">
+          <uea-show-form-errors [control]="schoolForm.get('telphone')"></uea-show-form-errors>
+        </div>
+      </div>-->
+      <div class="form-group row">
+        <label class="col-form-label col-md-4 text-right">备注：</label>
+        <div class="col-md-4">
+          <textarea nbInput formControlName="memo" id="memo" fullWidth placeholder="请输入......"></textarea>
+        </div>
+      </div>
+    </form>
+    <div class="text-center">
+      <button nbButton status="info" (click)="saveInfo()">保存</button>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+

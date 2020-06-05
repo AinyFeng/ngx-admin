@@ -1,0 +1,98 @@
+<nz-tabset [(nzSelectedIndex)]="tabIndex" (nzSelectedIndexChange)="tabIndexChange($event)">
+  <nz-tab nzTitle="年度计划列表">
+    <div nz-row>
+      <form nz-form [nzLayout]="'inline'" [formGroup]="queryForm" (ngSubmit)="query(true)">
+        <nz-form-item>
+          <nz-form-label nzFor="planStatus">状态</nz-form-label>
+          <nz-form-control nzErrorTip="">
+            <nz-select formControlName="planStatus">
+              <nz-option nzLabel="请选择" [nzValue]="'null'"></nz-option>
+              <nz-option nzLabel="新建"   [nzValue]="'0'"></nz-option>
+              <nz-option nzLabel="待审批" [nzValue]="'1'"></nz-option>
+              <nz-option nzLabel="通过"   [nzValue]="'2'"></nz-option>
+              <nz-option nzLabel="退回"   [nzValue]="'9'"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="areaName">填报单位</nz-form-label>
+          <nz-form-control nzErrorTip="">
+            <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+              <input (click)="selectDistrict()" type="text" formControlName="areaName" readonly nz-input placeholder="填报单位" />
+            </nz-input-group>
+            <ng-template #suffixIconButton>
+              <button (click)="selectDistrict()" nz-button nzType="default" nzSearch><i nz-icon nzType="search"></i></button>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="planDate">计划日期</nz-form-label>
+          <nz-form-control nzErrorTip="">
+            <nz-year-picker nzFormat="yyyy" formControlName="planDate"></nz-year-picker>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control>
+            <button nz-button nzType="primary">查询</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+    <div nz-row>
+      <nz-table #borderedTable
+                nzBordered
+                (nzPageIndexChange)="query(false, $event)"
+                [nzPageIndex]="page"
+                [nzPageSize]="pageSize"
+                [nzTotal]="total"
+                [nzItemRender]="renderItemTemplate"
+                [nzFrontPagination]="false"
+                [nzData]="dataSet">
+        <thead>
+        <tr>
+          <th>操作</th>
+          <th>计划</th>
+          <th>状态</th>
+          <th>填报单位</th>
+          <th>填报人</th>
+          <th>审核单位</th>
+          <th>计划日期</th>
+          <th>类型</th>
+          <th>备注</th>
+          <th>创建日期</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of borderedTable.data">
+          <td>
+            <ng-container *ngIf="data.fromOrgCode === planConfigService.userInfo['pov'] && (data.planStatus === '0' || data.planStatus === '9')">
+              <nz-tag (click)="update(data.planYearCode)">修改</nz-tag>
+              <nz-tag nzColor="red" (click)="delete(data.planYearCode)">删除</nz-tag>
+            </ng-container>
+            <ng-container  *ngIf="data.fromOrgCode === planConfigService.userInfo['pov'] && data.planStatus === '2'">
+              <nz-tag (click)="monthlyFillIn(data.planYearCode)">月计划填报</nz-tag>
+            </ng-container>
+          </td>
+          <td><a (click)="view(data.planYearCode)">{{ data.planTitle }}</a></td>
+          <td>{{ data.planStatus | planStatusPipe }}</td>
+          <td>{{ data.fromOrgCode | povNamePipe | async }}</td>
+          <td>{{ data.planBy }}</td>
+          <td>{{ data.toOrgCode| povNamePipe | async }}</td>
+          <td>{{ (data.planDate | date: 'yyyy') + '年'}}</td>
+          <td>{{ data.type | planTypePipe }}</td>
+          <td>{{ data.memo }}</td>
+          <td>{{ data.createDate | date: 'yyyy-MM-dd'}}</td>
+        </tr>
+        </tbody>
+      </nz-table>
+      <ng-template #renderItemTemplate let-type let-page="page">
+        <a *ngIf="type === 'pre'" >上一页</a>
+        <a *ngIf="type === 'next'">下一页</a>
+        <a *ngIf="type === 'page'">{{ page }}</a>
+      </ng-template>
+    </div>
+  </nz-tab>
+  <nz-tab *ngIf="isShow" [nzTitle]="action === 'edit' ? '年度计划修改' : '年度计划查看'">
+    <uea-type-one-yearly-details [action]="action" [planYearCode]="planYearCode" [(tabIndex)]="tabIndex"></uea-type-one-yearly-details>
+  </nz-tab>
+</nz-tabset>

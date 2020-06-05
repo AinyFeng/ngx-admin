@@ -1,0 +1,63 @@
+<nb-card accent="info">
+  <nb-card-header>
+    社区数据
+    <div>
+      <button nbButton status="info" (click)="search()">查询</button>
+      <button nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="communityForm">
+      <div class="form-group row">
+        <div class="col-md-4 row">
+          <label class="col-4 col-form-label text-right">社区编码：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth formControlName="communityCode" id="communityCode">
+          </div>
+        </div>
+        <div class="col-md-4 row">
+          <label class="col-4 col-form-label text-right">社区名称：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth formControlName="communityName" id="communityName">
+          </div>
+        </div>
+        <!-- <div class="col-md-4">
+          <button nbButton status="info"  (click)="search()">查询</button>
+          <button nbButton status="warning" (click)="reset()">重置</button>
+        </div> -->
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+<nb-card>
+  <nb-card-body>
+    <nz-table #communityInfo [nzData]="communityData" nzBordered nzSize="small" nzSimple="false" [nzLoading]="loading"
+              [nzTotal]="total" [nzFrontPagination]="false"
+              (nzPageIndexChange)="search($event)">
+      <thead>
+        <tr>
+          <th [nzAlign]="'center'">社区编码</th>
+          <th [nzAlign]="'center'">名称</th>
+          <th [nzAlign]="'center'">人数</th>
+          <th [nzAlign]="'center'">备注</th>
+          <th [nzAlign]="'center'">是否统计</th>
+          <th [nzAlign]="'center'">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of communityInfo.data">
+          <td [nzAlign]="'center'">{{d.communityCode}}</td>
+          <td [nzAlign]="'center'">{{d.communityName}}</td>
+          <td [nzAlign]="'center'"></td>
+          <td [nzAlign]="'center'">{{d.memo}}</td>
+          <td [nzAlign]="'center'"></td>
+          <td [nzAlign]="'center'">
+            <!-- <a href="javascript:" class="link-a mr-1" (click)="updateCommunity(d)">修改</a>
+             <a href="javascript:" class="link-a" (click)="deleteCommunity(d)">删除</a>-->
+          </td>
+
+        </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

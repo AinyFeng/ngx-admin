@@ -1,0 +1,90 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    门诊内疫苗调剂
+    <div>
+      <button class="mr-2" nbButton status="info"  [disabled]="loading" (click)="toSearch()">查询</button>
+      <button class="mr-2" nbButton status="info">导出</button>
+      <button class="mr-2" nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="searchForm">
+      <div class="form-group row">
+
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">部门科室：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择科室"  status="info" formControlName="departmentCode"  (ngModelChange)="departmentChange($event)"
+                       id="departmentCode">
+              <nb-option [value]="v.departmentCode" *ngFor="let v of departmentSelect">{{v.departmentName}}</nb-option>
+            </nb-select>
+
+          </div>
+        </div>
+
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">冷藏设备：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择冷藏设备" status="info" fullWidth formControlName= "facilityCode" id = "facilityCode" >
+              <nb-option [value]="v.value" *ngFor="let v of facilityOptions">{{v.label}}</nb-option>
+            </nb-select>
+           <!-- <nb-select placeholder="请选择冷藏设备" status="info" formControlName= "facilityCode" id = "facilityCode" >
+              <nb-option value="demoFacilityCodeForStockTest">冷藏设备1</nb-option>
+              <nb-option value="215313030">冷藏设备2</nb-option>
+            </nb-select>-->
+          </div>
+        </div>
+
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗名称：</label>
+          <div class="col-8">
+            <uea-nb-select-all [placeholderText]="'请选择'" [options]="vacSubClassData"  formControlName="vaccineSubclassCode"  id="vaccineSubclassCode">
+            </uea-nb-select-all>
+          </div>
+        </div>
+
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗批次：</label>
+          <div class="col-8">
+            <input type="text" nbInput formControlName="batchCode" id = "batchCode" placeholder="请输入疫苗批次">
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow:scroll;">
+  <nb-card-body>
+    <nz-table #msgTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false" [nzData]="listOfData"
+              [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex"
+              (nzPageIndexChange)="toSearch($event)" >
+      <thead>
+    <tr>
+      <th [nzAlign]="'center'">序号</th>
+      <th [nzAlign]="'center'">部门名称</th>
+      <th [nzAlign]="'center'">设备</th>
+      <th [nzAlign]="'center'">疫苗产品</th>
+      <th [nzAlign]="'center'">疫苗批号</th>
+      <th [nzAlign]="'center'">数量(支)</th>
+      <th [nzAlign]="'center'">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of msgTable.data;let i = index;">
+      <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+      <td [nzAlign]="'center'">{{data.department_code | departmentNamePipe | async}}</td>
+      <td [nzAlign]="'center'">{{data.fixed_assets_code | assetsNamePipe}}</td>
+      <td [nzAlign]="'center'">{{data.vacc_product_code | vacProductNamePipe | async}}</td>
+      <td [nzAlign]="'center'">{{data.prod_batch_code}}</td>
+      <td [nzAlign]="'center'">{{data.count}}</td>
+      <td [nzAlign]="'center'">
+        <a  href="javascript:" class="link-a mr-1" (click)="allot(data)">调拨</a>
+      </td>
+
+    </tr>
+    </tbody>
+  </nz-table>
+  </nb-card-body>
+</nb-card>
+

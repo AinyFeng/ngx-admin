@@ -1,0 +1,13 @@
+<nb-card accent="info">
+	<nb-card-header>
+		个人资料
+	</nb-card-header>
+	<nb-card-body>
+		<div class="row">
+			<div class="col-xl-4 col-md-6 col-sm-12" *ngFor="let item of profile | async | keyvalue">
+				<label>{{ item.key | profilenamePipe }}:</label>
+				<input type="text" nbInput fullWidth status="basic" value="{{ item.value }}" readonly />
+			</div>
+		</div>
+	</nb-card-body>
+</nb-card>

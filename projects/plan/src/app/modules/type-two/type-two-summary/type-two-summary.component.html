@@ -1,0 +1,112 @@
+<nz-tabset [(nzSelectedIndex)]="tabIndex" (nzSelectedIndexChange)="changeTab($event)">
+  <nz-tab nzTitle="汇总统计">
+    <ng-container [ngTemplateOutlet]="form"></ng-container>
+    <div nz-row>
+      <nz-table #borderedTable
+                [nzBordered]="true"
+                [nzShowPagination]="false"
+                [nzItemRender]="renderItemTemplate"
+                [nzFrontPagination]="false" [nzData]="list">
+        <thead>
+        <tr>
+          <th>疫苗名称</th>
+          <th>免疫程序剂次数</th>
+          <th>规格（人份/支）</th>
+          <ng-container *ngFor="let office of officeList">
+            <th>{{office?.name}}</th>
+          </ng-container>
+          <th>总计</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of borderedTable.data;index as row">
+          <td>{{ data?.vaccineSubclassName }}</td>
+          <td>{{ data?.dosage }}</td>
+          <td>{{ data?.spec }}</td>
+          <td>{{data['realNumMonth']}}</td>
+          <ng-container *ngFor="let office of officeList;index as i;">
+            <td *ngIf="i !== 0" [ngClass]="'realNumMonth' + row">{{data['realNumMonth'+i]}}</td>
+          </ng-container>
+          <td>{{ data['realNumMonth'] + getNumMonth('realNumMonth' + row) }}</td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </nz-tab>
+  <nz-tab [nzTitle]="office.name" *ngFor="let office of officeList">
+    <ng-container [ngTemplateOutlet]="form"></ng-container>
+    <div nz-row>
+      <nz-table #borderedTable2
+                [nzBordered]="true"
+                [nzShowPagination]="false"
+                [nzItemRender]="renderItemTemplate"
+                [nzFrontPagination]="false" [nzData]="tabList">
+        <thead>
+        <tr>
+          <th>疫苗名称</th>
+          <th>免疫程序剂次数</th>
+          <th>规格（人份/支）</th>
+          <th>应种人口数</th>
+          <th>损耗系数</th>
+          <th>年度计划数（支）</th>
+          <th>月度计划数（支）</th>
+          <th>上月库存数(支)</th>
+          <th>本月领用计划数（支）</th>
+          <th>年度累计领取数（支）</th>
+          <th>年度计划剩余数（支）</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of borderedTable2.data;index as row">
+          <td>{{ data?.vaccineSubclassName }}</td>
+          <td>{{ data?.dosage }}</td>
+          <td>{{ data?.spec }}</td>
+          <td>{{ data?.planPopulation }}</td>
+          <td>{{ data?.lossFactor }}</td>
+          <td>{{ data?.planNumYear}}</td>
+          <td>{{ data?.planNumMonth}}</td>
+          <td>{{ data?.storeNum}}</td>
+          <td>{{ data?.realNumMonth}}</td>
+          <td>{{ data?.planNumYearRemain}}</td>
+          <td>{{ data?.planNumYearRemainLast}}</td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </nz-tab>
+  <ng-template #form>
+    <div nz-row>
+      <form nz-form [nzLayout]="'inline'" [formGroup]="queryForm" (ngSubmit)="query()">
+        <nz-form-item>
+          <nz-form-label nzFor="areaCode">地区</nz-form-label>
+          <nz-form-control nzErrorTip="">
+            <nz-tree-select
+              style="width: 250px"
+              [nzNodes]="nodes"
+              nzShowSearch
+              nzPlaceHolder="地区"
+              formControlName="areaCode">
+            </nz-tree-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="planDate">计划日期</nz-form-label>
+          <nz-form-control nzErrorTip="">
+            <nz-month-picker formControlName="planDate"></nz-month-picker>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control>
+            <button nz-button nzType="primary">查询</button>
+            <button nz-button nzType="primary" type="button" (click)="exportFile()">导出</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+  </ng-template>
+  <ng-template #renderItemTemplate let-type let-page="page">
+    <a *ngIf="type === 'pre'" >上一页</a>
+    <a *ngIf="type === 'next'">下一页</a>
+    <a *ngIf="type === 'page'">{{ page }}</a>
+  </ng-template>
+</nz-tabset>

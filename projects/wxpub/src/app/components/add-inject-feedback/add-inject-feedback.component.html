@@ -1,0 +1,97 @@
+<!--添加反馈-->
+<div class="wx-content">
+  <form [formGroup]="baseForm">
+    <div class="weui-cells weui-cells_form cell-wrap">
+      <div class="list-item weui-cell">
+        <div class="weui-cell__hd">
+          <div class="cell-left-title">接种人:</div>
+        </div>
+        <div class="item-title weui-cell__bd">
+          <select class="weui-select" name="accountType" formControlName="injectChild" (ngModelChange)="childChange($event)">
+            <option value="{{item.value}}" *ngFor="let item of attendList ">{{item.label}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="list-item weui-cell">
+        <div class="weui-cell__hd">
+          <div class="cell-left-title">发生日期<span class="left-info">(必填): </span></div>
+        </div>
+        <div class="item-title weui-cell__bd">
+          <nz-date-picker [nzFormat]="'yyyy-MM-dd'" formControlName="injectTime"></nz-date-picker>
+        </div>
+      </div>
+
+      <div class="list-item weui-cell">
+        <div class="weui-cell__hd">
+          <div class="cell-left-title">接种记录:</div>
+        </div>
+        <div class="item-title weui-cell__bd">
+          <select class="weui-select" name="accountType" formControlName="injectRecord">
+            <option value="{{item.value}}" *ngFor="let item of injectList ">{{item.label}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="weui-cells__title">问题描述：</div>
+    <div class="weui-cells weui-cells_form">
+      <div class="weui-cell">
+        <div class="weui-cell__bd">
+          <textarea
+            formControlName="mark"
+            class="weui-textarea"
+            placeholder="请用简单的文字描述接种后出现的不良反应"
+            rows="3"
+            name="txta"
+            weui-textarea
+            weui-cn="2"
+            maxlength="20"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="weui-cells weui-cells_form">
+      <div class="weui-cell">
+        <div class="weui-cell__bd">
+          <div class="weui-uploader">
+            <div class="weui-uploader__hd">
+              <p class="weui-uploader__title">图片上传</p>
+              <div class="weui-uploader__info">{{ uploader?.queue?.length }}/{{ 3 }}</div>
+            </div>
+            <div class="weui-uploader__bd">
+              <ul class="weui-uploader__files">
+                <li
+                  class="weui-uploader__file"
+                  *ngFor="let item of uploader.queue"
+                  [weui-thumb]="item._file"
+                  (click)="onGallery(item)"
+                  [ngClass]="{ 'weui-uploader__file_status': item.isError }"
+                >
+                  <div class="weui-uploader__file-content" *ngIf="item.isUploading">{{ item.progress }}%</div>
+                  <div class="weui-uploader__file-content" *ngIf="item.isError">
+                    <i class="weui-icon-warn"></i>
+                  </div>
+                </li>
+              </ul>
+              <div class="weui-uploader__input-box" *ngIf="uploader?.queue?.length < 3">
+                <input
+                  class="weui-uploader__input"
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  [weui-uploader-file]="uploader"
+                />
+              </div>
+            </div>
+          </div>
+          <weui-gallery [imgs]="img" [(show)]="imgShow" (delete)="onDel($event)"></weui-gallery>
+        </div>
+      </div>
+    </div>
+    <div class="weui-btn-area">
+      <button weui-button (click)="toSubmit()" [disabled]="uploader.isUploading || injectList.length===0">提交反馈</button>
+    </div>
+  </form>
+</div>

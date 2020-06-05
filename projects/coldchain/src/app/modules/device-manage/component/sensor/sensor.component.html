@@ -1,0 +1,97 @@
+<nz-card style="width:100%;" nzTitle="传感器">
+  <form nz-form [formGroup]="queryForm" class="ant-advanced-search-form">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzLg]="6" [nzMd]="6" [nzXs]="24" nzFor="deviceName">传感器名称</nz-form-label>
+          <nz-form-control [nzLg]="12" [nzMd]="12" [nzXs]="24">
+            <input
+              nz-input
+              nzSize="default"
+              placeholder="请输入设备名称"
+              formControlName="deviceName"
+              id="deviceName"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div class="mb-2">
+        <button class="mr-2" nz-button [nzType]="'primary'" (click)="searchData(1)">查询</button>
+        <button class="mr-2" nz-button [nzType]="'primary'" (click)="add()">新增</button>
+        <button class="mr-2" nz-button [nzType]="'primary'" (click)="edit()">修改</button>
+        <button nz-button [nzType]="'primary'" (click)="delete()">删除</button>
+      </div>
+
+    </div>
+
+   <!-- <div nz-row>
+      <div nz-col [nzSpan]="24" class="search-area">
+        <button nz-button [nzType]="'primary'" (click)="searchData()" >查询</button>
+        <button nz-button [nzType]="'primary'" (click)="add()">新增</button>
+        <button nz-button [nzType]="'primary'" (click)="edit()">修改</button>
+        <button nz-button [nzType]="'primary'" (click)="delete()">删除</button>
+      </div>
+    </div>-->
+  </form>
+</nz-card>
+<nz-card style="margin-top: 20px;">
+  <nz-table #msgTable [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false" [nzLoading]="loading"
+            [nzFrontPagination]="false"
+            [nzTotal]="total"
+            [(nzPageIndex)]="pageIndex"
+            [nzShowTotal]="totalTemplate"
+            (nzPageIndexChange)="searchData($event)">
+    <thead>
+    <tr>
+      <th
+        nzShowCheckbox
+        [(nzChecked)]="isAllDisplayDataChecked"
+        [nzIndeterminate]="isIndeterminate"
+        (nzCheckedChange)="checkAll($event)"
+      ></th>
+      <th [nzAlign]="'center'">传感器名称</th>
+      <th [nzAlign]="'center'">传感器类别</th>
+      <th [nzAlign]="'center'">最高温度</th>
+      <th [nzAlign]="'center'">最低温度</th>
+      <th [nzAlign]="'center'">最高湿度</th>
+      <th [nzAlign]="'center'">最低湿度</th>
+      <th [nzAlign]="'center'">所属仪器</th>
+      <th [nzAlign]="'center'">标签号</th>
+      <th [nzAlign]="'center'">是否启用</th>
+      <th [nzAlign]="'center'">是否忽略报警</th>
+      <th [nzAlign]="'center'">修改人</th>
+      <th [nzAlign]="'center'">修改时间</th>
+      <th [nzAlign]="'center'">传感器编号</th>
+      <th [nzAlign]="'center'">冷藏设备编号</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of msgTable.data">
+      <td
+        nzShowCheckbox
+        [(nzChecked)]="mapOfCheckedId[data.id]"
+        (nzCheckedChange)="refreshStatus()"
+      ></td>
+      <td [nzAlign]="'center'">{{data.sensorName}}</td>
+      <td [nzAlign]="'center'">{{data.sensorType}}</td>
+      <td [nzAlign]="'center'">{{data.upperTemp}}</td>
+      <td [nzAlign]="'center'">{{data.lowerTemp}}</td>
+      <td [nzAlign]="'center'">{{data.upperHumidity}}</td>
+      <td [nzAlign]="'center'">{{data.lowerHumidity}}</td>
+      <td [nzAlign]="'center'">{{data.device}}</td>
+      <td [nzAlign]="'center'">{{data.labelNumber}}</td>
+      <td [nzAlign]="'center'">{{data.status === "1" ? '启用':'不启用'}}</td>
+      <td [nzAlign]="'center'">{{data.ignoreAlarm}}</td>
+      <td [nzAlign]="'center'">{{data.updateBy}}</td>
+      <td [nzAlign]="'center'">{{data.updateDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td [nzAlign]="'center'">{{data.sensorMac}}</td>
+      <td [nzAlign]="'center'">{{data.facilityCode}}</td>
+    </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTemplate>
+  共{{ total }}条数据，当前第{{ pageIndex }}页
+</ng-template>
+

@@ -1,0 +1,40 @@
+<nb-card class="nb-card-container-sm">
+  <nb-card-header class="nb-card-header-qb">
+    修改社区信息
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="communityForm">
+      <div class="form-group row">
+        <label class="col-form-label col-md-4 text-right label-required">
+          <span class="star-required"></span>社区编码：</label>
+        <div class="col-md-4">
+          <input type="text" nbInput outline fullWidth
+                 [status]="communityForm.get('communityCode').invalid && communityForm.get('communityCode').touched ? 'danger' : ''"
+                 formControlName="communityCode" id="communityCode"/>
+          <uea-show-form-errors [control]="communityForm.get('communityCode')"></uea-show-form-errors>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-form-label col-md-4 text-right label-required">
+          <span class="star-required"></span>社区名称：</label>
+        <div class="col-md-4">
+          <input type="text" nbInput outline fullWidth
+                 [status]="communityForm.get('communityName').invalid && communityForm.get('communityName').touched ? 'danger' : ''"
+                 formControlName="communityName" id="communityName">
+          <uea-show-form-errors [control]="communityForm.get('communityName')"></uea-show-form-errors>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-form-label col-md-4 text-right">备注：</label>
+        <div class="col-md-4">
+          <textarea nbInput formControlName="memo" id="memo" fullWidth placeholder="请输入......"></textarea>
+        </div>
+      </div>
+    </form>
+    <div class="text-center">
+      <button nbButton status="info" (click)="saveCommunity()">保存</button>
+    </div>
+  </nb-card-body>
+</nb-card>
+

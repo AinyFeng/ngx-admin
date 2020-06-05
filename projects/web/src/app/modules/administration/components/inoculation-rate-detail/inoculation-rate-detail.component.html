@@ -1,0 +1,51 @@
+<div class="nb-card-xx">
+  <nb-card size="xlarge">
+    <nb-card-header class="nb-card-header-qb">
+      详细儿童个案
+      <span class="float-right mr-4 cursor-pointer" title="关闭" (click)="onClose()"><i
+        class="far fa-times-circle"></i></span>
+    </nb-card-header>
+    <nb-card-body>
+      <nz-table #nzTable
+                [nzData]="listOfData"
+                [nzTotal]="total"
+                [nzLoading]="loading"
+                nzBordered
+                [(nzPageIndex)]="pageIndex"
+                [nzPageSize]="pageSize"
+                [nzShowTotal]="totalTemplate"
+                nzSize="small" nzSimple="false"
+                [nzFrontPagination]="false"
+                (nzPageIndexChange)="queryData($event)">
+        <thead>
+        <tr>
+          <th [nzAlign]="'center'">儿童编码</th>
+          <th [nzAlign]="'center'">儿童姓名</th>
+          <th [nzAlign]="'center'">出生日期</th>
+          <th [nzAlign]="'center'">疫苗名称</th>
+          <th [nzAlign]="'center'">剂次</th>
+          <th [nzAlign]="'center'">接种日期</th>
+          <th [nzAlign]="'center'">评价</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of nzTable.data">
+          <!--  <td [nzAlign]="'center'">{{data.profileCode}}</td>
+            <td [nzAlign]="'center'">{{data.profileName}}</td>
+            <td [nzAlign]="'center'">{{data.birth | date: 'yyyy-MM-dd'}}</td>
+            <td [nzAlign]="'center'">{{data.vacc}}</td>
+            <td [nzAlign]="'center'">{{data.fatherName}}</td>
+            <td [nzAlign]="'center'">{{data.fatherPhone}}</td>
+            <td [nzAlign]="'center'">{{data.a}}</td>
+            <td [nzAlign]="'center'">{{data.vacc}}</td>-->
+        </tr>
+        </tbody>
+      </nz-table>
+    </nb-card-body>
+  </nb-card>
+  <ng-template #totalTemplate>
+    共{{ total }}条数据，当前第{{ pageIndex }}页
+  </ng-template>
+
+</div>
+

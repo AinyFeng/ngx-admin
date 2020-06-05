@@ -1,0 +1,194 @@
+<nb-card accent="info" style="width: 880px;">
+  <nb-card-header>
+    新增批量接种
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="batchInjectFrom" novalidate>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label text-right">接种单位：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth [value]="userInfo.pov | povNamePipe | async ">
+        </div>
+
+        <label class="col-sm-2 col-form-label text-right label-required">科室：</label>
+        <div class="col-sm-4">
+          <nb-select placeholder="请选择科室" (ngModelChange)="departmentChange($event)"  fullWidth status="info" formControlName="departmentCode"
+                     id="departmentCode">
+            <nb-option [value]="v.departmentCode" *ngFor="let v of departmentSelect">{{v.departmentName}}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="batchInjectFrom.get('departmentCode')"></uea-show-form-errors>
+        </div>
+
+      </div>
+
+      <div class="form-group row">
+
+        <label for="facilityCode" class="col-sm-2 col-form-label text-right label-required">冷藏设备：</label>
+        <div class="col-sm-4">
+          <nb-select placeholder="请选择"  fullWidth status="info" formControlName="facilityCode"
+                     id="facilityCode">
+            <nb-option [value]="v.value" *ngFor="let v of facilityOptions">{{v.label}}</nb-option>
+          </nb-select>
+          <!--<uea-nb-select-all [placeholderText]="'请选择'" [options]="facilityOptions"  formControlName="facilityCode" id="facilityCode">
+          </uea-nb-select-all>-->
+          <uea-show-form-errors [control]="batchInjectFrom.get('facilityCode')"></uea-show-form-errors>
+        </div>
+
+        <label for="vaccineBroadHeadingCode" class="col-sm-2 col-form-label text-right label-required">疫苗大类：</label>
+        <div class="col-sm-4">
+          <nb-select fullWidth outline status="info" placeholder="请选择"
+                     (ngModelChange)="vaccineBroadHeadingChange($event)" formControlName="vaccineBroadHeadingCode" id="vaccineBroadHeadingCode">
+            <nb-option *ngFor="let c of vacBroadHeadingData" [value]="c.broadHeadingCode">{{c.broadHeadingFullName}}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="batchInjectFrom.get('vaccineBroadHeadingCode')"></uea-show-form-errors>
+        </div>
+
+      </div>
+
+
+      <div class="form-group row">
+
+        <label for="vaccineSubclassCode" class="col-sm-2 col-form-label text-right label-required">疫苗小类：</label>
+        <div class="col-sm-4">
+          <nb-select  (ngModelChange)="vaccineSubClassChange($event)"  placeholder="请选择" fullWidth outline status="info" formControlName="vaccineSubclassCode"
+                      id="vaccineSubclassCode">
+            <nb-option [value]="v.value" *ngFor="let v of vacSubClassOptions">{{v.label}}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="batchInjectFrom.get('vaccineSubclassCode')"></uea-show-form-errors>
+        </div>
+
+        <label for="vaccineProductCode" class="col-sm-2 col-form-label text-right label-required">疫苗产品：</label>
+        <div class="col-sm-4">
+          <nb-select fullWidth placeholder="请选择" status="info" formControlName="vaccineProductCode" id="vaccineProductCode"
+                     (ngModelChange)="vaccProductChange($event)" >
+            <nb-option [value]="v.value" *ngFor="let v of vaccProductOptions">{{v.label}}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="batchInjectFrom.get('vaccineProductCode')"></uea-show-form-errors>
+        </div>
+
+      </div>
+
+      <div class="form-group row">
+        <!--生产企业自动填充-->
+        <label for="vaccineManufactureCode" class="col-sm-2 col-form-label text-right label-required">生产企业：</label>
+        <div class="col-sm-4">
+          <input type="text" readonly nbInput fullWidth formControlName="vaccineManufactureName" id="vaccineManufactureName">
+          <input type="text" hidden readonly nbInput fullWidth formControlName="vaccineManufactureCode" id="vaccineManufactureCode">
+          <!--<nb-select fullWidth placeholder="请选择" status="info" formControlName="vaccineManufactureCode"
+                     id="vaccineManufactureCode">
+            <nb-option [value]="v.code" *ngFor="let v of manufactureData">{{v.name}}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="batchInjectFrom.get('vaccineManufactureCode')"></uea-show-form-errors>-->
+        </div>
+
+        <label for="prodBatchCode" class="col-sm-2 col-form-label text-right label-required">疫苗批次：</label>
+        <div class="col-sm-4">
+          <nb-select fullWidth placeholder="请选择" status="info" formControlName="prodBatchCode" id="prodBatchCode">
+            <nb-option [value]="v.value" *ngFor="let v of prodBatchOptions">{{v.value}}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="batchInjectFrom.get('prodBatchCode')"></uea-show-form-errors>
+        </div>
+      </div>
+
+      <div class="form-group row">
+
+        <label for="vaccinateUnitType" class="col-sm-2 col-form-label text-right label-required">被接种单位类型：</label>
+        <div class="col-sm-4">
+          <nb-select fullWidth placeholder="请选择" status="info" formControlName="vaccinateUnitType" id="vaccinateUnitType">
+            <nb-option [value]="v.value" *ngFor="let v of beVaccinateUnitsOptions">{{v.label}}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="batchInjectFrom.get('vaccinateUnitType')"></uea-show-form-errors>
+
+        </div>
+
+        <label for="beVaccinateUnits" class="col-sm-2 col-form-label text-right label-required">被接种单位名称：</label>
+        <div class="col-sm-4">
+          <input type="text" nbInput fullWidth placeholder="请输入" formControlName="beVaccinateUnits" id="beVaccinateUnits" >
+          <uea-show-form-errors [control]="batchInjectFrom.get('beVaccinateUnits')"></uea-show-form-errors>
+        </div>
+
+      </div>
+
+      <div class="form-group row">
+
+        <label for="beVaccinateObjectName" class="col-sm-2 col-form-label text-right label-required">被接种对象名称：</label>
+        <div class="col-sm-4">
+          <input type="text" nbInput fullWidth placeholder="请输入" formControlName="beVaccinateObjectName" id="beVaccinateObjectName" >
+          <uea-show-form-errors [control]="batchInjectFrom.get('beVaccinateObjectName')"></uea-show-form-errors>
+        </div>
+
+        <label for="vaccinateDoctorCode" class="col-sm-2 col-form-label text-right label-required">接种医生：</label>
+        <div class="col-sm-4">
+          <nb-select placeholder="请选择" status="info" fullWidth formControlName= "vaccinateDoctorCode" id = "vaccinateDoctorCode" >
+            <nb-option [value]="v.number" *ngFor="let v of staffOptionSelected">{{v.realName}}</nb-option>
+          </nb-select>
+          <!--<input type="text" nbInput fullWidth placeholder="请输入" formControlName="vaccinateDoctorCode" id="vaccinateDoctorCode">-->
+          <uea-show-form-errors [control]="batchInjectFrom.get('vaccinateDoctorCode')"></uea-show-form-errors>
+        </div>
+
+      </div>
+
+
+
+      <div class="form-group row">
+
+        <label for="vaccinateTime" class="col-sm-2 col-form-label text-right label-required">接种时间：</label>
+        <div class="col-sm-4">
+          <nz-date-picker style="width: 100%;" nzSize="large" formControlName="vaccinateTime" id="vaccinateTime" nzShowTime
+                          nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择时间"></nz-date-picker>
+         <!-- <input fullWidth  placeholder="请选择时间" readonly nbInput  formControlName="vaccinateTime" id="vaccinateTime"
+                 [status]="batchInjectFrom.get('vaccinateTime').invalid && batchInjectFrom.get('vaccinateTime').touched ? 'danger' : ''"
+                 [nbDatepicker]="datepicker" id="vaccinateTime">
+          <nb-datepicker format="YYYY/MM/DD" [max]="maxDate" #datepicker></nb-datepicker>-->
+          <uea-show-form-errors [control]="batchInjectFrom.get('vaccinateTime')"></uea-show-form-errors>
+        </div>
+
+        <label for="vaccinateCount" class="col-sm-2 col-form-label text-right label-required">用苗数量(支)：</label>
+        <div class="col-sm-4">
+          <input type="number" fullWidth nbInput [min]="0" [max]="1000000" numberTransfer
+                 [status]="batchInjectFrom.get('vaccinateCount').invalid && batchInjectFrom.get('vaccinateCount').touched ? 'danger' : ''"
+                 formControlName="vaccinateCount" id="vaccinateCount" placeholder="请输入">
+          <uea-show-form-errors [control]="batchInjectFrom.get('vaccinateCount')"></uea-show-form-errors>
+        </div>
+
+      </div>
+
+      <div class="form-group row">
+
+        <label for="price" class="col-sm-2 col-form-label text-right label-required">价格：</label>
+        <div class="col-sm-4">
+          <input type="number" fullWidth nbInput [min]="0" numberTransfer
+                 [status]="batchInjectFrom.get('price').invalid && batchInjectFrom.get('price').touched ? 'danger' : ''"
+                 formControlName="price" id="price" placeholder="请输入">
+          <uea-show-form-errors [control]="batchInjectFrom.get('price')"></uea-show-form-errors>
+        </div>
+
+        <label for="stockOutBy" class="col-sm-2 col-form-label text-right label-required">出库人：</label>
+        <div class="col-sm-4">
+          <nb-select placeholder="请选择" status="info" fullWidth formControlName= "stockOutBy" id = "stockOutBy" >
+            <nb-option [value]="v.number" *ngFor="let v of staffOptionSelected">{{v.realName}}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="batchInjectFrom.get('stockOutBy')"></uea-show-form-errors>
+          <!--<input type="text" nbInput fullWidth placeholder="请输入" formControlName="stockOutBy" id="stockOutBy">
+          <uea-show-form-errors [control]="batchInjectFrom.get('stockOutBy')"></uea-show-form-errors>-->
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="memo" class="col-sm-2 col-form-label text-right">备注：</label>
+        <div class="col-sm-10">
+          <textarea nbInput formControlName="memo" id="memo" fullWidth placeholder="请输入......"></textarea>
+        </div>
+      </div>
+
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerMessage="" nbButton status="info" class="mr-5"
+              (click)="onSubmit()">保存
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>

@@ -1,0 +1,22 @@
+<nb-card style="width: 400px;" size="medium">
+  <nb-card-body id="call" style="height: 500px;">
+    <p style="text-align: center;">智慧接种</p>
+    <p
+      style="text-align: center; font-size: 26px; font-weight: bolder;">{{ printData ? printData?.queueCode : 'A001' }}</p>
+    <p>档案编码：{{ printData ? printData?.profileCode : '' }}</p>
+    <p>免疫卡号：{{ printData ? printData?.immunityVacCard : '' }}</p>
+    <p>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：{{ printData ? printData?.profileName : '' }}
+      ({{ printData ? (printData?.birthDate | date: 'yyyy-MM-dd') : '' }})</p>
+    <p>前面等待：{{ printData ? printData?.queueCount : 0 }}</p>
+    <p>排号时间：{{ printData ? (printData?.createDate | date:'yyyy-MM-dd HH:mm:ss') : '' }}</p>
+    <p style="font-size: 20px; font-weight: bolder;">请在大厅等候，请耐心留意叫号，过号作废。</p>
+    <div style="text-align: center;">
+      <qrcode style="display: inline-block;" [qrdata]="qrCode" [size]="64" [level]="'M'"></qrcode>
+    </div>
+    <p style="text-align: center; margin-top: 10px;">扫描关注二维码，获取更多便捷服务</p>
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton (click)="print(true)" status="info" class="mr-3">打印预览</button>
+    <button nbButton (click)="print(false)" status="info">直接打印</button>
+  </nb-card-footer>
+</nb-card>

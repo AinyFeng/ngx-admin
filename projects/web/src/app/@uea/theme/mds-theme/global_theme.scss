@@ -1,0 +1,22 @@
+@import './nb-card-qb';
+@import './nb-form-qb';
+@import './nb-icon';
+
+@include nb-install-component() {
+	.cursor-pointer {
+		cursor: pointer;
+	}
+	.hover-highlight {
+		&:hover {
+			color: nb-theme(color-primary-400);
+		}
+	}
+	.f-r-icon {
+		float: right;
+		margin-right: 20px;
+	}
+
+	.full-width {
+		width: 100%;
+	}
+}

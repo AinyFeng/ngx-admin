@@ -1,0 +1,155 @@
+<!--<div class="main ml-1 mr-1">
+  &lt;!&ndash;预约到留观&ndash;&gt;
+  <div class="item-left">
+    left
+  </div>
+  <div class="item-middle m-2">
+    &lt;!&ndash;搜索框&ndash;&gt;
+    <div class="middle-top text-center mt-4 mb-4">
+      <input nz-input placeholder="请输入受种人姓名、档案编号、证件号码" nzSize="large">
+      <button class="ml-2" nz-button nzType="primary" nzSize="large" [disabled]="loading">查询</button>
+    </div>
+    &lt;!&ndash;基本信息&ndash;&gt;
+
+    &lt;!&ndash;查询接种记录&ndash;&gt;
+
+  </div>
+  &lt;!&ndash;疫苗全过程追溯&ndash;&gt;
+  <div class="item-right">
+    rigth
+  </div>
+
+</div>-->
+<!--疫苗追溯-->
+<div nz-row nzGutter="16" style="height: 100%;">
+  <div nz-col nzSpan="12" class="display-col">
+    <div class="chart-container sub-col">
+      <div class="middle-top text-center">
+        <input placeholder="请输入受种人姓名、档案编号、证件号码" [(ngModel)]="searchContent"/>
+        <button class="ml-2" type="button" [disabled]="loading" (click)="searchProfile()">查询</button>
+        <!--        <button class="ml-2" nz-button type="default" [disabled]="loading" (click)="searchProfile()">查询</button>-->
+      </div>
+      <div class="title-explain p-1">
+        受种人信息
+      </div>
+      <div class="baseInfo p-3 background-gray">
+        <div class="position-absolute top-left"></div>
+        <div class="position-absolute top-right"></div>
+        <div class="position-absolute bottom-left"></div>
+        <div class="position-absolute bottom-right"></div>
+        <div class="row mb-2">
+          <div class="col-4">姓名：{{ profile?.name }}</div>
+          <div class="col-4">年龄：{{ profile?.age }}<span *ngIf="profile?.age < 7">岁{{ profile?.month }}月龄</span></div>
+          <div class="col-4">性别：{{ profile?.gender | dicPipe: 'genderCode'}}</div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-4">出生日期：{{ profile?.birthDate | date: 'yyyy-MM-dd' }}</div>
+          <div class="col-4">证件类型：{{ profile?.idCardType | dicPipe: 'idCardType'}}</div>
+          <div class="col-4">证件号码：{{ profile?.idCardNo }}</div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-4 hideText">联系电话：{{ profile?.contactPhone }}</div>
+          <div class="col-4">民族：{{ profile?.nationCode | nationPipe}}</div>
+          <div class="col-4">母亲姓名：{{ profile?.motherName }}</div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-4">母亲电话：{{ profile?.motherContactPhone }}</div>
+          <div class="col-4">父亲姓名：{{ profile?.fatherName }}</div>
+          <div class="col-4">父亲电话：{{ profile?.fatherContactPhone }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="title-explain">
+      接种记录<span *ngIf="vaccineDetail">：{{vaccineDetail.vaccinateTime}} 接种 {{vaccineDetail.vaccineProductName}}</span>
+    </div>
+    <div class="chart-container main-col1 background-gray">
+      <div class="position-absolute top-left"></div>
+      <div class="position-absolute top-right"></div>
+      <div class="position-absolute bottom-left"></div>
+      <div class="position-absolute bottom-right"></div>
+      <div class="p-2" style="height: 0;">
+        <table class="table-native">
+          <thead class="table-header">
+          <tr>
+            <!--            <th>姓名</th>-->
+            <th>疫苗名称</th>
+            <th>针次</th>
+            <th>接种时间</th>
+            <th>接种部位</th>
+            <th>疫苗批号</th>
+            <th>生产企业</th>
+            <th>接种单位</th>
+            <th>接种人员</th>
+            <th>操作</th>
+          </tr>
+          </thead>
+          <tbody class="table-tbody">
+          <tr *ngFor="let data of listOfData">
+            <!--            <td>{{data.profileName}}</td>-->
+            <td>{{data.vaccineProductName}}</td>
+            <td>{{data.vaccinateInjectNumber}}</td>
+            <td>{{data.vaccinateTime | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>{{data.vaccinatePart | dicPipe:'vaccinatePart'}}</td>
+            <td>{{data.vaccineBatchNo}}</td>
+            <td>{{data.vaccineManufactureCode | manufacturePipe}}</td>
+            <td>{{data.actualVaccinatePovCode | povNamePipe | async}}</td>
+            <td>{{data.vaccinateDoctorName}}</td>
+            <td>
+              <a href="javaScript:" (click)="checkDetail(data)">查看</a>
+            </td>
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!--<div class="colwarp" style="display: flex; flex-direction: column; height: 100%; background-color: #bbf;justify-content:space-between; overflow: hidden;">
+        <div class="col-1" style="background-color: #f00;">
+          <div style="height: 200px"></div>
+        </div>
+        <div class="col-2" style="background-color: #ff0;flex-grow:1; height: 0">
+            <div style="overflow: hidden; height: 100%">
+                <div class="colwarp" style="display: flex; flex-direction: column; height: 100%; background-color: #bbf;justify-content:space-between;">
+                <div class="col-1" style="background-color: #f70;">
+                    <div style="height: 100px">
+                    
+                    </div>
+                </div>
+                <div class="col-2" style="background-color: #3f0;flex-grow:1; height: 0  ">
+                        <div style="background-color: #898989;overflow: auto; height: 100%;  ">
+                            11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>11<br>
+                        </div>
+                </div>
+              </div>
+            </div>
+          
+        </div>
+    </div>-->
+  </div>
+  <div nz-col nzSpan="12" class="display-col">
+    <div class="chart-container sub-col background-gray">
+      <div class="position-absolute top-left"></div>
+      <div class="position-absolute top-right"></div>
+      <div class="position-absolute bottom-left"></div>
+      <div class="position-absolute bottom-right"></div>
+      <uea-appoint-to-observation></uea-appoint-to-observation>
+    </div>
+    <div class="chart-container main-col background-gray">
+      <div class="position-absolute top-left"></div>
+      <div class="position-absolute top-right"></div>
+      <div class="position-absolute bottom-left"></div>
+      <div class="position-absolute bottom-right"></div>
+      <uea-vaccine-process></uea-vaccine-process>
+    </div>
+  </div>
+</div>
+<uea-search-result-mask [mask]="mask" [listData]=listData (changeMask)="closeMask($event)"></uea-search-result-mask>
+<!--<div class="maskBg"  *ngIf="mask">
+  <div class="model-content">
+    <p>你好啊,我是内容~~</p>
+    <p>
+      <button id="closeModel" (click)="closeMask()">关闭</button>
+    </p>
+  </div>
+</div>-->

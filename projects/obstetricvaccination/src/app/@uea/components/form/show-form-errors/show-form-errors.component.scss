@@ -1,0 +1,6 @@
+@import '../../../theme/global_theme';
+@include nb-install-component() {
+	.alert-danger-qb {
+		//color: nb-theme(alert-danger-bg);
+	}
+}

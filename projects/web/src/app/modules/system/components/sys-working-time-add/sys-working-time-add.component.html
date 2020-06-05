@@ -1,0 +1,71 @@
+<nb-card accent="info">
+    <nb-card-header>
+      添加工作时间段
+      <span class="float-right mr-3 cursor-pointer" (click)="close()"><i class="far fa-times-circle"></i></span>
+    </nb-card-header>
+    <!-- <nb-card size="xlarge" class="nb-card-container">
+       <nb-card-header class="nb-card-header-qb">
+         添加工作时间段
+         <span class="float-right mr-3 cursor-pointer" (click)="ref.close()"><i class="far fa-times-circle"></i></span>
+       </nb-card-header>-->
+    <nb-card-body>
+      <form [formGroup]="addWorkingTimeForm">
+        <div class="form-group row">
+          <label for="workingTime" class="col-form-label col-4 text-right">工作时间段</label>
+          <div class="col-4">
+            <input type="text" nbInput fullWidth id="workingTime" placeholder="请输入工作时间段" formControlName="workingTime">
+          </div>
+          <label class="col-form-label col-4 text-left">
+            工作时间段可以根据自己具体的时间来设置，比如：14:00~17:00、15:00
+          </label>
+        </div>
+        <div class="form-group row">
+          <label for="workingRound" class="col-form-label col-4 text-right">工作时间段类型</label>
+          <div class="col-4">
+            <nb-select id="workingRound" placeholder="选择工作时间段类型" formControlName="workingRound">
+              <nb-option [disabled]="w.disabled" *ngFor="let w of workingRoundOptions"
+                         [value]="w.value">{{ w.label }}</nb-option>
+            </nb-select>
+          </div>
+          <label class="col-form-label col-4 text-left">
+            分为周、单双周、月共3中类型
+          </label>
+        </div>
+        <div class="form-group row">
+          <label for="workingDay" class="col-form-label col-4 text-right">工作日</label>
+          <div class="col-4">
+            <nb-select id="workingDay" placeholder="选择工作日" formControlName="workingDay">
+              <nb-option *ngFor="let w of workingDayOptions" [value]="w.value">{{ w.label }}</nb-option>
+            </nb-select>
+          </div>
+          <label class="col-form-label col-4 text-left">
+            选择具体的工作日即可
+          </label>
+        </div>
+        <div class="form-group row">
+          <label for="reservationCount" class="col-form-label col-4 text-right">可预约人数</label>
+          <div class="col-4">
+            <input type="number" min="0" max="100" nbInput fullWidth id="reservationCount" placeholder="请输入可预约人数"
+                   formControlName="reservationCount">
+          </div>
+          <label class="col-form-label col-4 text-left">
+            最大可预约人数，范围从0到100
+          </label>
+        </div>
+        <div class="form-group row">
+          <label for="useAble" class="col-form-label col-4 text-right">是否可用</label>
+          <div class="col-4">
+            <nb-radio-group id="useAble" class="flex-row" formControlName="useAble">
+              <nb-radio *ngFor="let u of useAbleOptions" [value]="u.value">{{ u.label }}</nb-radio>
+            </nb-radio-group>
+          </div>
+          <label class="col-form-label col-4 text-left">
+            是否可用，默认为可用状态，如果不可用，则该时间段不可预约
+          </label>
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton (click)="saveWorkingTime()">保存</button>
+    </nb-card-footer>
+</nb-card>

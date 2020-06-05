@@ -1,0 +1,65 @@
+<!--<div nz-row>
+  <div nz-row>
+    <uea-vaccinate-call-bar></uea-vaccinate-call-bar>
+  </div>
+  <div nz-row nzGutter="16">
+    <div nz-col nzSpan="6">
+      <uea-vaccinate-queue-list></uea-vaccinate-queue-list>
+    </div>
+    <div nz-col nzSpan="18">
+      <uea-vaccinate-base-info></uea-vaccinate-base-info>
+      <uea-vaccinate-injection-list></uea-vaccinate-injection-list>
+      <uea-vaccinate-multiple-doses-list></uea-vaccinate-multiple-doses-list>
+      <uea-vaccinate-history-list></uea-vaccinate-history-list>
+    </div>
+  </div>
+  &lt;!&ndash;<div nz-row nzGutter="16">
+    <div nz-col nzSpan="6">
+      <uea-vaccinate-base-info [isSingle]="true"></uea-vaccinate-base-info>
+    </div>
+    <div nz-col nzSpan="18">
+      <uea-vaccinate-injection-list></uea-vaccinate-injection-list>
+      <uea-vaccinate-multiple-doses-list></uea-vaccinate-multiple-doses-list>
+      <uea-vaccinate-history-list></uea-vaccinate-history-list>
+    </div>
+  </div>&ndash;&gt;
+</div>-->
+<div class="row">
+  <div class="col-12">
+    <!--头部信息栏-->
+    <uea-vaccinate-call-bar></uea-vaccinate-call-bar>
+  </div>
+</div>
+<div class="row">
+  <div class="col-3">
+    <!--左侧排号队列-->
+    <uea-vaccinate-queue-list class="uea-vaccinate"></uea-vaccinate-queue-list>
+  </div>
+  <div class="col-9">
+    <!--基本信息-->
+    <uea-vaccinate-base-info class="uea-vaccinate"></uea-vaccinate-base-info>
+    <uea-vaccinate-injection-list class="uea-vaccinate"></uea-vaccinate-injection-list>
+    <uea-vaccinate-multiple-doses-list class="uea-vaccinate"></uea-vaccinate-multiple-doses-list>
+    <uea-vaccinate-history-list class="uea-vaccinate"></uea-vaccinate-history-list>
+  </div>
+</div>
+<!--<div class="row">
+  <div class="col-12">
+    <uea-vaccinate-call-bar></uea-vaccinate-call-bar>
+  </div>
+</div>
+<div class="row">
+  <div class="col-3">
+    <uea-vaccinate-base-info [isSingle]="true"></uea-vaccinate-base-info>
+  </div>
+  <div class="col-9">
+    <uea-vaccinate-injection-list></uea-vaccinate-injection-list>
+    <uea-vaccinate-multiple-doses-list></uea-vaccinate-multiple-doses-list>
+    <uea-vaccinate-history-list></uea-vaccinate-history-list>
+  </div>
+</div>
+
+<button nz-button style="position: fixed;right: 10px;top: 20%;z-index: 999" (click)="open()">队列</button>
+<nz-drawer [nzTitle]="'排号队列'" [nzWidth]="380" [nzClosable]="true" [nzVisible]="visible" nzPlacement="right"  (nzOnClose)="close()">
+  <uea-vaccinate-queue-list [isCard]="false"></uea-vaccinate-queue-list>
+</nz-drawer>-->

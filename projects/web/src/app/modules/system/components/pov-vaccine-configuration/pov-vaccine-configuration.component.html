@@ -1,0 +1,91 @@
+<nb-card accent="info">
+  <nb-card-header>
+    门诊疫苗配置
+    <div>
+      <button nbButton status="info" (click)="search()" [disabled]="loading">查询</button>
+      <!--      <button nbButton status="info" (click)="addAdmin()">用户新增</button>-->
+      <button nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">批次号：</label>
+          <div class="col-8">
+            <input type="text" nbInput placeholder="请输入疫苗批号" fullWidth formControlName="batchNo" id="batchNo">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗名称：</label>
+          <div class="col-8">
+            <!--<uea-nb-select-all placeholderText="请选择疫苗名称" formControlName="broadHeadingCode"
+                               [valueText]="'broadHeadingCode'"
+                               [labelText]="'broadHeadingName'"
+                               [options]="vacBroadHeadingData"></uea-nb-select-all>-->
+            <nb-select placeholder="请选择疫苗名称" fullWidth outline status="info"
+                       formControlName="broadHeadingCode" id="broadHeadingCode">
+              <nb-option [value]="item.broadHeadingCode"
+                         *ngFor="let item of vacBroadHeadingData">{{item.broadHeadingName}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">是否停用：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择是否停用" fullWidth minlength="100" outline status="info"
+                       formControlName="status" id="status">
+              <nb-option value="0">停用</nb-option>
+              <nb-option value="1">启用</nb-option>
+            </nb-select>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+<nb-card>
+  <nb-card-body>
+    <nz-table #adminInfo [nzData]="vaccineData"
+              [nzLoading]="loading"
+              nzBordered
+              nzSimple="false"
+              nzSize="small"
+              [nzTotal]="total"
+              [(nzPageIndex)]="pageIndex"
+              [nzFrontPagination]="false"
+              (nzPageIndexChange)="search($event)">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">门诊简称</th>
+        <th [nzAlign]="'center'">产品编码</th>
+        <th [nzAlign]="'center'">产品名称</th>
+        <th [nzAlign]="'center'">批次号</th>
+        <th [nzAlign]="'center'">状态</th>
+        <th [nzAlign]="'center'">备注</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let d of adminInfo.data">
+        <td [nzAlign]="'center'">{{d.povCode | povNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{d.vaccineProductCode}}</td>
+        <td [nzAlign]="'center'">{{d.vaccineProductCode | vacProductNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{d.batchNo}}</td>
+        <td [nzAlign]="'center'">{{d.status | dicPipe: 'usableStatus'}}</td>
+        <td [nzAlign]="'center'">{{d.memo}}</td>
+        <td [nzAlign]="'center'">
+          <button class="btn btn-sm btn-success" *ngIf="d.status === '0'"
+                  (click)="setUseAble(d, '1')">启用
+          </button>
+          <button class="btn btn-sm btn-primary" *ngIf="d.status === '1'"
+                  (click)="setUseAble(d, '0')">停用
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+

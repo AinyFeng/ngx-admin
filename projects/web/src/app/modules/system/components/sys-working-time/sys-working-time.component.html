@@ -1,0 +1,58 @@
+<nb-card accent="info">
+  <nb-card-header>
+    工作时段配置
+    <div class="float-right">
+      <button nbButton status="info" class="mr-2" (click)="searchData()">查询</button>
+      <button nbButton status="info" class="mr-2">导出报表</button>
+      <button nbButton status="info" class="mr-2" (click)="addWorkingDay()">新增</button>
+      <button nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">是否可用：</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择是否可用" fullWidth [(selected)]="useAble"  outline status="info">
+              <nb-option value="">全部</nb-option>
+              <nb-option value="1">可用</nb-option>
+              <nb-option value="0">不可用</nb-option>
+            </nb-select>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center">
+  <nb-card-body>
+    <nz-table #groupingTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false"
+              [nzData]="listOfData"
+              [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex"
+              (nzPageIndexChange)="searchData($event)">
+      <thead>
+      <tr>
+        <th>序号</th>
+        <th>工作时段</th>
+        <th>工作日</th>
+        <th>pov编号</th>
+        <th>是否可用</th>
+        <th>工作时段流水号</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of groupingTable.data;index as i">
+        <td>{{i + 1}}</td>
+        <td>{{data.workingTime}}</td>
+        <td>{{data.workingDay | workDayPipe }}</td>
+        <td>{{data.povCode | povNamePipe | async }}</td>
+        <td>{{data.useAble == '0' ? '否' : '是'}}</td>
+        <td>{{data.workingTimeSerial}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

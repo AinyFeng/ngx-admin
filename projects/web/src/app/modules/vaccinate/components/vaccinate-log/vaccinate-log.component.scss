@@ -1,0 +1,21 @@
+// @import '../../../../@uea/theme/global_theme';
+// @import '~bootstrap/scss/mixins/_breakpoints';
+// @import '~@nebular/theme/styles/global/_breakpoints';
+@import '../../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+  nb-card-header {
+    button {
+      margin-right: 10px;
+    }
+  }
+
+  nb-card-body {
+    min-height: 500px;
+  }
+
+  .border-circle {
+    border: 1px solid nb-theme(color-primary-200);
+    border-radius: 50%;
+  }
+}

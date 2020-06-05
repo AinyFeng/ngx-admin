@@ -1,0 +1,13 @@
+@import '../../../../../@uea/theme/global_theme';
+//@import '../../../../../common/global-theme/global_theme';
+
+@include nb-install-component() {
+  ::ng-deep .headers {
+    display: inline !important;
+    text-align: center;
+    font-size: 20px;
+  }
+  ::ng-deep .ant-table-small > .ant-table-content > .ant-table-body {
+    margin: 0;
+  }
+}

@@ -1,0 +1,10 @@
+@import '../../../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+
+  .title {
+    width: 100px;
+    margin-left: 15px;
+  }
+
+}

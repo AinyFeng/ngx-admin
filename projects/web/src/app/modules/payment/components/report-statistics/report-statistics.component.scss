@@ -1,0 +1,27 @@
+@import '../../../../@uea/theme/global_theme';
+// @import '~bootstrap/scss/mixins/_breakpoints';
+// @import '~@nebular/theme/styles/global/_breakpoints';
+@include nb-install-component() {
+	.group-invoice-statistics {
+		div {
+			margin-top: 5px;
+			margin-bottom: 5px;
+			input {
+				float: right;
+				width: 150px;
+				margin-right: 80px;
+			}
+			nb-select {
+				float: right;
+				width: 150px;
+				margin-right: 80px;
+			}
+			label {
+				margin-top: 8px;
+			}
+			button {
+				margin-right: 10px;
+			}
+		}
+	}
+}

@@ -1,0 +1,207 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    接种合格率
+    <div>
+      <button nbButton status="info" (click)="searchData()" [nbSpinner]="loading" [disabled]="loading">查询</button>
+      <button nbButton status="info" (click)="export()" [nbSpinner]="loading" [disabled]="loading" class="ml-2 mr-2">
+        导出报表
+      </button>
+      <button nbButton status="info" (click)="exportChild()" [nbSpinner]="loading" [disabled]="loading">导出儿童</button>
+      <button nbButton status="warning" (click)="reset()" class="ml-2" [nbSpinner]="loading" [disabled]="loading">重置
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">儿童编号:</label>
+          <div class="col-8">
+            <input type="text" class="ml-1" nbInput fullWidth placeholder="请输入儿童编号" formControlName="profileCode"
+                   id="profileCode">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">姓名:</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth
+                   formControlName="name" id="name" placeholder="请输入姓名">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">生日(起):</label>
+          <div class="col-8">
+            <!--<input nbInput fullWidth readonly placeholder="请选择出生日期" [nbDatepicker]="birthDateStartPicker"
+                   formControlName="birthStart" id="birthStart">
+            <nb-datepicker #birthDateStartPicker format="YYYY/MM/DD"></nb-datepicker>-->
+            <nz-date-picker
+              style="width: 100%;" nzSize="large"
+              formControlName="birthStart"
+              nzShowTime
+              nzAllowClear="false"
+              nzFormat="yyyy-MM-dd"
+              [nzDisabledDate]="disabledStart">
+            </nz-date-picker>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">生日(止):</label>
+          <div class="col-8">
+            <!--<input nbInput fullWidth readonly placeholder="请选择出生日期"
+                   [nbDatepicker]="birthDatePicker" formControlName="birthEnd" id="birthEnd">
+            <nb-datepicker #birthDatePicker format="YYYY/MM/DD"></nb-datepicker>-->
+            <nz-date-picker
+              style="width: 100%;" nzSize="large"
+              formControlName="birthEnd"
+              nzShowTime
+              nzAllowClear="false"
+              nzFormat="yyyy-MM-dd"
+              [nzDisabledDate]="disabledEnd">
+            </nz-date-picker>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row mb-4">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">儿童性别:</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择性别" fullWidth minlength="100" outline status="info" id="gender"
+                       formControlName="gender">
+              <nb-option [value]="item.value" *ngFor="let item of genderOptions">
+                {{item.label}}
+              </nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <!--<div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">现管理单位:</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择" fullWidth outline status="info" formControlName="currentManagementUnit"
+                       id="currentManagementUnit">
+              <nb-option value="1">本点管理</nb-option>
+              <nb-option value="0">所有</nb-option>
+            </nb-select>
+          </div>
+        </div>-->
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">居住类别:</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择居住类别" formControlName="residentialTypeCode"
+                               [options]="residentialTypeData"></uea-nb-select-all>
+            <!--<nb-select multiple placeholder="请选择" fullWidth outline status="info" formControlName="residentialTypeCode"
+                       id="residentialTypeCode">
+              <nb-option [value]="v.value" *ngFor="let v of residentialTypeData">{{v.label}}</nb-option>
+            </nb-select>-->
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">在册类别:</label>
+          <div class="col-8">
+            <uea-nb-select-all placeholderText="请选择在册类别" formControlName="profileStatusCode"
+                               [options]="profileStatusData"></uea-nb-select-all>
+            <!--<nb-select multiple placeholder="请选择" fullWidth outline status="info" formControlName="profileStatusCode"
+                       id="profileStatusCode">
+              <nb-option [value]="v.value" *ngFor="let v of profileStatusData">{{v.label}}</nb-option>
+            </nb-select>-->
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">区域划分:</label>
+          <div class="col-8">
+            <!--<nb-select multiple placeholder="请选择区域划分" fullWidth outline status="info"
+                       formControlName="community" id="community">
+              <nb-option [value]="v.communityCode" *ngFor="let v of belongDistrictData">{{v.communityName}}</nb-option>
+            </nb-select>-->
+            <uea-nb-select-all placeholderText="请选择区域划分" formControlName="community"
+                               [valueText]="'communityCode'"
+                               [labelText]="'communityName'"
+                               [options]="belongDistrictData"></uea-nb-select-all>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗名称:</label>
+          <div class="col-8">
+            <!--<nb-select multiple placeholder="请选择疫苗名称" fullWidth outline status="info"
+                       formControlName="vaccineProductCode" id="vaccineProductCode">
+              <nb-option [value]="v.broadHeadingCode"
+                         *ngFor="let v of vacBroadHeadingData">{{v.broadHeadingName}}</nb-option>
+            </nb-select>-->
+            <uea-nb-select-all placeholderText="请选择疫苗名称" formControlName="vaccineProductCode"
+                               [valueText]="'broadHeadingCode'"
+                               [labelText]="'broadHeadingName'"
+                               [options]="vacBroadHeadingData"></uea-nb-select-all>
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow: scroll;">
+  <nb-card-body>
+    <nz-table #msgTable [nzData]="listOfData"
+              [nzLoading]="loading"
+              [nzTotal]="total"
+              [(nzPageIndex)]="pageIndex"
+              [(nzPageSize)]="pageSize"
+              [nzFrontPagination]="true"
+              (nzPageIndexChange)="searchData($event)"
+              nzBordered nzSize="small" nzSimple="false">
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">疫苗</th>
+        <th [nzAlign]="'center'">剂次</th>
+        <th [nzAlign]="'center'">应种数</th>
+        <th [nzAlign]="'center'">实种数</th>
+        <th [nzAlign]="'center'">接种率%</th>
+        <th [nzAlign]="'center'">及时数</th>
+        <th [nzAlign]="'center'">及时率%</th>
+        <th [nzAlign]="'center'">合格数</th>
+        <th [nzAlign]="'center'">合格率%</th>
+        <th [nzAlign]="'center'">间短数</th>
+        <th [nzAlign]="'center'">间短率%</th>
+        <th [nzAlign]="'center'">超期数</th>
+        <th [nzAlign]="'center'">超期率%</th>
+        <th [nzAlign]="'center'">应种未种数</th>
+        <th [nzAlign]="'center'">应种未种率%</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of pageListData; index as i">
+        <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineName}}</td>
+        <td [nzAlign]="'center'">{{data.dosage}}</td>
+        <td [nzAlign]="'center'">
+          <a href="javascript:" (click)="checkDetail(data, data.shNum)">{{data.shNum}}</a>
+        </td>
+        <td [nzAlign]="'center'">
+          <a href="javascript:" (click)="checkDetail(data, data.reNum)">{{data.reNum}}</a></td>
+        <td [nzAlign]="'center'">{{data.vaccRate}}</td>
+        <td [nzAlign]="'center'">
+          <a href="javascript:" (click)="checkDetail(data, data.timeNum)">{{data.timeNum}}</a>
+        </td>
+        <td [nzAlign]="'center'">{{data.timeRate}}</td>
+        <td [nzAlign]="'center'">
+          <a href="javascript:" (click)="checkDetail(data, data.qualifiedNum)">{{data.qualifiedNum}}</a></td>
+        <td [nzAlign]="'center'">{{data.qualifiedRate}}</td>
+        <td [nzAlign]="'center'">
+          <a href="javascript:" (click)="checkDetail(data, data.shortNum)">{{data.shortNum}}</a>
+        </td>
+        <td [nzAlign]="'center'">{{data.shortRate}}</td>
+        <td [nzAlign]="'center'">
+          <a href="javascript:" (click)="checkDetail(data, data.overNum)">{{data.overNum}}</a>
+        </td>
+        <td [nzAlign]="'center'">{{data.overRate}}</td>
+        <td [nzAlign]="'center'">
+          <a href="javascript:" (click)="checkDetail(data, data.shNotPlantedNum)">{{data.shNotPlantedNum}}</a>
+        </td>
+        <td [nzAlign]="'center'">{{data.shNotPlantedRate}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+

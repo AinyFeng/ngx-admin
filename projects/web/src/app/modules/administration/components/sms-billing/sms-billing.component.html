@@ -1,0 +1,127 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    短信计费
+    <div>
+      <button nbButton status="info" (click)="searchData()" [nbSpinner]="loading">查询</button>
+      <!--      <button nbButton status="info">导出</button>-->
+      <button nbButton status="warning" (click)="reset()" class="ml-2">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <div class="col-md-4 row">
+          <label class="col-4 col-form-label text-right">统计类型:</label>
+          <div class="col-8">
+            <nb-select placeholder="请选择统计类型" fullWidth minlength="100" outline status="info"
+                       formControlName="statisticType" id="statisticType" (ngModelChange)="changeSelect($event)">
+              <nb-option *ngFor="let item of staticTypes" [value]="item.value">{{item.label}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-4 row" *ngIf="staticType">
+          <label class="col-4 col-form-label text-right">发送时间(起)：</label>
+          <div class="col-8">
+            <nz-year-picker
+              *ngIf="staticType === 'year'"
+              style="width: 100%;" nzSize="large"
+              nzFormat="yyyy"
+              [nzDisabledDate]="disabledYearStart"
+              [nzAllowClear]="false"
+              formControlName="sendStart">
+            </nz-year-picker>
+            <nz-month-picker
+              *ngIf="staticType === 'month'"
+              style="width: 100%;" nzSize="large"
+              formControlName="sendStart"
+              nzFormat="yyyy-MM"
+              [nzAllowClear]="false"
+              [nzDisabledDate]="disabledMonthStart">
+            </nz-month-picker>
+            <nz-date-picker
+              *ngIf="staticType === 'day'"
+              style="width: 100%;" nzSize="large"
+              formControlName="sendStart"
+              nzFormat="yyyy-MM-dd"
+              [nzAllowClear]="false"
+              [nzDisabledDate]="disabledDayStart">
+            </nz-date-picker>
+            <!--<input nbInput fullWidth readonly placeholder="请选择开始时间" [nbDatepicker]="birthDatePicker"
+                   formControlName="sendStart" id="sendStart">
+            <nb-datepicker #birthDatePicker format="YYYY/MM/DD" [filter]="filterStartTime"></nb-datepicker>-->
+          </div>
+        </div>
+        <div class="col-md-4 row" *ngIf="staticType">
+          <label class="col-4 col-form-label text-right">发送时间(止)：</label>
+          <div class="col-8">
+            <nz-year-picker
+              *ngIf="staticType === 'year'"
+              style="width: 100%;" nzSize="large"
+              [nzDisabledDate]="disabledYearEnd"
+              nzFormat="yyyy"
+              [nzAllowClear]="false"
+              formControlName="sendEnd">
+            </nz-year-picker>
+            <nz-month-picker
+              *ngIf="staticType === 'month'"
+              style="width: 100%;" nzSize="large"
+              formControlName="sendEnd"
+              nzFormat="yyyy-MM"
+              [nzAllowClear]="false"
+              [nzDisabledDate]="disabledMonthEnd"
+            ></nz-month-picker>
+            <nz-date-picker
+              *ngIf="staticType === 'day'"
+              style="width: 100%;" nzSize="large"
+              formControlName="sendEnd"
+              nzFormat="yyyy-MM-dd"
+              [nzAllowClear]="false"
+              [nzDisabledDate]="disabledDayEnd">
+            </nz-date-picker>
+            <!--<input nbInput fullWidth readonly placeholder="请选择结束时间" [nbDatepicker]="sendEndPicker"
+                   formControlName="sendEnd" id="sendEnd">
+            <nb-datepicker #sendEndPicker format="YYYY/MM/DD" [filter]="filterEndTime"></nb-datepicker>-->
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow: scroll;">
+  <nb-card-body>
+    <nz-table #msgTable [nzData]="listOfData"
+              [nzPageIndex]="pageIndex"
+              [nzLoading]="loading"
+              [nzTotal]="total"
+              [nzFrontPagination]="false"
+              (nzPageIndexChange)="searchData($event)"
+              nzBordered nzSize="small" nzSimple="false">
+      <thead>
+      <tr>
+        <!--<th [nzAlign]="'center'">受种者编码</th>
+        <th [nzAlign]="'center'">姓名</th>
+        <th [nzAlign]="'center'">出生日期</th>
+        <th [nzAlign]="'center'">手机号码</th>
+        <th [nzAlign]="'center'">短信内容</th>
+        <th [nzAlign]="'center'">提交时间</th>
+        <th [nzAlign]="'center'">录入者</th>
+        <th [nzAlign]="'center'">发送结果</th>-->
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">发送时间</th>
+        <th [nzAlign]="'center'">发送条数</th>
+        <th [nzAlign]="'center'">短信费用</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data; index as i">
+        <td [nzAlign]="'center'">{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
+        <td [nzAlign]="'center'">{{data.submissionTime}}</td>
+        <td [nzAlign]="'center'">{{data.count}}</td>
+        <td [nzAlign]="'center'">{{data.billing}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>
+

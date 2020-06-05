@@ -1,0 +1,88 @@
+<nz-table [nzLoading]="loading" nzSize="small" nzPageSize="5" nzHideOnSinglePage #registTable [nzData]="registRecord">
+  <thead>
+  <tr>
+    <th>疫苗名称</th>
+    <th>大类</th>
+    <th>疫苗批号</th>
+    <th>接种类型</th>
+    <th>疫苗厂商</th>
+    <th>疫苗价格</th>
+    <th>接种针次</th>
+    <!--    <th>接种支数</th>-->
+    <th>登记医生</th>
+    <th>登记时间</th>
+    <th>登记状态</th>
+    <th>缴费状态</th>
+    <th>备注</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of registTable.data">
+    <td>{{ data.vaccineProductName }}</td>
+    <td>{{ data.vaccineBroadHeadingCode | vacBroadHeadingPipe }}</td>
+    <td>{{ data.vaccineBatchNo }}</td>
+    <td>{{ data.vaccinateType | dicPipe: 'vaccinateType' }}</td>
+    <td>{{ data.vaccineManufactureName }}</td>
+    <td>{{ data.vaccinePrice | currency: '￥' }}</td>
+    <td>{{ data.vaccinateInjectNumber }}</td>
+    <!--    <td>{{ data.vaccinateCount }}</td>-->
+    <td>{{ data.registDoctorCode | povStaffNamePipe | async }}</td>
+    <td>{{ data.registDate | date: 'yyyy-MM-dd HH:mm' }}</td>
+    <td>
+      <nz-tag *ngIf="data.registStatus == '0'" [nzColor]="'#f50'">已取消</nz-tag>
+      <nz-tag *ngIf="data.registStatus == '1'" [nzColor]="'#87d068'">待接种</nz-tag>
+      <nz-tag *ngIf="data.registStatus == '2'" [nzColor]="'#87d068'">已接种</nz-tag>
+    </td>
+    <td>
+      {{ data.orderStatus | dicPipe: 'orderStatus' }}
+    </td>
+    <td>{{ data.memo }}</td>
+    <td>
+      <a href="javascript:void(0)" class="mr-2"
+         [nbPopover]="recordDetail"
+         [nbPopoverContext]="data"
+         nbPopoverPlacement="top">详情</a>
+      <a href="javascript:void(0)" class="mr-2" (click)="printInfo(data)"
+         *ngIf="checkRegistDateIsToday(data.registDate) && data.registStatus == '1'">打印小票</a>
+      <a class="a-delete" href="javascript:void(0)" (click)="cancelRegistRecord(data)"
+         *ngIf="data.registStatus == '1' &&
+         (data.orderStatus == '0' || data.orderStatus == '1' || data.orderStatus == '4')">撤销</a>
+      <a class="text-muted" href="javascript:void(0)" *ngIf="data.registStatus == '0'">已取消</a>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
+
+<ng-template #recordDetail let-data>
+  <nb-card class="mb-0">
+    <nb-card-body>
+      <ul style="list-style-type: none; margin: 0; padding: 0;">
+        <li><strong>疫苗名称:</strong>{{ data.vaccineProductName }}</li>
+        <li><strong>疫苗大类:</strong>{{ data.vaccineBroadHeadingCode | vacBroadHeadingPipe }}</li>
+        <li><strong>疫苗小类:</strong>{{ data.vaccineSubclassCode | vaccineSubClassPipe }}</li>
+        <li><strong>疫苗类型:</strong>{{ data.vaccineType == '0' ? '一类' : '二类' }}</li>
+        <li><strong>疫苗批号:</strong>{{ data.vaccineBatchNo }}</li>
+        <li><strong>疫苗厂商:</strong>{{ data.vaccineManufactureName }}</li>
+        <li><strong>疫苗价格:</strong>{{ data.vaccinePrice }}</li>
+        <li><strong>接种针次:</strong>{{ data.vaccinateInjectNumber }}</li>
+        <li><strong>接种支数:</strong>{{ data.vaccinateCount }}</li>
+        <li><strong>登记医生:</strong>{{ data.registDoctorCode }}</li>
+        <li><strong>登记时间:</strong>{{ data.registDate | date: 'yyyy-MM-dd HH:mm' }}</li>
+        <li><strong>登记POV:</strong>{{ data.registPovCode | povNamePipe | async}}</li>
+        <li><strong>数据来源:</strong>{{ data.registSourceType | dicPipe: 'registSourceType' }}</li>
+        <li><strong>接种部位:</strong>{{ data.vaccinatePart | dicPipe: 'vaccinatePart' }}</li>
+        <li>
+          <strong>登记状态:</strong>
+          <nz-tag *ngIf="data.registStatus == '0'" [nzColor]="'#f50'">已取消</nz-tag>
+          <nz-tag *ngIf="data.registStatus == '1'" [nzColor]="'#87d068'">正常</nz-tag>
+        </li>
+        <li><strong>备注:</strong>{{ data.memo }}</li>
+      </ul>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+
+<uea-regist-info class="print-layer" [id]="'registAgain'" #registInfoComponent [data]="printData"></uea-regist-info>
+

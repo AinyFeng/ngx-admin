@@ -1,0 +1,43 @@
+<div [id]="printInvoicesInfo.id">
+  <div style="padding: 0 50px;">
+    <p
+      style="text-align: center; font-size: 1.5em; margin: 18px 0 8px;">{{printInvoicesInfo ? printInvoicesInfo.orderInfo.supplyorgName : ''}}</p>
+
+    <div style="line-height: 28px;">
+       {{printInvoicesInfo.orderInfo.receiveorgName}}
+    </div>
+    <table style="height: auto; text-align: center;" border="1" cellpadding="0" cellspacing="0" width="100%">
+      <tr>
+        <th>项目/疫苗名称</th>
+        <th>生产厂家</th>
+        <th>规格</th>
+        <th>单位</th>
+        <th>数量</th>
+        <th>单价</th>
+        <th>冷链费</th>
+        <th>金额</th>
+      </tr>
+      <tr *ngFor="let data of printInvoicesInfo.vaccineInfo">
+        <td>{{data.vaccName}}</td>
+        <td>{{data.manufactureName}}</td>
+        <td>{{data.spec}}</td>
+        <td>支</td>
+        <td>{{data.vaccNum}}</td>
+        <td>{{data.orignPrice}}</td>
+        <td>10</td>
+        <td>{{data.vaccNum * (data.orignPrice + 10) ? data.vaccNum * (data.orignPrice + 10) : 0}}</td>
+      </tr>
+      <tr>
+        <td colspan="1" class="text-right">合计</td>
+        <td colspan="7" class="text-right">{{printInvoicesInfo.priceSum.sumNum ? printInvoicesInfo.priceSum.costSum + (printInvoicesInfo.priceSum.sumNum*10) : 0}}</td>
+      </tr>
+    </table>
+  </div>
+  <div class="mr-10 text-right" style="padding: 0 50px;">
+    <span style="float: right">{{printInvoicesInfo.orderInfo.consignorName}}</span>
+  </div>
+  <br>
+  <div style="padding: 0 50px;float: right;">
+    <span class="text-right"> {{today.getFullYear()}}年{{today.getMonth() + 1}}月{{today.getDate()}}日</span>
+  </div>
+</div>

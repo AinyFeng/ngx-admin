@@ -1,0 +1,70 @@
+@import '../../../../../@uea/theme/global_theme';
+// @import '../../../../common/global-theme/global_theme';
+
+@include nb-install-component() {
+  .wide-width {
+    width: 360px;
+  }
+
+  .wide-width-double {
+    width: 640px;
+  }
+
+  .font-x-large {
+    font-size: x-large;
+  }
+
+  .signature-space {
+    width: 260px;
+    text-align: left;
+    border-bottom: 1px solid #aaa;
+
+    & > .sign-pic {
+      max-height: 50px;
+    }
+  }
+
+  .injectionDetail {
+    background: nb-theme(background-basic-color-3);
+    border-radius: 0.4rem;
+  }
+
+  .valid-danger {
+    box-sizing: border-box;
+    padding: 0.1rem 0.8rem;
+    font-size: 0.8rem;
+    border-radius: 10px;
+    border: 1px solid nb-theme(color-danger-500);
+    color: nb-theme(color-primary-100);
+    background: nb-theme(color-danger-500);
+  }
+
+  .valid-warning {
+    box-sizing: border-box;
+    padding: 0.1rem 0.8rem;
+    font-size: 0.8rem;
+    border-radius: 10px;
+    border: 1px solid nb-theme(color-warning-500);
+    color: nb-theme(color-primary-100);
+    background: nb-theme(color-warning-500);
+  }
+
+  .valid-info {
+    //margin-left: 1.8rem;
+    box-sizing: border-box;
+    padding: 0.1rem 0.8rem;
+    font-size: 0.8rem;
+    border-radius: 10px;
+    border: 1px solid nb-theme(color-success-500);
+    color: nb-theme(color-primary-100);
+    background: nb-theme(color-info-500);
+  }
+
+  .hideText {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box; /*下面三条缺一不可 可以生成 '...' 主要针对谷歌浏览器 */
+    -webkit-line-clamp: 1; //表示行数
+    -webkit-box-orient: vertical; //表示纵向
+  }
+}

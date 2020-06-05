@@ -1,0 +1,453 @@
+<div class="wx-content">
+  <Page [ngClass]="'button'" [title]="'Button'">
+<!--   调试表单信息 {{testForm}}-->
+    <div class="tab-wrap">
+      <div class="tab-item" *ngFor="let item of ['儿童建卡', '成人建卡']; let i = index" (click)="tabClick(i)"
+           [ngStyle]="{'border-bottom': i===tabCurrentIndex ?'1px solid #4ca6ff' : ''}">
+        <div class="tab-info" [ngClass]="{'tab-select':i===tabCurrentIndex}">{{item}}</div>
+      </div>
+    </div>
+
+    <div class="step-wrap" *ngIf="tabCurrentIndex===0">
+      <div class="step-item-wrap" *ngFor="let item of steps; let i = index" (click)="stepClick(i)">
+        <div class="item-top">
+          <span class="item-left "
+                [ngClass]="{'step-line-hide':i==0, 'step-normal-line':i>stepIndex, 'step-active-line':i<=stepIndex}"></span>
+          <span class="item-middle" [ngClass]="{'step-active':i<=stepIndex, 'step-normal':i>stepIndex}">{{i + 1}}</span>
+          <span class="item-right"
+                [ngClass]="{'step-line-hide':i==2,'step-normal-line':i>=stepIndex, 'step-active-line':i<=stepIndex}"></span>
+        </div>
+        <div class="item-bottom">{{item.title}}</div>
+      </div>
+    </div>
+    <!--  儿童建卡-->
+    <div *ngIf="tabCurrentIndex===0">
+
+      <form [formGroup]="baseForm" *ngIf="stepIndex===0">
+        <div class="weui-cells weui-cells_form">
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">姓名 <span class="left-info">(必填):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" weui-cleaner="true"
+                     type="text" placeholder="请输入受种人姓名" formControlName="name" name="txt"/>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">姓别 <span class="left-info">(必填):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <!--              <ng-data-picker [data]="sexData" (change)="sexChange($event)"></ng-data-picker>-->
+              <nz-select formControlName="sex" nzPlaceHolder="选择姓别">
+                <nz-option nzValue="男" nzLabel="男"></nz-option>
+                <nz-option nzValue="女" nzLabel="女"></nz-option>
+              </nz-select>
+              <!--              <weui-picker-->
+              <!--                placeholder="Pick a item"-->
+              <!--                name="mitem"-->
+              <!--                [groups]="itemGroup"-->
+              <!--                  [options]="{ cancel: '取消', confirm: '确定' }"-->
+              <!--              ></weui-picker>-->
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">出生日期 <span class="left-info">(必填):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <nz-date-picker [nzFormat]="'yyyy-MM-dd'" formControlName="birthday"></nz-date-picker>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">民族:</div>
+            </div>
+            <div class="weui-cell__bd">
+              <select class="weui-select" name="accountType" formControlName="nation">
+                <option value="1000" >请选择</option>
+                <option value="{{item.value}}" *ngFor="let item of wxDicInfo['nationData'] ">{{item.label}}</option>
+              </select>
+              <!--              <nz-select formControlName="nation" nzPlaceHolder="选择民族">-->
+              <!--                <option value="{{item.value}}" *ngFor="let item of wxDicInfo['idType'] ">{{item.label}}</option>-->
+              <!--              </nz-select>-->
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">免疫卡号 :</div>
+            </div>
+            <div class="weui-cell__bd">
+              <input
+                formControlName="vaccNum"
+                class="weui-input"
+                type="tel"
+                name="mobile"
+                placeholder="请输入免疫卡号"
+              />
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">身份证号:</div>
+            </div>
+            <div class="weui-cell__bd">
+              <input
+                formControlName="idNum"
+                class="weui-input"
+                type="tel"
+                name="mobile"
+                placeholder="请输入身份证号"
+                weui-input="idcard"
+              />
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">联系电话:</div>
+            </div>
+            <div class="weui-cell__bd">
+              <input
+                formControlName="phone"
+                class="weui-input"
+                type="tel"
+                name="mobile"
+                placeholder="请输入联系电话"
+                weui-input="mobile"
+              />
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">出生证编号:</div>
+            </div>
+            <div class="weui-cell__bd">
+              <input
+                formControlName="birthdayNum"
+                class="weui-input"
+                type="tel"
+                name="mobile"
+                placeholder="请输入出生证编号"
+              />
+            </div>
+          </div>
+
+          <!--出生医院-->
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">出生医院:</div>
+            </div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" weui-cleaner="true"
+                     type="text" placeholder="请输入出生医院" formControlName="hospital" name="txt"/>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">出生体重:<span class="left-info">(g):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <input
+                formControlName="weight"
+                class="weui-input"
+                type="tel"
+                name="mobile"
+                placeholder="请输入出生体重"
+              />
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">胎次: <span class="left-info">(必填):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <input
+                formControlName="birthNum"
+                class="weui-input"
+                type="tel"
+                name="mobile"
+                placeholder="请输入胎次"
+              />
+            </div>
+          </div>
+
+
+        </div>
+
+      </form>
+
+      <form [formGroup]="registerForm" *ngIf="stepIndex===1">
+        <div class="weui-cells weui-cells_form">
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">户口类别<span class="left-info">(必填):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <select class="weui-select" name="accountType" formControlName="accountType">
+                <option value="1000" >请选择</option>
+                <option value="{{item.value}}" *ngFor="let item of wxDicInfo['idType'] ">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">居住类型<span class="left-info">(必填):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <select class="weui-select" name="accountType" formControlName="liveType">
+                <option value="1000" >请选择</option>
+                <option value="{{item.value}}"
+                        *ngFor="let item of wxDicInfo['residentialType'] ">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <!--            <div class="weui-cell__hd">-->
+            <!--              <div class="cell-left-title">户籍所在地:</div>-->
+            <!--            </div>-->
+            <div class="weui-cell__bd">
+              <nz-cascader
+                formControlName="householdAddress"
+                [nzOptions]="districtData"
+                [nzShowSearch]="true"
+                [nzPlaceHolder]="'选择户籍所在地(可输入县/区进行搜索)'"
+              >
+              </nz-cascader>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">户籍住址<span class="left-info">(必填):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" weui-cleaner="true"
+                     type="text" placeholder="请输入户籍住址" formControlName="householdAddressInfo" name="txt"/>
+            </div>
+          </div>
+          <div class="weui-cell">
+            <!--            <div class="weui-cell__hd">-->
+            <!--              <div class="cell-left-title">户籍所在地:</div>-->
+            <!--            </div>-->
+            <div class="weui-cell__bd">
+              <nz-cascader
+                formControlName="liveAddress"
+                [nzOptions]="districtData"
+                [nzShowSearch]="true"
+                [nzPlaceHolder]="'选择居住地区(可输入县/区进行搜索)'"
+              >
+              </nz-cascader>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">居住地区:</div>
+            </div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" weui-cleaner="true"
+                     type="text" placeholder="请输入居住地区" formControlName="liveAddressInfo" name="txt"/>
+            </div>
+          </div>
+
+
+        </div>
+      </form>
+
+      <form [formGroup]="familyForm" *ngIf="stepIndex===2">
+        <div class="weui-cells weui-cells_form">
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">母亲姓名 <span class="left-info">(必填):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" weui-cleaner="true"
+                     type="text" placeholder="请输入母亲姓名" formControlName="motherName" name="txt"/>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">母亲身份证号 <span class="left-info">(必填):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" weui-cleaner="true" weui-input="idcard"
+                     type="text" placeholder="请输入母亲身份证号" formControlName="motherId" name="txt"/>
+            </div>
+          </div>
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">母亲电话 <span class="left-info">(必填):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" weui-cleaner="true" weui-input="mobile"
+                     type="text" placeholder="请输入母亲电话" formControlName="motherPhone" name="txt"/>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">父亲姓名 <span class="left-info">(必填):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" weui-cleaner="true"
+                     type="text" placeholder="请输入父亲姓名" formControlName="fatherName" name="txt"/>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">父亲身份证号 <span class="left-info">(必填):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" weui-cleaner="true" weui-input="idcard"
+                     type="text" placeholder="请输入父亲身份证号" formControlName="fatherId" name="txt"/>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">父亲电话 <span class="left-info">(必填):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" weui-cleaner="true"
+                     type="text" placeholder="请输入父亲电话" formControlName="fatherPhone" name="txt"/>
+            </div>
+          </div>
+        </div>
+        <div class="weui-cells__title">备注:</div>
+        <div class="weui-cells weui-cells_form">
+          <div class="weui-cell">
+            <div class="weui-cell__bd">
+              <textarea
+                class="weui-textarea"
+                rows="5"
+                name="txta"
+                weui-textarea
+                maxlength="100"
+                placeholder="请在此备注儿童的特殊情况，过敏史等信息"
+                formControlName="mark"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <button weui-button style="margin: 40px auto;" (click)="nextStep()"
+              [disabled]="">{{stepIndex === 2 ? '完成' : '下一步'}}</button>
+    </div>
+
+    <!--  成人建卡-->
+    <div *ngIf="tabCurrentIndex===1">
+      <form [formGroup]="adultForm">
+        <div class="weui-cells weui-cells_form">
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">姓名 <span class="left-info">(必填):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" weui-cleaner="true"
+                     type="text" placeholder="请输入姓名" formControlName="name" name="txt"/>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">姓别 <span class="left-info">(必填):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <nz-select formControlName="sex" nzPlaceHolder="选择姓别">
+                <nz-option nzValue="男" nzLabel="男"></nz-option>
+                <nz-option nzValue="女" nzLabel="女"></nz-option>
+              </nz-select>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">出生日期 <span class="left-info">(必填):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <nz-date-picker [nzFormat]="'yyyy-MM-dd'" formControlName="birthday"></nz-date-picker>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">身份证号 <span class="left-info">(必填):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" weui-cleaner="true" weui-input="idcard"
+                     type="text" placeholder="请输入身份证号" formControlName="idNum" name="txt"/>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">联系电话 <span class="left-info">(必填):</span></div>
+            </div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" weui-cleaner="true" weui-input="mobile"
+                     type="text" placeholder="请输入联系电话" formControlName="phone" name="txt"/>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__bd">
+              <nz-cascader
+                formControlName="liveAddress"
+                [nzOptions]="districtData"
+                [nzShowSearch]="true"
+                [nzPlaceHolder]="'选择居住地区(可输入县/区进行搜索)'"
+              >
+              </nz-cascader>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <div class="cell-left-title">详细地址 </div>
+            </div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" weui-cleaner="true"
+                     type="text" placeholder="请输入居住地区" formControlName="liveAddressInfo" name="txt"/>
+            </div>
+          </div>
+
+        </div>
+<!--        <div class="weui-cells__title">备注:</div>-->
+<!--        <div class="weui-cells weui-cells_form">-->
+<!--          <div class="weui-cell">-->
+<!--            <div class="weui-cell__bd">-->
+<!--              <textarea-->
+<!--                class="weui-textarea"-->
+<!--                rows="5"-->
+<!--                name="txta"-->
+<!--                weui-textarea-->
+<!--                maxlength="100"-->
+<!--                placeholder="请在此备注您的特殊情况，过敏史等信息"-->
+<!--                formControlName="mark"-->
+<!--              ></textarea>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+        <button weui-button style="margin: 40px auto;" (click)="adultSubmit()"
+                [disabled]="">完成</button>
+      </form>
+    </div>
+    <weui-dialog #ios [config]="config"></weui-dialog>
+  </Page>
+
+</div>

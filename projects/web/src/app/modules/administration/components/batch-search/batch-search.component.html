@@ -1,0 +1,67 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    批号查询
+    <div>
+      <button nbButton status="info" (click)="searchData()" class="mr-2" [nbSpinner]="loading">查询</button>
+      <!--<button nbButton status="info" (click)="addBatch()">添加</button>-->
+      <button nbButton status="warning" (click)="reset()">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="batchFrom">
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">疫苗产品编码：</label>
+          <div class="col-8">
+            <input type="text" nbInput placeholder="请输入疫苗产品编码" fullWidth formControlName="vaccineProductCode">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">批次文号：</label>
+          <div class="col-8">
+            <input type="text" nbInput placeholder="请输入批次文号" fullWidth formControlName="batchNo">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label text-right">批签发号：</label>
+          <div class="col-8">
+            <input type="text" nbInput placeholder="请输入批签发号" fullWidth formControlName="issuedBatchNo">
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow: scroll;">
+  <nb-card-body>
+    <nz-table #msgTable nzBordered nzSize="small" nzSimple="false" [nzFrontPagination]="false" [nzData]="listOfData"
+              [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex"
+              (nzPageIndexChange)="searchData($event)" >
+      <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">批次文号</th>
+        <th [nzAlign]="'center'">产品编码</th>
+        <th [nzAlign]="'center'">产品名称</th>
+        <th [nzAlign]="'center'">批签发号</th>
+        <th [nzAlign]="'center'">状态</th>
+        <th [nzAlign]="'center'">失效日期</th>
+        <th [nzAlign]="'center'">备注</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of msgTable.data;index as i">
+        <td [nzAlign]="'center'">{{(pageIndex - 1) * pageSize + i + 1}}</td>
+        <td [nzAlign]="'center'">{{data.batchNo}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineProductCode}}</td>
+        <td [nzAlign]="'center'">{{data.vaccineProductCode | vacProductNamePipe | async}}</td>
+        <td [nzAlign]="'center'">{{data.issuedBatchNo}}</td>
+        <td [nzAlign]="'center'">{{data.status | dicPipe:'batchStatus'}}</td>
+        <td [nzAlign]="'center'">{{data.loseEfficacyDate | date:"yyyy-MM-dd"}}</td>
+        <td [nzAlign]="'center'">{{data.memo}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nb-card-body>
+</nb-card>

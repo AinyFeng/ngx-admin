@@ -1,0 +1,110 @@
+<nb-card accent="info">
+  <nb-card-header class="header-flex-center">
+    冷链设备管理
+    <div>
+      <button nbButton status="info">查询</button>
+      <button nbButton status="info" class="ml-2 mr-2">添加</button>
+      <button nbButton status="info">删除</button>
+      <button nbButton status="info" class="ml-2 mr-2">修改</button>
+      <button nbButton status="info">修改启/停用状态</button>
+      <button nbButton status="warning" class="ml-2">重置</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form>
+      <div class="form-group row">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label">经费来源：</label>
+          <div class="col-8">
+            <nb-select multiple placeholder="请选择" fullWidth outline status="info" class="ml-1">
+              <nb-option value="">全部</nb-option>
+              <nb-option value="1">市</nb-option>
+              <nb-option value="2">区县</nb-option>
+              <nb-option value="3">自购</nb-option>
+              <nb-option value="4">其他</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label">设备类型：</label>
+          <div class="col-8">
+            <nb-select multiple placeholder="请选择" fullWidth outline status="info">
+              <nb-option value="">全部</nb-option>
+              <nb-option value="01">冷藏车</nb-option>
+              <nb-option value="02">运输车</nb-option>
+              <nb-option value="03">普通冷库</nb-option>
+              <nb-option value="04">低温冷库</nb-option>
+              <nb-option value="05">普通冰箱</nb-option>
+              <nb-option value="06">低温冰箱</nb-option>
+              <nb-option value="06">台式小冰箱</nb-option>
+              <nb-option value="06">后补式冷库</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label">设备品牌：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入设备品牌">
+          </div>
+        </div>
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label">设备型号：</label>
+          <div class="col-8">
+            <input type="text" nbInput fullWidth placeholder="请输入设备型号">
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" style="margin-top:1.25rem;">
+        <div class="col-md-3 row">
+          <label class="col-4 col-form-label">设备规格：</label>
+          <div class="col-8">
+            <nb-select multiple placeholder="请选择" fullWidth outline status="info">
+              <nb-option value="">全部</nb-option>
+              <nb-option value="001">医用</nb-option>
+              <nb-option value="002">非医用</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <!-- <div class="col-md-6">
+          <button nbButton status="info" >查询</button>
+          <button nbButton status="info" >添加</button>
+          <button nbButton status="info" >删除</button>
+          <button nbButton status="info" >修改</button>
+          <button nbButton status="info" >修改启/停用状态</button>
+          <button nbButton status="warning">重置</button>
+        </div> -->
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="text-center" style="overflow: scroll;">
+  <nz-table #msgTable [nzData]="listOfData" nzBordered nzSize="small" nzSimple="false">
+    <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">设备编码</th>
+        <th [nzAlign]="'center'">所在县区</th>
+        <th [nzAlign]="'center'">所在单位</th>
+        <th [nzAlign]="'center'">经费来源</th>
+        <th [nzAlign]="'center'">设备类型</th>
+        <th [nzAlign]="'center'">设备品牌</th>
+        <th [nzAlign]="'center'">设备型号</th>
+        <th [nzAlign]="'center'">设备规格</th>
+        <th [nzAlign]="'center'">生产日期</th>
+        <th [nzAlign]="'center'">启用日期</th>
+        <th [nzAlign]="'center'">电子监管启用日期</th>
+        <th [nzAlign]="'center'">冷藏容积</th>
+        <th [nzAlign]="'center'">冷冻容积</th>
+        <th [nzAlign]="'center'">当前运转状态</th>
+        <th [nzAlign]="'center'">录入者</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of msgTable.data">
+
+      </tr>
+    </tbody>
+  </nz-table>
+</nb-card>

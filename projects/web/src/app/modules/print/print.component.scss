@@ -1,0 +1,54 @@
+// @import '../../@uea/theme/global_theme';
+// @import '../common/global-theme/global_theme';
+
+@import '../../@uea/theme/global_theme';
+
+@include nb-install-component() {
+
+  nb-card-body {
+    min-height: 60rem;
+  }
+
+  //nb-select {
+  //  width: 30rem;
+  //  margin: 0 0.5rem;
+  //}
+  //
+  //label {
+  //  margin: 0 0.5rem;
+  //}
+  //
+  //input {
+  //  width: 30rem;
+  //  margin: 0 0.5rem;
+  //}
+
+  .info-table {
+    & > tr > th {
+      text-align: right;
+      white-space: nowrap;
+      padding: 0.25rem;
+    }
+
+    & > tr > td {
+      padding: 0.25rem;
+      word-break: break-all;
+    }
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      height: 2.3rem;
+      line-height: 2.3rem;
+    }
+  }
+
+  .explanation {
+    font-size: 0.8rem;
+    color: nb-theme(color-basic-600);
+  }
+}

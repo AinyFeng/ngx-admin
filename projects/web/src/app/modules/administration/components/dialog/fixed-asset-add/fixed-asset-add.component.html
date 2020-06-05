@@ -1,0 +1,160 @@
+<nb-card accent="info" style="width: 870px;">
+  <nb-card-header>
+    <span *ngIf="isModify">编辑固定资产信息</span>
+    <span *ngIf="!isModify">新增固定资产</span>
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="modifyOrAddFrom" novalidate>
+      <div class="form-group row">
+        <label for="fixedAssetsNumber" class="col-sm-2 col-form-label text-right label-required">固定资产编码：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="text" placeholder="请输入" formControlName="fixedAssetsNumber"
+                 id="fixedAssetsNumber">
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('fixedAssetsNumber')"></uea-show-form-errors>
+        </div>
+
+        <label for="name" class="col-sm-2 col-form-label text-right label-required">固定资产名称：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="text" placeholder="请输入" formControlName="name" id="name">
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('name')"></uea-show-form-errors>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label text-right label-required">固定资产类型：</label>
+        <div class="col-sm-4">
+          <nz-select (ngModelChange)="assetsTypeChange($event)" formControlName="fixedAssetsType" nzSize="large"
+                     nzShowSearch nzAllowClear nzPlaceHolder="请选择">
+            <nz-option *ngFor="let v of assetsTypeOptions" [nzLabel]="v.label" [nzValue]="v.value"></nz-option>
+          </nz-select>
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('fixedAssetsType')"></uea-show-form-errors>
+          <span style="color: #f5222d;" *ngIf="isCold">新增冷藏设备之后需配置所属科室,否则无法获取该设备来进行疫苗出入库!</span>
+        </div>
+
+        <label class="col-sm-2 col-form-label text-right label-required">经费来源：</label>
+        <div class="col-sm-4">
+          <nz-select formControlName="sourceCode" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择">
+            <nz-option *ngFor="let v of sourceCodeOptions" [nzLabel]="v.label" [nzValue]="v.value"></nz-option>
+          </nz-select>
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('sourceCode')"></uea-show-form-errors>
+        </div>
+      </div>
+
+      <div *ngIf="isCold" class="form-group row">
+        <label class="col-sm-2 col-form-label text-right label-required">冷藏设备类型：</label>
+        <div class="col-sm-4">
+          <nz-select formControlName="deviceTypeCode" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择">
+            <nz-option *ngFor="let v of deviceTypeCodeOptions" [nzLabel]="v.label" [nzValue]="v.value"></nz-option>
+          </nz-select>
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('deviceTypeCode')"></uea-show-form-errors>
+        </div>
+
+        <label class="col-sm-2 col-form-label text-right label-required">冷藏设备编码：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="text" placeholder="请输入" formControlName="facilityNumber"
+                 id="facilityNumber">
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('facilityNumber')"></uea-show-form-errors>
+        </div>
+      </div>
+
+      <div class="form-group row">
+
+        <label for="name" class="col-sm-2 col-form-label text-right label-required">生产编号：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="text" placeholder="请输入" formControlName="manufactureCode"
+                 id="manufactureCode">
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('manufactureCode')"></uea-show-form-errors>
+        </div>
+
+        <label class="col-sm-2 col-form-label text-right label-required">生产日期：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="text" placeholder="请选择" formControlName="manufactureDate"
+                 id="manufactureDate"
+                 [nbDatepicker]="manufactureDatePicker">
+          <nb-datepicker #manufactureDatePicker [max]="date" format="YYYY-MM-DD"></nb-datepicker>
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('manufactureDate')"></uea-show-form-errors>
+        </div>
+
+
+      </div>
+
+      <div class="form-group row">
+
+        <label class="col-sm-2 col-form-label text-right label-required">出厂日期：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="text" placeholder="请选择" formControlName="leaveFactoryDate"
+                 id="leaveFactoryDate"
+                 [nbDatepicker]="leaveFactoryDatePicker">
+          <nb-datepicker #leaveFactoryDatePicker [max]="date" format="YYYY-MM-DD"></nb-datepicker>
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('leaveFactoryDate')"></uea-show-form-errors>
+        </div>
+
+        <label class="col-sm-2 col-form-label text-right label-required">到货日期：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="text" placeholder="请选择" formControlName="receiveDate" id="receiveDate"
+                 [nbDatepicker]="receiveDatePicker">
+          <nb-datepicker #receiveDatePicker [max]="date" format="YYYY-MM-DD"></nb-datepicker>
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('receiveDate')"></uea-show-form-errors>
+        </div>
+
+      </div>
+
+      <div class="form-group row">
+
+        <label class="col-sm-2 col-form-label text-right">启用日期：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="text" placeholder="请选择" formControlName="useStartDate" id="useStartDate"
+                 [nbDatepicker]="useStartDatePicker">
+          <nb-datepicker #useStartDatePicker [filter]="filterUseStartDate" format="YYYY-MM-DD"></nb-datepicker>
+        </div>
+
+        <label class="col-sm-2 col-form-label text-right">报废日期：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="text" placeholder="请选择" formControlName="useEndDate" id="useEndDate"
+                 [nbDatepicker]="useEndDatePicker">
+          <nb-datepicker #useEndDatePicker [filter]="filterUseEndDate" format="YYYY-MM-DD"></nb-datepicker>
+        </div>
+
+      </div>
+
+      <div *ngIf="isScrip" class="form-group row">
+        <label class="col-sm-2 col-form-label text-right label-required">叫号屏序列号：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="text" placeholder="请输入" formControlName="facilitySerialCode"
+                 id="facilitySerialCode">
+          <uea-show-form-errors [control]="modifyOrAddFrom.get('facilitySerialCode')"></uea-show-form-errors>
+          <span style="color: #f5222d;" *ngIf="isScrip">新增叫号屏设备请注意填写叫号屏序列号!</span>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label text-right ">备注：</label>
+        <div class="col-sm-10">
+          <textarea nzSize="large" [nzAutosize]="{ minRows: 2, maxRows: 6 }" nz-input placeholder="请输入..."
+                    formControlName="memo"></textarea>
+        </div>
+      </div>
+
+
+    </form>
+
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerMessage="" nbButton status="info" class="mr-5"
+              (click)="save()">保存
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>
+
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>{{data}}</nb-card-header>
+    <nb-card-footer [ngStyle]="{'text-align': 'center'}">
+      <button nbButton (click)="saveManage(ref)" class="mr-4">现在配置</button>
+      <button nbButton (click)="close(ref)">稍后配置</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

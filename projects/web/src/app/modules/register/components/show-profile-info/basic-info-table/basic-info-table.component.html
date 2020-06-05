@@ -1,0 +1,191 @@
+<nb-card accent="info" size="giant">
+  <nb-card-header class="header-flex-center">
+    <span style="font-size: 1rem;">
+      档案信息-{{ profile ? profile.name : '' }}
+    </span>
+    <nb-select [disabled]="!profile || profileDeleted" placeholder="档案补充">
+      <nb-option *ngFor="let d of dropdownOptions" [value]="d.value" (click)="openDialog(d.value)">{{ d.label }}
+      </nb-option>
+    </nb-select>
+  </nb-card-header>
+  <nb-card-body class="overflow-auto">
+    <nb-tabset fullWidth>
+      <nb-tab tabTitle="基本信息">
+        <nb-accordion>
+          <nb-accordion-item [expanded]="profile">
+            <nb-accordion-item-header>基本信息</nb-accordion-item-header>
+            <nb-accordion-item-body>
+              <table class="table-borderless">
+                <tbody class="basic-table">
+                <tr>
+                  <th>姓名：</th>
+                  <td>{{ profile?.name }}</td>
+                </tr>
+                <tr>
+                  <th>性别：</th>
+                  <td>{{ profile?.gender | dicPipe: 'genderCode' }}</td>
+                </tr>
+                <tr>
+                  <th>免疫卡号：</th>
+                  <td>{{ profile?.immunityVacCard }}</td>
+                </tr>
+                <tr>
+                  <th>档案编码：</th>
+                  <td>{{ profile?.profileCode }}</td>
+                </tr>
+                <tr>
+                  <th>年龄：</th>
+                  <td>
+                    {{ isChild ? (profile?.age ? profile?.age : 0) + '岁' + (profile?.month ? profile?.month : 0) + '月' + profile?.days + '天' : profile?.age }}
+                  </td>
+                </tr>
+                <tr>
+                  <th>出生日期：</th>
+                  <td>{{ profile?.birthDate | date:'yyyy-MM-dd' }}</td>
+                </tr>
+                <tr>
+                  <th>证件号码：</th>
+                  <td>{{ profile?.idCardNo }}</td>
+                </tr>
+                <tr>
+                  <th>联系电话：</th>
+                  <td>{{ profile?.contactPhone }}</td>
+                </tr>
+                <tr>
+                  <th>母亲姓名：</th>
+                  <td>{{ profile?.motherName }}</td>
+                </tr>
+                <tr>
+                  <th>母亲电话：</th>
+                  <td>{{ profile?.motherContactPhone }}</td>
+                </tr>
+                <tr>
+                  <th>母亲证件号码：</th>
+                  <td>{{ profile?.motherIdCardNo }}</td>
+                </tr>
+                <tr>
+                  <th>父亲姓名：</th>
+                  <td>{{ profile?.fatherName }}</td>
+                </tr>
+                <tr>
+                  <th>父亲电话：</th>
+                  <td>{{ profile?.fatherContactPhone }}</td>
+                </tr>
+                <tr>
+                  <th>父亲证件号码：</th>
+                  <td>{{ profile?.fatherIdCardNo }}</td>
+                </tr>
+                <tr>
+                  <th>户口地址：</th>
+                  <td>
+                    {{ profile?.idCardProvCode | administrativePipe | async}}{{ profile?.idCardCityCode | administrativePipe | async}}{{ profile?.idCardDistrictCode | administrativePipe | async}}{{ profile?.idCardDetail }}
+                  </td>
+                </tr>
+                <tr>
+                  <th>居住地址：</th>
+                  <td>
+                    {{ profile?.liveProvCode | administrativePipe | async }}{{ profile?.liveCityCode | administrativePipe | async}}{{ profile?.liveDistrictCode | administrativePipe | async}}{{ profile?.liveDetail }}
+                  </td>
+                </tr>
+                <tr>
+                  <th>居住属性：</th>
+                  <td>
+                    {{ profile?.residentialTypeCode | dicPipe: 'residentialType' }}
+                  </td>
+                </tr>
+                <tr>
+                  <th>在册状态：</th>
+                  <td>
+                    <nz-tag *ngIf="profile?.profileStatusCode !== '10'" [nzColor]="'#0095ff'">
+                      {{ profile?.profileStatusCode | dicPipe: 'profileStatus' }}
+                    </nz-tag>
+                    <nz-tag *ngIf="profile?.profileStatusCode === '10'" [nzColor]="'#ff3d71'">
+                      {{ profile?.profileStatusCode | dicPipe: 'profileStatus' }}
+                    </nz-tag>
+                  </td>
+                </tr>
+                <tr>
+                  <th>所属区块：</th>
+                  <td>{{ profile?.community | communityNamePipe | async }}</td>
+                </tr>
+                <tr>
+                  <th>备注：</th>
+                  <td>{{ profile?.memo }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+          <nb-accordion-item>
+            <nb-accordion-item-header>
+              禁忌、过敏、病史信息
+              <nz-tag class="ml-1" [nzColor]="medicalInfo.length == 0 ? '#a9a9a9' : '#108ee9'">{{ medicalInfo.length }}
+              </nz-tag>
+            </nb-accordion-item-header>
+            <nb-accordion-item-body>
+              <nb-alert outline="info" class="flex-row" *ngIf="medicalInfo.length == 0 && profile">
+                没有查到禁忌、过敏、病史信息，请<a href="javascript:" (click)="queryMedical()">重试</a>
+              </nb-alert>
+              <div class="h6">禁忌症</div>
+              <table class="table table-bordered">
+                <tbody class="basic-table">
+                <tr>
+                  <th class="text-center">症状描述</th>
+                  <th class="text-center">避免接种</th>
+                </tr>
+                <tr *ngFor="let c of contraInfo" class="text-center">
+                  <td>{{ c.description | dicPipe: 'tabooType' }}</td>
+                  <td>{{ c.avoidVacCode | vaccineSubClassPipe }}</td>
+                </tr>
+                </tbody>
+              </table>
+              <div class="h6">过敏症</div>
+              <table class="table table-bordered">
+                <tbody class="basic-table">
+                <tr>
+                  <th class="text-center">症状描述</th>
+                  <th class="text-center">避免接种</th>
+                </tr>
+                <tr *ngFor="let c of allergyInfo" class="text-center">
+                  <td>{{ c.description }}</td>
+                  <td>{{ c.avoidVacCode | vaccineSubClassPipe }}</td>
+                </tr>
+                </tbody>
+              </table>
+              <div class="h6">病史</div>
+              <table class="table table-bordered">
+                <tbody class="basic-table">
+                <tr>
+                  <th class="text-center">症状描述</th>
+                  <th class="text-center">避免接种</th>
+                </tr>
+                <tr *ngFor="let c of illNessInfo" class="text-center">
+                  <td>{{ c.description }}</td>
+                  <td>{{ c.avoidVacCode | vaccineSubClassPipe }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+          <nb-accordion-item>
+            <nb-accordion-item-header>
+              其他信息
+            </nb-accordion-item-header>
+            <nb-accordion-item-body>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+        </nb-accordion>
+      </nb-tab>
+      <nb-tab tabTitle="特需疫苗" [badgeText]="rabiesBittenInfo.length +''" badgeStatus="success">
+        <nb-alert outline="info" class="mt-3 mb-3 flex-row text-center" *ngIf="rabiesBittenInfo.length == 0 && profile">
+          没有查到特需疫苗信息，请 <a href="javascript:" (click)="queryRabiteAndAdultVaccineRecord()">重试</a>
+        </nb-alert>
+        <uea-special-vaccine [specialVaccineInfo]="rabiesBittenInfo"></uea-special-vaccine>
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+  <nb-card-footer class="d-flex justify-content-around">
+    <button nbButton status="danger" (click)="openDialog('deleteProfile')">删除档案</button>
+    <button nbButton status="info" (click)="openDialog('updateProfile')">修改档案</button>
+  </nb-card-footer>
+</nb-card>

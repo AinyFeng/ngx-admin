@@ -1,0 +1,89 @@
+<nz-tabset [nzSelectedIndex]="tabIndex" (nzSelectedIndexChange)="tabIndexChange($event)">
+  <nz-tab nzTitle="季度计划审核">
+    <div nz-row>
+      <form nz-form [nzLayout]="'inline'" [formGroup]="queryForm" (ngSubmit)="query(true)">
+        <nz-form-item>
+          <nz-form-label nzFor="planDate">计划日期</nz-form-label>
+          <nz-form-control nzErrorTip="">
+            <nz-year-picker formControlName="planDate"></nz-year-picker>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="planDate">计划季度</nz-form-label>
+          <nz-form-control nzErrorTip="">
+            <nz-select nzDisabled formControlName="quarter">
+              <nz-option nzLabel="第一季度" [nzValue]="'1'"></nz-option>
+              <nz-option nzLabel="第二季度" [nzValue]="'2'"></nz-option>
+              <nz-option nzLabel="第三季度" [nzValue]="'3'"></nz-option>
+              <nz-option nzLabel="第四季度" [nzValue]="'4'"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="type">类型</nz-form-label>
+          <nz-form-control nzErrorTip="">
+            <nz-radio-group formControlName="type">
+              <label nz-radio nzValue="1">一类</label>
+              <label nz-radio nzValue="2">二类</label>
+            </nz-radio-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control>
+            <button nz-button nzType="primary">查询</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+    <div nz-row>
+      <nz-table #borderedTable
+                nzBordered
+                (nzPageIndexChange)="query(false, $event)"
+                [nzPageIndex]="page"
+                [nzPageSize]="pageSize"
+                [nzTotal]="total"
+                [nzItemRender]="renderItemTemplate"
+                [nzFrontPagination]="false"
+                [nzData]="dataSet">
+        <thead>
+        <tr>
+          <th>操作</th>
+          <th>计划</th>
+          <th>状态</th>
+          <th>填报单位</th>
+          <th>审核单位</th>
+          <th>计划日期</th>
+          <th>计划季度</th>
+          <th>类型</th>
+          <th>备注</th>
+          <th>更新日期</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of borderedTable.data">
+          <td>
+            <button nz-button nzSize="small" nzType="primary" (click)="auditPlan(data.planYearCode)">审核</button>
+          </td>
+          <td>{{ data.planTitle }}</td>
+          <td>{{ data.planStatus | planStatusPipe }}</td>
+          <td>{{ data.fromOrgCode }}</td>
+          <td>{{ data.toOrgCode }}</td>
+          <td>{{ data.planDate | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+          <td>{{ '第'+ data.quarter +'季度'  }}</td>
+          <td>{{ data.type | planTypePipe }}</td>
+          <td>{{ data.memo }}</td>
+          <td>{{ data.updateDate | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+        </tr>
+        </tbody>
+      </nz-table>
+      <ng-template #renderItemTemplate let-type let-page="page">
+        <a *ngIf="type === 'pre'" >上一页</a>
+        <a *ngIf="type === 'next'">下一页</a>
+        <a *ngIf="type === 'page'">{{ page }}</a>
+      </ng-template>
+    </div>
+  </nz-tab>
+  <nz-tab *ngIf="isSHow" nzTitle="季度计划审核详细">
+    <uea-type-two-yearly-details [(tabIndex)]="tabIndex" [action]="'audit'" [planYearCode]="planYearCode"></uea-type-two-yearly-details>
+  </nz-tab>
+</nz-tabset>

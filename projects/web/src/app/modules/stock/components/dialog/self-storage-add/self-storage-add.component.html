@@ -1,0 +1,177 @@
+<nb-card accent="info" style="width: 850px;">
+  <nb-card-header>
+    新增自采入库
+    <span class="float-right mr-3 cursor-pointer" (click)="onClose()"><i class="far fa-times-circle"></i></span>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="infoForm" novalidate>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label text-right label-required">疫苗大类：</label>
+        <div class="col-sm-4">
+        <nz-select (ngModelChange)="vaccineBroadHeadingChange($event)" formControlName="vacBroadHeadingCode" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+            <nz-option *ngFor="let v of vacBroadHeadingOptions"  [nzLabel]="v.broadHeadingName" [nzValue]="v.broadHeadingCode"></nz-option>
+          </nz-select>
+          <uea-show-form-errors [control]="infoForm.get('vacBroadHeadingCode')"></uea-show-form-errors>
+        </div>
+
+        <label class="col-sm-2 col-form-label text-right label-required">疫苗小类：</label>
+        <div class="col-sm-4">
+          <nz-select (ngModelChange)="vaccineSubClassChange($event)" formControlName="vacSubClassCode" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+            <nz-option *ngFor="let v of vacSubClassOptions"  [nzLabel]="v.label" [nzValue]="v.value"></nz-option>
+          </nz-select>
+          <uea-show-form-errors [control]="infoForm.get('vacSubClassCode')"></uea-show-form-errors>
+        </div>
+
+      </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label text-right label-required">疫苗名称：</label>
+        <div class="col-sm-10">
+          <nz-select (ngModelChange)="vaccProductChange($event)" formControlName="vaccProductCode" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+            <nz-option *ngFor="let v of vaccProductOptions"  [nzLabel]="v.label" [nzValue]="v.value"></nz-option>
+          </nz-select>
+          <uea-show-form-errors [control]="infoForm.get('vaccProductCode')"></uea-show-form-errors>
+        </div>
+      </div>
+
+
+
+      <div class="form-group row">
+
+        <label class="col-sm-2 col-form-label text-right label-required">批次：</label>
+        <div class="col-sm-4">
+          <nz-select (ngModelChange)="filterLossDate($event)" formControlName="prodBatchCode" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+            <nz-option *ngFor="let v of prodBatchOptions"  [nzLabel]="v.batchNo" [nzValue]="v.batchNo"></nz-option>
+          </nz-select>
+          <uea-show-form-errors [control]="infoForm.get('prodBatchCode')"></uea-show-form-errors>
+          <span style="color: #f5222d;" *ngIf="isSubmit">改批号产品已过期，请重新选择!</span>
+        </div>
+
+        <label  class="col-sm-2 col-form-label text-right label-required">生产企业：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="text" readonly    formControlName="supplierName" id="supplierName">
+          <input nz-input nzSize="large" type="text" hidden readonly   formControlName="supplierCode" id="supplierCode">
+        </div>
+
+      </div>
+
+
+      <div class="form-group row">
+
+        <label class="col-sm-2 col-form-label text-right label-required">配送企业：</label>
+        <div class="col-sm-4">
+          <nz-select formControlName="delivererCode" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+            <nz-option *ngFor="let v of manufactureData"  [nzLabel]="v.name" [nzValue]="v.code"></nz-option>
+          </nz-select>
+          <uea-show-form-errors [control]="infoForm.get('delivererCode')"></uea-show-form-errors>
+        </div>
+
+        <label  class="col-sm-2 col-form-label text-right label-required">进价单价：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+                 formControlName="purchasePrise" id="purchasePrise" placeholder="请输入">
+          <uea-show-form-errors [control]="infoForm.get('purchasePrise')"></uea-show-form-errors>
+        </div>
+
+      </div>
+
+      <div class="form-group row">
+        <!--生产企业自动填充-->
+        <label class="col-sm-2 col-form-label text-right label-required">零售单价：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="number"   [min]="0" numberTransfer
+                 formControlName="srPrice" id="srPrice" placeholder="请输入">
+          <uea-show-form-errors [control]="infoForm.get('srPrice')"></uea-show-form-errors>
+        </div>
+
+        <label class="col-sm-2 col-form-label text-right label-required">总数量(支)：</label>
+        <div class="col-sm-4">
+          <input  nz-input nzSize="large" type="number"   [min]="0" [max]="1000000" numberTransfer
+                 formControlName="count" id="count" placeholder="请输入">
+          <uea-show-form-errors [control]="infoForm.get('count')"></uea-show-form-errors>
+        </div>
+      </div>
+
+      <div class="form-group row">
+
+        <label  class="col-sm-2 col-form-label text-right label-required">科室：</label>
+        <div class="col-sm-4">
+          <nz-select (ngModelChange)="departmentChange($event)" formControlName="departmentCode" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+            <nz-option *ngFor="let v of departmentSelect"  [nzLabel]="v.departmentName" [nzValue]="v.departmentCode"></nz-option>
+          </nz-select>
+          <uea-show-form-errors [control]="infoForm.get('departmentCode')"></uea-show-form-errors>
+        </div>
+
+        <label  class="col-sm-2 col-form-label text-right label-required">冷藏设备：</label>
+        <div class="col-sm-4">
+          <nz-select  formControlName="facilityCode" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+            <nz-option *ngFor="let v of facilityOptions"  [nzLabel]="v.label" [nzValue]="v.value"></nz-option>
+          </nz-select>
+          <uea-show-form-errors [control]="infoForm.get('facilityCode')"></uea-show-form-errors>
+         <!-- <nb-select placeholder="请选择冷藏设备" status="info"   formControlName= "facilityCode" id = "facilityCode" >
+            <nb-option [value]="v.value" *ngFor="let v of facilityOptions">{{v.label}}</nb-option>
+          </nb-select>
+          <uea-show-form-errors [control]="infoForm.get('facilityCode')"></uea-show-form-errors>-->
+        </div>
+
+      </div>
+
+      <div class="form-group row">
+
+        <label  class="col-sm-2 col-form-label text-right label-required">操作人：</label>
+        <div class="col-sm-4">
+          <nz-select  formControlName="stockBy" nzSize="large" nzShowSearch nzAllowClear nzPlaceHolder="请选择" >
+            <nz-option *ngFor="let v of staffOptionSelected"  [nzLabel]="v.realName" [nzValue]="v.number"></nz-option>
+          </nz-select>
+          <uea-show-form-errors [control]="infoForm.get('stockBy')"></uea-show-form-errors>
+        </div>
+
+        <label  class="col-sm-2 col-form-label text-right label-required">入库单号：</label>
+        <div class="col-sm-4">
+          <input nz-input nzSize="large" type="text"
+                 formControlName="acceptanceSerial" id="acceptanceSerial" placeholder="请输入">
+          <uea-show-form-errors [control]="infoForm.get('acceptanceSerial')"></uea-show-form-errors>
+        </div>
+
+      </div>
+
+
+
+      <div class="form-group row">
+
+        <label  class="col-sm-2 col-form-label text-right label-required">收货日期：</label>
+        <div class="col-sm-4">
+          <nz-date-picker style="width: 100%;" nzSize="large" formControlName="acceptanceDate" id="acceptanceDate" nzShowTime
+                          nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择时间"></nz-date-picker>
+          <!--<input nz-input nzSize="large"   readonly placeholder="请选择日期"  formControlName="acceptanceDate"
+                 [nbDatepicker]="datepicker" id="acceptanceDate">
+          <nb-datepicker format="YYYY-MM-DD" [max]="max" #datepicker></nb-datepicker>-->
+          <uea-show-form-errors [control]="infoForm.get('acceptanceDate')"></uea-show-form-errors>
+        </div>
+
+      </div>
+
+    <!-- <div class="form-group row">
+        <label for="memo" class="col-sm-2 col-form-label text-right">备注：</label>
+        <div class="col-sm-10">
+         <textarea
+           nz-input
+           id="memo"
+           formControlName="memo"
+           placeholder="请输入备注信息"
+           [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+         ></textarea>
+        </div>
+      </div>-->
+
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="text-center">
+      <button [nbSpinner]="loading" [disabled]="isSubmit" nbSpinnerStatus="info" nbSpinnerMessage="" nbButton status="info" class="mr-5"
+              (click)="submit()">保存
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>
+
